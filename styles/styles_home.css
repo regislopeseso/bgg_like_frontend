@@ -50,10 +50,12 @@
 
 .blue-ball {
   position: absolute;
-  height: 25vw;
+  min-width: 250px;
+  min-height: 250px;
   width: 25vw;
-  max-width: 35vw;
-  max-height: 35vw;
+  height: 25vw;
+  max-width: 360px;
+  max-height: 360px;
   border-radius: 50%;
   box-shadow: 0 0 1rem var(--main-color);
   animation: floatImage 5s ease-in-out infinite;

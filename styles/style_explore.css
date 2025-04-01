@@ -1,0 +1,41 @@
+.explore-options a {
+  display: block;
+  width: fit-content;
+  padding-bottom: 2rem;
+  font-size: 3rem;
+  color: var(--text-color);
+  transition: 0.1s;
+  text-decoration: none;
+}
+.explore-options a:hover {
+  color: var(--main-color);
+}
+.explore-options a:hover span {
+  color: var(--text-color);
+}
+
+.tables-BoardGames {
+  display: none;
+  width: fit-content;
+}
+.table-ratedBG th {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--main-color);
+  padding: 2rem;
+}
+.table-ratedBG tbody {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.table-secondType th {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--main-color);
+  padding: 1rem;
+}
+.table-secondType tbody {
+  text-align: center;
+  font-size: 1rem;
+}
