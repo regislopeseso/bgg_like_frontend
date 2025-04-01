@@ -19,35 +19,155 @@
     />
     <link rel="stylesheet" href="styles/style_general.css" />
     <link rel="stylesheet" href="styles/style_header.css" />
-    <link rel="stylesheet" href="styles/styles_explore.css" />
+    <!-- <link rel="stylesheet" href="styles/styles_explore.css" /> -->
     <link rel="stylesheet" href="styles/style_footer.css" />
   </head>
   <body>
-    <header class="header">
-      <a href="#home" class="logo">BBG <span>LIKE</span></a>
-      <nav class="navbar">
-        <a href="index.html">HOME</a>
-        <a href="explore.html">EXPLORE</a>
-        <a href="#services">USER</a>
-        <a href="#portfolio">ADMIN</a>
-        <a href="#contact">DEV</a>
-      </nav>
-    </header>
-
-    <section class="explore" id="explore"></section>
-
-    <footer class="footer">
-      <div class="footer-text">
-        <p>Copyright &copy; by OAK Academy</p>
+    <script src="js/components/header.js"></script>
+    <section class="explore" id="explore">
+      <h2><span>Find</span> a Board Game</h2>
+      <div>
+        <h2>Board Games <span>Ranking</span></h2>
       </div>
-      <div class="top-icon">
-        <a href="#home"><i class="fa-solid fa-arrow-up"></i></a>
+      <h2>Categories <span>Ranking</span></h2>
+
+      <div>
+        <table class="table table-striped" id="books_list">
+          <thead>
+            <tr>
+              <th>Ranking</th>
+              <th>Name</th>
+              <th>Average Rating</th>
+              <th>Number of Voters</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
-    </footer>
+
+      <form id="list_boardgames_by_ranking">
+        <div class="form-group">
+          <button type="submit" class="btn btn-success">List games</button>
+        </div>
+      </form>
+    </section>
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+
+    <script src="js/components/footer.js"></script>
+
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+    <!-- <script>
+      $(document).ready(function () {
+        function loadData() {
+          $.get(
+            "https://localhost:7081/explore/ratedboardgames",
+            function (response) {
+              $("table tbody").html("");
+
+              $.each(response, function (index, item) {
+                console.log(item);
+
+                let tr = `
+                          <tr>
+                            <td>
+                              ${index + 1}
+                            </td>  
+                            <td>
+                              ${item.boardGameName}
+                            </td>
+                            <td>
+                              ${item.avgRating}
+                            </td>
+                            <td>
+                              ${item.ratingsCount}
+                            </td>
+                          </tr>
+                          `;
+
+                $("table tbody").append(tr);
+              });
+            }
+          );
+        }
+
+        loadData();
+
+        $("#list_boardgames_by_ranking").on("submit", function (event) {
+          event.preventDefault(true);
+
+          let data = {};
+          $.each($(this).serializeArray(), function (index, item) {
+            data[item.name] = item.value;
+          });
+
+          console.log(data);
+
+          $.get(
+            "https://localhost:7081/explore/ratedboardgames",
+            data,
+            function (response) {
+              loadData();
+            }
+          );
+        });
+      });
+    </script> -->
+    <script>
+      $(document).ready(function () {
+        function loadData(data = {}) {
+          $.get(
+            "https://localhost:7081/explore/ratedboardgames",
+            data,
+            function (response) {
+              // Verifica se existe a chave "content" na resposta
+              if (!response.content || !Array.isArray(response.content)) {
+                console.error("Unexpected response format:", response);
+                return;
+              }
+
+              $("table tbody").empty(); // Limpa a tabela
+
+              $.each(response.content, function (index, item) {
+                let tr = `
+                <tr>
+                  <td>${index + 1}</td>  
+                  <td>${item.boardGameName}</td>
+                  <td>${item.avgRating}</td>
+                  <td>${item.ratingsCount}</td>
+                </tr>
+              `;
+                $("table tbody").append(tr);
+              });
+
+              console.log(response.message); // Exibe a mensagem da API no console
+            }
+          );
+        }
+
+        // Carrega os dados iniciais
+        loadData();
+
+        // Evento de submit do formulário
+        $("#list_boardgames_by_ranking").on("submit", function (event) {
+          event.preventDefault();
+
+          let data = {};
+          $.each($(this).serializeArray(), function (index, item) {
+            data[item.name] = item.value;
+          });
+
+          console.log("Filtrando com:", data);
+
+          // Chama `loadData()` passando os filtros
+          loadData(data);
+        });
+      });
+    </script>
   </body>
 </html>
