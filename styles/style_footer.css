@@ -1,0 +1,32 @@
+.footer {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 2rem 10px;
+  background-color: var(--second-bg-color);
+  z-index: 100;
+}
+.footer-text p {
+  font-size: 1.5 rem;
+  transition: all 0.5s;
+}
+.top-icon a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: var(--main-color);
+  border-radius: 50%;
+}
+.top-icon a:hover {
+  box-shadow: 0 0 1 var(--main-color);
+}
+.top-icon a i {
+  font-size: 2rem;
+  color: var(--second-bg-color);
+}
