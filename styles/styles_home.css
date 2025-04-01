@@ -78,6 +78,13 @@
   overflow: hidden;
   border-radius: 50%;
 }
+.el:hover {
+  background-color: var(--main-color);
+  color: var(--second-bg-color);
+  box-shadow: 0 0 1rem var(--main-color);
+  transform: scale(2.5, 2);
+  border-radius: 0;
+}
 .el img {
   width: 100%;
   height: 100%;

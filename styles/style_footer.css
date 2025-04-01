@@ -15,12 +15,14 @@
   font-size: 1.5 rem;
   transition: all 0.5s;
 }
+
 .top-icon a {
   display: inline-flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
   background-color: var(--main-color);
+  box-shadow: 0 0 1rem var(--main-color);
   border-radius: 50%;
 }
 .top-icon a:hover {
