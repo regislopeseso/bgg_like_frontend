@@ -2,113 +2,63 @@
   display: flex;
   flex-direction: column;
   height: 75vh;
-  border: 3px solid yellow;
 }
+
 .explore-menu {
-  width: 100%;
-  display: block;
-  border: 3px solid green;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
-.explore-options a {
-  display: block;
-  width: fit-content;
-  padding-bottom: 0.5rem;
-  font-size: 2rem;
+.explore-option {
+  border: 1px solid var(--bg-color);
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  box-shadow: 0 0 1rem black;
+}
+
+.explore-option a {
+  font-size: 1.8rem;
   color: var(--text-color);
   transition: 0.1s;
   text-decoration: none;
 }
-.explore-options a:hover {
+.explore-option a:hover {
   color: var(--main-color);
 }
-.explore-options a:hover span {
+.explore-option a:hover span {
   color: var(--text-color);
-}
-
-tbody {
-  text-align: center;
-  font-size: 1.5rem;
-}
-td {
-  padding-top: 5px;
-  border-bottom: 0.1px dashed var(--second-bg-color);
-}
-
-.explore-tables-area {
-  overflow-y: auto;
-  height: 100%;
-  width: 100%;
-  border: 5px solid red;
-}
-
-.tables-BoardGames {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  height: 100%;
 }
 
 .primary-table {
   display: flex;
-  align-items: center;
-  border: 5px inset var(--main-color);
-}
-.primary-table-boundary {
-  height: fit-content;
-  border-radius: 5%;
-  border: 3px inset var(--main-color);
+  justify-self: center;
+  align-self: center;
+  border: 2px solid var(--main-color);
+  border-radius: 2rem;
+  margin: 2rem;
+  padding: 1rem 5rem 0rem 5rem;
 }
 .primary-table caption {
-  text-align: center;
   color: var(--reddish);
-  font-size: 2rem;
-}
-.table-ratedBG th {
+  font-size: 1.8rem;
   text-align: center;
-  vertical-align: top;
-  width: 110px;
-  font-size: 1.5rem;
-  color: var(--main-color);
+  padding-bottom: 1rem;
 }
-#wrapedTh {
-  width: 80px !important ;
-  word-wrap: break-word !important;
+.primary-table thead {
+  box-shadow: 0 0 1rem black;
 }
-
-.secondary-tables {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 5px inset var(--main-color);
-}
-
-.secondary-tables-grid {
-  display: grid;
-  width: max-content;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  border: 3px inset var(--main-color);
-}
-
-.table-secondType {
-  width: fit-content;
-  padding: 10px 10px 25px 10px;
-  border: 3px inset var(--main-color);
-  border-radius: 5%;
-}
-.table-secondType caption {
-  width: fit-content;
+.primary-table th {
   text-align: center;
-  color: var(--reddish);
-  font-size: 1.5rem;
-}
-.table-secondType th {
-  text-align: center;
-  font-size: 1rem;
-  color: var(--main-color);
+  word-wrap: break-word;
   padding: 1rem;
 }
-.table-secondType tbody {
+
+.primary-table tbody tr td {
+  height: 1.5rem;
+  padding: 0.5rem;
+}
+.primary-table tr {
   text-align: center;
   font-size: 1rem;
 }
