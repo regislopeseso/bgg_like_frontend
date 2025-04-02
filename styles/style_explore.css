@@ -1,8 +1,19 @@
+.viewBlock {
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
+  border: 3px solid yellow;
+}
+.explore-menu {
+  width: 100%;
+  display: block;
+  border: 3px solid green;
+}
 .explore-options a {
   display: block;
   width: fit-content;
-  padding-bottom: 2rem;
-  font-size: 3rem;
+  padding-bottom: 0.5rem;
+  font-size: 2rem;
   color: var(--text-color);
   transition: 0.1s;
   text-decoration: none;
@@ -14,21 +25,83 @@
   color: var(--text-color);
 }
 
+tbody {
+  text-align: center;
+  font-size: 1.5rem;
+}
+td {
+  padding-top: 5px;
+  border-bottom: 0.1px dashed var(--second-bg-color);
+}
+
+.explore-tables-area {
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  border: 5px solid red;
+}
+
 .tables-BoardGames {
-  display: none;
-  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.primary-table {
+  display: flex;
+  align-items: center;
+  border: 5px inset var(--main-color);
+}
+.primary-table-boundary {
+  height: fit-content;
+  border-radius: 5%;
+  border: 3px inset var(--main-color);
+}
+.primary-table caption {
+  text-align: center;
+  color: var(--reddish);
+  font-size: 2rem;
 }
 .table-ratedBG th {
   text-align: center;
-  font-size: 2rem;
+  vertical-align: top;
+  width: 110px;
+  font-size: 1.5rem;
   color: var(--main-color);
-  padding: 2rem;
 }
-.table-ratedBG tbody {
-  text-align: center;
-  font-size: 2rem;
+#wrapedTh {
+  width: 80px !important ;
+  word-wrap: break-word !important;
 }
 
+.secondary-tables {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px inset var(--main-color);
+}
+
+.secondary-tables-grid {
+  display: grid;
+  width: max-content;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  border: 3px inset var(--main-color);
+}
+
+.table-secondType {
+  width: fit-content;
+  padding: 10px 10px 25px 10px;
+  border: 3px inset var(--main-color);
+  border-radius: 5%;
+}
+.table-secondType caption {
+  width: fit-content;
+  text-align: center;
+  color: var(--reddish);
+  font-size: 1.5rem;
+}
 .table-secondType th {
   text-align: center;
   font-size: 1rem;

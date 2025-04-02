@@ -5,6 +5,7 @@
   --second-bg-color: #323946;
   --text-color: #fff;
   --main-color: #0ef;
+  --reddish: #f30;
 }
 
 * {
@@ -31,6 +32,7 @@ body {
 section {
   min-height: 100vh;
   padding: 10rem 10%;
+  z-index: 100;
 }
 span {
   color: var(--main-color);
