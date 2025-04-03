@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  function loadGames(data = {}) {
+  function loadAllGames(data = {}) {
     $.get(
       "https://localhost:7081/explore/listboardgames",
       data,
@@ -52,51 +52,7 @@ $(document).ready(function () {
       }
     );
   }
-  loadGames();
-
-  function loadBestRatedGames(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/boardgamesrankings",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.bestRatedBoardGames)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $(".table-bestRatedGames tbody").empty(); // Limpa a tabela
-
-        // Acessa a lista de mostPlayedBoardGames
-        const bestRatedBG = response.content.bestRatedBoardGames;
-
-        // Verifica se a lista existe e tem elementos
-        if (bestRatedBG.length > 0) {
-          $.each(bestRatedBG, function (index, bgname) {
-            let tr = `
-            <tr>
-              <td>${index + 1}</td>             
-              <td class="text-start">${bgname}</td>         
-            </tr>
-          `;
-            $(".table-bestRatedGames tbody").append(tr);
-          });
-        } else {
-          $(".table-bestRatedGames tbody").append(`
-          <tr>
-            <td colspan="2">No data available</td>
-          </tr>
-        `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
-  }
-  loadBestRatedGames();
+  loadAllGames();
 
   function loadMostPlayedGames(data = {}) {
     $.get(
@@ -112,7 +68,7 @@ $(document).ready(function () {
           return;
         }
 
-        $(".table-mostPlayedGames tbody").empty(); // Limpa a tabela
+        $(".mostPlayedGames").empty(); // Limpa a lista
 
         // Acessa a lista de mostPlayedBoardGames
         const mostPlayedBG = response.content.mostPlayedBoardGames;
@@ -120,19 +76,16 @@ $(document).ready(function () {
         // Verifica se a lista existe e tem elementos
         if (mostPlayedBG.length > 0) {
           $.each(mostPlayedBG, function (index, bgname) {
-            let tr = `
-            <tr>
-              <td>${index + 1}</td>             
-              <td class="text-start">${bgname}</td>         
-            </tr>
+            let firstLetter = bgname[0];
+            let allOtherLetters = bgname.slice(1, bgname.length);
+            let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
           `;
-            $(".table-mostPlayedGames tbody").append(tr);
+            $(".mostPlayedGames").append(li);
           });
         } else {
-          $(".table-mostPlayedGames tbody").append(`
-          <tr>
-            <td colspan="2">No data available</td>
-          </tr>
+          $(".mostPlayedGames").append(`
+            <li class="No data available"></li>          
         `);
         }
 
@@ -141,6 +94,47 @@ $(document).ready(function () {
     );
   }
   loadMostPlayedGames();
+
+  function loadBestRatedGames(data = {}) {
+    $.get(
+      "https://localhost:7081/explore/boardgamesrankings",
+      data,
+      function (response) {
+        // Verifica se existe a chave "content" na resposta
+        if (
+          !response.content ||
+          !Array.isArray(response.content.bestRatedBoardGames)
+        ) {
+          console.error("Unexpected response format:", response);
+          return;
+        }
+
+        $(".bestRatedGames").empty(); // Limpa a lista
+
+        // Acessa a lista de mostPlayedBoardGames
+        const bestRatedBG = response.content.bestRatedBoardGames;
+
+        // Verifica se a lista existe e tem elementos
+        if (bestRatedBG.length > 0) {
+          $.each(bestRatedBG, function (index, bgname) {
+            let firstLetter = bgname[0];
+            let allOtherLetters = bgname.slice(1, bgname.length);
+            let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
+          `;
+            $(".bestRatedGames").append(li);
+          });
+        } else {
+          $(".bestRatedGames").append(`
+            <li class="No data available"></li>          
+        `);
+        }
+
+        console.log(response.message); // Exibe a mensagem da API no console
+      }
+    );
+  }
+  loadBestRatedGames();
 
   function loadShortestGames(data = {}) {
     $.get(
@@ -156,7 +150,7 @@ $(document).ready(function () {
           return;
         }
 
-        $(".table-shortestGames tbody").empty(); // Limpa a tabela
+        $(".shortestGames").empty(); // Limpa a lista
 
         // Acessa a lista de mostPlayedBoardGames
         const shortestBG = response.content.shortestBoardGames;
@@ -164,19 +158,16 @@ $(document).ready(function () {
         // Verifica se a lista existe e tem elementos
         if (shortestBG.length > 0) {
           $.each(shortestBG, function (index, bgname) {
-            let tr = `
-            <tr>
-              <td>${index + 1}</td>             
-              <td class="text-start">${bgname}</td>         
-            </tr>
+            let firstLetter = bgname[0];
+            let allOtherLetters = bgname.slice(1, bgname.length);
+            let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
           `;
-            $(".table-shortestGames tbody").append(tr);
+            $(".shortestGames").append(li);
           });
         } else {
-          $(".table-shortestGames tbody").append(`
-          <tr>
-            <td colspan="2">No data available</td>
-          </tr>
+          $(".shortestGames").append(`
+            <li class="No data available"></li>          
         `);
         }
 
@@ -200,7 +191,7 @@ $(document).ready(function () {
           return;
         }
 
-        $(".table-longestGames tbody").empty(); // Limpa a tabela
+        $(".longestGames").empty(); // Limpa a lista
 
         // Acessa a lista de mostPlayedBoardGames
         const longestBG = response.content.longestBoardGames;
@@ -208,19 +199,16 @@ $(document).ready(function () {
         // Verifica se a lista existe e tem elementos
         if (longestBG.length > 0) {
           $.each(longestBG, function (index, bgname) {
-            let tr = `
-            <tr>
-              <td>${index + 1}</td>             
-              <td class="text-start">${bgname}</td>         
-            </tr>
+            let firstLetter = bgname[0];
+            let allOtherLetters = bgname.slice(1, bgname.length);
+            let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
           `;
-            $(".table-longestGames tbody").append(tr);
+            $(".longestGames").append(li);
           });
         } else {
-          $(".table-longestGames tbody").append(`
-          <tr>
-            <td colspan="2">No data available</td>
-          </tr>
+          $(".longestGames").append(`
+            <li class="No data available"></li>          
         `);
         }
 
@@ -244,7 +232,7 @@ $(document).ready(function () {
           return;
         }
 
-        $(".table-adultsFavoriteGames tbody").empty(); // Limpa a tabela
+        $(".adultsFavoriteGames").empty(); // Limpa a lista
 
         // Acessa a lista de mostPlayedBoardGames
         const adultsFavoriteBG = response.content.adultsFavoriteBoardGames;
@@ -252,19 +240,16 @@ $(document).ready(function () {
         // Verifica se a lista existe e tem elementos
         if (adultsFavoriteBG.length > 0) {
           $.each(adultsFavoriteBG, function (index, bgname) {
-            let tr = `
-            <tr>
-              <td>${index + 1}</td>             
-              <td class="text-start">${bgname}</td>         
-            </tr>
+            let firstLetter = bgname[0];
+            let allOtherLetters = bgname.slice(1, bgname.length);
+            let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
           `;
-            $(".table-adultsFavoriteGames tbody").append(tr);
+            $(".adultsFavoriteGames").append(li);
           });
         } else {
-          $(".table-adultsFavoriteGames tbody").append(`
-          <tr>
-            <td colspan="2">No data available</td>
-          </tr>
+          $(".adultsFavoriteGames").append(`
+            <li class="No data available"></li>          
         `);
         }
 
@@ -288,27 +273,24 @@ $(document).ready(function () {
           return;
         }
 
-        $(".table-teensFavoriteGames tbody").empty(); // Limpa a tabela
+        $(".teensFavoriteGames").empty(); // Limpa a lista
 
         // Acessa a lista de mostPlayedBoardGames
-        const adultsFavoriteBG = response.content.teensFavoriteBoardGames;
+        const teensFavoriteBG = response.content.teensFavoriteBoardGames;
 
         // Verifica se a lista existe e tem elementos
-        if (adultsFavoriteBG.length > 0) {
-          $.each(adultsFavoriteBG, function (index, bgname) {
-            let tr = `
-            <tr>
-              <td>${index + 1}</td>             
-              <td class="text-start">${bgname}</td>         
-            </tr>
+        if (teensFavoriteBG.length > 0) {
+          $.each(teensFavoriteBG, function (index, bgname) {
+            let firstLetter = bgname[0];
+            let allOtherLetters = bgname.slice(1, bgname.length);
+            let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
           `;
-            $(".table-teensFavoriteGames tbody").append(tr);
+            $(".teensFavoriteGames").append(li);
           });
         } else {
-          $(".table-teensFavoriteGames tbody").append(`
-          <tr>
-            <td colspan="2">No data available</td>
-          </tr>
+          $(".teensFavoriteGames").append(`
+            <li class="No data available"></li>          
         `);
         }
 
@@ -322,6 +304,6 @@ $(document).ready(function () {
     event.preventDefault();
 
     $("#allGamesTable").toggle();
-    // $("#secondaryGamesTable").toggle();
+    $("#bgRankingListsToggler").toggle();
   });
 });

@@ -1,3 +1,10 @@
+section {
+  min-height: 100vh;
+  padding: 5rem 10%;
+  justify-self: center;
+  z-index: 100;
+}
+
 .viewBlock {
   display: flex;
   flex-direction: column;
@@ -5,12 +12,18 @@
 }
 
 .explore-menu {
+  position: fixed;
+  top: 35px;
+  padding-top: 10px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  align-self: center;
 }
 .explore-option {
+  background-color: var(--second-bg-color);
   border: 1px solid var(--bg-color);
   padding: 0.5rem 1rem;
   margin: 0.5rem;
@@ -30,6 +43,10 @@
   color: var(--text-color);
 }
 
+.explore-tables-area {
+  padding-top: 5rem;
+}
+
 .primary-table {
   display: flex;
   justify-self: center;
@@ -37,8 +54,15 @@
   border: 2px solid var(--main-color);
   border-radius: 2rem;
   margin: 2rem;
-  padding: 1rem 5rem 0rem 5rem;
+  padding: 1rem 2rem 0rem 2rem;
+  max-height: 300px;
+  overflow: auto;
+  /* scrollbar-color: var(--main-color) transparent; */
 }
+.primary-table::-webkit-scrollbar {
+  display: none !important;
+}
+
 .primary-table caption {
   color: var(--reddish);
   font-size: 1.8rem;
@@ -62,3 +86,94 @@
   text-align: center;
   font-size: 1rem;
 }
+
+#bgRankingListsToggler {
+  display: none;
+}
+.bgRankingsLists {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.bgRankingsLists li {
+  list-style: decimal;
+}
+
+.bgRankingsLists .list-box {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border: 2px solid var(--main-color);
+  border-radius: 2rem;
+  margin: 1rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.bgRankingsLists .rankingType {
+  grid-column: 1 / span 3;
+  align-content: center;
+}
+.bgRankingsLists .middleLine {
+  grid-column: 4;
+  justify-self: center;
+  width: 1px;
+  background-color: var(--main-color);
+  height: 100%;
+}
+
+.bgRankingsLists .rankingList {
+  grid-column: 5 / span 3;
+  align-content: center;
+}
+.bgRankingsLists .rankingList ol {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 3340px) {
+}
+
+@media screen and (max-width: 610px) {
+  .explore-tables-area {
+    padding-top: 10rem;
+  }
+}
+@media screen and (max-width: 576px) {
+  section {
+    min-height: 100vh;
+    padding: 10rem 10%;
+    z-index: 100;
+  }
+  .bgRankingsLists {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    min-width: 200px;
+    min-height: 80px;
+  }
+  .explore-menu {
+    top: 80px;
+    padding-top: 10px;
+  }
+}
+@media screen and (max-width: 415px) {
+  .explore-tables-area {
+    padding-top: 15rem;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  section {
+    min-height: 100vh;
+    padding: 10rem 10%;
+    z-index: 100;
+  }
+  .explore-menu {
+    top: 100px;
+    padding-top: 10px;
+  }
+}
+/* 
+@media screen and (max-width: 991px) {
+}
+@media screen and (max-width: 768px) {
+}
+*/

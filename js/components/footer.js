@@ -2,12 +2,14 @@ function loadFooter() {
   const footer = document.createElement("footer");
   footer.className = "footer";
   footer.innerHTML = `
-    <div class="footer-text">
-      <p>Copyright &copy; by JPR Trainings</p>
-    </div>
-    <div class="top-icon">
-      <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
-    </div>
+    <footer class="footer">
+      <div class="footer-text">
+        <p>Copyright &copy; by OAK Academy</p>
+      </div>
+      <div class="top-icon">
+        <a href="#home"><i class="fa-solid fa-arrow-up"></i></a>
+      </div>
+    </footer>
   `;
   document.body.appendChild(footer);
 }

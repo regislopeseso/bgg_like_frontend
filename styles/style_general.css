@@ -37,3 +37,16 @@ section {
 span {
   color: var(--main-color);
 }
+
+@media screen and (max-width: 3340px) {
+}
+@media screen and (max-width: 1200px) {
+}
+@media screen and (max-width: 991px) {
+}
+@media screen and (max-width: 768px) {
+}
+@media screen and (max-width: 576px) {
+}
+@media screen and (max-width: 350px) {
+}

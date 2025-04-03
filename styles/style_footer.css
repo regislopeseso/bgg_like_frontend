@@ -7,7 +7,7 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 2rem 10px;
+  padding: 1rem 5px;
   background-color: var(--second-bg-color);
   z-index: 99;
 }
@@ -20,7 +20,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
   background-color: var(--main-color);
   box-shadow: 0 0 1rem var(--main-color);
   border-radius: 50%;
@@ -29,6 +29,24 @@
   box-shadow: 0 0 1 var(--main-color);
 }
 .top-icon a i {
-  font-size: 2rem;
+  font-size: 1rem;
   color: var(--second-bg-color);
+}
+
+@media screen and (max-width: 1200px) {
+}
+@media screen and (max-width: 991px) {
+  .footer {
+    padding: 1rem 3%;
+  }
+}
+@media screen and (max-width: 768px) {
+}
+@media screen and (max-width: 576px) {
+}
+@media screen and (max-width: 350px) {
+  .footer {
+    background-color: rgba(0, 0, 0, 0);
+    flex-direction: column-reverse;
+  }
 }
