@@ -28,124 +28,218 @@
       <div class="viewBlock">
         <div class="explore-menu">
           <div class="explore-option">        
-            <a href=""><span>Find</span> a Board Game</a>
+            <a href="" id="displayAllBoardGames"><span>All</span> Board Games</a>
+          </div>
+          <div class="explore-option">        
+            <a href="" id="searchBoardGames"><span>Find</span> a Board Game</a>
           </div>
           <div class="explore-option">  
-            <a href="" id="boardGamesRanking">Board Games <span>Ranking</a>
+            <a href="" id="displayBoardGamesRankings">Board Games <span>Ranking</a>
           </div>
           <div class="explore-option">  
-            <a href="index.html">Categories <span>Ranking</span></a>       
+            <a href="index.html" id="displayCategoriesRankings">Categories <span>Ranking</span></a>       
           </div>
         </div>
         
         <div class="explore-tables-area">          
-          <div class="tables-BoardGames" id="tbBoardGames" >
-                            
-              <div class="primary-table" id="allGamesTable">
-                <div class="primary-table-container">
-                  <table class="table-allBoardGames caption-top">
-                    <caption>Board Games</caption>
+          <div class="tables-BoardGames" id="tbBoardGames" >               
+            <div class="boardGames-table" id="allGamesTable">
+              <div class="primary-table-container">
+                <table class="table-allBoardGames caption-top">
+                  <caption>Board Games</caption>
+                  <thead>
+                    <tr>  
+                      <th>Name</th>
+                      <th id="wrapedTh">Average Rating</th>
+                      <th>Number of Voters</th>
+                      <th>Players Count</th>
+                      <th>Average Duration</th>
+                      <th>Sessions Logged</th>
+                    </tr>
+                  </thead>
+                  <tbody>                  
+                  </tbody>
+                </table>
+              </div>
+            </div>               
+                       
+            <!-- <div class="container mt-4 searchBoardGame" id="searchBGToggler">
+              
+            </div> -->
+
+            <div class="form-group" id="searchBGToggler">
+              <label for="">Select a Board Game</label>
+              <select
+                name=""
+                id="selectGame123" class="form-control form-select"
+                
+              >
+                <option value="">Selecione</option>
+              </select>
+            </div>
+            
+            <div id="bgRankingListsToggler">
+              <div class="bgRankingsLists">
+                <div class="list-box">
+                  <div class="rankingType">
+                    <h5><span style="color: var(--reddish);">Most</span> Played</h5>
+                    <h5>Board Games</h5>
+                  </div>
+                  <div class="middleLine"></div>
+                  <div class="rankingList">
+                    <ol class="mostPlayedGames">
+                      <li ></li>             
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="list-box">
+                  <div class="rankingType">
+                    <h5><span style="color: var(--reddish);">Best</span> Rated</h5>
+                    <h5>Board Games</h5>
+                  </div>
+                  <div class="middleLine"></div>
+                  <div class="rankingList">
+                    <ol class="bestRatedGames">
+                      <li ></li>             
+                    </ol>
+                  </div>
+                </div>      
+                
+                <div class="list-box">
+                  <div class="rankingType">
+                    <h5><span style="color: var(--reddish);">Shortest</span></h5>
+                    <h5>Board Games</h5>
+                  </div>
+                  <div class="middleLine"></div>
+                  <div class="rankingList">
+                    <ol class="shortestGames">
+                      <li ></li>             
+                    </ol>
+                  </div>
+                </div>   
+
+                <div class="list-box">
+                  <div class="rankingType">
+                    <h5><span style="color: var(--reddish);">Longest</span></h5>
+                    <h5>Board Games</h5>
+                  </div>
+                  <div class="middleLine"></div>
+                  <div class="rankingList">
+                    <ol class="longestGames">
+                      <li ></li>             
+                    </ol>
+                  </div>
+                </div>     
+                
+                <div class="list-box">
+                  <div class="rankingType">
+                    <h5><span style="color: var(--reddish);">Adults</span> Favorite</h5>
+                    <h5>Board Games</h5>
+                  </div>
+                  <div class="middleLine"></div>
+                  <div class="rankingList">
+                    <ol class="adultsFavoriteGames">
+                      <li ></li>             
+                    </ol>
+                  </div>
+                </div>    
+                
+                <div class="list-box">
+                  <div class="rankingType">
+                    <h5><span style="color: var(--reddish);">Teens</span> Favorite </h5>
+                    <h5>Board Games</h5>
+                  </div>
+                  <div class="middleLine"></div>
+                  <div class="rankingList">
+                    <ol class="teensFavoriteGames">
+                      <li ></li>             
+                    </ol>
+                  </div>
+                </div>               
+              </div>
+            </div>           
+           
+            <div class="category-tables container-fluid" style="display: none;" id="categoriesRankingsToggler">
+              <div class="row">
+                <div class="col-md-4 col-sm-12">
+                  <table class="table caption-top" id="mostPlayedCategories">
+                    <caption><span>Most Played</span> Categories</caption>
                     <thead>
-                      <tr>  
-                        <th>Name</th>
-                        <th id="wrapedTh">Average Rating</th>
-                        <th>Number of Voters</th>
-                        <th>Players Count</th>
-                        <th>Avarage Duration</th>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Category</th>
                         <th>Sessions Logged</th>
                       </tr>
                     </thead>
-                    <tbody>                  
-                    </tbody>
+                    <tbody></tbody>
                   </table>
                 </div>
-              </div>             
-              
-              <div id="bgRankingListsToggler">
-                <div class="bgRankingsLists">
-                  <div class="list-box">
-                    <div class="rankingType">
-                      <h5><span style="color: var(--reddish);">Most</span> Played</h5>
-                      <h5>Board Games</h5>
-                    </div>
-                    <div class="middleLine"></div>
-                    <div class="rankingList">
-                      <ol class="mostPlayedGames">
-                        <li ></li>             
-                      </ol>
-                    </div>
-                  </div>
-  
-                  <div class="list-box">
-                    <div class="rankingType">
-                      <h5><span style="color: var(--reddish);">Best</span> Rated</h5>
-                      <h5>Board Games</h5>
-                    </div>
-                    <div class="middleLine"></div>
-                    <div class="rankingList">
-                      <ol class="bestRatedGames">
-                        <li ></li>             
-                      </ol>
-                    </div>
-                  </div>      
-                  
-                  <div class="list-box">
-                    <div class="rankingType">
-                      <h5><span style="color: var(--reddish);">Shortest</span></h5>
-                      <h5>Board Games</h5>
-                    </div>
-                    <div class="middleLine"></div>
-                    <div class="rankingList">
-                      <ol class="shortestGames">
-                        <li ></li>             
-                      </ol>
-                    </div>
-                  </div>   
-  
-                  <div class="list-box">
-                    <div class="rankingType">
-                      <h5><span style="color: var(--reddish);">Longest</span></h5>
-                      <h5>Board Games</h5>
-                    </div>
-                    <div class="middleLine"></div>
-                    <div class="rankingList">
-                      <ol class="longestGames">
-                        <li ></li>             
-                      </ol>
-                    </div>
-                  </div>     
-                  
-                  <div class="list-box">
-                    <div class="rankingType">
-                      <h5><span style="color: var(--reddish);">Adults</span> Favorite</h5>
-                      <h5>Board Games</h5>
-                    </div>
-                    <div class="middleLine"></div>
-                    <div class="rankingList">
-                      <ol class="adultsFavoriteGames">
-                        <li ></li>             
-                      </ol>
-                    </div>
-                  </div>    
-                  
-                  <div class="list-box">
-                    <div class="rankingType">
-                      <h5><span style="color: var(--reddish);">Teens</span> Favorite </h5>
-                      <h5>Board Games</h5>
-                    </div>
-                    <div class="middleLine"></div>
-                    <div class="rankingList">
-                      <ol class="teensFavoriteGames">
-                        <li ></li>             
-                      </ol>
-                    </div>
-                  </div>               
+                
+                <div class="col-md-4 col-sm-12">
+                  <table class="table caption-top col-4" id="mostPopularCategories">
+                    <caption><span>Best Rated</span> Categories</caption>
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Category</th>
+                        <th>Sessions Logged</th>
+                        <th>Board Games</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
                 </div>
-              </div>
-              
+                                
+                <div class="col-md-4 col-sm-12">
+                  <table class="table caption-top col-4" id="bestRatedCategories">
+                    <caption><span>Most Popular</span> Categories</caption>
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Category</th>
+                        <th>Average Ratings</th>
+                        <th>Ratings Count</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
 
-            </div>           
-          </div>   
+                <div class="row justify-content-center">
+                  <div class="col-md-4 col-sm-12">
+                    <table class="table caption-top col-6" id="longestCategories">
+                      <caption><span><dfn>Longest</dfn>-Playtime</span> Categories</caption>
+                      <thead>
+                        <tr>
+                          <th>Rank</th>
+                          <th>Category</th>
+                          <th>Avg. Duration</th>
+                          <th>Sessions Logged</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                    
+                  <div class="col-md-4 col-sm-12">
+                    <table class="table caption-top col-6" id="shortestCategories">
+                    <caption><span><span style="display: inline-block; transform: skewX(15deg);">Shortest</span>-Playtime</span> Categories</caption>
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Category</th>
+                        <th>Avg. Duration</th>
+                        <th>Sessions Logged</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                    </table>
+                  </div> 
+                </div>              
+              </div>
+            </div>                       
+          </div>  
         </div>
       </div>    
     </section>
@@ -158,6 +252,7 @@
 
     <script src="js/components/footer.js"></script>
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/select2/dist/js/select2.min.js"></script>
     <script src="js/scripts/script_explore.js"></script>
   </body>
 </html>

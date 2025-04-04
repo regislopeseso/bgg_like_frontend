@@ -47,7 +47,7 @@ section {
   padding-top: 5rem;
 }
 
-.primary-table {
+.boardGames-table {
   display: flex;
   justify-self: center;
   align-self: center;
@@ -59,30 +59,34 @@ section {
   overflow: auto;
   /* scrollbar-color: var(--main-color) transparent; */
 }
-.primary-table::-webkit-scrollbar {
+.boardGames-table::-webkit-scrollbar {
   display: none !important;
 }
 
-.primary-table caption {
+.boardGames-table caption {
   color: var(--reddish);
   font-size: 1.8rem;
   text-align: center;
   padding-bottom: 1rem;
 }
-.primary-table thead {
+.boardGames-table thead {
+  background-color: var(--bg-color);
   box-shadow: 0 0 1rem black;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
-.primary-table th {
+.boardGames-table th {
   text-align: center;
   word-wrap: break-word;
   padding: 1rem;
 }
 
-.primary-table tbody tr td {
+.boardGames-table tbody tr td {
   height: 1.5rem;
   padding: 0.5rem;
 }
-.primary-table tr {
+.boardGames-table tr {
   text-align: center;
   font-size: 1rem;
 }
@@ -126,6 +130,14 @@ section {
 }
 .bgRankingsLists .rankingList ol {
   margin-bottom: 0;
+}
+
+.category-tables caption {
+  color: var(--reddish);
+  font-size: 1rem;
+  text-align: center;
+  padding-bottom: 1rem;
+  background-color: var(--second-bg-color);
 }
 
 @media screen and (max-width: 3340px) {
