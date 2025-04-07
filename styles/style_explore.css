@@ -140,6 +140,14 @@ section {
   background-color: var(--second-bg-color);
 }
 
+.BGfinder {
+  display: flex;
+  flex-direction: column;
+}
+.BGfinder select {
+  display: flex;
+}
+
 @media screen and (max-width: 3340px) {
 }
 

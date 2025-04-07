@@ -554,7 +554,7 @@ $(document).ready(function () {
 
       $("#allGamesTable").hide();
       $("#searchBGToggler").hide();
-      // $("#bgRankingListsToggler").show();
+      $("#bgRankingListsToggler").show();
       $("#categoriesRankingsToggler").hide();
     });
 
@@ -599,7 +599,7 @@ $(document).ready(function () {
     });
   }
 
-  $("#selectGame123").select2({
+  $("#bgSelection").select2({
     ajax: {
       url: "https://localhost:7081/explore/findboardgame",
       data: (params) => {
@@ -622,7 +622,10 @@ $(document).ready(function () {
     },
     templateResult: (data) => data.text,
     templateSelection: (data) => data.text,
-    placeholder: "Selecione um jogo",
+    placeholder: "Board Games List",
     minimumInputLength: 1,
+    allowClear: true,
+    theme: "classic",
+    width: "20rem",
   });
 });

@@ -4,7 +4,7 @@ function loadFooter() {
   footer.innerHTML = `
     <footer class="footer">
       <div class="footer-text">
-        <p>Copyright &copy; by OAK Academy</p>
+        <p>Copyright &copy; by LOPES IT</p>
       </div>
       <div class="top-icon">
         <a href="#home"><i class="fa-solid fa-arrow-up"></i></a>
