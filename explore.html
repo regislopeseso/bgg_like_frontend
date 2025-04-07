@@ -62,18 +62,133 @@
             <!-- <div class="container mt-4 searchBoardGame" id="searchBGToggler">
               
             </div> -->
+            <div id="bgFinderToggler">
+              <div class="form-group BGfinder" id="searchBGToggler">
+                <label class="bgList-lbl" for="bgSelection">Select a Board Game</label>
+                <select
+                  name="selectecBG"                
+                  class="form-control form-select bg-select "
+                  id="bgSelection" 
+                  
+                >
+                <option value=""></option>
+                </select>
+                <button id="submitBG" class="btn btn-primary mt-4" disabled>Show Details</button>
+              </div>
 
-            <div class="form-group BGfinder" id="searchBGToggler">
-              <label class="bgList-lbl" for="bgSelection">Select a Board Game</label>
-              <select
-                name="selectecBG"                
-                class="form-control form-select bg-select "
-                id="bgSelection" 
-                
-              >
-              <option value=""></option>
-              </select>
+              
             </div>
+
+            <div class="bg-datails-box" id="boardGameDetails">
+              <h4><span style="color: var(--reddish)">WINGSPAN</span></h4>
+              <div class="detailedBG-flexbox" style="display: flex;">
+                <div class="itemLeft">
+                  <div class="itemTop">
+                    <h4><span>F</span>eatures</h4>
+                    <div class="features-container" style="background-color: var(--bg-color);">                    
+                      <ul class="" >
+                        <li  class="">Avg Duration: 120 Min.</li>
+                        <li  class="">Avg Rating: 4.5</li>
+                        <li  class="">Age: 8+</li>
+                        <li  class="">Players Count: 1-5</li>
+                        <li  class="">Category: Family Game</li>
+                        <li  class="">Mechanics: Card Game, Resource Management</li>
+                        <li  class="">Players Count: 1-5</li>
+                        <li  class="">Logged Sessions: 300</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="itemBottom">
+                    <h4><span>D</span>escription</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur, 
+                      adipisicing elit. Veritatis delectus maiores 
+                      inventore obcaecati error provident. Hic cum 
+                      eligendi magni sequi nobis quod corrupti itaque 
+                      placeat! Dolorem quas odit eveniet praesentium.
+                    </p>
+                  </div>
+                </div>
+                          
+                <div class="itemRight">
+                  <div>
+                    <h4><span>I</span>mages</h4>
+                    <div id="carouselExample" class="carousel slide">
+                      <div class="carousel-inner img-box" >
+                        <div class="carousel-item active img-item">
+                          <img src="images/wingspan/wingspan_pic1.webp" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                          <img src="images/wingspan/wingspan_pic2.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                          <img src="images/wingspan/wingspan_pic3.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                          <img src="images/wingspan/wingspan_pic4.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                          <img src="images/wingspan/wingspan_pic5.png" class="d-block w-100" alt="...">
+                        </div>
+                      </div>
+                      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                      </button>
+                    </div>         
+                  </div>                 
+                </div>
+              </div> 
+              <div class="lastFiveSessions-table">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">User</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Players Count</th>
+                      <th scope="col">Duration</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>                          
+                        <td>Red</td>
+                        <td>18/05/2025</td>
+                        <td>2</td>
+                        <td>120 Min</td>
+                    </tr> 
+                    <tr>                          
+                        <td>Yellow</td>
+                        <td>18/05/2025</td>
+                        <td>2</td>
+                        <td>120 Min</td>
+                    </tr> 
+                    <tr>                          
+                        <td>Blue</td>
+                        <td>18/05/2025</td>
+                        <td>2</td>
+                        <td>120 Min</td>
+                    </tr> 
+                    <tr>                          
+                        <td>Black</td>
+                        <td>18/05/2025</td>
+                        <td>2</td>
+                        <td>120 Min</td>
+                    </tr>
+                    <tr>                          
+                        <td>Purple</td>
+                        <td>18/05/2025</td>
+                        <td>2</td>
+                        <td>120 Min</td>
+                    </tr>                      
+                  </tbody>
+                </table>
+              </div>                 
+            </div>
+
             
             <div id="bgRankingListsToggler">
               <div class="bgRankingsLists">

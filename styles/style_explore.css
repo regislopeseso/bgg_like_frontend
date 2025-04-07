@@ -140,12 +140,77 @@ section {
   background-color: var(--second-bg-color);
 }
 
-.BGfinder {
+#bgFinderToggler {
+  display: none;
+}
+#bgFinderToggler .BGfinder {
   display: flex;
   flex-direction: column;
 }
-.BGfinder select {
+#bgFinderToggler .BGfinder select {
   display: flex;
+}
+.bg-datails-box {
+  width: 50%;
+  border: 1px solid red;
+}
+.detailedBG-flexbox {
+  display: flex;
+  flex-direction: row;
+  flex: wrap-reverse;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  box-shadow: 0 0 1rem black;
+  border: 2px solid var(--main-color);
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+  overflow: none;
+  z-index: 10;
+}
+.detailedBG-flexbox .itemLeft {
+  width: 50%;
+  font-size: 100%;
+  margin: 0.5rem;
+  padding-right: 1rem;
+  background-color: var(--bg-color);
+  border-right: 1px solid var(--main-color);
+  align-self: stretch;
+}
+.detailedBG-flexbox .itemLeft .features-container ul {
+  padding-left: 0 !important;
+}
+.detailedBG-flexbox .itemLeft .features-container li {
+}
+
+.detailedBG-flexbox .itemRight {
+  display: flex;
+  flex-wrap: nowrap;
+  border: 1px solid red;
+  width: 50%;
+  margin: 0.5rem;
+  align-self: stretch;
+  text-align: start;
+  background-color: var(--bg-color);
+  overflow: hidden;
+}
+
+.detailedBG-flexbox .itemRight .img-box {
+  display: flex;
+  border: 1px solid yellow;
+  justify-self: center;
+  transform: scale(0.5, 0.5);
+}
+.detailedBG-flexbox .itemRight .img-item {
+  justify-content: center !important;
+}
+
+.detailedBG-flexbox .lastFiveSessions-table {
+  position: relative;
+  top: 0;
+  right: 0;
+  z-index: 1;
 }
 
 @media screen and (max-width: 3340px) {

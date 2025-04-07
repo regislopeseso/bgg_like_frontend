@@ -535,7 +535,7 @@ $(document).ready(function () {
       e.preventDefault();
 
       $("#allGamesTable").show();
-      $("#searchBGToggler").hide();
+      $("#bgFinderToggler").hide();
       $("#bgRankingListsToggler").hide();
       $("#categoriesRankingsToggler").hide();
     });
@@ -544,7 +544,7 @@ $(document).ready(function () {
       e.preventDefault();
 
       $("#allGamesTable").hide();
-      $("#searchBGToggler").show();
+      //$("#bgFinderToggler").show();
       $("#bgRankingListsToggler").hide();
       $("#categoriesRankingsToggler").hide();
     });
@@ -553,7 +553,7 @@ $(document).ready(function () {
       e.preventDefault();
 
       $("#allGamesTable").hide();
-      $("#searchBGToggler").hide();
+      $("#bgFinderToggler").hide();
       $("#bgRankingListsToggler").show();
       $("#categoriesRankingsToggler").hide();
     });
@@ -562,7 +562,7 @@ $(document).ready(function () {
       e.preventDefault();
 
       $("#allGamesTable").hide();
-      $("#searchBGToggler").hide();
+      $("#bgFinderToggler").hide();
       $("#bgRankingListsToggler").hide();
       $("#categoriesRankingsToggler").show();
     });
@@ -595,7 +595,7 @@ $(document).ready(function () {
     const regex = new RegExp(searchTerm, "i"); // case-insensitive
 
     return dataToFilter.filter((item) => {
-      return regex.test(item.boarGameName);
+      return regex.test(item.boardGameName);
     });
   }
 
@@ -615,7 +615,7 @@ $(document).ready(function () {
         return {
           results: filtered.map((item) => ({
             id: item.boardGameId,
-            text: item.boarGameName,
+            text: item.boardGameName,
           })),
         };
       },
@@ -628,4 +628,92 @@ $(document).ready(function () {
     theme: "classic",
     width: "20rem",
   });
+
+  let selectedBoardGameId = null;
+
+  $("#bgSelection").on("select2:select", function (e) {
+    selectedBoardGameId = e.params.data.id;
+    $("#submitBG").prop("disabled", false);
+  });
+
+  $("#submitBG").on("click", function () {
+    if (!selectedBoardGameId) return;
+
+    fetch(
+      `https://localhost:7081/explore/showboardgamedetails?BoardGameId=${selectedBoardGameId}`
+    )
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch board game details");
+        }
+        return res.json();
+      })
+      .then((details) => {
+        console.log("Board Game Details:", details);
+        // Do something with the data (e.g., display on the page)
+        displayBoardGameDetails(details);
+      })
+      .catch((err) => {
+        console.error("Error loading details:", err);
+      });
+  });
+
+  function displayBoardGameDetails(details) {
+    const container = $("#boardGameDetails");
+
+    const mechanicsList = Array.isArray(details.content.mechanics)
+      ? details.content.mechanics.map((m) => `<li>${m}</li>`).join("")
+      : "<li><em>No mechanics listed</em></li>";
+
+    const sessionsList = Array.isArray(details.content.lastFiveSessions)
+      ? details.content.lastFiveSessions
+          .map(
+            (s) => `
+        <tr>
+          <td>${s.sessionId}</td>
+          <td>${s.userNickName}</td>
+          <td>${s.date}</td>
+          <td>${s.playersCount}</td>
+          <td>${s.duration} min</td>
+        </tr>
+      `
+          )
+          .join("")
+      : `<tr><td colspan="5"><em>No session data</em></td></tr>`;
+
+    const html = `
+      <div class="card p-3 mt-3 shadow-sm">
+        <h4>${details.content.boardGameName}</h4>
+        <p><strong>Description:</strong><br>${details.content.boardGameDescription}</p>
+        <p><strong>Category:</strong> ${details.content.category}</p>
+        <div class="mt-2">
+          <strong>Mechanics:</strong>
+          <ul>${mechanicsList}</ul>
+        </div>
+        <p><strong>Age:</strong> ${details.content.minAge}+</p>
+        <p><strong>Players:</strong> ${details.content.minPlayersCount} to ${details.content.maxPlayerCount}</p>
+        <p><strong>Average Rating:</strong> ${details.content.avgRating} ⭐</p>
+        <p><strong>Sessions Logged:</strong> ${details.content.loggedSessions}</p>
+        <p><strong>Avg. Duration:</strong> ${details.content.avgSessionDuration} min</p>
+        
+  
+        <div class="mt-3">
+          <strong>Last 5 Sessions:</strong>
+          <table class="table table-sm mt-2">
+            <thead>
+              <tr>                
+                <th>User</th>
+                <th>Date</th>
+                <th>Players</th>
+                <th>Duration</th>
+              </tr>
+            </thead>
+            <tbody>${sessionsList}</tbody>
+          </table>
+        </div>
+      </div>
+    `;
+
+    container.html(html);
+  }
 });
