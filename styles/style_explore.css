@@ -154,63 +154,176 @@ section {
   width: 50%;
   border: 1px solid red;
 }
-.detailedBG-flexbox {
-  display: flex;
-  flex-direction: row;
-  flex: wrap-reverse;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100%;
-  box-shadow: 0 0 1rem black;
-  border: 2px solid var(--main-color);
-  border-top-right-radius: 2rem;
-  border-bottom-right-radius: 2rem;
-  border-bottom-left-radius: 2rem;
-  overflow: none;
-  z-index: 10;
-}
-.detailedBG-flexbox .itemLeft {
-  width: 50%;
-  font-size: 100%;
-  margin: 0.5rem;
-  padding-right: 1rem;
-  background-color: var(--bg-color);
-  border-right: 1px solid var(--main-color);
-  align-self: stretch;
-}
-.detailedBG-flexbox .itemLeft .features-container ul {
-  padding-left: 0 !important;
-}
-.detailedBG-flexbox .itemLeft .features-container li {
-}
 
-.detailedBG-flexbox .itemRight {
-  display: flex;
-  flex-wrap: nowrap;
-  border: 1px solid red;
-  width: 50%;
-  margin: 0.5rem;
-  align-self: stretch;
-  text-align: start;
-  background-color: var(--bg-color);
-  overflow: hidden;
-}
-
-.detailedBG-flexbox .itemRight .img-box {
-  display: flex;
-  border: 1px solid yellow;
-  justify-self: center;
-  transform: scale(0.5, 0.5);
-}
-.detailedBG-flexbox .itemRight .img-item {
-  justify-content: center !important;
-}
-
-.detailedBG-flexbox .lastFiveSessions-table {
+.outerBox {
   position: relative;
-  top: 0;
-  right: 0;
+  display: flex;
+  width: 800px;
+  height: 600x;
+  margin-top: 10rem;
+  align-items: start;
+}
+.vLayer {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  border-top-right-radius: 10rem;
+  height: 100%;
+  z-index: 100;
+  text-align: center;
+}
+.vLayer .textBox {
+  flex: 0;
+  width: 50%;
+  align-self: center;
+  color: var(--reddish);
+  background-color: var(--second-bg-color);
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 2rem;
+}
+.vLayer .boxDivider {
+  flex: 1;
+  display: flex;
+  background-color: var(--second-bg-color);
+  border-radius: 5rem;
+  padding: 2rem;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+}
+.vLayer .boxDivider .leftBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.vLayer .boxDivider .leftBox h3 {
+  padding: 1rem;
+}
+.vLayer .boxDivider .leftBox .upperBox {
+  flex: 1;
+  text-align: start;
+}
+.vLayer .boxDivider .leftBox .lowerBox {
+  flex: 1;
+  text-align: start;
+}
+.vLayer .boxDivider .leftBox .lowerBox p {
+  margin-bottom: 1rem;
+  padding-top: 0 !important;
+  padding: 2rem;
+}
+
+.vLayer .boxDivider .rightBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.vLayer .boxDivider .rightBox h3 {
+  padding: 1rem;
+  flex: 0;
+}
+.vLayer .boxDivider .rightBox .slideShowBox {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.vLayer .boxDivider .rightBox .slideShowBox .displayArea {
+  width: 400px;
+  height: 400px;
+  justify-items: center;
+  align-content: start;
+}
+
+.imgBoxRed,
+.imgBoxYellow,
+.imgBoxBlue {
+  width: 300px;
+  height: 300px;
+  justify-self: center;
+}
+
+.vLayer .boxDivider .rightBox .slideShowBox .displayArea .imgBoxRed {
+  background-color: red;
+}
+.vLayer .boxDivider .rightBox .slideShowBox .displayArea .imgBoxYellow {
+  background-color: yellow;
+}
+.vLayer .boxDivider .rightBox .slideShowBox .displayArea .imgBoxBlue {
+  background-color: blue;
+}
+
+.iLayer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  color: whitesmoke;
   z-index: 1;
+  transition: all 1s ease-in-out;
+}
+.iLayer-hide {
+  /* box-shadow: 20px -20px 15px rgb(0, 0, 0); */
+  border-radius: 5rem;
+}
+.iLayer-show {
+  transform: translateX(500px);
+  box-shadow: none;
+}
+
+.iLayer {
+  flex: 0;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20rem;
+}
+
+.expandBox {
+  padding-bottom: 10rem;
+}
+.expandBox a {
+  display: flex;
+  justify-self: end;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--text-color);
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  transition: all 1s ease-in-out;
+}
+.expandBox a:hover {
+  border: 1px solid var(--main-color);
+  box-shadow: 0 0 1rem var(--main-color);
+  transform: scale(1.5, 1.5);
+}
+
+.expandBox a i {
+  color: var(--text-color);
+  font-size: 2rem;
+  transition: all 0.5s ease-in-out;
+}
+.expandBox a i:hover {
+  color: var(--main-color);
+  transform: scale(1.5rem, 1.5rem);
+}
+
+.iLayer .tableBox {
+  flex: 1;
+  margin-right: 2rem;
+}
+.iLayer .tableBox .table-custom {
+  --bs-table-bg: var(--second-bg-color) !important;
+  --bs-table-color: var(--text-color);
+}
+.iLayer .tableBox caption {
+  color: var(--text-color);
+}
+.iLayer .tableBox table {
+  vertical-align: middle;
+}
+.iLayer .tableBox table td {
+  padding: 0.2rem 2rem;
 }
 
 @media screen and (max-width: 3340px) {

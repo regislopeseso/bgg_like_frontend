@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Anta&display=swap");
+@import "/node_modules/bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
   --bg-color: #1f242e;
@@ -20,7 +21,7 @@
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 100%;
   overflow-x: hidden;
 }
 
