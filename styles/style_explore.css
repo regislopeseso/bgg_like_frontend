@@ -13,14 +13,15 @@ section {
 
 .explore-menu {
   position: fixed;
-  top: 35px;
+  top: 60px;
   padding-top: 10px;
   width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
   align-self: center;
+  gap: 100px;
 }
 .explore-option {
   background-color: var(--second-bg-color);
@@ -51,31 +52,47 @@ section {
   display: flex;
   justify-self: center;
   align-self: center;
-  border: 2px solid var(--main-color);
+  background-color: var(--second-bg-color);
   border-radius: 2rem;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   margin: 2rem;
-  padding: 1rem 2rem 0rem 2rem;
-  max-height: 300px;
+  padding: 0 2rem 1rem 2rem;
+  max-height: 750px;
   overflow: auto;
-  /* scrollbar-color: var(--main-color) transparent; */
 }
 .boardGames-table::-webkit-scrollbar {
   display: none !important;
 }
 
 .boardGames-table caption {
-  color: var(--reddish);
-  font-size: 1.8rem;
-  text-align: center;
-  padding-bottom: 1rem;
-}
-.boardGames-table thead {
-  background-color: var(--bg-color);
-  box-shadow: 0 0 1rem black;
   position: sticky;
   top: 0;
-  z-index: 1;
+  color: var(--text-color);
+  font-size: 1.8rem;
+  text-align: center;
+  padding: 2rem 2rem 2rem 2rem;
+  background-color: var(--second-bg-color);
 }
+.boardGames-table thead {
+  position: sticky;
+  top: 80px;
+  box-shadow: 0 0 1rem black;
+  z-index: 1;
+  border-radius: 2rem;
+}
+.boardGames-table thead tr:first-child th {
+  background-color: var(--second-bg-color);
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+  padding-left: 1rem;
+}
+.boardGames-table thead tr:last-child th {
+  background-color: var(--second-bg-color);
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  padding-right: 2rem;
+}
+
 .boardGames-table th {
   text-align: center;
   word-wrap: break-word;
@@ -150,6 +167,23 @@ section {
 #bgFinderToggler .BGfinder select {
   display: flex;
 }
+
+#searchBGToggler {
+  display: none;
+}
+
+.BGfinder {
+  background-color: var(--second-bg-color);
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 2rem;
+  padding: 2rem;
+  margin: 2rem;
+}
+
+#detailsTableToggler {
+  display: none;
+}
+
 .bg-datails-box {
   width: 50%;
   border: 1px solid red;
@@ -263,11 +297,10 @@ section {
   transition: all 1s ease-in-out;
 }
 .iLayer-hide {
-  /* box-shadow: 20px -20px 15px rgb(0, 0, 0); */
   border-radius: 5rem;
 }
 .iLayer-show {
-  transform: translateX(500px);
+  transform: translateX(700px);
   box-shadow: none;
 }
 
@@ -275,7 +308,7 @@ section {
   flex: 0;
   display: flex;
   flex-direction: column;
-  padding-left: 20rem;
+  padding-left: 10rem;
 }
 
 .expandBox {
@@ -290,27 +323,28 @@ section {
   border-radius: 50%;
   width: 3rem;
   height: 3rem;
-  transition: all 1s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .expandBox a:hover {
-  border: 1px solid var(--main-color);
+  border: none;
   box-shadow: 0 0 1rem var(--main-color);
-  transform: scale(1.5, 1.5);
+}
+.expandBox a i:hover {
+  color: var(--main-color);
 }
 
 .expandBox a i {
   color: var(--text-color);
   font-size: 2rem;
-  transition: all 0.5s ease-in-out;
-}
-.expandBox a i:hover {
-  color: var(--main-color);
-  transform: scale(1.5rem, 1.5rem);
+  transition: all 0.2s ease-in-out;
 }
 
 .iLayer .tableBox {
   flex: 1;
-  margin-right: 2rem;
+  background-color: var(--second-bg-color);
+  border-radius: 5rem;
+  padding: 2rem;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
 }
 .iLayer .tableBox .table-custom {
   --bs-table-bg: var(--second-bg-color) !important;

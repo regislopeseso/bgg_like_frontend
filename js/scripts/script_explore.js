@@ -10,7 +10,8 @@ $(document).ready(function () {
           return;
         }
 
-        $(".table-allBoardGames tbody").empty(); // Limpa a tabela
+        // Limpa a tabela
+        $(".table-allBoardGames tbody").empty();
 
         // trStart and trEnd exist only to create
         // an empty line in the beggining and end
@@ -52,17 +53,17 @@ $(document).ready(function () {
         `;
         $(".table-allBoardGames tbody").append(trEnd);
 
-        console.log(response.message); // Exibe a mensagem da API no console
+        // Exibe a mensagem da API no console
+        console.log(response.message);
       }
     );
   }
 
-  function loadMostPlayedGames(data = {}) {
+  function loadBgRankings(data = {}) {
     $.get(
       "https://localhost:7081/explore/boardgamesrankings",
       data,
       function (response) {
-        // Verifica se existe a chave "content" na resposta
         if (
           !response.content ||
           !Array.isArray(response.content.mostPlayedBoardGames)
@@ -71,238 +72,146 @@ $(document).ready(function () {
           return;
         }
 
-        $(".mostPlayedGames").empty(); // Limpa a lista
-
         // Acessa a lista de mostPlayedBoardGames
         const mostPlayedBG = response.content.mostPlayedBoardGames;
+        // Chama a função que constrói a tabela desejada
+        buildMostPlayedBgTable(mostPlayedBG);
 
-        // Verifica se a lista existe e tem elementos
-        if (mostPlayedBG.length > 0) {
-          $.each(mostPlayedBG, function (index, bgname) {
-            let firstLetter = bgname[0];
-            let allOtherLetters = bgname.slice(1, bgname.length);
-            let li = `
-            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
-          `;
-            $(".mostPlayedGames").append(li);
-          });
-        } else {
-          $(".mostPlayedGames").append(`
-            <li class="No data available"></li>          
-        `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
-  }
-
-  function loadBestRatedGames(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/boardgamesrankings",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.bestRatedBoardGames)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $(".bestRatedGames").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
         const bestRatedBG = response.content.bestRatedBoardGames;
+        buildBestRatedBbTable(bestRatedBG);
 
-        // Verifica se a lista existe e tem elementos
-        if (bestRatedBG.length > 0) {
-          $.each(bestRatedBG, function (index, bgname) {
-            let firstLetter = bgname[0];
-            let allOtherLetters = bgname.slice(1, bgname.length);
-            let li = `
-            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
-          `;
-            $(".bestRatedGames").append(li);
-          });
-        } else {
-          $(".bestRatedGames").append(`
-            <li class="No data available"></li>          
-        `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
-  }
-
-  function loadShortestGames(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/boardgamesrankings",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.shortestBoardGames)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $(".shortestGames").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
         const shortestBG = response.content.shortestBoardGames;
+        buildShortestBbTable(shortestBG);
 
-        // Verifica se a lista existe e tem elementos
-        if (shortestBG.length > 0) {
-          $.each(shortestBG, function (index, bgname) {
-            let firstLetter = bgname[0];
-            let allOtherLetters = bgname.slice(1, bgname.length);
-            let li = `
-            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
-          `;
-            $(".shortestGames").append(li);
-          });
-        } else {
-          $(".shortestGames").append(`
-            <li class="No data available"></li>          
-        `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
-  }
-
-  function loadLongestGames(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/boardgamesrankings",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.longestBoardGames)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $(".longestGames").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
         const longestBG = response.content.longestBoardGames;
+        buildLongestBgTable(longestBG);
 
-        // Verifica se a lista existe e tem elementos
-        if (longestBG.length > 0) {
-          $.each(longestBG, function (index, bgname) {
-            let firstLetter = bgname[0];
-            let allOtherLetters = bgname.slice(1, bgname.length);
-            let li = `
-            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
-          `;
-            $(".longestGames").append(li);
-          });
-        } else {
-          $(".longestGames").append(`
-            <li class="No data available"></li>          
-        `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
-  }
-
-  function loadAdultsFavoriteGames(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/boardgamesrankings",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.adultsFavoriteBoardGames)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $(".adultsFavoriteGames").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
         const adultsFavoriteBG = response.content.adultsFavoriteBoardGames;
+        buildAdultsFavoriteBgTable(adultsFavoriteBG);
 
-        // Verifica se a lista existe e tem elementos
-        if (adultsFavoriteBG.length > 0) {
-          $.each(adultsFavoriteBG, function (index, bgname) {
-            let firstLetter = bgname[0];
-            let allOtherLetters = bgname.slice(1, bgname.length);
-            let li = `
-            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
-          `;
-            $(".adultsFavoriteGames").append(li);
-          });
-        } else {
-          $(".adultsFavoriteGames").append(`
-            <li class="No data available"></li>          
-        `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
-  }
-
-  function loadTeensFavoriteGames(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/boardgamesrankings",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.teensFavoriteBoardGames)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $(".teensFavoriteGames").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
         const teensFavoriteBG = response.content.teensFavoriteBoardGames;
+        buildTeensFavoriteBgTable(teensFavoriteBG);
 
-        // Verifica se a lista existe e tem elementos
-        if (teensFavoriteBG.length > 0) {
-          $.each(teensFavoriteBG, function (index, bgname) {
-            let firstLetter = bgname[0];
-            let allOtherLetters = bgname.slice(1, bgname.length);
-            let li = `
-            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
-          `;
-            $(".teensFavoriteGames").append(li);
-          });
-        } else {
-          $(".teensFavoriteGames").append(`
-            <li class="No data available"></li>          
-        `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
+        console.log(response.message);
       }
     );
   }
+  function buildMostPlayedBgTable(mostPlayedBG) {
+    $(".mostPlayedGames").empty();
 
-  function loadMostPlayedCategories(data = {}) {
+    // Verifica se a lista existe e tem elementos
+    if (mostPlayedBG.length > 0) {
+      $.each(mostPlayedBG, function (index, bgname) {
+        let firstLetter = bgname[0];
+        let allOtherLetters = bgname.slice(1, bgname.length);
+        let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
+          `;
+        $(".mostPlayedGames").append(li);
+      });
+    } else {
+      $(".mostPlayedGames").append(`
+            <li class="No data available"></li>          
+        `);
+    }
+  }
+  function buildBestRatedBbTable(bestRatedBG) {
+    $(".bestRatedGames").empty();
+
+    if (bestRatedBG.length > 0) {
+      $.each(bestRatedBG, function (index, bgname) {
+        let firstLetter = bgname[0];
+        let allOtherLetters = bgname.slice(1, bgname.length);
+        let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
+          `;
+        $(".bestRatedGames").append(li);
+      });
+    } else {
+      $(".bestRatedGames").append(`
+            <li class="No data available"></li>          
+        `);
+    }
+  }
+  function buildShortestBbTable(shortestBG) {
+    $(".shortestGames").empty();
+
+    if (shortestBG.length > 0) {
+      $.each(shortestBG, function (index, bgname) {
+        let firstLetter = bgname[0];
+        let allOtherLetters = bgname.slice(1, bgname.length);
+        let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
+          `;
+        $(".shortestGames").append(li);
+      });
+    } else {
+      $(".shortestGames").append(`
+            <li class="No data available"></li>          
+        `);
+    }
+  }
+  function buildLongestBgTable(longestBG) {
+    $(".longestGames").empty();
+
+    if (longestBG.length > 0) {
+      $.each(longestBG, function (index, bgname) {
+        let firstLetter = bgname[0];
+        let allOtherLetters = bgname.slice(1, bgname.length);
+        let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
+          `;
+        $(".longestGames").append(li);
+      });
+    } else {
+      $(".longestGames").append(`
+            <li class="No data available"></li>          
+        `);
+    }
+  }
+  function buildAdultsFavoriteBgTable(adultsFavoriteBG) {
+    $(".adultsFavoriteGames").empty();
+
+    if (adultsFavoriteBG.length > 0) {
+      $.each(adultsFavoriteBG, function (index, bgname) {
+        let firstLetter = bgname[0];
+        let allOtherLetters = bgname.slice(1, bgname.length);
+        let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
+          `;
+        $(".adultsFavoriteGames").append(li);
+      });
+    } else {
+      $(".adultsFavoriteGames").append(`
+            <li class="No data available"></li>          
+        `);
+    }
+  }
+  function buildTeensFavoriteBgTable(teensFavoriteBG) {
+    $(".teensFavoriteGames").empty();
+    if (teensFavoriteBG.length > 0) {
+      $.each(teensFavoriteBG, function (index, bgname) {
+        let firstLetter = bgname[0];
+        let allOtherLetters = bgname.slice(1, bgname.length);
+        let li = `
+            <li><span>${firstLetter}</span>${allOtherLetters}</li>            
+          `;
+        $(".teensFavoriteGames").append(li);
+      });
+    } else {
+      $(".teensFavoriteGames").append(`
+            <li class="No data available"></li>          
+        `);
+    }
+  }
+
+  function loadCategoriesRankings(data = {}) {
+    $("body").load("load");
+
     $.get(
       "https://localhost:7081/explore/categoriesranking",
       data,
       function (response) {
-        // Verifica se existe a chave "content" na resposta
         if (
           !response.content ||
           !Array.isArray(response.content.mostPlayedCategories)
@@ -311,59 +220,57 @@ $(document).ready(function () {
           return;
         }
 
-        $("#mostPlayedCategories tbody").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
         const mostPlayedCats = response.content.mostPlayedCategories;
+        buildMostPlayedCatsTable(mostPlayedCats);
 
-        if (mostPlayedCats.length > 0) {
-          $.each(mostPlayedCats, function (index, item) {
-            let tr = `
+        const mostPopularCats = response.content.mostPopularCategories;
+        buildMostPopularCatsTable(mostPopularCats);
+
+        const bestRatedCats = response.content.bestRatedCategories;
+        buildBestRatedCatsTable(bestRatedCats);
+
+        const longestCats = response.content.longestCategories;
+        buildLogestCatsTable(longestCats);
+
+        const shortestCats = response.content.shortestCategories;
+        buildShortestCatsTable(shortestCats);
+
+        console.log(response.message);
+
+        $("body").load("unload");
+      }
+    );
+  }
+  function buildMostPlayedCatsTable(mostPlayedCats) {
+    $("#mostPlayedCategories tbody").empty();
+
+    if (mostPlayedCats.length > 0) {
+      $.each(mostPlayedCats, function (index, item) {
+        let tr = `
               <tr>              
                 <td>${index + 1}</td> 
                 <td class="text-start">${item.categoryName}</td>            
                 <td class="text-center">${item.sessionsCount}</td>           
               </tr>
             `;
-            $("#mostPlayedCategories tbody").append(tr);
-          });
-        } else {
-          $("#mostPlayedCategories tbody").append(`
+        $("#mostPlayedCategories tbody").append(tr);
+      });
+    } else {
+      $("#mostPlayedCategories tbody").append(`
             <tr>
                 <td class="No data available"></td>            
                 <td class="No data available"></td>           
                 <td class="No data available"></td>           
             </tr>                  
         `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
+    }
   }
+  function buildMostPopularCatsTable(mostPopularCats) {
+    $("#mostPopularCategories tbody").empty();
 
-  function loadMostPopularCategories(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/categoriesranking",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.mostPopularCategories)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $("#mostPopularCategories tbody").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
-        const mostPopularCats = response.content.mostPopularCategories;
-
-        if (mostPopularCats.length > 0) {
-          $.each(mostPopularCats, function (index, item) {
-            let tr = `
+    if (mostPopularCats.length > 0) {
+      $.each(mostPopularCats, function (index, item) {
+        let tr = `
               <tr>              
                 <td>${index + 1}</td> 
                 <td class="text-start">${item.categoryName}</td>            
@@ -371,10 +278,10 @@ $(document).ready(function () {
                 <td class="text-center">${item.boardGamesCount}</td>         
               </tr>
             `;
-            $("#mostPopularCategories tbody").append(tr);
-          });
-        } else {
-          $("#mostPopularCategories tbody").append(`
+        $("#mostPopularCategories tbody").append(tr);
+      });
+    } else {
+      $("#mostPopularCategories tbody").append(`
             <tr>
                 <td class="No data available"></td>            
                 <td class="No data available"></td>            
@@ -382,35 +289,13 @@ $(document).ready(function () {
                 <td class="No data available"></td>           
             </tr>                  
         `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
+    }
   }
-
-  function loadBestRatedCategories(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/categoriesranking",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.bestRatedCategories)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $("#bestRatedCategories tbody").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
-        const bestRatedCats = response.content.bestRatedCategories;
-
-        if (bestRatedCats.length > 0) {
-          $.each(bestRatedCats, function (index, item) {
-            let tr = `
+  function buildBestRatedCatsTable(bestRatedCats) {
+    $("#bestRatedCategories tbody").empty();
+    if (bestRatedCats.length > 0) {
+      $.each(bestRatedCats, function (index, item) {
+        let tr = `
               <tr>              
                 <td>${index + 1}</td> 
                 <td class="text-start">${item.categoryName}</td>            
@@ -418,10 +303,10 @@ $(document).ready(function () {
                 <td class="text-center">${item.ratingsCount}</td>         
               </tr>
             `;
-            $("#bestRatedCategories tbody").append(tr);
-          });
-        } else {
-          $("#bestRatedCategories tbody").append(`
+        $("#bestRatedCategories tbody").append(tr);
+      });
+    } else {
+      $("#bestRatedCategories tbody").append(`
             <tr>
                 <td class="No data available"></td>            
                 <td class="No data available"></td>            
@@ -429,35 +314,14 @@ $(document).ready(function () {
                 <td class="No data available"></td>           
             </tr>                  
         `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
+    }
   }
+  function buildLogestCatsTable(longestCats) {
+    $("#longestCategories tbody").empty();
 
-  function loadLongestCategories(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/categoriesranking",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.longestCategories)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $("#longestCategories tbody").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
-        const longestCats = response.content.longestCategories;
-
-        if (longestCats.length > 0) {
-          $.each(longestCats, function (index, item) {
-            let tr = `
+    if (longestCats.length > 0) {
+      $.each(longestCats, function (index, item) {
+        let tr = `
               <tr>              
                 <td>${index + 1}</td> 
                 <td class="text-start">${item.categoryName}</td>            
@@ -465,10 +329,10 @@ $(document).ready(function () {
                 <td class="text-center">${item.sessionsCount}</td>         
               </tr>
             `;
-            $("#longestCategories tbody").append(tr);
-          });
-        } else {
-          $("#longestCategories tbody").append(`
+        $("#longestCategories tbody").append(tr);
+      });
+    } else {
+      $("#longestCategories tbody").append(`
             <tr>
                 <td class="No data available"></td>            
                 <td class="No data available"></td>            
@@ -476,35 +340,13 @@ $(document).ready(function () {
                 <td class="No data available"></td>           
             </tr>                  
         `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
+    }
   }
-
-  function loadShortestCategories(data = {}) {
-    $.get(
-      "https://localhost:7081/explore/categoriesranking",
-      data,
-      function (response) {
-        // Verifica se existe a chave "content" na resposta
-        if (
-          !response.content ||
-          !Array.isArray(response.content.shortestCategories)
-        ) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
-        $("#shortestCategories tbody").empty(); // Limpa a lista
-
-        // Acessa a lista de mostPlayedBoardGames
-        const shortestCats = response.content.shortestCategories;
-
-        if (shortestCats.length > 0) {
-          $.each(shortestCats, function (index, item) {
-            let tr = `
+  function buildShortestCatsTable(shortestCats) {
+    $("#shortestCategories tbody").empty();
+    if (shortestCats.length > 0) {
+      $.each(shortestCats, function (index, item) {
+        let tr = `
               <tr>              
                 <td>${index + 1}</td> 
                 <td class="text-start">${item.categoryName}</td>            
@@ -512,10 +354,10 @@ $(document).ready(function () {
                 <td class="text-center">${item.sessionsCount}</td>         
               </tr>
             `;
-            $("#shortestCategories tbody").append(tr);
-          });
-        } else {
-          $("#shortestCategories tbody").append(`
+        $("#shortestCategories tbody").append(tr);
+      });
+    } else {
+      $("#shortestCategories tbody").append(`
             <tr>
                 <td class="No data available"></td>            
                 <td class="No data available"></td>            
@@ -523,72 +365,8 @@ $(document).ready(function () {
                 <td class="No data available"></td>           
             </tr>                  
         `);
-        }
-
-        console.log(response.message); // Exibe a mensagem da API no console
-      }
-    );
+    }
   }
-
-  function loadEvents() {
-    $("#displayAllBoardGames").on("click", function (e) {
-      e.preventDefault();
-
-      $("#allGamesTable").show();
-      $("#bgFinderToggler").hide();
-      $("#bgRankingListsToggler").hide();
-      $("#categoriesRankingsToggler").hide();
-    });
-
-    $("#searchBoardGames").on("click", function (e) {
-      e.preventDefault();
-
-      $("#allGamesTable").hide();
-      //$("#bgFinderToggler").show();
-      $("#bgRankingListsToggler").hide();
-      $("#categoriesRankingsToggler").hide();
-    });
-
-    $("#displayBoardGamesRankings").on("click", function (e) {
-      e.preventDefault();
-
-      $("#allGamesTable").hide();
-      $("#bgFinderToggler").hide();
-      $("#bgRankingListsToggler").show();
-      $("#categoriesRankingsToggler").hide();
-    });
-
-    $("#displayCategoriesRankings").on("click", function (e) {
-      e.preventDefault();
-
-      $("#allGamesTable").hide();
-      $("#bgFinderToggler").hide();
-      $("#bgRankingListsToggler").hide();
-      $("#categoriesRankingsToggler").show();
-    });
-  }
-
-  function loadRankings() {
-    loadAllGames();
-    loadMostPlayedGames();
-    loadBestRatedGames();
-    loadShortestGames();
-    loadLongestGames();
-    loadAdultsFavoriteGames();
-    loadTeensFavoriteGames();
-    loadMostPlayedCategories();
-    loadMostPopularCategories();
-    loadBestRatedCategories();
-    loadLongestCategories();
-    loadShortestCategories();
-  }
-
-  function Build() {
-    loadRankings();
-    loadEvents();
-  }
-
-  Build();
 
   function filterResults(dataToFilter, paramsToFilter) {
     const searchTerm = paramsToFilter.term || "";
@@ -598,65 +376,6 @@ $(document).ready(function () {
       return regex.test(item.boardGameName);
     });
   }
-
-  $("#bgSelection").select2({
-    ajax: {
-      url: "https://localhost:7081/explore/findboardgame",
-      data: (params) => {
-        return {
-          q: params.term,
-        };
-      },
-      processResults: (data, params) => {
-        // Filtro manual no frontend
-        const filtered = filterResults(data.content, params);
-
-        // Adaptar para o formato que o Select2 entende
-        return {
-          results: filtered.map((item) => ({
-            id: item.boardGameId,
-            text: item.boardGameName,
-          })),
-        };
-      },
-    },
-    templateResult: (data) => data.text,
-    templateSelection: (data) => data.text,
-    placeholder: "Board Games List",
-    minimumInputLength: 1,
-    allowClear: true,
-    theme: "classic",
-    width: "20rem",
-  });
-
-  let selectedBoardGameId = null;
-
-  $("#bgSelection").on("select2:select", function (e) {
-    selectedBoardGameId = e.params.data.id;
-    $("#submitBG").prop("disabled", false);
-  });
-
-  $("#submitBG").on("click", function () {
-    if (!selectedBoardGameId) return;
-
-    fetch(
-      `https://localhost:7081/explore/showboardgamedetails?BoardGameId=${selectedBoardGameId}`
-    )
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch board game details");
-        }
-        return res.json();
-      })
-      .then((details) => {
-        console.log("Board Game Details:", details);
-        // Do something with the data (e.g., display on the page)
-        displayBoardGameDetails(details);
-      })
-      .catch((err) => {
-        console.error("Error loading details:", err);
-      });
-  });
 
   function displayBoardGameDetails(details) {
     const container = $("#boardGameDetails");
@@ -717,19 +436,158 @@ $(document).ready(function () {
     container.html(html);
   }
 
-  $("#showLastFiveSessions").on("click", function (e) {
-    e.preventDefault();
+  function loadEvents() {
+    $("#displayAllBoardGames").on("click", function (e) {
+      e.preventDefault();
 
-    if ($(".iLayer").hasClass("iLayer-show")) {
-      $(".iLayer").removeClass("iLayer-show").addClass("iLayer-hide");
-      $(".iLayer a").css("transform", "rotate(0deg)");
-    } else {
-      $(".iLayer").removeClass("iLayer-hide").addClass("iLayer-show");
-      $(".iLayer a").css("transform", "rotate(180deg)");
-      // $(".iLayer a").css("transform", "rotate(180deg)");
-      // setTimeout(() => {
-      //   $(".iLayer a").css("transform", "translateX(-450px) rotate(180deg)");
-      // }, 1500);
-    }
-  });
+      $("#bgFinderToggler").hide();
+      $("#bgRankingListsToggler").hide();
+      $("#categoriesRankingsToggler").hide();
+
+      $("body").load("load");
+      setTimeout(() => {
+        $("body").load("unload");
+
+        $("#allGamesTable").show();
+      }, 500);
+    });
+
+    $("#searchBoardGames").on("click", function (e) {
+      e.preventDefault();
+
+      $("#allGamesTable").hide();
+      $("#detailsTableToggler").hide();
+      $("#bgRankingListsToggler").hide();
+      $("#categoriesRankingsToggler").hide();
+
+      $("body").load("load");
+      setTimeout(() => {
+        $("body").load("unload");
+
+        $("#bgFinderToggler").show();
+        $("#searchBGToggler").show();
+      }, 500);
+    });
+
+    $("#displayBoardGamesRankings").on("click", function (e) {
+      e.preventDefault();
+
+      $("#allGamesTable").hide();
+      $("#bgFinderToggler").hide();
+      $("#categoriesRankingsToggler").hide();
+
+      $("body").load("load");
+      setTimeout(() => {
+        $("body").load("unload");
+
+        $("#bgRankingListsToggler").show();
+      }, 500);
+    });
+
+    $("#displayCategoriesRankings").on("click", function (e) {
+      e.preventDefault();
+
+      $("#allGamesTable").hide();
+      $("#bgFinderToggler").hide();
+      $("#bgRankingListsToggler").hide();
+
+      $("body").load("load");
+      setTimeout(() => {
+        $("body").load("unload");
+
+        $("#categoriesRankingsToggler").show();
+      }, 500);
+    });
+
+    $("#bgSelection").select2({
+      ajax: {
+        url: "https://localhost:7081/explore/findboardgame",
+        data: (params) => {
+          return {
+            q: params.term,
+          };
+        },
+        processResults: (data, params) => {
+          // Filtro manual no frontend
+          const filtered = filterResults(data.content, params);
+
+          // Adaptar para o formato que o Select2 entende
+          return {
+            results: filtered.map((item) => ({
+              id: item.boardGameId,
+              text: item.boardGameName,
+            })),
+          };
+        },
+      },
+      templateResult: (data) => data.text,
+      templateSelection: (data) => data.text,
+      placeholder: "Board Games List",
+      minimumInputLength: 1,
+      allowClear: true,
+      theme: "classic",
+      width: "20rem",
+    });
+
+    let selectedBoardGameId = null;
+    $("#bgSelection").on("select2:select", function (e) {
+      selectedBoardGameId = e.params.data.id;
+      $("#submitBG").prop("disabled", false);
+    });
+
+    $("#submitBG").on("click", function () {
+      if (!selectedBoardGameId) return;
+
+      fetch(
+        `https://localhost:7081/explore/showboardgamedetails?BoardGameId=${selectedBoardGameId}`
+      )
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Failed to fetch board game details");
+          }
+          return res.json();
+        })
+        .then((details) => {
+          console.log("Board Game Details:", details);
+          // Do something with the data (e.g., display on the page)
+          displayBoardGameDetails(details);
+        })
+        .catch((err) => {
+          console.error("Error loading details:", err);
+        });
+
+      $("#detailsTableToggler").show();
+
+      $("#searchBGToggler").hide();
+    });
+
+    $("#showLastFiveSessions").on("click", function (e) {
+      e.preventDefault();
+
+      if ($(".iLayer").hasClass("iLayer-show")) {
+        $(".iLayer").removeClass("iLayer-show").addClass("iLayer-hide");
+        $(".iLayer a").css("transform", "rotate(0deg)");
+      } else {
+        $(".iLayer").removeClass("iLayer-hide").addClass("iLayer-show");
+        $(".iLayer a").css("transform", "rotate(180deg)");
+        // $(".iLayer a").css("transform", "rotate(180deg)");
+        // setTimeout(() => {
+        //   $(".iLayer a").css("transform", "translateX(-450px) rotate(180deg)");
+        // }, 1500);
+      }
+    });
+  }
+
+  function loadRankings() {
+    loadAllGames();
+    loadBgRankings();
+    loadCategoriesRankings();
+  }
+
+  function Build() {
+    loadRankings();
+    loadEvents();
+  }
+
+  Build();
 });

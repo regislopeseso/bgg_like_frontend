@@ -9,7 +9,7 @@
   flex-wrap: wrap;
   padding: 1rem 5px;
   background-color: var(--second-bg-color);
-  z-index: 99;
+  z-index: 90;
 }
 .footer-text p {
   font-size: 1.5 rem;
