@@ -21,7 +21,6 @@ section {
   flex-wrap: wrap;
   justify-content: center;
   align-self: center;
-  gap: 100px;
 }
 .explore-option {
   background-color: var(--second-bg-color);
@@ -29,6 +28,10 @@ section {
   padding: 0.5rem 1rem;
   margin: 0.5rem;
   box-shadow: 0 0 1rem black;
+}
+
+.explore-menu .hiddenOption {
+  color: var(--text-color);
 }
 
 .explore-option a {
@@ -45,10 +48,12 @@ section {
 }
 
 .explore-tables-area {
+  align-self: center;
+  position: fixed;
   padding-top: 5rem;
 }
 
-.boardGames-table {
+.explore-tables-area .tables-BoardGames .boardGames-table {
   display: flex;
   justify-self: center;
   align-self: center;
@@ -60,8 +65,32 @@ section {
   max-height: 750px;
   overflow: auto;
 }
-.boardGames-table::-webkit-scrollbar {
+.explore-tables-area .tables-BoardGames .boardGames-table::-webkit-scrollbar {
   display: none !important;
+}
+.explore-tables-area
+  .tables-BoardGames
+  .boardGames-table
+  .table-responsive::-webkit-scrollbar {
+  display: none !important;
+}
+
+.explore-tables-area
+  .tables-BoardGames
+  .boardGames-table
+  .table-responsive
+  table {
+  --bs-table-color: var(--text-color);
+  --bs-table-bg: var(--second-bg-color);
+}
+
+.explore-tables-area
+  .tables-BoardGames
+  .boardGames-table
+  .table-responsive
+  table
+  thead {
+  margin-bottom: rem;
 }
 
 .boardGames-table caption {
@@ -70,33 +99,32 @@ section {
   color: var(--text-color);
   font-size: 1.8rem;
   text-align: center;
-  padding: 2rem 2rem 2rem 2rem;
+  padding: 2rem 2rem 0 2rem;
   background-color: var(--second-bg-color);
 }
 .boardGames-table thead {
   position: sticky;
-  top: 80px;
-  box-shadow: 0 0 1rem black;
-  z-index: 1;
-  border-radius: 2rem;
+  top: 75px;
+  background-color: rgb(255, 0, 0) !important;
+  z-index: 10;
 }
+
+.boardGames-table thead tr th {
+  background-color: rgba(1, 1, 1, 0) !important;
+}
+
 .boardGames-table thead tr:first-child th {
   background-color: var(--second-bg-color);
-  border-top-left-radius: 2rem;
-  border-bottom-left-radius: 2rem;
   padding-left: 1rem;
 }
 .boardGames-table thead tr:last-child th {
   background-color: var(--second-bg-color);
-  border-top-right-radius: 2rem;
-  border-bottom-right-radius: 2rem;
   padding-right: 2rem;
 }
 
 .boardGames-table th {
   text-align: center;
   word-wrap: break-word;
-  padding: 1rem;
 }
 
 .boardGames-table tbody tr td {
@@ -173,11 +201,30 @@ section {
 }
 
 .BGfinder {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   background-color: var(--second-bg-color);
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   border-radius: 2rem;
-  padding: 2rem;
+  padding: 1rem 2rem 2rem 2rem;
   margin: 2rem;
+  justify-content: center;
+}
+.BGfinder .bgList-lbl {
+  flex: 1;
+  width: 100%;
+  text-align: start;
+  padding: 1rem 0;
+}
+.BGfinder .comboBox-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center !important;
 }
 
 #detailsTableToggler {
@@ -360,20 +407,76 @@ section {
   padding: 0.2rem 2rem;
 }
 
-@media screen and (max-width: 3340px) {
-}
-
-@media screen and (max-width: 610px) {
-  .explore-tables-area {
-    padding-top: 10rem;
+@media screen and (max-width: 2560px) {
+  .explore-menu {
+    gap: 100px;
   }
 }
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 1440px) {
+  .explore-menu {
+    gap: 0;
+    justify-content: space-evenly;
+  }
+}
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 70%;
+  }
+  .explore-menu {
+    gap: 0;
+    justify-content: space-evenly;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  explore-tables-area {
+    padding-top: 10rem;
+  }
+
+  .explore-menu {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    justify-items: stretch;
+    justify-content: space-evenly;
+    text-align: center;
+  }
+  .explore-menu .explore-option {
+    align-content: center;
+  }
+  .explore-menu .allBG {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 1;
+    grid-row-end: 1;
+  }
+  .explore-menu .searchBG {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+}
+@media screen and (max-width: 425px) {
   section {
     min-height: 100vh;
     padding: 10rem 10%;
     z-index: 100;
   }
+
+  .explore-menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: center;
+    align-content: center;
+    justify-content: center;
+  }
+  .explore-menu .explore-option {
+    width: 12rem;
+    height: 12rem;
+    padding: 1rem;
+  }
+
   .bgRankingsLists {
     display: flex;
     flex-direction: column;
@@ -381,26 +484,93 @@ section {
     min-width: 200px;
     min-height: 80px;
   }
-  .explore-menu {
-    top: 80px;
-    padding-top: 10px;
-  }
-}
-@media screen and (max-width: 415px) {
-  .explore-tables-area {
-    padding-top: 15rem;
-  }
 }
 
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 375px) {
   section {
     min-height: 100vh;
     padding: 10rem 10%;
     z-index: 100;
   }
+  .BGfinder {
+    transform: scale(0.8, 0.8);
+  }
+}
+
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 50%;
+  }
+  section {
+    padding: 0;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    width: 100%;
+  }
+
+  .footer {
+    width: 100%;
+  }
+
+  .viewBlock {
+    margin-top: 5rem;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
   .explore-menu {
-    top: 100px;
-    padding-top: 10px;
+    position: static;
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    text-align: center;
+    gap: 2rem;
+  }
+  .explore-menu .hiddenOption {
+    display: none;
+  }
+  .explore-menu .explore-option {
+    padding: 0 2rem;
+    margin: 0.5rem;
+    justify-items: center;
+    height: 10rem;
+    align-self: center;
+  }
+
+  .explore-tables-area {
+    position: static;
+    align-self: center;
+    align-items: center;
+    width: 90%;
+    flex: 1;
+  }
+
+  .explore-tables-area .boardGames-table {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+  }
+
+  .explore-tables-area .boardGames-table .primary-table-container {
+    width: 100%;
+  }
+
+  .primary-table-container {
+  }
+
+  .explore-tables-area table .table-allBoardGames {
+  }
+  .explore-tables-area table th,
+  .explore-tables-area table td {
+    font-size: 1rem !important;
   }
 }
 /* 

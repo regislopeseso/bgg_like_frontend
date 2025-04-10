@@ -13,29 +13,29 @@
     />    
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">  
     <link rel="stylesheet" href="node_modules/select2/dist/css/select2.min.css">
-
-    <link rel="stylesheet" href="styles/style_general.css" />
-    
+    <link rel="stylesheet" href="styles/style_general.css" />   
     <link rel="stylesheet" href="styles/style_header.css" />
     <link rel="stylesheet" href="styles/loaders.css">
     <link rel="stylesheet" href="styles/style_explore.css" />
     <link rel="stylesheet" href="styles/style_footer.css" />
+    
   </head>
   <body>
     <section class="explore" id="explore">
       <div class="viewBlock">
         <div class="explore-menu">
-          <div class="explore-option">        
-            <a href="" id="displayAllBoardGames"><span>All</span> Board Games</a>
+          <div class="explore-option allBG">        
+            <a id="displayAllBoardGames"><span>All</span> <span class="hiddenOption">Board Games</span></a>
           </div>
-          <div class="explore-option">        
-            <a href="" id="searchBoardGames"><span>Find</span> a Board Game</a>
-          </div>
-          <div class="explore-option">  
-            <a href="" id="displayBoardGamesRankings">Board Games <span>Ranking</a>
+          <div class="explore-option searchBG">        
+            <a href="" id="searchBoardGames"><span>Find</span> <span class="hiddenOption">a Board Game</span></a>
+            <a class="hiddenOption d-none" id="searchBoardGames"><span>Find</span></a>
           </div>
           <div class="explore-option">  
-            <a href="index.html" id="displayCategoriesRankings">Categories <span>Ranking</span></a>       
+            <a href="" id="displayBoardGamesRankings">B<span class="hiddenOption">oard</span><span class="hiddenOption"> </span>G<span class="hiddenOption">ames</span> <span>Ranking</a>            
+          </div>
+          <div class="explore-option">  
+            <a href="index.html" id="displayCategoriesRankings">Cat<span class="hiddenOption">egories</span> <span>Ranking</span></a>       
           </div>
           
         </div>
@@ -43,8 +43,8 @@
         <div class="explore-tables-area">          
           <div class="tables-BoardGames" id="tbBoardGames" >               
             <div class="boardGames-table" id="allGamesTable">
-              <div class="primary-table-container">
-                <table class="table-allBoardGames caption-top">
+              <div class="table-responsive primary-table-container ">
+                <table class="table table-allBoardGames caption-top">
                   <caption><span>All</span> Board Games</caption>
                   <thead>
                     <tr>  
@@ -66,15 +66,22 @@
               <div id="searchBGToggler">
                 <div class="form-group BGfinder" >
                   <label class="bgList-lbl" for="bgSelection">Select a Board Game</label>
-                  <select
-                    name="selectecBG"                
-                    class="form-control form-select bg-select "
-                    id="bgSelection"                   
-                  >
-                  <option value=""></option>
-                  </select>
-                  <button id="submitBG" class="btn btn-primary mt-4" disabled>Show Details</button>
-                </div>              
+                  <div class="comboBox-wrapper">
+                    <div class="comboBox">
+                      <select
+                      name="selectecBG"                
+                      class="form-control form-select bg-select "
+                      id="bgSelection"                   
+                      >
+                        <option value=""></optio>
+                      </select>
+                    </div>
+                    <div class="detailsButton">
+                      <button class="btn btn-outline-info" type="submit" id="submitBG" disabled>Show Details</button>
+                    </div>
+                  </div>              
+
+                  </div>
               </div>
               
               <div id="detailsTableToggler">

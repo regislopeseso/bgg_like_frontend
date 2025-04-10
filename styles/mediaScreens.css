@@ -18,7 +18,7 @@
 }
 
 @media screen and (max-width: 991px) {
-  section {
+  /* section {
     padding: 10rem 3% 2rem;
   }
   .header {
@@ -32,7 +32,7 @@
   }
   .portfolio {
     padding: 7rem;
-  }
+  } */
 }
 
 @media screen and (max-width: 768px) {
@@ -86,6 +86,13 @@
   }
 }
 @media screen and (max-width: 350px) {
+  .header {
+    position: fixed;
+    left: 0;
+    width: 10%;
+    flex-direction: column;
+    align-self: start;
+  }
   .home-img img {
     width: 90vw;
   }

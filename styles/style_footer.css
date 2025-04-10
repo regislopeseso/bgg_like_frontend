@@ -7,7 +7,6 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 1rem 5px;
   background-color: var(--second-bg-color);
   z-index: 90;
 }
@@ -36,9 +35,9 @@
 @media screen and (max-width: 1200px) {
 }
 @media screen and (max-width: 991px) {
-  .footer {
+  /* .footer {
     padding: 1rem 3%;
-  }
+  } */
 }
 @media screen and (max-width: 768px) {
 }

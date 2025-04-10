@@ -1,6 +1,5 @@
 section {
   min-height: 100vh;
-  padding: 5rem 10%;
   z-index: 100;
 }
 
@@ -10,46 +9,80 @@ section {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 0.5rem 9%;
+  /* padding: 0.5rem 9%; */
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 90;
 }
-.logo {
+.header .logo {
   font-size: 2rem;
   color: var(--text-color);
   font-weight: 600;
 }
-.navbar a {
+.header .navbar a {
   font-size: 1rem;
   color: var(--text-color);
   margin-left: 4rem;
   transition: 0.3s;
 }
-.navbar a:hover {
+.header .navbar a:hover {
   color: var(--main-color);
+}
+.header .navbar .navHamburger {
+  display: none;
 }
 
 @media screen and (max-width: 1200px) {
 }
 @media screen and (max-width: 991px) {
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .header .logo {
+    font-size: 30px;
+  }
+  .header .navbar .navOptions {
+    display: none;
+  }
+  .header .navbar .navHamburger {
+    display: flex;
+  }
+  .header .navbar-toggler {
+    color: var(--bg-color);
+    font-size: 2rem;
+    border: none;
+    background-color: var(--second-bg-color);
+  }
+  .header .container-fluid {
+    justify-content: end;
+    text-align: end;
+  }
+
+  .header .navbar-toggler:hover {
+    color: var(--text-color);
+    background-color: var(--second-bg-color);
+    box-shadow: 0 0 1rem var(--text-color) !important;
+  }
+
+  .header .navbar-toggler:focus {
+    box-shadow: none;
+  }
 }
 
 @media screen and (max-width: 768px) {
 }
 @media screen and (max-width: 576px) {
-  .navbar {
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .header {
-    flex-direction: column;
-    gap: 2rem;
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 60%;
   }
 }
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 320px) {
+  html {
+    font-size: 50%;
+  }
 }
