@@ -1,64 +1,68 @@
-section {
-  min-height: 100vh;
-  padding: 5rem 10%;
-  justify-self: center;
-  z-index: 100;
-}
-
 .viewBlock {
   display: flex;
   flex-direction: column;
-  height: 75vh;
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
 }
+.viewBlock::-webkit-scrollbar {
+  display: none !important;
+}
+/*! END */
 
+/*
+* MENU SECTION:
+* ALL BOARD GAMES, FIND A BOARD GAME,
+* BOARD GAMES RANKING, CATEGORIES RANKING
+*/
 .explore-menu {
-  position: fixed;
-  top: 60px;
-  padding-top: 10px;
-  width: 100%;
+  flex: 0;
+  position: static;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-self: center;
+  margin-top: 5rem;
+  width: 100%;
 }
 .explore-option {
   background-color: var(--second-bg-color);
   border: 1px solid var(--bg-color);
   padding: 0.5rem 1rem;
   margin: 0.5rem;
-  box-shadow: 0 0 1rem black;
+  border-radius: 1rem;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
 }
-
 .explore-menu .hiddenOption {
   color: var(--text-color);
 }
-
 .explore-option a {
   font-size: 1.8rem;
   color: var(--text-color);
   transition: 0.1s;
   text-decoration: none;
 }
-.explore-option a:hover {
-  color: var(--main-color);
+.explore-option:hover {
+  box-shadow: 1px 1px 15px 1px var(--text-color);
 }
-.explore-option a:hover span {
-  color: var(--text-color);
-}
+/*! END */
 
+/*
+* ALL BOARD GAMES TABLE SECTION
+*/
 .explore-tables-area {
   align-self: center;
-  position: fixed;
-  padding-top: 5rem;
+  position: static;
+  flex: 1;
+  margin-top: 5rem;
 }
-
 .explore-tables-area .tables-BoardGames .boardGames-table {
   display: flex;
   justify-self: center;
   align-self: center;
   background-color: var(--second-bg-color);
-  border-radius: 2rem;
+  border-radius: 1rem;
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   margin: 2rem;
   padding: 0 2rem 1rem 2rem;
@@ -74,7 +78,6 @@ section {
   .table-responsive::-webkit-scrollbar {
   display: none !important;
 }
-
 .explore-tables-area
   .tables-BoardGames
   .boardGames-table
@@ -83,7 +86,6 @@ section {
   --bs-table-color: var(--text-color);
   --bs-table-bg: var(--second-bg-color);
 }
-
 .explore-tables-area
   .tables-BoardGames
   .boardGames-table
@@ -92,7 +94,6 @@ section {
   thead {
   margin-bottom: rem;
 }
-
 .boardGames-table caption {
   position: sticky;
   top: 0;
@@ -105,14 +106,12 @@ section {
 .boardGames-table thead {
   position: sticky;
   top: 75px;
-  background-color: rgb(255, 0, 0) !important;
+  background-color: var(--second-bg-color) !important;
   z-index: 10;
 }
-
 .boardGames-table thead tr th {
   background-color: rgba(1, 1, 1, 0) !important;
 }
-
 .boardGames-table thead tr:first-child th {
   background-color: var(--second-bg-color);
   padding-left: 1rem;
@@ -121,12 +120,10 @@ section {
   background-color: var(--second-bg-color);
   padding-right: 2rem;
 }
-
 .boardGames-table th {
   text-align: center;
   word-wrap: break-word;
 }
-
 .boardGames-table tbody tr td {
   height: 1.5rem;
   padding: 0.5rem;
@@ -135,56 +132,12 @@ section {
   text-align: center;
   font-size: 1rem;
 }
+/*! END */
 
-#bgRankingListsToggler {
-  display: none;
-}
-.bgRankingsLists {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.bgRankingsLists li {
-  list-style: decimal;
-}
-
-.bgRankingsLists .list-box {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  border: 2px solid var(--main-color);
-  border-radius: 2rem;
-  margin: 1rem;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-}
-
-.bgRankingsLists .rankingType {
-  grid-column: 1 / span 3;
-  align-content: center;
-}
-.bgRankingsLists .middleLine {
-  grid-column: 4;
-  justify-self: center;
-  width: 1px;
-  background-color: var(--main-color);
-  height: 100%;
-}
-
-.bgRankingsLists .rankingList {
-  grid-column: 5 / span 3;
-  align-content: center;
-}
-.bgRankingsLists .rankingList ol {
-  margin-bottom: 0;
-}
-
-.category-tables caption {
-  color: var(--reddish);
-  font-size: 1rem;
-  text-align: center;
-  padding-bottom: 1rem;
-  background-color: var(--second-bg-color);
-}
-
+/*
+* SECTION 2: FIND A BOARD GAME
+? SUB-SECTION 1: COMBOBOX  
+*/
 #bgFinderToggler {
   display: none;
 }
@@ -195,18 +148,16 @@ section {
 #bgFinderToggler .BGfinder select {
   display: flex;
 }
-
 #searchBGToggler {
   display: none;
 }
-
 .BGfinder {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   background-color: var(--second-bg-color);
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 2rem;
+  border-radius: 1rem;
   padding: 1rem 2rem 2rem 2rem;
   margin: 2rem;
   justify-content: center;
@@ -227,96 +178,104 @@ section {
   justify-content: center !important;
 }
 
+/*
+* SECTION 2: FIND A BOARD GAME 
+? SUB-SECTION 2: BOARD GAME DETAILS TABLE 
+*/
 #detailsTableToggler {
   display: none;
 }
-
-.bg-datails-box {
-  width: 50%;
-  border: 1px solid red;
-}
-
 .outerBox {
   position: relative;
   display: flex;
-  width: 800px;
-  height: 600x;
-  margin-top: 10rem;
-  align-items: start;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  width: 1000px;
+  height: 650px;
+  justify-content: center;
+  align-items: center;
 }
-.vLayer {
-  display: flex;
+.outerBox .vLayer {
   position: absolute;
+  display: flex;
   flex-direction: column;
-  border-top-right-radius: 10rem;
-  height: 100%;
-  z-index: 100;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  border-radius: 1rem;
+  height: 100%;
+  background-color: var(--second-bg-color);
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  z-index: 100;
 }
-.vLayer .textBox {
-  flex: 0;
-  width: 50%;
+.outerBox .vLayer .firstBoxDivider {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 100%;
   align-self: center;
-  color: var(--reddish);
-  background-color: var(--second-bg-color);
-  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 2rem;
-}
-.vLayer .boxDivider {
-  flex: 1;
-  display: flex;
-  background-color: var(--second-bg-color);
-  border-radius: 5rem;
-  padding: 2rem;
-  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
-}
-.vLayer .boxDivider .leftBox {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.vLayer .boxDivider .leftBox h3 {
-  padding: 1rem;
-}
-.vLayer .boxDivider .leftBox .upperBox {
-  flex: 1;
-  text-align: start;
-}
-.vLayer .boxDivider .leftBox .lowerBox {
-  flex: 1;
-  text-align: start;
-}
-.vLayer .boxDivider .leftBox .lowerBox p {
-  margin-bottom: 1rem;
-  padding-top: 0 !important;
-  padding: 2rem;
+  justify-content: center;
+  border-radius: 1rem;
 }
 
-.vLayer .boxDivider .rightBox {
+.outerBox .vLayer .firstBoxDivider .leftBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.outerBox .vLayer .firstBoxDivider .leftBox .textBox {
+  flex: 0;
+  color: var(--text-color);
+  border-radius: 1rem;
+  align-self: center;
+  align-content: center;
+  padding: 1rem 1rem;
+}
+.outerBox .vLayer .firstBoxDivider .leftBox .textBox h1 {
+  color: var(--text-color);
+  text-shadow: 2px 1px 2px var(--main-color) !important;
+}
+.outerBox .vLayer .firstBoxDivider .leftBox h3 {
+  padding: 1rem;
+}
+.outerBox .vLayer .firstBoxDivider .leftBox .featuresBox {
+  flex: 0;
+  text-align: start;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+}
+
+.outerBox .vLayer .firstBoxDivider .rightBox {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.vLayer .boxDivider .rightBox h3 {
-  padding: 1rem;
+.outerBox .vLayer .firstBoxDivider .rightBox h3 {
   flex: 0;
+  padding-top: 2rem;
+  margin: 0;
 }
-.vLayer .boxDivider .rightBox .slideShowBox {
+.outerBox .vLayer .firstBoxDivider .rightBox .slideShowBox {
   flex: 1;
   display: flex;
   width: 100%;
-  align-items: center;
+  padding-top: 0.5rem;
+  align-items: flex-start;
   justify-content: center;
 }
-.vLayer .boxDivider .rightBox .slideShowBox .displayArea {
-  width: 400px;
-  height: 400px;
+.outerBox .vLayer .firstBoxDivider .rightBox .slideShowBox .displayArea {
   justify-items: center;
   align-content: start;
+  width: 100%;
 }
-
 .imgBoxRed,
 .imgBoxYellow,
 .imgBoxBlue {
@@ -324,104 +283,267 @@ section {
   height: 300px;
   justify-self: center;
 }
-
-.vLayer .boxDivider .rightBox .slideShowBox .displayArea .imgBoxRed {
+.outerBox
+  .vLayer
+  .firstBoxDivider
+  .rightBox
+  .slideShowBox
+  .displayArea
+  .imgBoxRed {
   background-color: red;
 }
-.vLayer .boxDivider .rightBox .slideShowBox .displayArea .imgBoxYellow {
+.outerBox
+  .vLayer
+  .boxDivider
+  .rightBox
+  .slideShowBox
+  .displayArea
+  .imgBoxYellow {
   background-color: yellow;
 }
-.vLayer .boxDivider .rightBox .slideShowBox .displayArea .imgBoxBlue {
+.outerBox
+  .vLayer
+  .firstBoxDivider
+  .rightBox
+  .slideShowBox
+  .displayArea
+  .imgBoxBlue {
   background-color: blue;
 }
 
-.iLayer {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  color: whitesmoke;
-  z-index: 1;
-  transition: all 1s ease-in-out;
+.outerBox .vLayer .secondBoxDivider {
+  flex: 0;
+  width: fit-content;
+  margin-top: 1rem;
 }
-.iLayer-hide {
-  border-radius: 5rem;
-}
-.iLayer-show {
-  transform: translateX(700px);
-  box-shadow: none;
+.outerBox .vLayer .secondBoxDivider h3 {
+  padding: 1rem;
 }
 
-.iLayer {
+.outerBox .vLayer .secondBoxDivider .descriptionBox {
+  text-align: start;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+}
+.outerBox .vLayer .secondBoxDivider .descriptionBox p {
+  margin-bottom: 1rem;
+  padding-top: 0 !important;
+  padding: 2rem;
+}
+
+.outerBox .thirdBoxDivider {
   flex: 0;
   display: flex;
-  flex-direction: column;
-  padding-left: 10rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  border: 5px solid rgba(0, 0, 0, 0);
+  width: fit-content;
+  padding: 1rem;
+  background-color: var(--second-bg-color);
+  z-index: 100;
+}
+.selectedState {
+  color: var(--text-color) !;
+  box-shadow: 1px 1px 15px 1px var(--text-color);
+}
+.outerBox .vLayer .thirdBoxDivider:hover {
+  color: var(--main-color);
+  border: 5px solid var(--main-color);
+  box-shadow: none;
+  cursor: pointer;
+}
+.outerBox .vLayer .unselectedState {
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  color: var(--bg-color);
+}
+.outerBox .vLayer:has(.selectedState) .selectedState:hover {
+  color: var(--reddish);
+  border: 5px solid var(--reddish);
+  box-shadow: none;
+  cursor: pointer;
 }
 
-.expandBox {
-  padding-bottom: 10rem;
-}
-.expandBox a {
+.outerBox .vLayer .expandBox {
   display: flex;
   justify-self: end;
   align-items: center;
+  align-content: flex-end;
+  justify-content: space-evenly;
+}
+
+.outerBox .vLayer .expandBox a i {
+  color: var(--bg-color);
+  font-size: 2rem;
+}
+
+/*
+* SECTION 2: FIND A BOARD GAME 
+? SUB-SECTION 3: BOARD GAME LAST 5 SESSIONS  
+*/
+.outerBox .iLayer {
+  flex: 0;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  align-content: center;
+  width: 800px;
+  color: whitesmoke;
+  transition: all 1s ease-in-out;
+  background-color: var(--second-bg-color);
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  overflow: auto;
+  z-index: 5;
+}
+.outerBox .iLayer-hide {
+  border-radius: 1rem;
+}
+.outerBox .iLayer-show {
+  transform: translateY(470px);
+  box-shadow: none;
+}
+
+.outerBox .iLayer .tableBox {
+  flex: 1;
+  padding: 50px 2rem 0rem 2rem;
+}
+.outerBox .iLayer .tableBox .table-custom {
+  --bs-table-bg: var(--second-bg-color) !important;
+  --bs-table-color: var(--text-color);
+}
+.outerBox .iLayer.tableBox table {
+  vertical-align: middle;
+}
+.outerBox .iLayer .tableBox table td {
+  text-align: center;
+}
+
+.outerBox .iLayer .collapseBox {
+  flex: 0;
+  margin-bottom: 1rem;
+}
+.outerBox .iLayer .collapseBox a {
+  display: flex;
+  justify-self: center;
+  align-items: center;
   justify-content: center;
+  text-align: center;
   border: 1px solid var(--text-color);
   border-radius: 50%;
   width: 3rem;
   height: 3rem;
   transition: all 0.2s ease-in-out;
 }
-.expandBox a:hover {
+.outerBox .iLayer .collapseBox a:hover {
   border: none;
-  box-shadow: 0 0 1rem var(--main-color);
+  box-shadow: 0 0 1rem var(--reddish);
 }
-.expandBox a i:hover {
-  color: var(--main-color);
-}
-
-.expandBox a i {
+.outerBox .iLayer .collapseBox a i {
   color: var(--text-color);
   font-size: 2rem;
   transition: all 0.2s ease-in-out;
+  width: 100%;
+}
+.outerBox .iLayer .collapseBox a i:hover {
+  color: var(--reddish);
 }
 
-.iLayer .tableBox {
-  flex: 1;
+/*! END */
+
+/*
+* SECTION 3: BOARD GAMES RANKINGS
+*/
+#bgRankingListsToggler {
+  display: none;
+}
+.bgRankingsLists {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.bgRankingsLists li {
+  list-style: decimal;
+}
+.bgRankingsLists .list-box {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-radius: 1rem;
   background-color: var(--second-bg-color);
-  border-radius: 5rem;
-  padding: 2rem;
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  margin: 1rem;
+  padding: 1rem 2rem 1rem 2rem;
 }
-.iLayer .tableBox .table-custom {
-  --bs-table-bg: var(--second-bg-color) !important;
-  --bs-table-color: var(--text-color);
+.bgRankingsLists .rankingType {
+  grid-column: 1 / span 3;
+  align-content: center;
 }
-.iLayer .tableBox caption {
-  color: var(--text-color);
+.bgRankingsLists .middleLine {
+  grid-column: 4;
+  justify-self: center;
+  width: 1px;
+  background-color: var(--main-color);
+  height: 100%;
 }
-.iLayer .tableBox table {
-  vertical-align: middle;
+.bgRankingsLists .rankingList {
+  grid-column: 5 / span 3;
+  align-content: center;
 }
-.iLayer .tableBox table td {
-  padding: 0.2rem 2rem;
+.bgRankingsLists .rankingList ol {
+  margin-bottom: 0;
 }
+/*! END */
+
+/*
+* SECTION 4: CATEGORIES RANKINGS
+*/
+
+.category-tables {
+  overflow: auto;
+}
+
+.category-tables .row {
+  height: 100% !important;
+}
+.category-tables .tableCustomizer {
+  border: 5px solid rgba(255, 0, 0, 0);
+  border-radius: 1rem;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.category-tables caption {
+  color: var(--reddish);
+  font-size: 1.2rem;
+  text-align: center;
+  padding-bottom: 1rem;
+  background-color: var(--second-bg-color);
+}
+.category-tables table {
+  margin: 0;
+}
+/*! END */
 
 @media screen and (max-width: 2560px) {
   .explore-menu {
     gap: 100px;
   }
 }
+
 @media screen and (max-width: 1440px) {
   .explore-menu {
     gap: 0;
     justify-content: space-evenly;
   }
 }
+
 @media screen and (max-width: 1024px) {
   html {
     font-size: 70%;
   }
+
   .explore-menu {
     gap: 0;
     justify-content: space-evenly;
@@ -563,19 +685,8 @@ section {
     width: 100%;
   }
 
-  .primary-table-container {
-  }
-
-  .explore-tables-area table .table-allBoardGames {
-  }
   .explore-tables-area table th,
   .explore-tables-area table td {
     font-size: 1rem !important;
   }
 }
-/* 
-@media screen and (max-width: 991px) {
-}
-@media screen and (max-width: 768px) {
-}
-*/

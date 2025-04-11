@@ -570,11 +570,43 @@ $(document).ready(function () {
       } else {
         $(".iLayer").removeClass("iLayer-hide").addClass("iLayer-show");
         $(".iLayer a").css("transform", "rotate(180deg)");
-        // $(".iLayer a").css("transform", "rotate(180deg)");
-        // setTimeout(() => {
-        //   $(".iLayer a").css("transform", "translateX(-450px) rotate(180deg)");
-        // }, 1500);
       }
+
+      setTimeout(() => {
+        if ($(".expandBox").hasClass("unselectedState")) {
+          $(".expandBox")
+            .removeClass("unselectedState")
+            .addClass("selectedState");
+        } else {
+          $(".expandBox")
+            .removeClass("selectedState")
+            .addClass("unselectedState");
+        }
+      }, 500);
+    });
+
+    $("#hideLastFiveSessions").on("click", function (e) {
+      e.preventDefault();
+
+      if ($(".iLayer").hasClass("iLayer-show")) {
+        $(".iLayer").removeClass("iLayer-show").addClass("iLayer-hide");
+        $(".iLayer a").css("transform", "rotate(0deg)");
+      } else {
+        $(".iLayer").removeClass("iLayer-hide").addClass("iLayer-show");
+        $(".iLayer a").css("transform", "rotate(180deg)");
+      }
+
+      setTimeout(() => {
+        if ($(".expandBox").hasClass("unselectedState")) {
+          $(".expandBox")
+            .removeClass("unselectedState")
+            .addClass("selectedState");
+        } else {
+          $(".expandBox")
+            .removeClass("selectedState")
+            .addClass("unselectedState");
+        }
+      }, 1000);
     });
   }
 

@@ -25,22 +25,21 @@
       <div class="viewBlock">
         <div class="explore-menu">
           <div class="explore-option allBG">        
-            <a id="displayAllBoardGames"><span>All</span> <span class="hiddenOption">Board Games</span></a>
+            <a href="" id="displayAllBoardGames"><span>All</span> <span class="hiddenOption">Board Games</span></a>
           </div>
           <div class="explore-option searchBG">        
             <a href="" id="searchBoardGames"><span>Find</span> <span class="hiddenOption">a Board Game</span></a>
-            <a class="hiddenOption d-none" id="searchBoardGames"><span>Find</span></a>
           </div>
           <div class="explore-option">  
             <a href="" id="displayBoardGamesRankings">B<span class="hiddenOption">oard</span><span class="hiddenOption"> </span>G<span class="hiddenOption">ames</span> <span>Ranking</a>            
           </div>
           <div class="explore-option">  
-            <a href="index.html" id="displayCategoriesRankings">Cat<span class="hiddenOption">egories</span> <span>Ranking</span></a>       
+            <a href="" id="displayCategoriesRankings">Cat<span class="hiddenOption">egories</span> <span>Ranking</span></a>       
           </div>
           
         </div>
         
-        <div class="explore-tables-area">          
+        <div class="explore-tables-area">
           <div class="tables-BoardGames" id="tbBoardGames" >               
             <div class="boardGames-table" id="allGamesTable">
               <div class="table-responsive primary-table-container ">
@@ -85,14 +84,14 @@
               </div>
               
               <div id="detailsTableToggler">
-                <div class="outerBox">
+                <div class="outerBox">                 
                   <div class="vLayer">
-                    <div class="textBox">
-                      <h1><span>WINGSPAN</span></h1>
-                    </div>
-                    <div class="boxDivider ">
+                    <div class="firstBoxDivider">
                       <div class="leftBox">
-                        <div class="upperBox">
+                        <div class="textBox">
+                          <h1><span>W</span>INGSPAN</h1>
+                        </div>
+                        <div class="featuresBox">
                           <h3><span>F</span>eatures</h3>
                           <ul class="" >
                             <li  class="">Avg Duration: 120 Min.</li>
@@ -104,11 +103,7 @@
                             <li  class="">Players Count: 1-5</li>
                             <li  class="">Logged Sessions: 300</li>
                           </ul>
-                        </div>
-                        <div class="lowerBox ">
-                          <h3><span>D</span>escription</h3>
-                          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Recusandae atque, nostrum laudantium a at ex laboriosam aliquid neque facilis aperiam culpa harum aut! Asperiores, quisquam.</p>
-                        </div>
+                        </div>     
                       </div>
                       <div class="rightBox">
                         <h3><span>I</span>mages</h3>
@@ -193,21 +188,22 @@
                                               
                           </div>
                         </div>
+                      </div>               
+                    </div>
+                    <div class="secondBoxDivider" >
+                      <div class="descriptionBox">
+                        <h3><span>D</span>escription</h3>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Recusandae atque, nostrum laudantium a at ex laboriosam aliquid neque facilis aperiam culpa harum aut! Asperiores, quisquam.</p>
                       </div>
+                    </div>
+                    <div class="thirdBoxDivider expandBox unselectedState" id="showLastFiveSessions">  
+                      <h3>Last 5 Logged Sessions</h3>                                               
                     </div>
                   </div>           
                 
                   <div class="iLayer iLayer-hide">                
-                    <div class="expandBox">
-                      <a href="" id="showLastFiveSessions">                                         
-                          <i class="bi bi-arrow-right-short"></i>     
-                      </a>
-                    </div> 
-                                                              
-                    <div class="tableBox">
-                        
-                      <table class="table table-sm table-bordered caption-top table-custom">
-                        <caption><h3><span>L</span>ast Five Logged Sessions</h3></caption>
+                    <div class="tableBox table-responsive">       
+                      <table class="table table-sm table-bordered table-custom">                      
                         <thead class="table-light">
                           <tr class="text-center align-middle">
                             <th scope="col">User</th>
@@ -218,38 +214,44 @@
                         </thead>
                         <tbody class="table-group-divider">
                           <tr>                          
-                              <td>Red</td>
+                              <td class="text-start">Red</td>
                               <td>18/05/2025</td>
-                              <td class="text-center">2</td>
-                              <td class="text-end">120 Min</td>
+                              <td>2</td>
+                              <td>120 Min</td>
                           </tr> 
                           <tr>                          
-                              <td>Yellow</td>
+                              <td class="text-start">Yellow</td>
                               <td>18/05/2025</td>
-                              <td class="text-center">2</td>
-                              <td class="text-end">120 Min</td>
+                              <td>2</td>
+                              <td>120 Min</td>
                           </tr> 
                           <tr>                          
-                              <td>Blue</td>
+                              <td class="text-start">Blue</td>
                               <td>18/05/2025</td>
-                              <td class="text-center">2</td>
-                              <td class="text-end">120 Min</td>
+                              <td>2</td>
+                              <td>120 Min</td>
                           </tr> 
                           <tr>                          
-                              <td>Black</td>
+                              <td class="text-start">Black</td>
                               <td>18/05/2025</td>
-                              <td class="text-center">2</td>
-                              <td class="text-end">120 Min</td>
+                              <td>2</td>
+                              <td>120 Min</td>
                           </tr>
                           <tr>                          
-                              <td>Purple</td>
+                              <td class="text-start">Purple</td>
                               <td>18/05/2025</td>
-                              <td class="text-center">2</td>
-                              <td class="text-end">30 Min</td>
+                              <td>2</td>
+                              <td>30 Min</td>
                           </tr>                      
                         </tbody>
                       </table>                                 
                     </div>
+
+                    <div class="collapseBox" id="hideLastFiveSessions">
+                      <a href="" >                                         
+                          <i class="bi bi-arrow-down-short"></i>     
+                      </a>
+                    </div>                                                                          
                   </div>
                 </div> 
               </div>
@@ -338,53 +340,57 @@
             </div>           
            
             <div class="category-tables container-fluid" style="display: none;" id="categoriesRankingsToggler">
-              <div class="row">
-                <div class="col-md-4 col-sm-12">
-                  <table class="table caption-top" id="mostPlayedCategories">
-                    <caption><span>Most Played</span> Categories</caption>
-                    <thead>
-                      <tr>
-                        <th>Rank</th>
-                        <th>Category</th>
-                        <th>Sessions Logged</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-                
-                <div class="col-md-4 col-sm-12">
-                  <table class="table caption-top col-4" id="mostPopularCategories">
-                    <caption><span>Best Rated</span> Categories</caption>
-                    <thead>
-                      <tr>
-                        <th>Rank</th>
-                        <th>Category</th>
-                        <th>Sessions Logged</th>
-                        <th>Board Games</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-                                
-                <div class="col-md-4 col-sm-12">
-                  <table class="table caption-top col-4" id="bestRatedCategories">
-                    <caption><span>Most Popular</span> Categories</caption>
-                    <thead>
-                      <tr>
-                        <th>Rank</th>
-                        <th>Category</th>
-                        <th>Average Ratings</th>
-                        <th>Ratings Count</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
+              <div class="row justify-content-center">
+                <div class="row justify-content-center">
+                  <div class="col-md-4 col-sm-12 table-responsive tableCustomizer">
+                    <table class="table caption-top " id="mostPlayedCategories">
+                      <caption><span>Most Played</span> Categories</caption>
+                      <thead>
+                        <tr>
+                          <th>Rank</th>
+                          <th>Category</th>
+                          <th>Sessions Logged</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                                                
+                  <div class="col-md-4 col-sm-12 table-responsive tableCustomizer">
+                    <table class="table caption-top col-4" id="bestRatedCategories">
+                      <caption><span>Most Popular</span> Categories</caption>
+                      <thead>
+                        <tr>
+                          <th>Rank</th>
+                          <th>Category</th>
+                          <th>Average Ratings</th>
+                          <th>Ratings Count</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
                 </div>
 
                 <div class="row justify-content-center">
-                  <div class="col-md-4 col-sm-12">
+                  <div class="col-md-4 col-sm-12 table-responsive tableCustomizer">
+                    <table class="table caption-top col-4" id="mostPopularCategories">
+                      <caption><span>Best Rated</span> Categories</caption>
+                      <thead>
+                        <tr>
+                          <th>Rank</th>
+                          <th>Category</th>
+                          <th>Sessions Logged</th>
+                          <th>Board Games</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="row justify-content-center">
+                  <div class="col-md-4 col-sm-12 table-responsive tableCustomizer">
                     <table class="table caption-top col-6" id="longestCategories">
                       <caption><span><dfn>Longest</dfn>-Playtime</span> Categories</caption>
                       <thead>
@@ -399,7 +405,7 @@
                     </table>
                   </div>
                     
-                  <div class="col-md-4 col-sm-12">
+                  <div class="col-md-4 col-sm-12 tableCustomizer">
                     <table class="table caption-top col-6" id="shortestCategories">
                     <caption><span><span style="display: inline-block; transform: skewX(15deg);">Shortest</span>-Playtime</span> Categories</caption>
                     <thead>
@@ -413,9 +419,9 @@
                     <tbody></tbody>
                     </table>
                   </div> 
-                </div>              
-              </div>
-            </div>                                
+                </div>  
+              </div>            
+            </div>                                       
           </div>  
         </div>
       </div>    

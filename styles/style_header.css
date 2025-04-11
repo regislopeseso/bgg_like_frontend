@@ -1,22 +1,17 @@
-section {
-  min-height: 100vh;
-  z-index: 100;
-}
-
 .header {
   background-color: var(--second-bg-color);
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  /* padding: 0.5rem 9%; */
+  padding: 0 9%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 90;
 }
 .header .logo {
-  font-size: 2rem;
+  font-size: 3rem;
   color: var(--text-color);
   font-weight: 600;
 }
