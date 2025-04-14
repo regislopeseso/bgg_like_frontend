@@ -8,7 +8,7 @@ function loadHeader() {
         <div class="navOptions">
           <a href="index.html">HOME</a>
           <a href="explore.html">EXPLORE</a>
-          <a href="#services">USER</a>
+          <a href="teste.html">USER</a>
           <a href="#portfolio">ADMIN</a>
           <a href="#contact">DEV</a>
         </div>
@@ -28,7 +28,7 @@ function loadHeader() {
                     <a class="nav-link" href="explore.html">EXPLORE</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#services">USER</a>
+                    <a class="nav-link" href="teste.html">USER</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#portfolio">ADMIN</a>

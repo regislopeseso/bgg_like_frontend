@@ -368,72 +368,28 @@ $(document).ready(function () {
     }
   }
 
-  function filterResults(dataToFilter, paramsToFilter) {
-    const searchTerm = paramsToFilter.term || "";
-    const regex = new RegExp(searchTerm, "i"); // case-insensitive
-
-    return dataToFilter.filter((item) => {
-      return regex.test(item.boardGameName);
+  function loadBgDetails() {
+    $("#bgSelection").select2({
+      ajax: {
+        url: "https://localhost:7081/explore/findboardgame",
+        data: (params) => ({ boardGameName: params.term }),
+        processResults: (data, params) => {
+          return {
+            results: data.content.map((item) => ({
+              id: item.boardGameId,
+              text: item.boardGameName,
+            })),
+          };
+        },
+      },
+      templateResult: (data) => data.text,
+      templateSelection: (data) => data.text,
+      placeholder: "Board Games List",
+      minimumInputLength: 4,
+      allowClear: true,
+      theme: "classic",
+      width: "20rem",
     });
-  }
-
-  function displayBoardGameDetails(details) {
-    const container = $("#boardGameDetails");
-
-    const mechanicsList = Array.isArray(details.content.mechanics)
-      ? details.content.mechanics.map((m) => `<li>${m}</li>`).join("")
-      : "<li><em>No mechanics listed</em></li>";
-
-    const sessionsList = Array.isArray(details.content.lastFiveSessions)
-      ? details.content.lastFiveSessions
-          .map(
-            (s) => `
-        <tr>
-          <td>${s.sessionId}</td>
-          <td>${s.userNickName}</td>
-          <td>${s.date}</td>
-          <td>${s.playersCount}</td>
-          <td>${s.duration} min</td>
-        </tr>
-      `
-          )
-          .join("")
-      : `<tr><td colspan="5"><em>No session data</em></td></tr>`;
-
-    const html = `
-      <div class="card p-3 mt-3 shadow-sm">
-        <h4>${details.content.boardGameName}</h4>
-        <p><strong>Description:</strong><br>${details.content.boardGameDescription}</p>
-        <p><strong>Category:</strong> ${details.content.category}</p>
-        <div class="mt-2">
-          <strong>Mechanics:</strong>
-          <ul>${mechanicsList}</ul>
-        </div>
-        <p><strong>Age:</strong> ${details.content.minAge}+</p>
-        <p><strong>Players:</strong> ${details.content.minPlayersCount} to ${details.content.maxPlayerCount}</p>
-        <p><strong>Average Rating:</strong> ${details.content.avgRating} ⭐</p>
-        <p><strong>Sessions Logged:</strong> ${details.content.loggedSessions}</p>
-        <p><strong>Avg. Duration:</strong> ${details.content.avgSessionDuration} min</p>
-        
-  
-        <div class="mt-3">
-          <strong>Last 5 Sessions:</strong>
-          <table class="table table-sm mt-2">
-            <thead>
-              <tr>                
-                <th>User</th>
-                <th>Date</th>
-                <th>Players</th>
-                <th>Duration</th>
-              </tr>
-            </thead>
-            <tbody>${sessionsList}</tbody>
-          </table>
-        </div>
-      </div>
-    `;
-
-    container.html(html);
   }
 
   function loadEvents() {
@@ -499,66 +455,149 @@ $(document).ready(function () {
       }, 500);
     });
 
-    $("#bgSelection").select2({
-      ajax: {
-        url: "https://localhost:7081/explore/findboardgame",
-        data: (params) => {
-          return {
-            q: params.term,
-          };
-        },
-        processResults: (data, params) => {
-          // Filtro manual no frontend
-          const filtered = filterResults(data.content, params);
-
-          // Adaptar para o formato que o Select2 entende
-          return {
-            results: filtered.map((item) => ({
-              id: item.boardGameId,
-              text: item.boardGameName,
-            })),
-          };
-        },
-      },
-      templateResult: (data) => data.text,
-      templateSelection: (data) => data.text,
-      placeholder: "Board Games List",
-      minimumInputLength: 1,
-      allowClear: true,
-      theme: "classic",
-      width: "20rem",
-    });
-
-    let selectedBoardGameId = null;
     $("#bgSelection").on("select2:select", function (e) {
-      selectedBoardGameId = e.params.data.id;
       $("#submitBG").prop("disabled", false);
     });
 
     $("#submitBG").on("click", function () {
-      if (!selectedBoardGameId) return;
+      $.get(
+        `https://localhost:7081/explore/showboardgamedetails?BoardGameId=${$(
+          "#bgSelection"
+        ).val()}`
+      ).done(function (response) {
+        const game = response.content;
 
-      fetch(
-        `https://localhost:7081/explore/showboardgamedetails?BoardGameId=${selectedBoardGameId}`
-      )
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("Failed to fetch board game details");
-          }
-          return res.json();
-        })
-        .then((details) => {
-          console.log("Board Game Details:", details);
-          // Do something with the data (e.g., display on the page)
-          displayBoardGameDetails(details);
-        })
-        .catch((err) => {
-          console.error("Error loading details:", err);
+        bgName = game.boardGameName;
+        let firstLetter = bgName[0];
+        let allOtherLetters = bgName.slice(1, bgName.length);
+
+        $("#gameDetails").html(`
+          <div class="textBox">
+              <h1><span>${firstLetter}</span>${allOtherLetters}</h1>
+          </div> 
+
+          <div class="featuresBox">
+            <h3><span>F</span>eatures</h3>
+            <ul class="" >
+              <li  class="">Avg Duration: ${game.avgSessionDuration} Min.</li>
+              <li  class="">Avg Rating: ${game.avgSessionDuration}</li>
+              <li  class="">Age: ${game.minAge}+</li>
+              <li  class="">Players Count: ${
+                game.minPlayersCount
+              }-${game.maxPlayerCount}</li>
+              <li  class="">Category: ${game.category}</li>
+              <li  class="">Mechanics: ${game.mechanics.join(", ")}</li>        
+              <li  class="">Logged Sessions: ${game.loggedSessions}</li>
+            </ul>
+          </div>        
+        `);
+
+        $("#gamePics").html(`
+             <h3><span>I</span>mages</h3>
+                <div class="slideShowBox">
+                  <div class="displayArea">
+                    <div id="carouselExampleCaptions" class="carousel slide container">
+                      <div class="carousel-indicators">
+                        <button
+                          type="button"
+                          data-bs-target="#carouselExampleCaptions"
+                          data-bs-slide-to="0"
+                          class="active"
+                          aria-current="true"
+                          aria-label="Slide 1"
+                        ></button>
+                        <button
+                          type="button"
+                          data-bs-target="#carouselExampleCaptions"
+                          data-bs-slide-to="1"
+                          aria-label="Slide 2"
+                        ></button>
+                        <button
+                          type="button"
+                          data-bs-target="#carouselExampleCaptions"
+                          data-bs-slide-to="2"
+                          aria-label="Slide 3"
+                        ></button>
+                      </div>
+                
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <!-- <img src="./img/oldhands.jpg" class="d-block w-100" alt="old-hand" /> -->
+                          <div class="imgBoxRed"></div>
+                          <div class="carousel-caption d-none d-sm-block">
+                            
+                          </div>
+                        </div>
+                
+                        <div class="carousel-item">
+                          <!-- <img
+                            src="./img/oldhands.webp"
+                            class="d-block w-100"
+                            alt="old-hands"
+                          /> -->
+                          <div class="imgBoxYellow"></div>
+                          <div class="carousel-caption d-none d-md-block">
+                            
+                          </div>
+                        </div>
+                
+                        <div class="carousel-item">
+                          <!-- <img
+                            src="./img/younghand.jpg"
+                            class="d-block w-100"
+                            alt="young-hand"
+                          /> -->
+                          <div class="imgBoxBlue"></div>
+                          <div class="carousel-caption d-none d-md-block">                                                              
+                          </div>
+                        </div>
+                      </div>
+                
+                      <button
+                        class="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="prev"
+                      >
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button
+                        class="carousel-control-next"
+                        type="button"
+                        data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="next"
+                      >
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                      </button>
+                    </div>
+                                      
+                  </div>
+                </div>
+        `);
+
+        $("#gameDescription").html(`
+          <h3><span>D</span>escription</h3>
+          <p>${game.boardGameDescription}</p>
+        `);
+
+        $.each(game.lastFiveSessions, function (index, item) {
+          let tr = `
+          <tr>            
+            <td>${item.userNickName}</td>
+            <td>${item.date}</td>
+            <td>${item.playersCount}</td>
+            <td>${item.duration}</td>
+          </tr>
+        `;
+          $("#gameSessions tbody").append(tr);
         });
 
-      $("#detailsTableToggler").show();
+        $("#detailsTableToggler").show();
 
-      $("#searchBGToggler").hide();
+        $("#searchBGToggler").hide();
+      });
     });
 
     $("#showLastFiveSessions").on("click", function (e) {
@@ -619,6 +658,7 @@ $(document).ready(function () {
   function Build() {
     loadRankings();
     loadEvents();
+    loadBgDetails();
   }
 
   Build();

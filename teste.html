@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Board Game Info</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="node_modules/select2/dist/css/select2.min.css"
+    />
+  </head>
+  <body>
+    <section>
+      <div class="form-group">
+        <label for="bgSelection" class="form-label">Select Board Game</label>
+        <select
+          id="bgSelection"
+          class="form-control form-select"
+          aria-describedby="idHelpBlock"
+        ></select>
+        <div id="idHelpBlock" class="form-text">
+          Select a board game from the list
+        </div>
+        <button id="submitBG" class="btn btn-primary mt-2" disabled>
+          Load Game
+        </button>
+      </div>
+    </section>
+
+    <div id="gameDetails" class="mt-4"></div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/select2/dist/js/select2.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        function loadBgDetails() {
+          $("#bgSelection").select2({
+            ajax: {
+              url: "https://localhost:7081/explore/findboardgame",
+              data: (params) => ({ boardGameName: params.term }),
+              processResults: (data, params) => {
+                return {
+                  results: data.content.map((item) => ({
+                    id: item.boardGameId,
+                    text: item.boardGameName,
+                  })),
+                };
+              },
+            },
+            templateResult: (data) => data.text,
+            templateSelection: (data) => data.text,
+            placeholder: "Board Games List",
+            minimumInputLength: 4,
+            allowClear: true,
+            theme: "classic",
+            width: "20rem",
+          });
+
+          let selectedBoardGameId = null;
+
+          $("#bgSelection").on("select2:select", function (e) {
+            selectedBoardGameId = e.params.data.id;
+            $("#submitBG").prop("disabled", false);
+          });
+
+          $("#submitBG").on("click", function () {
+            $.get(
+              `https://localhost:7081/explore/showboardgamedetails?BoardGameId=${selectedBoardGameId}`
+            ).done(function (response) {
+              const game = response.content;
+
+              $("#gameDetails").html(`
+                <h4>${game.boardGameName}</h4>
+                <p><strong>Description:</strong> ${
+                  game.boardGameDescription
+                }</p>
+                <p><strong>Category:</strong> ${game.category}</p>
+                <p><strong>Mechanics:</strong> ${game.mechanics.join(", ")}</p>
+                <p><strong>Players:</strong> ${
+                  game.minPlayersCount
+                }–${game.maxPlayerCount}</p>
+                <p><strong>Min Age:</strong> ${game.minAge}</p>
+                <p><strong>Logged Sessions:</strong> ${game.loggedSessions}</p>
+                <p><strong>Avg. Duration:</strong> ${
+                  game.avgSessionDuration
+                } minutes</p>
+                <p><strong>Avg. Rating:</strong> ${game.avgRating}</p>
+                <h5>Last Five Sessions:</h5>
+                <ul>
+                  ${game.lastFiveSessions
+                    .map(
+                      (s) => `
+                    <li>
+                      ${s.date} - ${s.userNickName}, ${s.playersCount} players, ${s.duration} minutes
+                    </li>
+                  `
+                    )
+                    .join("")}
+                </ul>
+              `);
+            });
+          });
+        }
+
+        loadBgDetails();
+      });
+    </script>
+  </body>
+</html>

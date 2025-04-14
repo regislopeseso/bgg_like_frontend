@@ -87,114 +87,11 @@
                 <div class="outerBox">                 
                   <div class="vLayer">
                     <div class="firstBoxDivider">
-                      <div class="leftBox">
-                        <div class="textBox">
-                          <h1><span>W</span>INGSPAN</h1>
-                        </div>
-                        <div class="featuresBox">
-                          <h3><span>F</span>eatures</h3>
-                          <ul class="" >
-                            <li  class="">Avg Duration: 120 Min.</li>
-                            <li  class="">Avg Rating: 4.5</li>
-                            <li  class="">Age: 8+</li>
-                            <li  class="">Players Count: 1-5</li>
-                            <li  class="">Category: Family Game</li>
-                            <li  class="">Mechanics: Card Game, Resource Management</li>
-                            <li  class="">Players Count: 1-5</li>
-                            <li  class="">Logged Sessions: 300</li>
-                          </ul>
-                        </div>     
-                      </div>
-                      <div class="rightBox">
-                        <h3><span>I</span>mages</h3>
-                        <div class="slideShowBox">
-                          <div class="displayArea">
-                            <div id="carouselExampleCaptions" class="carousel slide container">
-                              <div class="carousel-indicators">
-                                <button
-                                  type="button"
-                                  data-bs-target="#carouselExampleCaptions"
-                                  data-bs-slide-to="0"
-                                  class="active"
-                                  aria-current="true"
-                                  aria-label="Slide 1"
-                                ></button>
-                                <button
-                                  type="button"
-                                  data-bs-target="#carouselExampleCaptions"
-                                  data-bs-slide-to="1"
-                                  aria-label="Slide 2"
-                                ></button>
-                                <button
-                                  type="button"
-                                  data-bs-target="#carouselExampleCaptions"
-                                  data-bs-slide-to="2"
-                                  aria-label="Slide 3"
-                                ></button>
-                              </div>
-                        
-                              <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                  <!-- <img src="./img/oldhands.jpg" class="d-block w-100" alt="old-hand" /> -->
-                                  <div class="imgBoxRed"></div>
-                                  <div class="carousel-caption d-none d-sm-block">
-                                    
-                                  </div>
-                                </div>
-                        
-                                <div class="carousel-item">
-                                  <!-- <img
-                                    src="./img/oldhands.webp"
-                                    class="d-block w-100"
-                                    alt="old-hands"
-                                  /> -->
-                                  <div class="imgBoxYellow"></div>
-                                  <div class="carousel-caption d-none d-md-block">
-                                    
-                                  </div>
-                                </div>
-                        
-                                <div class="carousel-item">
-                                  <!-- <img
-                                    src="./img/younghand.jpg"
-                                    class="d-block w-100"
-                                    alt="young-hand"
-                                  /> -->
-                                  <div class="imgBoxBlue"></div>
-                                  <div class="carousel-caption d-none d-md-block">                                                              
-                                  </div>
-                                </div>
-                              </div>
-                        
-                              <button
-                                class="carousel-control-prev"
-                                type="button"
-                                data-bs-target="#carouselExampleCaptions"
-                                data-bs-slide="prev"
-                              >
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                              </button>
-                              <button
-                                class="carousel-control-next"
-                                type="button"
-                                data-bs-target="#carouselExampleCaptions"
-                                data-bs-slide="next"
-                              >
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                              </button>
-                            </div>
-                                              
-                          </div>
-                        </div>
-                      </div>               
+                      <div class="leftBox" id="gameDetails"></div>
+                      <div class="rightBox" id="gamePics"></div>               
                     </div>
                     <div class="secondBoxDivider" >
-                      <div class="descriptionBox">
-                        <h3><span>D</span>escription</h3>
-                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Recusandae atque, nostrum laudantium a at ex laboriosam aliquid neque facilis aperiam culpa harum aut! Asperiores, quisquam.</p>
-                      </div>
+                      <div class="descriptionBox" id="gameDescription"></div>
                     </div>
                     <div class="thirdBoxDivider expandBox unselectedState" id="showLastFiveSessions">  
                       <h3>Last 5 Logged Sessions</h3>                                               
@@ -203,7 +100,7 @@
                 
                   <div class="iLayer iLayer-hide">                
                     <div class="tableBox table-responsive">       
-                      <table class="table table-sm table-bordered table-custom">                      
+                      <table class="table table-sm table-bordered table-custom" id="gameSessions">                      
                         <thead class="table-light">
                           <tr class="text-center align-middle">
                             <th scope="col">User</th>
@@ -212,37 +109,7 @@
                             <th scope="col">Duration</th>
                           </tr>
                         </thead>
-                        <tbody class="table-group-divider">
-                          <tr>                          
-                              <td class="text-start">Red</td>
-                              <td>18/05/2025</td>
-                              <td>2</td>
-                              <td>120 Min</td>
-                          </tr> 
-                          <tr>                          
-                              <td class="text-start">Yellow</td>
-                              <td>18/05/2025</td>
-                              <td>2</td>
-                              <td>120 Min</td>
-                          </tr> 
-                          <tr>                          
-                              <td class="text-start">Blue</td>
-                              <td>18/05/2025</td>
-                              <td>2</td>
-                              <td>120 Min</td>
-                          </tr> 
-                          <tr>                          
-                              <td class="text-start">Black</td>
-                              <td>18/05/2025</td>
-                              <td>2</td>
-                              <td>120 Min</td>
-                          </tr>
-                          <tr>                          
-                              <td class="text-start">Purple</td>
-                              <td>18/05/2025</td>
-                              <td>2</td>
-                              <td>30 Min</td>
-                          </tr>                      
+                        <tbody class="table-group-divider">                             
                         </tbody>
                       </table>                                 
                     </div>
@@ -439,6 +306,7 @@
     <script src="node_modules/select2/dist/js/select2.min.js"></script>
     <script src="js/scripts/script_explore.js"></script>
     <script src="js/scripts/loader.js"></script>
+
   </body>
 
 </html>
