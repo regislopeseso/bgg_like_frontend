@@ -492,9 +492,8 @@ $(document).ready(function () {
           </div>        
         `);
 
-        let imgFolder = game.boardGameName.toLowerCase();
-        let imgFile = imgFolder.toLowerCase().split().join("_");
-        let imgSrc = `images/${imgFolder}/${imgFile}_pic`;
+        let imgFolder = game.boardGameName.toLowerCase().split(" ").join("_");
+        let imgSrc = `images/${imgFolder}/${imgFolder}_pic`;
         $("#gamePics").html(`
              <h3><span>I</span>mages</h3>
                 <div class="slideShowBox">
@@ -575,7 +574,7 @@ $(document).ready(function () {
           <p>${game.boardGameDescription}</p>
         `);
 
-        $("#gameSessions tbody").empty(tr);
+        $("#gameSessions tbody").empty();
         $.each(game.lastFiveSessions, function (index, item) {
           if (index >= 5) return false;
 
