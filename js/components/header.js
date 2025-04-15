@@ -3,7 +3,7 @@ function loadHeader() {
   header.className = "header";
   header.innerHTML = `
     <header class="header">
-      <a href="#home" class="logo">BBG <span>LIKE</span></a>
+      <a href="index.html" class="logo">BBG <span>LIKE</span></a>
       <nav class="navbar">
         <div class="navOptions">
           <a href="index.html">HOME</a>

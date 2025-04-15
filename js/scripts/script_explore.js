@@ -492,6 +492,9 @@ $(document).ready(function () {
           </div>        
         `);
 
+        let imgFolder = game.boardGameName.toLowerCase();
+        let imgFile = imgFolder.toLowerCase().split().join("_");
+        let imgSrc = `images/${imgFolder}/${imgFile}_pic`;
         $("#gamePics").html(`
              <h3><span>I</span>mages</h3>
                 <div class="slideShowBox">
@@ -520,36 +523,26 @@ $(document).ready(function () {
                         ></button>
                       </div>
                 
-                      <div class="carousel-inner">
+                      <div class="carousel-inner" id="carousel-items">
                         <div class="carousel-item active">
-                          <!-- <img src="./img/oldhands.jpg" class="d-block w-100" alt="old-hand" /> -->
-                          <div class="imgBoxRed"></div>
-                          <div class="carousel-caption d-none d-sm-block">
-                            
+                          <div class="rounded rounded imgBoxRed">
+                            <img src="${imgSrc}1.png" class="rounded">    
                           </div>
+                          <div class="carousel-caption d-none d-sm-block"></div>                                  
                         </div>
                 
                         <div class="carousel-item">
-                          <!-- <img
-                            src="./img/oldhands.webp"
-                            class="d-block w-100"
-                            alt="old-hands"
-                          /> -->
-                          <div class="imgBoxYellow"></div>
-                          <div class="carousel-caption d-none d-md-block">
-                            
+                          <div class="rounded imgBoxYellow">
+                            <img src="${imgSrc}2.png" class="rounded">    
                           </div>
+                          <div class="carousel-caption d-none d-md-block"></div>
                         </div>
                 
-                        <div class="carousel-item">
-                          <!-- <img
-                            src="./img/younghand.jpg"
-                            class="d-block w-100"
-                            alt="young-hand"
-                          /> -->
-                          <div class="imgBoxBlue"></div>
-                          <div class="carousel-caption d-none d-md-block">                                                              
+                        <div class="carousel-item">                        
+                          <div class="rounded imgBoxBlue">
+                            <img src="${imgSrc}3.png" class="rounded">    
                           </div>
+                          <div class="carousel-caption d-none d-md-block"></div>
                         </div>
                       </div>
                 
@@ -582,15 +575,18 @@ $(document).ready(function () {
           <p>${game.boardGameDescription}</p>
         `);
 
+        $("#gameSessions tbody").empty(tr);
         $.each(game.lastFiveSessions, function (index, item) {
+          if (index >= 5) return false;
+
           let tr = `
-          <tr>            
-            <td>${item.userNickName}</td>
-            <td>${item.date}</td>
-            <td>${item.playersCount}</td>
-            <td>${item.duration}</td>
-          </tr>
-        `;
+            <tr>              
+              <td>${item.userNickName}</td>
+              <td>${item.date}</td>
+              <td>${item.playersCount}</td>
+              <td>${item.duration}</td>
+            </tr>
+          `;
           $("#gameSessions tbody").append(tr);
         });
 

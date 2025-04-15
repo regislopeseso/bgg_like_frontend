@@ -4,7 +4,7 @@
 :root {
   --bg-color: rgb(31, 36, 46);
   --second-bg-color: rgb(50, 57, 70);
-  --text-color: #fff;
+  --text-color: rgb(255, 255, 255);
   --main-color: rgb(0, 238, 255);
   --reddish: #f30;
 }

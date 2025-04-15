@@ -10,16 +10,23 @@
   background-color: var(--second-bg-color);
   z-index: 90;
 }
+.footer-text {
+  margin: 1rem;
+}
 .footer-text p {
-  font-size: 1.5 rem;
   transition: all 0.5s;
+  padding: 0;
+  margin: 0;
 }
 
+.top-icon {
+  margin: 1rem;
+}
 .top-icon a {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  padding: 0.5rem;
   background-color: var(--main-color);
   box-shadow: 0 0 1rem var(--main-color);
   border-radius: 50%;

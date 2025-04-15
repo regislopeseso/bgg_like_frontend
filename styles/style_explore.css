@@ -205,6 +205,7 @@
   text-align: center;
   border-radius: 1rem;
   height: 100%;
+  width: 100%;
   background-color: var(--second-bg-color);
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   padding: 2rem;
@@ -294,7 +295,7 @@
 }
 .outerBox
   .vLayer
-  .boxDivider
+  .firstBoxDivider
   .rightBox
   .slideShowBox
   .displayArea
@@ -310,10 +311,21 @@
   .imgBoxBlue {
   background-color: blue;
 }
+.outerBox
+  .vLayer
+  .firstBoxDivider
+  .rightBox
+  .slideShowBox
+  .displayArea
+  .carousel-item
+  img {
+  width: 100%;
+  height: 100%;
+}
 
 .outerBox .vLayer .secondBoxDivider {
   flex: 0;
-  width: fit-content;
+  width: 100%;
   margin-top: 1rem;
 }
 .outerBox .vLayer .secondBoxDivider h3 {
@@ -389,7 +401,7 @@
   flex-direction: column;
   align-self: center;
   align-content: center;
-  width: 800px;
+  width: 50%;
   color: whitesmoke;
   transition: all 1s ease-in-out;
   background-color: var(--second-bg-color);
@@ -507,12 +519,13 @@
   height: 100% !important;
 }
 .category-tables .tableCustomizer {
-  border: 5px solid rgba(255, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 1rem;
   height: 100%;
-  margin: 0;
-  padding: 0;
+  margin: 1rem 1rem;
+  padding: 1px;
   overflow: hidden;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2) !important;
 }
 .category-tables caption {
   color: var(--reddish);
