@@ -8,7 +8,7 @@
   align-items: center;
   flex-wrap: wrap;
   background-color: var(--second-bg-color);
-  z-index: 90;
+  z-index: 100;
 }
 .footer-text {
   margin: 1rem;
@@ -42,9 +42,6 @@
 @media screen and (max-width: 1200px) {
 }
 @media screen and (max-width: 991px) {
-  /* .footer {
-    padding: 1rem 3%;
-  } */
 }
 @media screen and (max-width: 768px) {
 }

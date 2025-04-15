@@ -1,8 +1,9 @@
+/*
+* VIEW BLOCK SECTION
+*/
 .viewBlock {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
   overflow: auto;
 }
 .viewBlock::-webkit-scrollbar {
@@ -11,7 +12,7 @@
 /*! END */
 
 /*
-* MENU SECTION:
+* EXPLORE MENU SECTION:
 * ALL BOARD GAMES, FIND A BOARD GAME,
 * BOARD GAMES RANKING, CATEGORIES RANKING
 */
@@ -49,15 +50,20 @@
 /*! END */
 
 /*
-* ALL BOARD GAMES TABLE SECTION
+* EXPLORE CONTENT SECTION
 */
-.explore-tables-area {
+.explore-content {
   align-self: center;
   position: static;
   flex: 1;
-  margin-top: 5rem;
+  margin: 5rem 0 5rem 0;
 }
-.explore-tables-area .tables-BoardGames .boardGames-table {
+/*! END */
+
+/*
+* ALL BOARD GAMES TABLE SECTION
+*/
+.content-wrapper .bgRecords {
   display: flex;
   justify-self: center;
   align-self: center;
@@ -69,32 +75,17 @@
   max-height: 750px;
   overflow: auto;
 }
-.explore-tables-area .tables-BoardGames .boardGames-table::-webkit-scrollbar {
+.content-wrapper .bgRecords::-webkit-scrollbar {
   display: none !important;
 }
-.explore-tables-area
-  .tables-BoardGames
-  .boardGames-table
-  .table-responsive::-webkit-scrollbar {
+.content-wrapper .bgRecords .allBGtable-container::-webkit-scrollbar {
   display: none !important;
 }
-.explore-tables-area
-  .tables-BoardGames
-  .boardGames-table
-  .table-responsive
-  table {
+.content-wrapper .bgRecords .table-responsive table {
   --bs-table-color: var(--text-color);
   --bs-table-bg: var(--second-bg-color);
 }
-.explore-tables-area
-  .tables-BoardGames
-  .boardGames-table
-  .table-responsive
-  table
-  thead {
-  margin-bottom: rem;
-}
-.boardGames-table caption {
+.bgRecords caption {
   position: sticky;
   top: 0;
   color: var(--text-color);
@@ -103,32 +94,35 @@
   padding: 2rem 2rem 0 2rem;
   background-color: var(--second-bg-color);
 }
-.boardGames-table thead {
+.explore-content .content-wrapper .bgRecords .table-responsive table thead {
   position: sticky;
   top: 75px;
   background-color: var(--second-bg-color) !important;
   z-index: 10;
+  margin-bottom: 0rem;
+  height: 50px;
+  vertical-align: text-top;
 }
-.boardGames-table thead tr th {
+.bgRecords thead tr th {
   background-color: rgba(1, 1, 1, 0) !important;
 }
-.boardGames-table thead tr:first-child th {
+.bgRecords thead tr:first-child th {
   background-color: var(--second-bg-color);
   padding-left: 1rem;
 }
-.boardGames-table thead tr:last-child th {
+.bgRecords thead tr:last-child th {
   background-color: var(--second-bg-color);
   padding-right: 2rem;
 }
-.boardGames-table th {
+.bgRecords th {
   text-align: center;
   word-wrap: break-word;
 }
-.boardGames-table tbody tr td {
+.bgRecords tbody tr td {
   height: 1.5rem;
   padding: 0.5rem;
 }
-.boardGames-table tr {
+.bgRecords tr {
   text-align: center;
   font-size: 1rem;
 }
@@ -209,7 +203,7 @@
   background-color: var(--second-bg-color);
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   padding: 2rem;
-  z-index: 100;
+  z-index: 20;
 }
 .outerBox .vLayer .firstBoxDivider {
   flex: 1;
@@ -468,7 +462,7 @@
 /*
 * SECTION 3: BOARD GAMES RANKINGS
 */
-#bgRankingListsToggler {
+#bgRankingsToggler {
   display: none;
 }
 .bgRankingsLists {
@@ -512,6 +506,7 @@
 */
 
 .category-tables {
+  display: none;
   overflow: auto;
 }
 
@@ -545,6 +540,16 @@
   }
 }
 
+@media screen and (max-width: 1512px) {
+  .explore-tables-area {
+    margin-top: 0;
+  }
+  .explore-menu {
+    gap: 0;
+    justify-content: space-evenly;
+  }
+}
+
 @media screen and (max-width: 1440px) {
   .explore-menu {
     gap: 0;
@@ -553,10 +558,6 @@
 }
 
 @media screen and (max-width: 1024px) {
-  html {
-    font-size: 70%;
-  }
-
   .explore-menu {
     gap: 0;
     justify-content: space-evenly;
@@ -593,12 +594,6 @@
   }
 }
 @media screen and (max-width: 425px) {
-  section {
-    min-height: 100vh;
-    padding: 10rem 10%;
-    z-index: 100;
-  }
-
   .explore-menu {
     display: flex;
     flex-wrap: wrap;
@@ -622,39 +617,14 @@
 }
 
 @media screen and (max-width: 375px) {
-  section {
-    min-height: 100vh;
-    padding: 10rem 10%;
-    z-index: 100;
-  }
   .BGfinder {
     transform: scale(0.8, 0.8);
   }
 }
 
 @media screen and (max-width: 320px) {
-  html {
-    font-size: 50%;
-  }
-  section {
-    padding: 0;
-  }
-
-  body {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .header {
-    width: 100%;
-  }
-
-  .footer {
-    width: 100%;
-  }
-
   .viewBlock {
-    margin-top: 5rem;
+    margin-top: 2rem;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: column;
@@ -667,7 +637,7 @@
     flex-wrap: wrap;
     flex-direction: row;
     text-align: center;
-    gap: 2rem;
+    gap: 1rem;
   }
   .explore-menu .hiddenOption {
     display: none;
@@ -680,26 +650,33 @@
     align-self: center;
   }
 
-  .explore-tables-area {
+  .explore-content {
     position: static;
     align-self: center;
     align-items: center;
-    width: 90%;
+    margin: 2rem 0 10rem 0;
+    width: 95%;
     flex: 1;
   }
 
-  .explore-tables-area .boardGames-table {
-    padding: 0 !important;
+  .explore-content .content-wrapper .bgRecords {
+    padding: 1rem !important;
     margin: 0 !important;
     width: 100%;
   }
 
-  .explore-tables-area .boardGames-table .primary-table-container {
-    width: 100%;
+  .explore-content .content-wrapper .bgRecords .table-responsive table caption {
+    text-align: start;
+    padding-bottom: 1rem;
   }
 
-  .explore-tables-area table th,
-  .explore-tables-area table td {
+  .explore-content .content-wrapper .bgRecords .table-responsive table thead {
+    top: 35px;
+    height: 50px;
+  }
+
+  .explore-content table th,
+  .explore-content table td {
     font-size: 1rem !important;
   }
 }

@@ -249,8 +249,8 @@ $(document).ready(function () {
         let tr = `
               <tr>              
                 <td>${index + 1}</td> 
-                <td class="text-start">${item.categoryName}</td>            
-                <td class="text-center">${item.sessionsCount}</td>           
+                <td>${item.categoryName}</td>            
+                <td>${item.sessionsCount}</td>           
               </tr>
             `;
         $("#mostPlayedCategories tbody").append(tr);
@@ -273,9 +273,9 @@ $(document).ready(function () {
         let tr = `
               <tr>              
                 <td>${index + 1}</td> 
-                <td class="text-start">${item.categoryName}</td>            
-                <td class="text-center">${item.sessionsCount}</td>   
-                <td class="text-center">${item.boardGamesCount}</td>         
+                <td>${item.categoryName}</td>            
+                <td>${item.sessionsCount}</td>   
+                <td>${item.boardGamesCount}</td>         
               </tr>
             `;
         $("#mostPopularCategories tbody").append(tr);
@@ -298,9 +298,9 @@ $(document).ready(function () {
         let tr = `
               <tr>              
                 <td>${index + 1}</td> 
-                <td class="text-start">${item.categoryName}</td>            
-                <td class="text-center">${item.avgRating}</td>   
-                <td class="text-center">${item.ratingsCount}</td>         
+                <td>${item.categoryName}</td>            
+                <td>${item.avgRating}</td>   
+                <td>${item.ratingsCount}</td>         
               </tr>
             `;
         $("#bestRatedCategories tbody").append(tr);
@@ -324,9 +324,9 @@ $(document).ready(function () {
         let tr = `
               <tr>              
                 <td>${index + 1}</td> 
-                <td class="text-start">${item.categoryName}</td>            
-                <td class="text-center">${item.duration}</td>   
-                <td class="text-center">${item.sessionsCount}</td>         
+                <td>${item.categoryName}</td>            
+                <td>${item.duration}</td>   
+                <td>${item.sessionsCount}</td>         
               </tr>
             `;
         $("#longestCategories tbody").append(tr);
@@ -349,9 +349,9 @@ $(document).ready(function () {
         let tr = `
               <tr>              
                 <td>${index + 1}</td> 
-                <td class="text-start">${item.categoryName}</td>            
-                <td class="text-center">${item.duration}</td>   
-                <td class="text-center">${item.sessionsCount}</td>         
+                <td>${item.categoryName}</td>            
+                <td>${item.duration}</td>   
+                <td>${item.sessionsCount}</td>         
               </tr>
             `;
         $("#shortestCategories tbody").append(tr);
@@ -397,24 +397,24 @@ $(document).ready(function () {
       e.preventDefault();
 
       $("#bgFinderToggler").hide();
-      $("#bgRankingListsToggler").hide();
-      $("#categoriesRankingsToggler").hide();
+      $("#bgRankingsToggler").hide();
+      $("#categoryRankingsToggler").hide();
 
       $("body").load("load");
       setTimeout(() => {
         $("body").load("unload");
 
-        $("#allGamesTable").show();
+        $("#bgRecordsToggler").show();
       }, 500);
     });
 
     $("#searchBoardGames").on("click", function (e) {
       e.preventDefault();
 
-      $("#allGamesTable").hide();
+      $("#bgRecordsToggler").hide();
       $("#detailsTableToggler").hide();
-      $("#bgRankingListsToggler").hide();
-      $("#categoriesRankingsToggler").hide();
+      $("#bgRankingsToggler").hide();
+      $("#categoryRankingsToggler").hide();
 
       $("body").load("load");
       setTimeout(() => {
@@ -428,30 +428,30 @@ $(document).ready(function () {
     $("#displayBoardGamesRankings").on("click", function (e) {
       e.preventDefault();
 
-      $("#allGamesTable").hide();
+      $("#bgRecordsToggler").hide();
       $("#bgFinderToggler").hide();
-      $("#categoriesRankingsToggler").hide();
+      $("#categoryRankingsToggler").hide();
 
       $("body").load("load");
       setTimeout(() => {
         $("body").load("unload");
 
-        $("#bgRankingListsToggler").show();
+        $("#bgRankingsToggler").show();
       }, 500);
     });
 
     $("#displayCategoriesRankings").on("click", function (e) {
       e.preventDefault();
 
-      $("#allGamesTable").hide();
+      $("#bgRecordsToggler").hide();
       $("#bgFinderToggler").hide();
-      $("#bgRankingListsToggler").hide();
+      $("#bgRankingsToggler").hide();
 
       $("body").load("load");
       setTimeout(() => {
         $("body").load("unload");
 
-        $("#categoriesRankingsToggler").show();
+        $("#categoryRankingsToggler").show();
       }, 500);
     });
 
@@ -598,6 +598,8 @@ $(document).ready(function () {
     $("#showLastFiveSessions").on("click", function (e) {
       e.preventDefault();
 
+      $(".explore-content").css("margin", "5rem 0 25rem 0");
+
       if ($(".iLayer").hasClass("iLayer-show")) {
         $(".iLayer").removeClass("iLayer-show").addClass("iLayer-hide");
         $(".iLayer a").css("transform", "rotate(0deg)");
@@ -621,6 +623,8 @@ $(document).ready(function () {
 
     $("#hideLastFiveSessions").on("click", function (e) {
       e.preventDefault();
+
+      $(".explore-content").css("margin", "5rem 0 5rem 0");
 
       if ($(".iLayer").hasClass("iLayer-show")) {
         $(".iLayer").removeClass("iLayer-show").addClass("iLayer-hide");

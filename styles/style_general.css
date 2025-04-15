@@ -22,7 +22,7 @@
 
 html {
   font-size: 100%;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 body {
@@ -31,10 +31,8 @@ body {
 }
 
 section {
-  min-height: 100vh;
-  /* padding: 10rem 10%; */
-  justify-self: center;
-  z-index: 95;
+  height: 100vh;
+  z-index: 80;
 }
 span {
   color: var(--main-color);
@@ -42,7 +40,10 @@ span {
 
 @media screen and (max-width: 3340px) {
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1512px) {
+  html {
+    font-size: 90%;
+  }
 }
 @media screen and (max-width: 991px) {
 }
@@ -51,4 +52,7 @@ span {
 @media screen and (max-width: 576px) {
 }
 @media screen and (max-width: 350px) {
+  html {
+    font-size: 50%;
+  }
 }
