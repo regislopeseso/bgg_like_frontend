@@ -47,7 +47,7 @@
 }
 @media screen and (max-width: 576px) {
 }
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 425px) {
   .footer {
     background-color: rgba(0, 0, 0, 0);
     flex-direction: column-reverse;

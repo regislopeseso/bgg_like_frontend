@@ -51,8 +51,8 @@ span {
 }
 @media screen and (max-width: 576px) {
 }
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 425px) {
   html {
-    font-size: 50%;
+    font-size: 60%;
   }
 }

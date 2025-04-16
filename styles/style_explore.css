@@ -71,36 +71,44 @@
   border-radius: 1rem;
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   margin: 2rem;
-  padding: 0 2rem 1rem 2rem;
+  padding: 2rem 2rem 2rem 2rem;
   max-height: 750px;
-  overflow: auto;
 }
 .content-wrapper .bgRecords::-webkit-scrollbar {
   display: none !important;
 }
+.content-wrapper {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+}
 .content-wrapper .bgRecords .allBGtable-container::-webkit-scrollbar {
   display: none !important;
 }
+
 .content-wrapper .bgRecords .table-responsive table {
   --bs-table-color: var(--text-color);
   --bs-table-bg: var(--second-bg-color);
 }
 .bgRecords caption {
   position: sticky;
-  top: 0;
+  top: -10px;
   color: var(--text-color);
   font-size: 1.8rem;
   text-align: center;
-  padding: 2rem 2rem 0 2rem;
+  padding: 1rem 2rem 1rem 2rem;
+  margin: 0;
+  width: 100%;
+  height: 5rem;
   background-color: var(--second-bg-color);
 }
 .explore-content .content-wrapper .bgRecords .table-responsive table thead {
   position: sticky;
-  top: 75px;
+  top: 65px;
+  height: 55px;
   background-color: var(--second-bg-color) !important;
   z-index: 10;
   margin-bottom: 0rem;
-  height: 50px;
   vertical-align: text-top;
 }
 .bgRecords thead tr th {
@@ -118,6 +126,7 @@
   text-align: center;
   word-wrap: break-word;
 }
+
 .bgRecords tbody tr td {
   height: 1.5rem;
   padding: 0.5rem;
@@ -420,7 +429,7 @@
   --bs-table-bg: var(--second-bg-color) !important;
   --bs-table-color: var(--text-color);
 }
-.outerBox .iLayer.tableBox table {
+.outerBox .iLayer .tableBox table {
   vertical-align: middle;
 }
 .outerBox .iLayer .tableBox table td {
@@ -538,6 +547,13 @@
   .explore-menu {
     gap: 100px;
   }
+
+  .explore-content .content-wrapper .bgRecords .allBGtable-container {
+    height: 20000px !important;
+  }
+  .tabble-allBoardGames {
+    height: 20000px !important;
+  }
 }
 
 @media screen and (max-width: 1512px) {
@@ -547,6 +563,13 @@
   .explore-menu {
     gap: 0;
     justify-content: space-evenly;
+  }
+  .explore-content .content-wrapper .bgRecords .table-responsive table caption {
+    padding-bottom: 1rem;
+  }
+  .explore-content .content-wrapper .bgRecords .table-responsive table thead {
+    top: 60px;
+    height: 50px;
   }
 }
 
@@ -558,15 +581,8 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .explore-menu {
-    gap: 0;
-    justify-content: space-evenly;
-  }
-}
-
-@media screen and (max-width: 768px) {
   explore-tables-area {
-    padding-top: 10rem;
+    padding-top: 0rem;
   }
 
   .explore-menu {
@@ -586,6 +602,7 @@
     grid-row-start: 1;
     grid-row-end: 1;
   }
+
   .explore-menu .searchBG {
     grid-column-start: 1;
     grid-column-end: 1;
@@ -593,7 +610,15 @@
     grid-row-end: 2;
   }
 }
-@media screen and (max-width: 425px) {
+
+@media screen and (max-width: 768px) {
+  .viewBlock {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
   .explore-menu {
     display: flex;
     flex-wrap: wrap;
@@ -602,9 +627,14 @@
     justify-content: center;
   }
   .explore-menu .explore-option {
-    width: 12rem;
-    height: 12rem;
-    padding: 1rem;
+    width: 10rem;
+    height: 10rem;
+    align-content: center;
+    text-align: center;
+    margin: 1.5rem;
+  }
+  .explore-menu .explore-option a {
+    font-size: 1.5rem;
   }
 
   .bgRankingsLists {
@@ -616,20 +646,7 @@
   }
 }
 
-@media screen and (max-width: 375px) {
-  .BGfinder {
-    transform: scale(0.8, 0.8);
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .viewBlock {
-    margin-top: 2rem;
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
-  }
-
+@media screen and (max-width: 425px) {
   .explore-menu {
     position: static;
     flex: 1;
@@ -644,9 +661,10 @@
   }
   .explore-menu .explore-option {
     padding: 0 2rem;
-    margin: 0.5rem;
+    margin: 3rem;
     justify-items: center;
-    height: 10rem;
+    height: 12rem;
+    width: 12rem;
     align-self: center;
   }
 
@@ -664,19 +682,81 @@
     margin: 0 !important;
     width: 100%;
   }
-
   .explore-content .content-wrapper .bgRecords .table-responsive table caption {
     text-align: start;
     padding-bottom: 1rem;
   }
-
   .explore-content .content-wrapper .bgRecords .table-responsive table thead {
     top: 35px;
     height: 50px;
   }
-
   .explore-content table th,
   .explore-content table td {
     font-size: 1rem !important;
+  }
+
+  #bgFinderToggler {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-self: center;
+    justify-items: center;
+  }
+  .bgList-lbl {
+    text-align: center !important;
+    font-size: 1.5rem;
+  }
+  .BGfinder .comboBox-wrapper {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 3rem;
+  }
+  .comboBox {
+    font-size: 1.5rem;
+  }
+  .detailsButton .btn {
+    --bs-btn-font-size: 1.5rem;
+  }
+
+  .outerBox {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 90vw;
+    margin: 3rem 0;
+  }
+  .outerBox .vLayer {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: fit-content;
+  }
+  .outerBox .vLayer .firstBoxDivider {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+  .imgBoxRed,
+  .imgBoxBlue,
+  .imgBoxYellow {
+    transform: scale(0.8, 0.8);
+  }
+  .category-tables caption {
+    padding: 0;
+  }
+  .category-tables img {
+    transform: scale(0.5, 0.5);
+  }
+  .outerBox .iLayer {
+    width: 100% !important;
+  }
+  .outerBox .iLayer-show {
+    transform: translateY(450px);
+    box-shadow: none;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .explore-menu .explore-option {
+    margin: 1rem;
+    height: 10rem;
   }
 }

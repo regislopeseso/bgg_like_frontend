@@ -406,6 +406,13 @@ $(document).ready(function () {
 
         $("#bgRecordsToggler").show();
       }, 500);
+
+      $("html, body").animate(
+        {
+          scrollTop: $("#bgRecordsToggler").offset().top - 80,
+        },
+        500
+      );
     });
 
     $("#searchBoardGames").on("click", function (e) {
@@ -438,6 +445,13 @@ $(document).ready(function () {
 
         $("#bgRankingsToggler").show();
       }, 500);
+
+      $("html, body").animate(
+        {
+          scrollTop: $("#bgRankingsToggler").offset().top + 180,
+        },
+        500
+      );
     });
 
     $("#displayCategoriesRankings").on("click", function (e) {
@@ -453,6 +467,13 @@ $(document).ready(function () {
 
         $("#categoryRankingsToggler").show();
       }, 500);
+
+      $("html, body").animate(
+        {
+          scrollTop: $("#categoryRankingsToggler").offset().top + 180,
+        },
+        500
+      );
     });
 
     $("#bgSelection").on("select2:select", function (e) {
@@ -598,7 +619,7 @@ $(document).ready(function () {
     $("#showLastFiveSessions").on("click", function (e) {
       e.preventDefault();
 
-      $(".explore-content").css("margin", "5rem 0 25rem 0");
+      $(".explore-content").css("margin", "5rem 0 35rem 0");
 
       if ($(".iLayer").hasClass("iLayer-show")) {
         $(".iLayer").removeClass("iLayer-show").addClass("iLayer-hide");
