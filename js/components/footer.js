@@ -7,7 +7,7 @@ function loadFooter() {
         <p>Copyright &copy; by JPR Trainings</p>
       </div>
       <div class="top-icon">
-        <a href="#home"><i class="fa-solid fa-arrow-up"></i></a>
+        <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
       </div>
     </footer>
   `;

@@ -79,10 +79,12 @@
 }
 .content-wrapper {
   display: flex;
-  overflow: hidden;
   align-items: center;
 }
 .content-wrapper .bgRecords .allBGtable-container::-webkit-scrollbar {
+  display: none !important;
+}
+.content-wrapper .bgRecords .table-responsive::-webkit-scrollbar {
   display: none !important;
 }
 
@@ -187,16 +189,23 @@
 */
 #detailsTableToggler {
   display: none;
+  width: 100vw;
 }
 .outerBox {
   position: relative;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  width: 1000px;
-  height: 650px;
-  justify-content: center;
+  max-width: 1200px;
+  width: 90%;
+  height: 800px;
+  justify-content: start;
+  justify-self: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0);
+}
+.outerBox::-webkit-scrollbar {
+  display: none !important;
 }
 .outerBox .vLayer {
   position: absolute;
@@ -205,9 +214,8 @@
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  text-align: center;
   border-radius: 1rem;
-  height: 100%;
+  text-align: center;
   width: 100%;
   background-color: var(--second-bg-color);
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
@@ -329,20 +337,61 @@
 .outerBox .vLayer .secondBoxDivider {
   flex: 0;
   width: 100%;
-  margin-top: 1rem;
+  margin: 1rem 0;
 }
-.outerBox .vLayer .secondBoxDivider h3 {
-  padding: 1rem;
-}
-
 .outerBox .vLayer .secondBoxDivider .descriptionBox {
-  text-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
 }
-.outerBox .vLayer .secondBoxDivider .descriptionBox p {
-  margin-bottom: 1rem;
-  padding-top: 0 !important;
-  padding: 2rem;
+.outerBox .vLayer .secondBoxDivider .descriptionBox h3 {
+  padding: 1rem;
+  width: 100%;
+  text-align: start;
+}
+
+.outerBox .vLayer .secondBoxDivider .descriptionBox textarea {
+  margin-bottom: 3rem;
+  width: 90%;
+  background-color: var(--second-bg-color);
+  color: var(--text-color);
+  padding-bottom: 3rem;
+  overflow: auto;
+}
+
+/* Scrollbar styles for WebKit browsers */
+.outerBox
+  .vLayer
+  .secondBoxDivider
+  .descriptionBox
+  textarea::-webkit-scrollbar {
+  width: 10px;
+}
+.outerBox
+  .vLayer
+  .secondBoxDivider
+  .descriptionBox
+  textarea::-webkit-scrollbar-track {
+  background: var(--bg-color);
+  border-radius: 10px;
+}
+.outerBox
+  .vLayer
+  .secondBoxDivider
+  .descriptionBox
+  textarea::-webkit-scrollbar-thumb {
+  background-color: var(--text-color);
+  border-radius: 10px;
+  border: 1px solid var(--text-color);
+}
+.outerBox
+  .vLayer
+  .secondBoxDivider
+  .descriptionBox
+  textarea::-webkit-scrollbar-thumb:hover {
+  background-color: var(--main-color);
+  border: 1px solid var(--main-color);
 }
 
 .outerBox .thirdBoxDivider {
@@ -404,20 +453,20 @@
   flex-direction: column;
   align-self: center;
   align-content: center;
-  width: 50%;
+  width: 80%;
   color: whitesmoke;
   transition: all 1s ease-in-out;
   background-color: var(--second-bg-color);
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   border-radius: 1rem;
-  overflow: auto;
   z-index: 5;
 }
 .outerBox .iLayer-hide {
   border-radius: 1rem;
 }
 .outerBox .iLayer-show {
-  transform: translateY(470px);
+  padding-top: 5rem;
+  transform: translateY(800px);
   box-shadow: none;
 }
 
@@ -544,18 +593,13 @@
 /*! END */
 
 @media screen and (max-width: 2560px) {
-  .explore-menu {
-    gap: 100px;
-  }
-
-  .explore-content .content-wrapper .bgRecords .allBGtable-container {
-    height: 20000px !important;
-  }
-  .tabble-allBoardGames {
-    height: 20000px !important;
+  .outerBox .iLayer-show {
+    transform: translateY(670px);
+    box-shadow: none;
   }
 }
 
+/* macbook m3 */
 @media screen and (max-width: 1512px) {
   .explore-tables-area {
     margin-top: 0;
@@ -564,23 +608,9 @@
     gap: 0;
     justify-content: space-evenly;
   }
-  .explore-content .content-wrapper .bgRecords .table-responsive table caption {
-    padding-bottom: 1rem;
-  }
-  .explore-content .content-wrapper .bgRecords .table-responsive table thead {
-    top: 60px;
-    height: 50px;
-  }
 }
 
 @media screen and (max-width: 1440px) {
-  .explore-menu {
-    gap: 0;
-    justify-content: space-evenly;
-  }
-}
-
-@media screen and (max-width: 1024px) {
   explore-tables-area {
     padding-top: 0rem;
   }
@@ -609,6 +639,11 @@
     grid-row-start: 2;
     grid-row-end: 2;
   }
+
+  .outerBox .iLayer-show {
+    transform: translateY(665px);
+    box-shadow: none;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -620,11 +655,12 @@
   }
 
   .explore-menu {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     justify-items: center;
     align-content: center;
     justify-content: center;
+    width: 60vw;
   }
   .explore-menu .explore-option {
     width: 10rem;
@@ -635,6 +671,10 @@
   }
   .explore-menu .explore-option a {
     font-size: 1.5rem;
+  }
+
+  .outerBox .iLayer-show {
+    transform: translateY(700px);
   }
 
   .bgRankingsLists {
@@ -654,6 +694,7 @@
     flex-wrap: wrap;
     flex-direction: row;
     text-align: center;
+    width: 100vw;
     gap: 1rem;
   }
   .explore-menu .hiddenOption {
@@ -729,6 +770,10 @@
     flex-wrap: nowrap;
     align-items: center;
     height: fit-content;
+    gap: 2rem;
+  }
+  .outerBox .vLayer h1 {
+    font-size: 3rem;
   }
   .outerBox .vLayer .firstBoxDivider {
     flex-direction: column;
@@ -749,8 +794,7 @@
     width: 100% !important;
   }
   .outerBox .iLayer-show {
-    transform: translateY(450px);
-    box-shadow: none;
+    transform: translateY(765px);
   }
 }
 
@@ -758,5 +802,11 @@
   .explore-menu .explore-option {
     margin: 1rem;
     height: 10rem;
+  }
+  .outerBox .vLayer h1 {
+    font-size: 2.5rem;
+  }
+  .outerBox .iLayer-show {
+    transform: translateY(800px);
   }
 }

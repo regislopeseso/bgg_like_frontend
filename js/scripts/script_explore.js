@@ -591,8 +591,8 @@ $(document).ready(function () {
         `);
 
         $("#gameDescription").html(`
-          <h3><span>D</span>escription</h3>
-          <p>${game.boardGameDescription}</p>
+          <h3><span rows="3">D</span>escription</h3>
+          <textarea>${game.boardGameDescription}</textarea>
         `);
 
         $("#gameSessions tbody").empty();
