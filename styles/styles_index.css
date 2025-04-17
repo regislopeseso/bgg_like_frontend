@@ -1,59 +1,79 @@
 .home {
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  padding: 0 2rem;
-}
-.home-flexbox {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
-  align-content: center;
-}
-.home-content h3 {
-  font-size: 3rem;
-  font-weight: 700;
+  width: 100vw;
+  padding: 10rem 10rem;
 }
 
+/*  */
+/*  */
+.home-flexbox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+/*? ?*/
+.home-content {
+  text-align: start;
+}
 .home-content h1 {
-  font-size: 5.5rem;
+  font-size: clamp(2.5rem, 2.5vw, 5rem);
   font-weight: 700;
   line-height: 1.3;
 }
-.home-content p {
-  font-size: 1.5rem;
-}
-.home-img {
-  width: 35vw;
-  height: 35vw;
-  border-radius: 50%;
-  background-color: var(--main-color);
-  box-shadow: 0 0 1rem var(--main-color);
-  animation: floatImage 3s ease-in-out infinite;
-  z-index: 10;
-}
-.home-img img {
-  width: 20vw;
-  border-radius: 50%;
-  animation: floatImage 3s ease-in-out infinite;
+.home-content h3 {
+  font-size: clamp(1.5rem, 1vw, 3rem);
+  font-weight: 500;
 }
 
-.home-wrapper {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 2;
+/*? ?*/
+.social-media a {
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  width: clamp(7rem, 5vw, 10rem);
+  height: clamp(7rem, 5vw, 10rem);
+  background-color: transparent;
+  border: 5px solid var(--main-color);
+  border-radius: 50%;
+  color: var(--main-color);
+  margin: 3rem 1.5rem 3rem 0;
+  transition: all 0.7s;
+}
+.social-media a:hover {
+  background-color: var(--main-color);
+  color: var(--second-bg-color);
+  box-shadow: 0 0 1rem var(--main-color);
+  transform: scale(1.1);
+}
+.social-media a img {
+  align-items: center;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 50%;
+  margin-top: auto;
 }
 
+/*  */
+/*  */
+.home-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 1;
+}
 .blue-ball {
   position: absolute;
-  min-width: 250px;
-  min-height: 250px;
-  width: 25vw;
-  height: 25vw;
-  max-width: 800px;
-  max-height: 800px;
+  height: calc(250px + 15vw);
+  width: calc(250px + 15vw);
   border-radius: 50%;
   box-shadow: 0 0 5rem var(--main-color);
   animation: floatImage 5s ease-in-out infinite;
@@ -61,7 +81,7 @@
 }
 .grid {
   display: grid;
-  gap: 10px;
+  gap: 1.5rem;
   grid-template-rows: auto;
   grid-template-columns: repeat(5, 1fr);
   z-index: 3;
@@ -73,9 +93,10 @@
   justify-self: center;
 }
 .el {
-  width: 50px;
-  height: 50px;
+  width: clamp(6rem, 5vw, 10rem);
+  height: clamp(6rem, 5vw, 10rem);
   overflow: hidden;
+  box-shadow: 0.5rem 0.5rem 1rem black;
   border-radius: 50%;
 }
 .el:hover {
@@ -103,56 +124,29 @@
   gap: 10px;
 }
 
-.social-media a {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 10rem;
-  height: 10rem;
-  background-color: transparent;
-  border: 5px solid var(--main-color);
-  border-radius: 50%;
-  font-size: 2rem;
-  color: var(--main-color);
-  margin: 3rem 1.5rem 3rem 0;
-  transition: all 0.7s;
-}
-.social-media a:hover {
-  background-color: var(--main-color);
-  color: var(--second-bg-color);
-  box-shadow: 0 0 1rem var(--main-color);
-  transform: scale(1.1);
-}
-
-.social-media a img {
-  align-items: center;
-  max-width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 50%;
-  margin-top: auto;
-}
 .btn {
   display: inline-block;
-  padding: 1rem 2.5rem;
-  background-color: var(--main-color);
-  border-radius: 4rem;
+  padding: 1rem 2rem;
+  border-top-right-radius: 10rem;
+  border-top-left-radius: 10rem;
   box-shadow: 0 0 1rem var(--main-color);
   font-weight: 700;
   color: var(--second-bg-color);
-  letter-spacing: 2px;
+  letter-spacing: 5px;
+}
+.btn .spanB {
+  color: var(--text-color);
 }
 .btn:hover {
-  box-shadow: none;
-}
-.top10 {
+  box-shadow: 0 0 2rem var(--text-color);
   color: var(--text-color);
-  background-color: rgba(var(--second-bg-color), 0.5);
+  background-color: var(--bg-color);
 }
-
-.top10:hover {
-  color: var(--text-color);
-  background-color: rgba(0, 238, 255, 0.2);
+.btn:hover .spanA {
+  color: var(--reddish);
+}
+.btn:hover .spanB {
+  color: var(--main-color);
 }
 
 @keyframes floatImage {
@@ -164,5 +158,109 @@
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .home {
+    padding: 8rem 5rem;
+    margin-bottom: 0;
+  }
+  .social-media {
+    padding-bottom: 5rem;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .home {
+    padding: 8rem 2rem;
+    margin-bottom: 0;
+  }
+  .home-flexbox {
+    justify-content: start;
+  }
+  .social-media {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .social-media a {
+    margin: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .home {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: 100vh;
+  }
+  .home-flexbox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-self: center;
+    padding-bottom: 2rem;
+  }
+  .social-media {
+    align-content: center;
+    padding-bottom: 0;
+  }
+}
+@media screen and (max-height: 800px) {
+  .home {
+    margin-bottom: 100px + 10vh;
+  }
+}
+@media screen and (max-width: 425px) {
+  .home {
+    display: flex;
+    padding: 8rem 2rem;
+  }
+  .home-flexbox {
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0;
+  }
+
+  .home-content {
+    width: 100%;
+    padding-bottom: 2rem;
+  }
+
+  .social-media {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding-bottom: 2rem;
+  }
+  .social-media a {
+    border: 2px solid var(--main-color);
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .el-1 {
+    grid-column: 2 / span 1;
+  }
+  .el-2 {
+    grid-column: 3 / span 2;
+  }
+  .el-3 {
+    grid-column: 2 / span 1;
+  }
+  .el-4 {
+    grid-column: 3 / span 1;
+  }
+  .el-5 {
+    grid-column: 4 / span 1;
+  }
+  .el-6 {
+    grid-column: 1 / span 1;
+  }
+  .el-7 {
+    grid-column: 2 / span 1;
+  }
+  .el-8 {
+    grid-column: 3 / span 2;
   }
 }
