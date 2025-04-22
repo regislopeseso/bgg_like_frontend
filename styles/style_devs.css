@@ -1,0 +1,105 @@
+.flip-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 5rem 0rem;
+  margin: 0;
+  height: 100vh;
+  justify-content: center;
+}
+.flip-card-wrapper p {
+  color: var(--text-color);
+}
+
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  align-self: center;
+  background-color: transparent;
+  max-width: 400px;
+  width: 50vw;
+  min-width: 250px;
+  max-height: 1000px;
+  height: 50vw;
+  min-height: 250px;
+  border: 1px solid var(--bg-color);
+  border-radius: 2rem;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  perspective: 10000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 1.5s;
+  transform-style: preserve-3d;
+}
+
+/* Position the front and back side */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 2rem;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  padding: 2rem;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  background-color: var(--second-bg-color);
+  align-items: start;
+}
+.flip-card-front form {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 100%;
+  height: 100%;
+}
+.flip-card-front form .input-wrapper {
+  flex: 3;
+}
+.flip-card-front input {
+  justify-self: center;
+}
+.flip-card-front p {
+  padding-top: 10px;
+  text-align: start;
+  justify-self: start;
+}
+.flip-card-front form .button-wrapper {
+  flex: 1;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 60px;
+}
+/* Style the back side */
+.flip-card-back {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--second-bg-color);
+  color: white;
+  transform: rotateY(180deg);
+}
+.flip-card-back #seedBg,
+.flip-card-back #deleteSeededBg {
+  align-self: center;
+  text-align: center;
+  width: 200px;
+  height: 60px;
+}
+
+.flip-card-back #logOut-flipper {
+  align-self: center;
+  width: 200px;
+  height: 60px;
+}

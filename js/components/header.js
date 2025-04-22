@@ -8,9 +8,9 @@ function loadHeader() {
         <div class="navOptions">
           <a href="index.html">HOME</a>
           <a href="explore.html">EXPLORE</a>
-          <a href="teste.html">USER</a>
-          <a href="#portfolio">ADMIN</a>
-          <a href="#contact">DEV</a>
+          <a href="users.html">USER</a>
+          <a href="admins.html">ADMIN</a>
+          <a href="devs.html">DEV</a>
         </div>
 
         <div class="navHamburger">
@@ -28,13 +28,13 @@ function loadHeader() {
                     <a class="nav-link" href="explore.html">EXPLORE</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="teste.html">USER</a>
+                    <a class="nav-link" href="users.html">USER</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#portfolio">ADMIN</a>
+                    <a class="nav-link" href="admins.html">ADMIN</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#contact">DEV</a>
+                    <a class="nav-link" href="devs.html">DEV</a>
                   </li>
                 </ul>
               </div>

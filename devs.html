@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DEV</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="node_modules/select2/dist/css/select2.min.css"
+    />
+    <link rel="stylesheet" href="styles/style_general.css" />
+    <link rel="stylesheet" href="styles/style_header.css" />
+    <link rel="stylesheet" href="styles/loaders.css" />
+    <link rel="stylesheet" href="styles/style_devs.css" />
+    <link rel="stylesheet" href="styles/style_footer.css" />
+  </head>
+
+  <body>
+    <div class="flip-card-wrapper">
+      <h3><span>DEV</span>LOPERS ZONE</h3>
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <form>
+              <div class="input-wrapper">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="devsPassword"
+                  placeholder="Enter the devs password"
+                />
+                <p>Access to restricted dev tools</p>
+              </div>
+              <button
+                class="button-wrapper btn btn-outline-info"
+                type="submit"
+                id="logIn-flipper"
+                disabled
+              >
+                Log in
+              </button>
+            </form>
+          </div>
+          <div class="flip-card-back">
+            <button class="btn btn-outline-danger" id="seedBg" type="submit">
+              Seed Board Games
+            </button>
+            <button
+              class="btn btn-outline-danger"
+              id="deleteSeededBg"
+              type="submit"
+            >
+              Delete Seeded Board Games
+            </button>
+            <button
+              class="btn btn-outline-info"
+              id="logOut-flipper"
+              type="submit"
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/components/header.js"></script>
+    <script src="js/components/footer.js"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/select2/dist/js/select2.min.js"></script>
+    <script src="js/scripts/script_devs.js"></script>
+    <script src="js/scripts/loader.js"></script>
+  </body>
+</html>
