@@ -22,9 +22,8 @@ $(document).ready(function () {
       $.ajax({
         method: "POST",
         url: "https://localhost:7081/devs/seed",
-        data: {},
-        dataType: "JSON",
-        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({}),
+        contentType: "application/json",
         success: function (response) {
           console.log("Seeded successfully:", response);
         },
