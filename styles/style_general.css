@@ -2,11 +2,11 @@
 @import "/node_modules/bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
-  --bg-color: rgb(31, 36, 46);
+  --bg-color: #1f242e;
   --second-bg-color: rgb(50, 57, 70);
   --text-color: rgb(255, 255, 255);
   --main-color: rgb(0, 238, 255);
-  --reddish: #f30;
+  --reddish: #ff33000;
 }
 
 * {

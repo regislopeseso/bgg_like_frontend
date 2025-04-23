@@ -21,14 +21,15 @@
     />
     <link rel="stylesheet" href="styles/style_general.css" />
     <link rel="stylesheet" href="styles/style_header.css" />
-    <link rel="stylesheet" href="styles/loaders.css" />
     <link rel="stylesheet" href="styles/style_devs.css" />
     <link rel="stylesheet" href="styles/style_footer.css" />
+    <link rel="stylesheet" href="styles/loaders.css" />
+    <link rel="stylesheet" href="loading-bar/dist/loading-bar.min.css" />
   </head>
 
   <body>
     <div class="flip-card-wrapper">
-      <h3><span>DEV</span>LOPERS ZONE</h3>
+      <h3><span>DEV</span>ELOPERS ZONE</h3>
       <div class="flip-card">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -40,36 +41,87 @@
                   id="devsPassword"
                   placeholder="Enter the devs password"
                 />
-                <p>Access to restricted dev tools</p>
+                <p>Access to restricted dev tools:</p>
+                <p>*Seed/Delete Board Games testing data</p>
+                <p>*Seed/Delete Medieval battler data</p>
               </div>
               <button
                 class="button-wrapper btn btn-outline-info"
                 type="submit"
                 id="logIn-flipper"
-                disabled
               >
                 Log in
               </button>
             </form>
           </div>
           <div class="flip-card-back">
-            <button class="btn btn-outline-danger" id="seedBg" type="submit">
-              Seed Board Games
-            </button>
-            <button
-              class="btn btn-outline-danger"
-              id="deleteSeededBg"
-              type="submit"
-            >
-              Delete Seeded Board Games
-            </button>
-            <button
-              class="btn btn-outline-info"
-              id="logOut-flipper"
-              type="submit"
-            >
-              Log out
-            </button>
+            <div class="bgBlock">
+              <div class="upperBlock">
+                <div class="bgBlock-Text">
+                  <h6><span>B</span>oard</h6>
+                  <h6><span>G</span>ames</h6>
+                </div>
+                <button
+                  class="btn btn-outline-danger"
+                  id="seedBg"
+                  type="submit"
+                >
+                  Seed
+                </button>
+                <div class="separator"><h2>-</h2></div>
+                <button
+                  class="btn btn-outline-danger"
+                  id="deleteSeededBg"
+                  type="submit"
+                >
+                  Delete
+                </button>
+              </div>
+
+              <div class="lowerBlock">
+                <div class="bg-progressBar"></div>
+              </div>
+            </div>
+            <div class="bgBlock-Img">
+              <img src="images/icons/board-game.png" alt="" />
+            </div>
+            <div class="mabBlock">
+              <div class="upperBlock">
+                <div class="mabBlock-Text">
+                  <h6><span>M</span>edieval</h6>
+                  <h6><span>B</span>attler</h6>
+                </div>
+                <button
+                  class="btn btn-outline-danger"
+                  id="seedMab"
+                  type="submit"
+                >
+                  Seed
+                </button>
+                <div class="separator"><h2>-</h2></div>
+                <button
+                  class="btn btn-outline-danger"
+                  id="deleteSeededMab"
+                  type="submit"
+                >
+                  Delete
+                </button>
+              </div>
+
+              <div class="lowerBlock">
+                <div class="mab-progressBar"></div>
+              </div>
+            </div>
+
+            <div class="logOutBlock">
+              <button
+                class="btn btn-outline-info"
+                id="logOut-flipper"
+                type="submit"
+              >
+                Log out
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -81,5 +133,6 @@
     <script src="node_modules/select2/dist/js/select2.min.js"></script>
     <script src="js/scripts/script_devs.js"></script>
     <script src="js/scripts/loader.js"></script>
+    <script src="loading-bar/dist/loading-bar.min.js"></script>
   </body>
 </html>
