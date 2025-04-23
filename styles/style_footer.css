@@ -38,7 +38,12 @@
   font-size: 1rem;
   color: var(--second-bg-color);
 }
-
+.credits {
+  font-size: 0.6rem !important;
+}
+.credits a {
+  color: var(--text-color);
+}
 @media screen and (max-width: 1200px) {
 }
 @media screen and (max-width: 991px) {

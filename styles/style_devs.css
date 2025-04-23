@@ -1,10 +1,8 @@
+.devs-zone,
 .flip-card-wrapper {
   display: flex;
   flex-direction: column;
   text-align: center;
-  padding: 5rem 0rem;
-  margin: 0;
-  height: 100vh;
   justify-content: center;
 }
 .flip-card-wrapper p {
@@ -18,7 +16,7 @@
   max-width: 400px;
   width: 50vw;
   min-width: 300px;
-  max-height: 500px;
+  max-height: 600px;
   height: 50vw;
   min-height: 350px;
   border: 1px solid var(--bg-color);
@@ -64,6 +62,7 @@
 }
 .flip-card-front input {
   justify-self: center;
+  margin: 5px;
 }
 .flip-card-front p {
   padding-top: 10px;
@@ -88,20 +87,29 @@
   color: white;
   transform: rotateY(180deg);
 }
-.bgBlock {
+
+.hiddenBlock,
+.bgBlock,
+.mabBlock {
   display: flex;
   flex-direction: column;
   border: 2px solid var(--bg-color);
   border-radius: 5px;
   padding: 15px;
+  margin-bottom: 5px;
 }
+
+.hiddenBlock {
+  display: none;
+}
+
 .upperBlock {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
-.bgBlock-Text {
+.Block-Text {
   transform: rotate(-45deg);
   padding-right: 20px;
 }
@@ -116,19 +124,6 @@
   font-weight: 1;
   margin: 0rem;
   padding-bottom: 15px;
-}
-
-.mabBlock {
-  display: flex;
-  flex-direction: column;
-  border: 2px solid var(--bg-color);
-  border-radius: 5px;
-  padding: 15px;
-}
-.mabBlock-Text {
-  transform: rotate(-45deg);
-  padding-right: 10px;
-  word-wrap: nowrap;
 }
 
 #seedBg,

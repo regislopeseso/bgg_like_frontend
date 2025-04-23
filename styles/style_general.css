@@ -29,9 +29,13 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
+main {
+  width: 100vw;
+  height: 100vh;
+  padding: 10rem;
+}
 
 section {
-  height: 100vh;
   z-index: 80;
 }
 span {
@@ -71,7 +75,7 @@ span {
 }
 @media screen and (max-width: 576px) {
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 575px) {
   html {
     font-size: 60%;
   }

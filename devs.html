@@ -28,104 +28,144 @@
   </head>
 
   <body>
-    <div class="flip-card-wrapper">
-      <h3><span>DEV</span>ELOPERS ZONE</h3>
-      <div class="flip-card">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <form>
-              <div class="input-wrapper">
-                <input
-                  type="password"
-                  class="form-control"
-                  id="devsPassword"
-                  placeholder="Enter the devs password"
-                />
-                <p>Access to restricted dev tools:</p>
-                <p>*Seed/Delete Board Games testing data</p>
-                <p>*Seed/Delete Medieval battler data</p>
-              </div>
-              <button
-                class="button-wrapper btn btn-outline-info"
-                type="submit"
-                id="logIn-flipper"
-              >
-                Log in
-              </button>
-            </form>
-          </div>
-          <div class="flip-card-back">
-            <div class="bgBlock">
-              <div class="upperBlock">
-                <div class="bgBlock-Text">
-                  <h6><span>B</span>oard</h6>
-                  <h6><span>G</span>ames</h6>
+    <main>
+      <section class="devs-zone">
+        <h3><span>DEV</span>ELOPERS ZONE</h3>
+      </section>
+      <section class="flip-card-wrapper">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <form>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="devsLogin"
+                    placeholder="Enter your Login"
+                  />
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="devsPassword"
+                    placeholder="Enter your Password"
+                  />
+                  <p>Access to restricted dev tools:</p>
+                  <p>*Seed/Delete Board Games testing data</p>
+                  <p>*Seed/Delete Medieval battler data</p>
                 </div>
                 <button
-                  class="btn btn-outline-danger"
-                  id="seedBg"
+                  class="button-wrapper btn btn-outline-info"
                   type="submit"
+                  id="logIn-flipper"
                 >
-                  Seed
+                  Log in
                 </button>
-                <div class="separator"><h2>-</h2></div>
-                <button
-                  class="btn btn-outline-danger"
-                  id="deleteSeededBg"
-                  type="submit"
-                >
-                  Delete
-                </button>
-              </div>
-
-              <div class="lowerBlock">
-                <div class="bg-progressBar"></div>
-              </div>
+              </form>
             </div>
-            <div class="bgBlock-Img">
-              <img src="images/icons/board-game.png" alt="" />
-            </div>
-            <div class="mabBlock">
-              <div class="upperBlock">
-                <div class="mabBlock-Text">
-                  <h6><span>M</span>edieval</h6>
-                  <h6><span>B</span>attler</h6>
+            <div class="flip-card-back">
+              <div class="hiddenBlock">
+                <div class="upperBlock">
+                  <div class="Block-Text">
+                    <h6><span>D</span>ev</h6>
+                    <h6><span>U</span>ser</h6>
+                  </div>
+                  <button
+                    class="btn btn-outline-danger"
+                    id="seedBg"
+                    type="submit"
+                  >
+                    Create
+                  </button>
+                  <div class="separator"><h2>-</h2></div>
+                  <button
+                    class="btn btn-outline-danger"
+                    id="deleteSeededBg"
+                    type="submit"
+                  >
+                    Delete
+                  </button>
                 </div>
-                <button
-                  class="btn btn-outline-danger"
-                  id="seedMab"
-                  type="submit"
-                >
-                  Seed
-                </button>
-                <div class="separator"><h2>-</h2></div>
-                <button
-                  class="btn btn-outline-danger"
-                  id="deleteSeededMab"
-                  type="submit"
-                >
-                  Delete
-                </button>
+
+                <div class="lowerBlock">
+                  <div class="bg-progressBar"></div>
+                </div>
               </div>
 
-              <div class="lowerBlock">
-                <div class="mab-progressBar"></div>
+              <div class="imgBlock">
+                <img src="images/icons/board-game.png" alt="" />
               </div>
-            </div>
 
-            <div class="logOutBlock">
-              <button
-                class="btn btn-outline-info"
-                id="logOut-flipper"
-                type="submit"
-              >
-                Log out
-              </button>
+              <div class="bgBlock">
+                <div class="upperBlock">
+                  <div class="Block-Text">
+                    <h6><span>B</span>oard</h6>
+                    <h6><span>G</span>ames</h6>
+                  </div>
+                  <button
+                    class="btn btn-outline-danger"
+                    id="seedBg"
+                    type="submit"
+                  >
+                    Seed
+                  </button>
+                  <div class="separator"><h2>-</h2></div>
+                  <button
+                    class="btn btn-outline-danger"
+                    id="deleteSeededBg"
+                    type="submit"
+                  >
+                    Delete
+                  </button>
+                </div>
+
+                <div class="lowerBlock">
+                  <div class="bg-progressBar"></div>
+                </div>
+              </div>
+
+              <div class="mabBlock">
+                <div class="upperBlock">
+                  <div class="Block-Text">
+                    <h6><span>M</span>edieval</h6>
+                    <h6><span>B</span>attler</h6>
+                  </div>
+                  <button
+                    class="btn btn-outline-danger"
+                    id="seedMab"
+                    type="submit"
+                  >
+                    Seed
+                  </button>
+                  <div class="separator"><h2>-</h2></div>
+                  <button
+                    class="btn btn-outline-danger"
+                    id="deleteSeededMab"
+                    type="submit"
+                  >
+                    Delete
+                  </button>
+                </div>
+
+                <div class="lowerBlock">
+                  <div class="mab-progressBar"></div>
+                </div>
+              </div>
+
+              <div class="logOutBlock">
+                <button
+                  class="btn btn-outline-info"
+                  id="logOut-flipper"
+                  type="submit"
+                >
+                  Log out
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <script src="js/components/header.js"></script>
     <script src="js/components/footer.js"></script>

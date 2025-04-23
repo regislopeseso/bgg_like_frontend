@@ -5,16 +5,16 @@ function loadFooter() {
     <footer class="footer">
       <div class="footer-text">
         <p>Copyright &copy; by JPR Trainings</p>
+        <div class="credits">
+          *Icons sources:
+          <a href="https://loading.io/"> LOADING IO</a>
+          and
+          <a href="https://www.flaticon.com/"
+            >FLATICON</a
+          >
+        </div>
       </div>
 
-      <div>
-      Icons sources:
-      <a href="https://loading.io/"> LOADING IO</a>
-      and
-      <a href="https://www.flaticon.com/" title="Flaticon"
-          >FLATICON</a
-        >
-      </div>
       <div class="top-icon">
         <a href="#"><i class="fa-solid fa-arrow-up"></i></a>
       </div>
