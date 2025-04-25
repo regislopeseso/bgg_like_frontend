@@ -27,12 +27,196 @@
   </head>
   <body>
     <main>
-      <section class="userLoginBox">
-        <div>
-          <h1>Welcome User!</h1>
-          <h2>What would you like to do?</h2>
-          <h3>Log In</h3>
-          <h3>Sign Up</h3>
+      <section
+        class="d-flex flex-column align-items-center justify-content-center entryBox"
+      >
+        <div class="text-center no-select">
+          <h1 id="welcomingText1"></h1>
+          <h3 id="welcomingText2"></h3>
+        </div>
+        <div class="d-flex flex-row justify-content-center visitorOptions">
+          <div class="me-5 signUpOption no-select" id="signUp">
+            <h1>Sign</h1>
+            <h1>Up <i class="bi bi-pencil-square"></i></h1>
+          </div>
+
+          <div class="signInOption no-select" id="signIn">
+            <h1>Sign</h1>
+            <h1>In <i class="bi bi-person-vcard"></i></h1>
+          </div>
+        </div>
+      </section>
+      <section class="d-flex">
+        <div class="signUpBox">
+          <div class="flip-card-wrapper">
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <form id="signUp-form">
+                    <div class="input-wrapper">
+                      <input
+                        name="UserName"
+                        type="text"
+                        class="form-control"
+                        id="newUserName"
+                        placeholder="Enter your name"
+                      />
+                      <input
+                        name="UserEmail"
+                        type="email"
+                        class="form-control"
+                        id="newUserEmail"
+                        placeholder="Enter your email"
+                      />
+                      <input
+                        name="Password"
+                        type="password"
+                        class="form-control"
+                        id="newUserPassword"
+                        placeholder="Enter your Password"
+                      />
+                      <input
+                        name="UserBirthDate"
+                        type="date"
+                        class="form-control"
+                        id="newUserBirthdate"
+                        placeholder="Enter your birth date"
+                      />
+                    </div>
+                    <button
+                      class="button-wrapper btn btn-outline-info"
+                      type="submit"
+                    >
+                      Confirm
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="signInBox">
+          <div class="flip-card-wrapper">
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <form>
+                    <div class="input-wrapper">
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="newUser-Name"
+                        placeholder="Enter your email"
+                      />
+
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="devsPassword"
+                        placeholder="Enter your Password"
+                      />
+                    </div>
+                    <button
+                      class="button-wrapper btn btn-outline-info"
+                      type="submit"
+                      id="confirm-SignIn"
+                    >
+                      Confirm
+                    </button>
+                  </form>
+                </div>
+                <div class="flip-card-back">
+                  <div class="hiddenBlock">
+                    <div class="upperBlock">
+                      <div class="Block-Text">
+                        <h6><span>D</span>ev</h6>
+                        <h6><span>U</span>ser</h6>
+                      </div>
+                      <button
+                        class="btn btn-outline-danger"
+                        id="addDevUser"
+                        type="submit"
+                      >
+                        Create
+                      </button>
+                      <div class="separator"><h2>-</h2></div>
+                      <button
+                        class="btn btn-outline-danger"
+                        id="deleteDevUser"
+                        type="submit"
+                      >
+                        Delete
+                      </button>
+                    </div>
+
+                    <div class="lowerBlock">
+                      <div class="bg-progressBar"></div>
+                    </div>
+                  </div>
+
+                  <div class="imgBlock">
+                    <img src="images/icons/board-game.png" alt="" />
+                  </div>
+
+                  <div class="bgBlock">
+                    <div class="upperBlock">
+                      <div class="Block-Text">
+                        <h6><span>B</span>oard</h6>
+                        <h6><span>G</span>ames</h6>
+                      </div>
+                      <button class="btn btn-outline-danger" id="seedBg">
+                        Seed
+                      </button>
+                      <div class="separator"><h2>-</h2></div>
+                      <button
+                        class="btn btn-outline-danger"
+                        id="deleteSeededBg"
+                      >
+                        Delete
+                      </button>
+                    </div>
+
+                    <div class="lowerBlock">
+                      <div class="bg-progressBar"></div>
+                    </div>
+                  </div>
+
+                  <div class="mabBlock">
+                    <div class="upperBlock">
+                      <div class="Block-Text">
+                        <h6><span>M</span>edieval</h6>
+                        <h6><span>B</span>attler</h6>
+                      </div>
+                      <button class="btn btn-outline-danger" id="seedMab">
+                        Seed
+                      </button>
+                      <div class="separator"><h2>-</h2></div>
+                      <button
+                        class="btn btn-outline-danger"
+                        id="deleteSeededMab"
+                      >
+                        Delete
+                      </button>
+                    </div>
+
+                    <div class="lowerBlock">
+                      <div class="mab-progressBar"></div>
+                    </div>
+                  </div>
+
+                  <div class="logOutBlock">
+                    <button
+                      class="btn btn-outline-info"
+                      id="logOut-flipper"
+                      type="submit"
+                    >
+                      Log out
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>

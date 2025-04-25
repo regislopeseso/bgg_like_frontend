@@ -16,10 +16,10 @@ $(document).ready(function () {
       $(".flip-card-inner").css("transform", "rotateY(180deg)");
     });
 
-    $("#logIn-flipper").on("dblclick", function (e) {
-      $(".imgBlock").hide();
-      $(".hiddenBlock").show();
-    });
+    // $("#logIn-flipper").on("dblclick", function (e) {
+    //   $(".imgBlock").hide();
+    //   $(".hiddenBlock").show();
+    // });
 
     $("#seedBg").on("click", function (e) {
       e.preventDefault();
