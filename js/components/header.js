@@ -4,13 +4,15 @@ function loadHeader() {
   header.innerHTML = `
     <header class="header">
       <a href="index.html" class="logo">BBG <span>LIKE</span></a>
+      <span><h1 class="m-0"><i class="bi bi-person-vcard m-0 loggedIn-clearance"></i></h1></span>
       <nav class="navbar">
         <div class="navOptions">
           <a href="index.html">HOME</a>
           <a href="explore.html">EXPLORE</a>
-          <a href="users.html">USER</a>
-          <a href="admins.html">ADMIN</a>
-          <a href="devs.html">DEV</a>
+          <a class="anonymous-clearance" href="users_authentication.html">USER</a>
+          <a class="admins-clearance d-none" href="admins.html">ADMIN</a>
+          <a class="devs-clearance d-none" href="devs.html">DEV</a>
+          <a class="loggedIn-clearance logOut d-none" href="#">Log out</a>
         </div>
 
         <div class="navHamburger">
@@ -28,13 +30,16 @@ function loadHeader() {
                     <a class="nav-link" href="explore.html">EXPLORE</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="users.html">USER</a>
+                    <a class="nav-link anonymous-clearance" href="users_authentication.html">USER</a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item admins-clearance d-none">
                     <a class="nav-link" href="admins.html">ADMIN</a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item devs-clearance d-none">
                     <a class="nav-link" href="devs.html">DEV</a>
+                  </li>
+                  <li class="nav-item loggedIn-clearance d-none">
+                    <a class="nav-link logOut" href="#">Log out</a>
                   </li>
                 </ul>
               </div>
@@ -47,4 +52,61 @@ function loadHeader() {
   document.body.appendChild(header);
 }
 
-document.addEventListener("DOMContentLoaded", loadHeader);
+document.addEventListener("DOMContentLoaded", async function () {
+  loadHeader();
+
+  // Wait a little bit to ensure header is fully added
+  setTimeout(async function () {
+    // Fetch user status
+    const userData = await fetch(
+      "https://localhost:7081/users/validatestatus",
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    ).then((response) => response.json());
+
+    if (userData.content.isUserLoggedIn) {
+      // Fetch user role
+      const roleData = await fetch("https://localhost:7081/users/getrole", {
+        method: "GET",
+        credentials: "include",
+      }).then((response) => response.json());
+
+      if (roleData.content.role === "Developer") {
+        $(".anonymous-clearance").addClass("d-none");
+        $(".devs-clearance").removeClass("d-none");
+        $(".loggedIn-clearance").removeClass("d-none");
+      } else if (roleData.content.role === "Administrator") {
+        $(".admins-clearance").removeClass("d-none");
+        $(".loggedIn-clearance").removeClass("d-none");
+      } else if (roleData.content.role === "User") {
+        $(".devs-clearance").addClass("d-none");
+        $(".admins-clearance").addClass("d-none");
+        $(".loggedIn-clearance").removeClass("d-none");
+      }
+
+      // Attach logout event after role is handled
+      $(".logOut").on("click", async function (e) {
+        e.preventDefault();
+
+        const response = await fetch("https://localhost:7081/users/signout", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => res.json());
+
+        if (response.content?.isUserSignOut) {
+          // Successfully logged out
+          window.location.href = "users_authentication.html";
+        } else {
+          alert("Failed to log out. Please try again.");
+        }
+      });
+    } else {
+      window.location.href = "users_authentication.html"; // If not logged in
+    }
+  }, 100); // Small timeout to wait header rendering
+});

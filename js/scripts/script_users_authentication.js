@@ -75,7 +75,28 @@ $(document).ready(function () {
         $(this).serialize(),
         function (response) {}
       )
-        .done(function (response) {})
+        .done(function (response) {
+          $("#welcomeTexts").addClass("d-none");
+          $(".signUpBox").hide("slow");
+          $("#signIn-Button").html(`Sign In`);
+
+          $(".signInBox")
+            .css({
+              display: "block",
+              marginLeft: "auto", // Align to left
+
+              opacity: 0,
+            })
+            .animate(
+              {
+                width: "100%", // Expand to full width
+                opacity: 1,
+              },
+              "slow"
+            );
+
+          $("#signUpSucess").removeClass("d-none");
+        })
         .fail(function (response) {})
         .always(function (response) {});
     });
@@ -99,6 +120,34 @@ $(document).ready(function () {
           },
           "slow"
         );
+    });
+
+    $("#signIn-form").on("submit", function (e) {
+      e.preventDefault();
+
+      $.ajax({
+        type: "POST",
+        url: "https://localhost:7081/users/signin",
+        data: $(this).serialize(),
+        xhrFields: {
+          withCredentials: true,
+        },
+        success: function (response) {
+          if (
+            response.message &&
+            response.message.includes("signed in successfully")
+          ) {
+            window.location.href = "users_page.html";
+          } else {
+            alert(response.message || "Login failed");
+            window.location.href = "users_authentication.html";
+          }
+        },
+        error: function (response) {
+          console.log(response);
+          alert("Login failed");
+        },
+      });
     });
   }
 
