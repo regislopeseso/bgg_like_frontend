@@ -4,7 +4,8 @@ function loadHeader() {
   header.innerHTML = `
     <header class="header">
       <a href="index.html" class="logo">BBG <span>LIKE</span></a>
-      <span><h1 class="m-0"><i class="bi bi-person-vcard m-0 loggedIn-clearance"></i></h1></span>
+      
+      
       <nav class="navbar">
         <div class="navOptions">
           <a href="index.html">HOME</a>
@@ -12,7 +13,7 @@ function loadHeader() {
           <a class="anonymous-clearance" href="users_authentication.html">USER</a>
           <a class="admins-clearance d-none" href="admins.html">ADMIN</a>
           <a class="devs-clearance d-none" href="devs.html">DEV</a>
-          <a class="loggedIn-clearance logOut d-none" href="#">Log out</a>
+          <div class="profile-configs loggedIn-clearance">                                  
         </div>
 
         <div class="navHamburger">
@@ -37,10 +38,7 @@ function loadHeader() {
                   </li>
                   <li class="nav-item devs-clearance d-none">
                     <a class="nav-link" href="devs.html">DEV</a>
-                  </li>
-                  <li class="nav-item loggedIn-clearance d-none">
-                    <a class="nav-link logOut" href="#">Log out</a>
-                  </li>
+                  </li>        
                 </ul>
               </div>
             </div>
@@ -100,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (response.content?.isUserSignOut) {
           // Successfully logged out
-          window.location.href = "users_authentication.html";
+          window.location.href = "index.html";
         } else {
           alert("Failed to log out. Please try again.");
         }

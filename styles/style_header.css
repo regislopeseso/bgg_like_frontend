@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  overflow: hidden;
+  /* overflow: hidden; */
   z-index: 100;
 }
 .header .logo {

@@ -17,18 +17,59 @@
     />
     <link
       rel="stylesheet"
+      href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
       href="node_modules/select2/dist/css/select2.min.css"
     />
+    <link rel="stylesheet" href="styles/loaders.css" />
+
     <link rel="stylesheet" href="styles/style_general.css" />
     <link rel="stylesheet" href="styles/style_header.css" />
-    <link rel="stylesheet" href="styles/loaders.css" />
     <link rel="stylesheet" href="styles/style_users_page.css" />
     <link rel="stylesheet" href="styles/style_footer.css" />
   </head>
   <body>
-    <main>
-      <section id="status-loggedIn">
-        <div>
+    <main class="ps-0 pe-0">
+      <section class="users-menu d-flex flex-row">
+        <div
+          class="bg-options d-flex flex-row justify-content-center flex-fill w-100"
+        >
+          <div class="border p-2">
+            <a href="" id="playGame"><span>P</span>lay</a>
+          </div>
+          <div class="border p-2">
+            <a href="" id="logSession"><span>L</span>og Session</a>
+          </div>
+          <div class="border p-2">
+            <a href="" id="editSession"><span>E</span>dit Session</a>
+          </div>
+          <div class="border p-2">
+            <a href="" id="deleteSession"><span>D</span>elete Session</a>
+          </div>
+          <div class="border p-2">
+            <a href="" id="rateBg"><span>R</span>ate</a>
+          </div>
+          <div class="border p-2">
+            <a href="" id="editRate"><span>E</span>dit Rate</a>
+          </div>
+          <div class="border p-2">
+            <a href="" id="newLifeCounter"><span>N</span>ew Life Counter</a>
+          </div>
+        </div>
+        <div class="profile-options d-flex flex-fill flex-row">
+          <div class="border p-2">
+            <a href="" id="editProfile"><span>Edit </span>Profile</a>
+          </div>
+          <div class="border p-2">
+            <a href="" id="deleteProfile"><span>Delete </span>Profile</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="users-content" class="d-none">
+        <div class="">
           <h3>Edit Profile</h3>
           <form id="editProfile-form">
             <div class="input-wrapper">
@@ -70,10 +111,13 @@
     </main>
 
     <script src="js/components/header.js"></script>
-    <script src="js/components/footer.js"></script>
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="node_modules/select2/dist/js/select2.min.js"></script>
     <script src="js/scripts/script_users_page.js"></script>
+    <script src="js/components/footer.js"></script>
+
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/select2/dist/js/select2.min.js"></script>
     <script src="js/scripts/loader.js"></script>
   </body>
 </html>
