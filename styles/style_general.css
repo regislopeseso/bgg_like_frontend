@@ -6,7 +6,7 @@
   --second-bg-color: rgb(50, 57, 70);
   --text-color: rgb(255, 255, 255);
   --main-color: rgb(0, 238, 255);
-  --reddish: #ff33000;
+  --reddish: #ff3300;
 }
 
 * {
@@ -28,11 +28,6 @@ html {
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-}
-main {
-  width: 100vw;
-  height: 100vh;
-  padding: 10rem;
 }
 
 section {

@@ -385,7 +385,7 @@ $(document).ready(function () {
       templateResult: (data) => data.text,
       templateSelection: (data) => data.text,
       placeholder: "Board Games List",
-      minimumInputLength: 4,
+      minimumInputLength: 3,
       allowClear: true,
       theme: "classic",
       width: "20rem",

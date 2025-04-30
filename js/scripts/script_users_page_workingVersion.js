@@ -1,3 +1,5 @@
+//! This is the version that is working for log session only without edit session implementation
+
 $(document).ready(function () {
   // Track if a rotation animation is in progress
   let isRotating = false;
@@ -25,32 +27,8 @@ $(document).ready(function () {
       $("#bgSelection").select2("destroy");
     }
 
-    if ($("#bgSelection2").hasClass("select2-hidden-accessible")) {
-      $("#bgSelection2").select2("destroy");
-    }
-
     // Initialize select2
     $("#bgSelection").select2({
-      ajax: {
-        url: "https://localhost:7081/explore/findboardgame",
-        data: (params) => ({ boardGameName: params.term }),
-        processResults: (data, params) => {
-          return {
-            results: data.content.map((item) => ({
-              id: item.boardGameId,
-              text: item.boardGameName,
-            })),
-          };
-        },
-      },
-      templateResult: (data) => data.text,
-      templateSelection: (data) => data.text,
-      minimumInputLength: 3,
-      allowClear: true,
-      theme: "classic",
-      width: "100%",
-    });
-    $("#bgSelection2").select2({
       ajax: {
         url: "https://localhost:7081/explore/findboardgame",
         data: (params) => ({ boardGameName: params.term }),
@@ -119,9 +97,6 @@ $(document).ready(function () {
 
       // Initialize select2 if this is the log session template
       if (templateId === "log-session-template") {
-        loadBgDetails();
-      }
-      if (templateId === "edit-session-template") {
         loadBgDetails();
       }
     };
@@ -225,67 +200,6 @@ $(document).ready(function () {
             // Re-enable button
             submitBtn.attr("disabled", false).text(originalBtnText);
             isSubmitting = false;
-          },
-        });
-      });
-
-    // Set up edit session form handler if it exists in the DOM
-    $(document)
-      .off("submit", "#edit-session-form")
-      .on("submit", "#edit-session-form", function (e) {
-        e.preventDefault();
-
-        $.ajax({
-          url: `https://localhost:7081/users/editsession`,
-          type: "PUT",
-          data: $(this).serialize(),
-          xhrFields: { withCredentials: true },
-          success: function (response) {
-            console.log(response);
-          },
-          error: function () {
-            alert("Failed to edit session");
-          },
-        });
-      });
-
-    $(document)
-      .off("select2:select", "#bgSelection")
-      .on("select2:select", "#bgSelection", function () {
-        const boardGameId = $(this).val(); // Get selected boardGameId
-        console.log(boardGameId);
-
-        if (!boardGameId) {
-          $("#sessionSelection").empty(); // Clear the second select if nothing is selected
-          return;
-        }
-
-        console.log();
-        // Fetch sessions based on selected boardGameId
-        $.ajax({
-          url: `https://localhost:7081/users/getsessions?boardgameid=${boardGameId}`,
-          type: "GET",
-          xhrFields: { withCredentials: true },
-          success: function (response) {
-            console.log(response);
-
-            // Clear current options
-            $("#sessionSelection").empty();
-
-            // Check if any sessions are returned
-            if (response.content && response.content.sessions) {
-              // Add options dynamically
-              response.content.sessions.forEach((session) => {
-                $("#sessionSelection").append(new Option(session.date));
-              });
-            } else {
-              $("#sessionSelection").append(
-                new Option("No sessions found", "")
-              );
-            }
-          },
-          error: function () {
-            alert("Failed to load sessions. Try again later.");
           },
         });
       });
