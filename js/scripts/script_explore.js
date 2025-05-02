@@ -400,19 +400,16 @@ $(document).ready(function () {
       $("#bgRankingsToggler").hide();
       $("#categoryRankingsToggler").hide();
 
-      $("body").load("load");
+      $("body").trigger("load");
       setTimeout(() => {
-        $("body").load("unload");
+        $("body").trigger("unload");
 
-        $("#bgRecordsToggler").show();
+        const $target = $("#bgRecordsToggler");
+        $target.show();
+
+        // Ensure the element is visible before trying to scroll to it
+        $target[0].scrollIntoView({ behavior: "smooth", block: "start" });
       }, 500);
-
-      $("html, body").animate(
-        {
-          scrollTop: $("#bgRecordsToggler").offset().top - 80,
-        },
-        500
-      );
     });
 
     $("#searchBoardGames").on("click", function (e) {
@@ -439,19 +436,16 @@ $(document).ready(function () {
       $("#bgFinderToggler").hide();
       $("#categoryRankingsToggler").hide();
 
-      $("body").load("load");
+      $("body").trigger("load");
       setTimeout(() => {
-        $("body").load("unload");
+        $("body").trigger("unload");
 
-        $("#bgRankingsToggler").show();
+        const $target = $("#bgRankingsToggler");
+        $target.show();
+
+        // Ensure the element is visible before trying to scroll to it
+        $target[0].scrollIntoView({ behavior: "smooth", block: "start" });
       }, 500);
-
-      $("html, body").animate(
-        {
-          scrollTop: $("#bgRankingsToggler").offset().top + 180,
-        },
-        500
-      );
     });
 
     $("#displayCategoriesRankings").on("click", function (e) {
@@ -461,19 +455,16 @@ $(document).ready(function () {
       $("#bgFinderToggler").hide();
       $("#bgRankingsToggler").hide();
 
-      $("body").load("load");
+      $("body").trigger("load");
       setTimeout(() => {
-        $("body").load("unload");
+        $("body").trigger("unload");
 
-        $("#categoryRankingsToggler").show();
+        const $target = $("#categoryRankingsToggler");
+        $target.show();
+
+        // Ensure the element is visible before trying to scroll to it
+        $target[0].scrollIntoView({ behavior: "smooth", block: "start" });
       }, 500);
-
-      $("html, body").animate(
-        {
-          scrollTop: $("#categoryRankingsToggler").offset().top + 180,
-        },
-        500
-      );
     });
 
     $("#bgSelection").on("select2:select", function (e) {

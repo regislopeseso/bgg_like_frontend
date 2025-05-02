@@ -1,3 +1,6 @@
+main {
+  padding-top: 10rem;
+}
 .no-select {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10+ and Edge */

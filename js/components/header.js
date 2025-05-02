@@ -17,7 +17,7 @@ function loadHeader(userData, roleData) {
           <a href="admins.html" class="admins-clearence d-none">ADMIN</a>
           <a href="devs.html" class="devs-clearence d-none">DEV</a>
 
-          <div class="dropdown">
+          <div class="dropdown loggedIn-clearance d-none">
             <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person-gear"></i>
             </a>

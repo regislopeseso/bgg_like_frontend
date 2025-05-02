@@ -538,6 +538,8 @@
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   margin: 1rem;
   padding: 1rem 2rem 1rem 2rem;
+  animation: move 2s linear;
+  animation: pulse 1.25s infinite;
 }
 .bgRankingsLists .rankingType {
   grid-column: 1 / span 3;
@@ -811,5 +813,38 @@
   }
   .outerBox .iLayer-show {
     transform: translateY(800px);
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: scale(0);
+  }
+  25% {
+    transform: scale(0.25);
+    box-shadow: 1px 1px 10px 10px var(--reddish);
+  }
+  50% {
+    transform: scale(0.5);
+    box-shadow: 1px 1px 10px 10px var(--main-color);
+  }
+  75% {
+    transform: scale(0.75);
+    box-shadow: 1px 1px 10px 10px var(--text-color);
+  }
+  100% {
+    margin: 5rem;
+    transform: scale(1);
+  }
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(1.07);
+  }
+  100% {
+    transform: scale(1.05);
   }
 }

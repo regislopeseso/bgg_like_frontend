@@ -34,31 +34,52 @@
     <main class="ps-0 pe-0">
       <section class="users-menu d-flex flex-row">
         <div class="users-options d-flex w-100">
-          <div id="playGame" class="btn border p-2 flex-fill text-center">
+          <div
+            id="userOption-playGame"
+            class="user-menu-button btn border p-2 flex-fill text-center"
+          >
             <h4><span>P</span>lay</h4>
           </div>
 
-          <div id="logSession" class="btn border p-2 flex-fill text-center">
+          <div
+            id="userOption-logSession"
+            class="user-menu-button btn border p-2 flex-fill text-center"
+          >
             <h4><span>L</span>og Session</h4>
           </div>
 
-          <div id="editSession" class="btn border p-2 flex-fill text-center">
+          <div
+            id="userOption-editSession"
+            class="user-menu-button btn border p-2 flex-fill text-center"
+          >
             <h4><span>E</span>dit Session</h4>
           </div>
 
-          <div id="deleteSession" class="btn border p-2 flex-fill text-center">
+          <div
+            id="userOption-deleteSession"
+            class="user-menu-button btn border p-2 flex-fill text-center"
+          >
             <h4><span>D</span>elete Session</h4>
           </div>
 
-          <div id="rateBg" class="btn border p-2 flex-fill text-center">
+          <div
+            id="userOption-rateBg"
+            class="user-menu-button btn border p-2 flex-fill text-center"
+          >
             <h4><span>R</span>ate a Game</h4>
           </div>
 
-          <div id="editRate" class="btn border p-2 flex-fill text-center">
+          <div
+            id="userOption-editRate"
+            class="user-menu-button btn border p-2 flex-fill text-center"
+          >
             <h4><span>E</span>dit Rate</h4>
           </div>
 
-          <div id="newLifeCounter" class="btn border p-2 flex-fill text-center">
+          <div
+            id="userOption-newLifeCounter"
+            class="user-menu-button btn border p-2 flex-fill text-center"
+          >
             <h4><span>N</span>ew Life Counter</h4>
           </div>
         </div>
@@ -87,29 +108,12 @@
               <h5>Board Games Rated: <span>6</span></h5>
             </div>
 
-            <div id="play-template">
-              <div class="mb-3">
-                <label class="bgList-lbl" for="bgSelection"
-                  >Select a Board Game</label
-                >
-                <div class="comboBox-wrapper">
-                  <div class="comboBox">
-                    <select
-                      name="selectecBG"
-                      class="form-control form-select bg-select"
-                      id="bgSelection"
-                    >
-                      <option value=""></option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div id="play-template">yet to be implemented (play)</div>
 
             <div id="log-session-template">
               <form id="log-session-form">
                 <div class="mb-3">
-                  <label class="bgList-lbl" for="bgSelection"
+                  <label class="bgList-lbl" for="bgSelection-logSession"
                     >Select a Board Game</label
                   >
                   <div class="comboBox-wrapper">
@@ -117,7 +121,7 @@
                       <select
                         name="BoardGameId"
                         class="form-control form-select bg-select"
-                        id="bgSelection"
+                        id="bgSelection-logSession"
                       >
                         <option value=""></option>
                       </select>
@@ -174,24 +178,24 @@
             <div id="edit-session-template">
               <form id="edit-session-form">
                 <div class="mb-3">
-                  <label class="bgList-lbl" for="bgSelection"
+                  <label class="bgList-lbl" for="bgSelection-editSession"
                     >Select a Board Game</label
                   >
                   <select
                     name="BoardGameId"
                     class="form-control form-select bg-select"
-                    id="bgSelection"
+                    id="bgSelection-editSession"
                   ></select>
                 </div>
 
                 <div class="mb-3">
-                  <label class="bgList-lbl" for="sessionSelection"
+                  <label class="bgList-lbl" for="sessionSelection-edit"
                     >Select a Session</label
                   >
                   <select
                     name="SessionId"
                     class="form-control form-select bg-select"
-                    id="sessionSelection"
+                    id="sessionSelection-edit"
                   ></select>
                 </div>
 
@@ -200,7 +204,7 @@
                     >New Session Date</label
                   >
                   <input
-                    name="Date"
+                    name="NewDate"
                     id="newSessionDate"
                     type="date"
                     class="form-control"
@@ -212,7 +216,7 @@
                     >New Players Count</label
                   >
                   <input
-                    name="PlayersCount"
+                    name="NewPlayersCount"
                     id="newPlayersCount"
                     type="number"
                     class="form-control"
@@ -224,7 +228,7 @@
                     >New Match Duration:</label
                   >
                   <input
-                    name="Duration_minutes"
+                    name="NewDuration_minutes"
                     id="newSessionDuration"
                     type="number"
                     class="form-control"
@@ -241,180 +245,139 @@
               </form>
             </div>
 
-            <!-- <div id="delete-session-template">
-              <form>
+            <div id="delete-session-template">
+              <form id="delete-session-form">
                 <div class="mb-3">
-                  <label class="bgList-lbl" for="bgSelection"
+                  <label class="bgList-lbl" for="bgSelection-deleteSession"
                     >Select a Board Game</label
                   >
-                  <div class="comboBox-wrapper">
-                    <div class="comboBox">
-                      <select
-                        name="selectecBG"
-                        class="form-control form-select bg-select"
-                        id="bgSelection"
-                      >
-                        <option value=""></option>
-                      </select>
-                    </div>
-                  </div>
+                  <select
+                    name="BoardGameId"
+                    class="form-control form-select bg-select"
+                    id="bgSelection-deleteSession"
+                  ></select>
                 </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label"
-                    >Password</label
-                  >
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                  />
-                </div>
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="exampleCheck1"
-                  />
-                  <label class="form-check-label" for="exampleCheck1"
-                    >Check me out</label
-                  >
-                </div>
-              </form>
-            </div> -->
 
-            <!-- <div id="rate-bg-template">
-              <form>
                 <div class="mb-3">
-                  <label class="bgList-lbl" for="bgSelection"
+                  <label class="bgList-lbl" for="sessionSelection-delete"
+                    >Select a Session</label
+                  >
+                  <select
+                    name="SessionId"
+                    class="form-control form-select bg-select"
+                    id="sessionSelection-delete"
+                  ></select>
+                </div>
+
+                <div id="playersCount-delSession" class="mb-3">
+                  Players Count:
+                </div>
+
+                <div id="matchDuration-delSession" class="mb-3">
+                  Match Duration:
+                </div>
+
+                <button
+                  type="submit"
+                  id="confirm-deleteSession"
+                  class="btn btn-primary"
+                >
+                  Delete Session
+                </button>
+              </form>
+            </div>
+
+            <div id="rate-bg-template">
+              <form id="rate-bg-form">
+                <div class="mb-3">
+                  <label class="bgList-lbl" for="bgSelection-rate"
                     >Select a Board Game</label
                   >
-                  <div class="comboBox-wrapper">
-                    <div class="comboBox">
-                      <select
-                        name="selectecBG"
-                        class="form-control form-select bg-select"
-                        id="bgSelection"
-                      >
-                        <option value=""></option>
-                      </select>
-                    </div>
-                  </div>
+                  <select
+                    name="BoardGameId"
+                    class="form-control form-select bg-select"
+                    id="bgSelection-rate"
+                  ></select>
                 </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label"
-                    >Password</label
-                  >
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                  />
-                </div>
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="exampleCheck1"
-                  />
-                  <label class="form-check-label" for="exampleCheck1"
-                    >Check me out</label
-                  >
-                </div>
-              </form>
-            </div> -->
 
-            <!-- <div id="edit-rate-template">
-              <form>
                 <div class="mb-3">
-                  <label class="bgList-lbl" for="bgSelection"
+                  <label for="rate" class="form-label">Rate</label>
+                  <input
+                    name="Rate"
+                    id="rate"
+                    type="number"
+                    class="form-control"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  id="confirm-rateBG"
+                  class="btn btn-primary"
+                >
+                  Confirm Rating
+                </button>
+              </form>
+            </div>
+
+            <div id="edit-rate-template">
+              <form id="edit-rate-form">
+                <div class="mb-3">
+                  <label class="bgList-lbl" for="bgSelection-edit-rate"
                     >Select a Board Game</label
                   >
-                  <div class="comboBox-wrapper">
-                    <div class="comboBox">
-                      <select
-                        name="selectecBG"
-                        class="form-control form-select bg-select"
-                        id="bgSelection"
-                      >
-                        <option value=""></option>
-                      </select>
-                    </div>
-                  </div>
+                  <select
+                    name="BoardGameId"
+                    class="form-control form-select bg-select"
+                    id="bgSelection-edit-rate"
+                  ></select>
                 </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label"
-                    >Password</label
-                  >
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                  />
-                </div>
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="exampleCheck1"
-                  />
-                  <label class="form-check-label" for="exampleCheck1"
-                    >Check me out</label
-                  >
-                </div>
-              </form>
-            </div> -->
 
-            <!-- <div id="new-life-counter-template">
-              <form>
                 <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label"
-                    >Email address</label
-                  >
+                  <label for="newRate" class="form-label">Rate</label>
                   <input
-                    type="email"
+                    name="Rate"
+                    id="newRate"
+                    type="number"
                     class="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                  />
-                  <div id="emailHelp" class="form-text">
-                    We'll never share your email with anyone else.
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label"
-                    >Password</label
-                  >
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="exampleInputPassword1"
                   />
                 </div>
-                <div class="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="exampleCheck1"
-                  />
-                  <label class="form-check-label" for="exampleCheck1"
-                    >Check me out</label
-                  >
-                </div>
+
+                <button
+                  type="submit"
+                  id="confirm-newRateBG"
+                  class="btn btn-primary"
+                >
+                  Confirm new Rating
+                </button>
               </form>
-            </div> -->
+            </div>
+
+            <div id="new-life-counter-template">
+              yet to be implemented (new life counter)
+            </div>
           </div>
         </div>
       </section>
     </main>
 
+    <!-- Load jQuery and other libraries first -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/select2/dist/js/select2.min.js"></script>
     <script src="js/scripts/loader.js"></script>
 
+    <!-- Load the flipper script before any other scripts that depend on it -->
+    <script src="js/scripts/script_users/script_users_page_flipper.js"></script>
+
+    <!-- Once the flipper is loaded, load scripts that handle form functionality -->
+    <script src="js/scripts/script_users/script_users_page_forms.js"></script>
+    <script src="js/scripts/script_users/script_users_page_delete_session_forms.js"></script>
+
+    <!-- Other existing scripts -->
     <script src="js/components/header.js"></script>
-    <script src="js/scripts/script_users_page.js"></script>
+    <script src="js/scripts/script_users/script_users_page.js"></script>
     <script src="js/components/footer.js"></script>
   </body>
 </html>
