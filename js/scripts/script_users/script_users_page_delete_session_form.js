@@ -50,7 +50,10 @@ const FormHandler_DeleteSession = (function () {
         },
       },
       templateResult: (data) => data.text,
-      templateSelection: (data) => data.text,
+      templateSelection: (data) => {
+        if (!data.id) return data.text;
+        return $("<strong>").text(data.text);
+      },
       minimumInputLength: 3,
       allowClear: true,
       theme: "classic",
@@ -90,6 +93,12 @@ const FormHandler_DeleteSession = (function () {
               sessionsDB = response.content.sessions;
               console.log("Sessions found:", sessionsDB);
 
+              $("#delete-session-label span").empty();
+
+              $("#delete-session-label").append(
+                ` <span>(${sessionsDB.length})</span>`
+              );
+
               // Log the first session object to see its structure
               if (sessionsDB.length > 0) {
                 logObjectProperties(sessionsDB[0], "First Session");
@@ -106,7 +115,11 @@ const FormHandler_DeleteSession = (function () {
                   "id:",
                   session.id || session.Id,
                   "date:",
-                  sessionDate
+                  sessionDate,
+                  "Players count:",
+                  session.playersCount || session.PlayersCount,
+                  "Duration in minutes:",
+                  session.duration_minutes || session.Duration_minutes
                 );
                 counter++;
 
@@ -121,8 +134,28 @@ const FormHandler_DeleteSession = (function () {
                 );
               });
 
-              // Trigger change event to refresh select2
-              $("#sessionSelection-delete").trigger("change");
+              // Add an empty default option with the placeholder text
+              $("#sessionSelection-delete").append(
+                new Option("Select a session", "", true, true)
+              );
+
+              // Refresh select2 without triggering change event to avoid auto-selection
+              if (
+                $("#sessionSelection-delete").hasClass(
+                  "select2-hidden-accessible"
+                )
+              ) {
+                $("#sessionSelection-delete").select2("destroy");
+              }
+              $("#sessionSelection-delete").select2({
+                theme: "classic",
+                width: "100%",
+                placeholder: "Select a session",
+                templateSelection: (data) => {
+                  if (!data.id) return data.text;
+                  return $("<strong>").text(data.text);
+                },
+              });
             } else {
               $("#sessionSelection-delete")
                 .append(new Option("No sessions found", ""))
@@ -154,8 +187,12 @@ const FormHandler_DeleteSession = (function () {
 
           // Check all possible property name formats (handle case inconsistency)
           // Pre-fill form fields with session data
-          $("#playersCount-delSession").val(selectedSession.playersCount);
-          $("#matchDuration-delSession").val(selectedSession.duration_minutes);
+          $("#playersCount-delSession").html(
+            `<div class="text-start">Players Count: <span>${selectedSession.playersCount}</span></div>`
+          );
+          $("#matchDuration-delSession").html(
+            `<div class="text-start">Match Duration: <span>${selectedSession.duration_minutes}</span></div>`
+          );
 
           console.log("Session to-be-deleted details");
         } else {

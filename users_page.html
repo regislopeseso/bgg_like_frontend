@@ -87,7 +87,7 @@
 
       <section id="users-content" class="flip-card-wrapper pt-5">
         <div class="flip-card">
-          <div id="toggleUserDetails"><button>USER: Red</button></div>
+          <div id="toggleUserDetails"><button class="btn m-2"></button></div>
           <div class="flip-card-inner">
             <div class="flip-card-front">
               <div id="flip-front-content"></div>
@@ -98,15 +98,7 @@
             </div>
           </div>
           <div id="templates" style="display: none">
-            <div id="user-details-template">
-              <h3 class="text-center"><span>{UserName}</span></h3>
-
-              <h5>Member since: <span>01/01/2001</span></h5>
-              <h5>Played Matches: <span>4</span></h5>
-              <h5>Won matches: <span>15</span></h5>
-              <h5>Win rate: <span>68%</span></h5>
-              <h5>Board Games Rated: <span>6</span></h5>
-            </div>
+            <div id="user-details-template"></div>
 
             <div id="play-template">yet to be implemented (play)</div>
 
@@ -167,7 +159,7 @@
 
                 <button
                   type="submit"
-                  id="logNewSession"
+                  id="confirm-logNewSession"
                   class="btn btn-primary"
                 >
                   Log new Session
@@ -189,7 +181,10 @@
                 </div>
 
                 <div class="mb-3">
-                  <label class="bgList-lbl" for="sessionSelection-edit"
+                  <label
+                    id="edit-session-label"
+                    class="bgList-lbl"
+                    for="sessionSelection-edit"
                     >Select a Session</label
                   >
                   <select
@@ -237,7 +232,7 @@
 
                 <button
                   type="submit"
-                  id="logNewSession"
+                  id="confirm-editSession"
                   class="btn btn-primary"
                 >
                   Log new Session
@@ -259,7 +254,10 @@
                 </div>
 
                 <div class="mb-3">
-                  <label class="bgList-lbl" for="sessionSelection-delete"
+                  <label
+                    id="delete-session-label"
+                    class="bgList-lbl"
+                    for="sessionSelection-delete"
                     >Select a Session</label
                   >
                   <select
@@ -269,13 +267,9 @@
                   ></select>
                 </div>
 
-                <div id="playersCount-delSession" class="mb-3">
-                  Players Count:
-                </div>
+                <div id="playersCount-delSession" class="mb-3"></div>
 
-                <div id="matchDuration-delSession" class="mb-3">
-                  Match Duration:
-                </div>
+                <div id="matchDuration-delSession" class="mb-3"></div>
 
                 <button
                   type="submit"
@@ -373,7 +367,11 @@
 
     <!-- Once the flipper is loaded, load scripts that handle form functionality -->
     <script src="js/scripts/script_users/script_users_page_forms.js"></script>
-    <script src="js/scripts/script_users/script_users_page_delete_session_forms.js"></script>
+    <script src="js/scripts/script_users/script_users_page_log_session_form.js"></script>
+    <script src="js/scripts/script_users/script_users_page_edit_session_form.js"></script>
+    <script src="js/scripts/script_users/script_users_page_delete_session_form.js"></script>
+    <script src="js/scripts/script_users/script_users_page_rate_bg_form.js"></script>
+    <script src="js/scripts/script_users/script_users_page_edit_rate_form.js"></script>
 
     <!-- Other existing scripts -->
     <script src="js/components/header.js"></script>

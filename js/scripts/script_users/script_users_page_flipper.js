@@ -23,8 +23,34 @@ const Flipper = (function () {
       this.setupAnimation();
       this.setupEventListeners();
 
-      // Show user details by default on page load
-      this.rotateTo("user-details-template");
+      $.ajax({
+        url: "https://localhost:7081/users/getprofiledetails",
+        type: "GET",
+        xhrFields: { withCredentials: true },
+        success: function (response) {
+          const userDB = response.content;
+          const [year, month, day] = userDB.signUpDate.split("-");
+
+          $("#toggleUserDetails button").html(`
+            <span>SHOW USER DETAILS</span>`);
+
+          $("#user-details-template").html(`
+              <h3 class="text-center pb-5">Welcome <span>${userDB.name}</span></h3>
+              <h5 class="text-start">Member since: <span>${day}/${month}/${year}</span></h5>
+              <h5 class="text-start">Board Games Rated: <span>${userDB.ratedBgCount}</span></h5>
+              <h5 class="text-start">Played Matches: <span>${userDB.sessionsCount}</span></h5>
+              <h5 class="text-start">Won matches: <span>to be implemented</span></h5>
+              <h5 class="text-start">Win rate: <span>to be implemented</span></h5>
+            
+            `);
+
+          // NOW rotate after content is loaded
+          Flipper.rotateTo("user-details-template");
+        },
+        error: function (xhr, status, error) {
+          alert("Failed to fetch user details. Try again later.");
+        },
+      });
     },
 
     // Set up the CSS transition for the flip animation
@@ -100,6 +126,12 @@ const Flipper = (function () {
       // Load the selected template into the target face
       $(target).html($(`#${templateId}`).html());
 
+      if (templateId === "user-details-template") {
+        $("#toggleUserDetails").slideUp(400);
+      } else {
+        $("#toggleUserDetails").slideDown().show();
+      }
+
       // Rotate the card 180 degrees
       currentAngle += 180;
       $(".flip-card-inner").css("transform", `rotateY(${currentAngle}deg)`);
@@ -151,7 +183,7 @@ const Flipper = (function () {
 })();
 
 // Initialize the flipper when the document is ready
-$(document).ready(function () {
+$(function () {
   // First check if the user is authenticated
   fetch("https://localhost:7081/users/validatestatus", {
     method: "GET",

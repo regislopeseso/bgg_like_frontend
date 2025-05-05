@@ -4,6 +4,10 @@ main {
   padding: 4rem 0 10rem 0;
 }
 
+#toggleUserDetails {
+  display: none;
+}
+
 .users-options {
   background-color: var(--second-bg-color);
 }
