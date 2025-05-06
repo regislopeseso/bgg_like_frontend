@@ -144,8 +144,7 @@ $(document).ready(function () {
           }
         },
         error: function (response) {
-          console.log(response);
-          alert("Login failed");
+          alert("Login failed: ", response);
         },
       });
     });

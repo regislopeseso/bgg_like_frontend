@@ -230,7 +230,7 @@ $(document).ready(function () {
         buildBestRatedCatsTable(bestRatedCats);
 
         const longestCats = response.content.longestCategories;
-        buildLogestCatsTable(longestCats);
+        buildLongestCatsTable(longestCats);
 
         const shortestCats = response.content.shortestCategories;
         buildShortestCatsTable(shortestCats);
@@ -316,7 +316,7 @@ $(document).ready(function () {
         `);
     }
   }
-  function buildLogestCatsTable(longestCats) {
+  function buildLongestCatsTable(longestCats) {
     $("#longestCategories tbody").empty();
 
     if (longestCats.length > 0) {

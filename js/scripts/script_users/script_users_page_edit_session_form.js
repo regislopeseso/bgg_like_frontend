@@ -10,19 +10,8 @@ const FormHandler_EditSession = (function () {
     return `${day}/${month}/${year}`;
   }
 
-  // Debug helper function to inspect objects
-  function logObjectProperties(obj, name) {
-    console.log(`----- ${name} Properties -----`);
-    for (const key in obj) {
-      console.log(`${key}: ${obj[key]}`);
-    }
-    console.log("-------------------------");
-  }
-
   // Initialize Select2 dropdown for board games
   function loadBgDetails() {
-    console.log("Loading board game details...");
-
     // First destroy any existing select2 instance to prevent duplicates
     if ($("#bgSelection-editSession").hasClass("select2-hidden-accessible")) {
       $("#bgSelection-editSession").select2("destroy");
@@ -69,15 +58,12 @@ const FormHandler_EditSession = (function () {
 
   // Set up handlers for the >EDIT SESSION< form
   function setupEditSessionForm() {
-    console.log("Setting up edit session form handlers");
-
     // Set up board game selection change handler
     $(document)
       .off("select2:select", "#bgSelection-editSession")
       .on("select2:select", "#bgSelection-editSession", function () {
         // Get selected boardGameId
         const boardGameId = $(this).val();
-        console.log("Selected board game Id:", boardGameId);
 
         if (!boardGameId) {
           // Clear the second select if nothing is selected
@@ -110,35 +96,18 @@ const FormHandler_EditSession = (function () {
             // Check if any sessions are returned
             if (response.content && response.content.sessions) {
               sessionsDB = response.content.sessions;
-              console.log("Sessions found:", sessionsDB);
 
               $("#edit-session-label span").empty();
               $("#edit-session-label").append(
                 ` <span>(${sessionsDB.length})</span>`
               );
 
-              // Log the first session object to see its structure
-              if (sessionsDB.length > 0) {
-                logObjectProperties(sessionsDB[0], "First Session");
-              }
-
               // Add options dynamically
               let counter = 1;
               response.content.sessions.forEach((session) => {
                 // Get the date from the session object, handling different property names
                 const sessionDate = session.date || session.Date;
-                console.log(
-                  "Session #",
-                  counter,
-                  "id:",
-                  session.id || session.Id,
-                  "date:",
-                  sessionDate,
-                  "Players count:",
-                  session.playersCount || session.PlayersCount,
-                  "Duration in minutes:",
-                  session.duration_minutes || session.Duration_minutes
-                );
+
                 counter++;
 
                 // Create option with formatted date (if available) or fall back to session ID
@@ -209,10 +178,8 @@ const FormHandler_EditSession = (function () {
       .off("select2:select", "#sessionSelection-edit")
       .on("select2:select", "#sessionSelection-edit", function () {
         const sessionId = $(this).val();
-        console.log("Selected session ID:", sessionId);
 
         if (!sessionId) {
-          console.log("No session selected, skipping form pre-fill");
           // Clear form fields
           $("#newSessionDate").val("");
           $("#newPlayersCount").val("");
@@ -226,9 +193,6 @@ const FormHandler_EditSession = (function () {
         );
 
         if (selectedSession) {
-          console.log("Pre-filling form with:", selectedSession);
-          logObjectProperties(selectedSession, "Selected Session");
-
           // Handle case inconsistency in property names
           const date = selectedSession.date || selectedSession.Date || "";
           const playersCount =
@@ -242,12 +206,6 @@ const FormHandler_EditSession = (function () {
           $("#newSessionDate").val(date);
           $("#newPlayersCount").val(playersCount);
           $("#newSessionDuration").val(duration);
-
-          console.log("Form pre-filled with session data:", {
-            date: date,
-            playersCount: playersCount,
-            duration: duration,
-          });
         } else {
           console.warn("Session not found in sessionsDB:", sessionId);
         }
@@ -276,14 +234,6 @@ const FormHandler_EditSession = (function () {
         const updatedPlayersCount = $("#newPlayersCount").val();
         const updatedDuration = $("#newSessionDuration").val();
 
-        console.log("Submitting edit session form with values:", {
-          boardGameId: selectedBoardGameId,
-          sessionId: selectedSessionId,
-          newDate: updatedDate,
-          newPlayersCount: updatedPlayersCount,
-          newDuration: updatedDuration,
-        });
-
         $.ajax({
           url: "https://localhost:7081/users/editsession",
           type: "PUT",
@@ -296,9 +246,8 @@ const FormHandler_EditSession = (function () {
           }),
           contentType: "application/json",
           xhrFields: { withCredentials: true },
-          success: function (response) {
-            console.log("Session updated:", response);
-            alert("Session updated successfully!");
+          success: function (resp) {
+            alert(resp.message);
 
             // Clear form fields after successful update
             $("#bgSelection-editSession").val(null).trigger("change");
@@ -329,17 +278,10 @@ const FormHandler_EditSession = (function () {
   // Public API
   return {
     init: function () {
-      console.log("Initializing Edit Session form handler...");
-
       // Listen for content changes from the Flipper module
       $(document).on("flipper:contentChanged", (event, templateId) => {
-        console.log(
-          `Form handler responding to template change: ${templateId}`
-        );
-
         // Initialize specific functionality based on which template was loaded
         if (templateId === "edit-session-template") {
-          console.log("Edit session template loaded, initializing components");
           loadBgDetails();
           setupEditSessionForm();
         }
@@ -347,7 +289,6 @@ const FormHandler_EditSession = (function () {
 
       // Also set up handlers on document ready to handle the initial load
       if ($("#edit-session-template").length) {
-        console.log("Edit session template found on initial load");
         loadBgDetails();
         setupEditSessionForm();
       }

@@ -3,8 +3,6 @@ const FormHandler_EditRate = (function () {
   let boardGameDB = {};
   // Initialize Select2 dropdown for board games
   function loadBgDetails() {
-    console.log("Loading board game details...");
-
     // First destroy any existing select2 instance to prevent duplicates
     if ($("#bgSelection-edit-rate").hasClass("select2-hidden-accessible")) {
       $("#bgSelection-edit-rate").select2("destroy");
@@ -44,7 +42,6 @@ const FormHandler_EditRate = (function () {
       .on("select2:select", "#bgSelection-edit-rate", function () {
         // Get selected boardGameId
         const boardGameId = $(this).val();
-        console.log("Selected board game Id:", boardGameId);
 
         $.ajax({
           url: `https://localhost:7081/users/getrate?boardgameid=${boardGameId}`,
@@ -96,7 +93,6 @@ const FormHandler_EditRate = (function () {
         contentType: "application/json",
         xhrFields: { withCredentials: true },
         success: function (response) {
-          console.log("Rate edited:", response);
           alert(response.message);
 
           $("#bgSelection-edit-rate").val(null).trigger("change");
@@ -124,14 +120,8 @@ const FormHandler_EditRate = (function () {
   // Public API
   return {
     init: function () {
-      console.log("Initializing >EDIT RATE< form handler...");
-
       // Listen for content changes from the Flipper module
       $(document).on("flipper:contentChanged", (event, templateId) => {
-        console.log(
-          `Form handler responding to template change: ${templateId}`
-        );
-
         // Initialize specific functionality based on which template was loaded
         if (templateId === "edit-rate-template") {
           loadBgDetails();

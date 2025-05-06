@@ -19,7 +19,6 @@ const Flipper = (function () {
   return {
     // Initialize the flipper
     init: function () {
-      console.log("Initializing flipper...");
       this.setupAnimation();
       this.setupEventListeners();
 

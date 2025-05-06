@@ -17,19 +17,8 @@ const FormHandler_DeleteSession = (function () {
     return `${day}/${month}/${year}`;
   }
 
-  // Debug helper function to inspect objects
-  function logObjectProperties(obj, name) {
-    console.log(`----- ${name} Properties -----`);
-    for (const key in obj) {
-      console.log(`${key}: ${obj[key]}`);
-    }
-    console.log("-------------------------");
-  }
-
   // Initialize Select2 dropdown for board games
   function loadBgDetails() {
-    console.log("Loading board game details...");
-
     // First destroy any existing select2 instance to prevent duplicates
     if ($("#bgSelection-deleteSession").hasClass("select2-hidden-accessible")) {
       $("#bgSelection-deleteSession").select2("destroy");
@@ -71,7 +60,6 @@ const FormHandler_DeleteSession = (function () {
       .on("select2:select", "#bgSelection-deleteSession", function () {
         // Get selected boardGameId
         const boardGameId = $(this).val();
-        console.log("Selected board game Id:", boardGameId);
 
         if (!boardGameId) {
           // Clear the second select if nothing is selected
@@ -99,28 +87,12 @@ const FormHandler_DeleteSession = (function () {
                 ` <span>(${sessionsDB.length})</span>`
               );
 
-              // Log the first session object to see its structure
-              if (sessionsDB.length > 0) {
-                logObjectProperties(sessionsDB[0], "First Session");
-              }
-
               // Add options dynamically
               let counter = 1;
               response.content.sessions.forEach((session) => {
                 // Get the date from the session object, handling different property names
                 const sessionDate = session.date || session.Date;
-                console.log(
-                  "Session #",
-                  counter,
-                  "id:",
-                  session.id || session.Id,
-                  "date:",
-                  sessionDate,
-                  "Players count:",
-                  session.playersCount || session.PlayersCount,
-                  "Duration in minutes:",
-                  session.duration_minutes || session.Duration_minutes
-                );
+
                 counter++;
 
                 // Create option with formatted date (if available) or fall back to session ID
@@ -162,8 +134,8 @@ const FormHandler_DeleteSession = (function () {
                 .trigger("change");
             }
           },
-          error: function () {
-            alert("Failed to delete sessions. Try again later.");
+          error: function (response) {
+            alert("Failed to delete sessions. Try again later.", response);
           },
         });
       });
@@ -182,9 +154,6 @@ const FormHandler_DeleteSession = (function () {
         );
 
         if (selectedSession) {
-          console.log("Pre-filling form with:", selectedSession);
-          logObjectProperties(selectedSession, "Selected Session");
-
           // Check all possible property name formats (handle case inconsistency)
           // Pre-fill form fields with session data
           $("#playersCount-delSession").html(
@@ -193,8 +162,6 @@ const FormHandler_DeleteSession = (function () {
           $("#matchDuration-delSession").html(
             `<div class="text-start">Match Duration: <span>${selectedSession.duration_minutes}</span></div>`
           );
-
-          console.log("Session to-be-deleted details");
         } else {
           console.warn("Session not found in sessionsDB:", sessionId);
         }
@@ -222,13 +189,11 @@ const FormHandler_DeleteSession = (function () {
           ).val()}`,
           type: "DELETE",
           xhrFields: { withCredentials: true },
-          success: function (response) {
-            console.log("Session updated:", response);
-            alert("Session deleted successfully!");
+          success: function (resp) {
+            alert(resp.message);
           },
           error: function (err) {
-            console.error("Error:", err);
-            alert("Failed to delete session. Please try again.");
+            alert(err);
           },
           complete: () => {
             // Re-enable button
@@ -246,14 +211,8 @@ const FormHandler_DeleteSession = (function () {
   // Public API
   return {
     init: function () {
-      console.log("Initializing form handler...");
-
       // Listen for content changes from the Flipper module
       $(document).on("flipper:contentChanged", (event, templateId) => {
-        console.log(
-          `Form handler responding to template change: ${templateId}`
-        );
-
         // Initialize specific functionality based on which template was loaded
         if (templateId === "delete-session-template") {
           loadBgDetails();

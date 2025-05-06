@@ -1,8 +1,6 @@
 const FormHandler_RateBg = (function () {
   // Initialize Select2 dropdown for board games
   function loadBgDetails() {
-    console.log("Loading board game details...");
-
     // First destroy any existing select2 instance to prevent duplicates
     if ($("#bgSelection-rate").hasClass("select2-hidden-accessible")) {
       $("#bgSelection-rate").select2("destroy");
@@ -41,7 +39,6 @@ const FormHandler_RateBg = (function () {
       .on("select2:select", "#bgSelection-rate", function () {
         // Get selected boardGameId
         const boardGameId = $(this).val();
-        console.log("Selected board game Id:", boardGameId);
       });
 
     // Set up form submission handler
@@ -64,13 +61,11 @@ const FormHandler_RateBg = (function () {
         type: "POST",
         data: $(this).serialize(),
         xhrFields: { withCredentials: true },
-        success: function (response) {
-          console.log("Board Game rated:", response);
-          alert(response.message);
+        success: function (resp) {
+          alert(resp.message);
         },
         error: function (err) {
-          console.error("Error:", err);
-          alert("Rating failed. Please try again.");
+          alert("Rating failed. Please try again. Error:", err);
         },
         complete: () => {
           // Re-enable button
@@ -88,14 +83,8 @@ const FormHandler_RateBg = (function () {
   // Public API
   return {
     init: function () {
-      console.log("Initializing form handler...");
-
       // Listen for content changes from the Flipper module
       $(document).on("flipper:contentChanged", (event, templateId) => {
-        console.log(
-          `Form handler responding to template change: ${templateId}`
-        );
-
         // Initialize specific functionality based on which template was loaded
         if (templateId === "rate-bg-template") {
           loadBgDetails();

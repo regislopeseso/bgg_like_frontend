@@ -88,6 +88,7 @@
       <section id="users-content" class="flip-card-wrapper pt-5">
         <div class="flip-card">
           <div id="toggleUserDetails"><button class="btn m-2"></button></div>
+          
           <div class="flip-card-inner">
             <div class="flip-card-front">
               <div id="flip-front-content"></div>
@@ -97,16 +98,18 @@
               <div id="flip-back-content"></div>
             </div>
           </div>
+
           <div id="templates" style="display: none">
             <div id="user-details-template"></div>
 
             <div id="play-template">yet to be implemented (play)</div>
 
             <div id="log-session-template">
-              <form id="log-session-form">
-                <div class="mb-3">
+              <h3 class="pb-3"><span>L</span>og a new Session</h3>
+              <form id="log-session-form" class="d-flex flex-column align-items-center">
+                <div class="mb-3 text-start w-100">
                   <label class="bgList-lbl" for="bgSelection-logSession"
-                    >Select a Board Game</label
+                    ><span>S</span>elect a Board Game</label
                   >
                   <div class="comboBox-wrapper">
                     <div class="comboBox">
@@ -121,46 +124,46 @@
                   </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 text-center w-50"">
                   <label for="sessionDate" class="form-label"
-                    >When did you play?</label
+                    ><span>W</span>hen did you play?</label
                   >
                   <input
                     name="Date"
                     id="sessionDate"
                     type="date"
-                    class="form-control"
+                    class="form-control text-center required"
                   />
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 text-center w-50"">
                   <label for="playersCount" class="form-label"
-                    >Players Count</label
+                    ><span>P</span>layers Count</label
                   >
                   <input
                     name="PlayersCount"
                     id="playersCount"
                     type="number"
-                    class="form-control"
+                    class="form-control text-center required"
                   />
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 text-center w-50"">
                   <label for="sessionDuration" class="form-label"
-                    >How long did the match last:</label
+                    ><span>H</span>ow long did the match last:</label
                   >
                   <input
                     name="Duration_minutes"
                     id="sessionDuration"
                     type="number"
-                    class="form-control"
+                    class="form-control text-center required"
                   />
                 </div>
 
                 <button
                   type="submit"
                   id="confirm-logNewSession"
-                  class="btn btn-outline-info"
+                  class="btn btn-lg btn-outline-info mt-3"
                   disabled
                 >
                   Log new Session
@@ -169,24 +172,28 @@
             </div>
 
             <div id="edit-session-template">
-              <form id="edit-session-form">
-                <div class="mb-3">
+              <h3 class="pb-3"><span>E</span>dit Session</h3>
+              <form
+                id="edit-session-form"
+                class="d-flex flex-column align-items-center"
+              >
+                <div class="mb-3 text-start w-100">
                   <label class="bgList-lbl" for="bgSelection-editSession"
-                    >Select a Board Game</label
+                    ><span>S</span>elect a Board Game</label
                   >
                   <select
                     name="BoardGameId"
-                    class="form-control form-select bg-select"
+                    class="form-control form-select bg-select text-center"
                     id="bgSelection-editSession"
                   ></select>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 text-center w-50">
                   <label
                     id="edit-session-label"
                     class="bgList-lbl"
                     for="sessionSelection-edit"
-                    >Select a Session</label
+                    ><span>S</span>elect a Session</label
                   >
                   <select
                     name="SessionId"
@@ -195,46 +202,86 @@
                   ></select>
                 </div>
 
-                <div class="mb-3">
-                  <label for="newSessionDate" class="form-label"
-                    >New Session Date</label
-                  >
-                  <input
-                    name="NewDate"
-                    id="newSessionDate"
-                    type="date"
-                    class="form-control"
-                  />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="mb-3 text-center w-50 m-2">
+                    <label for="currentSessionDate" class="form-label"
+                      ><span>C</span>urrent Session Date</label
+                    >
+                    <input
+                      name="CurrentDate"
+                      id="currentSessionDate"
+                      type="date"
+                      class="form-control text-center"
+                    />
+                  </div>
+                  <div class="mb-3 text-center w-50 m-2">
+                    <label for="newSessionDate" class="form-label"
+                      ><span>N</span>ew Session Date</label
+                    >
+                    <input
+                      name="NewDate"
+                      id="newSessionDate"
+                      type="date"
+                      class="form-control text-center"
+                    />
+                  </div>
                 </div>
 
-                <div class="mb-3">
-                  <label for="newPlayersCount" class="form-label"
-                    >New Players Count</label
-                  >
-                  <input
-                    name="NewPlayersCount"
-                    id="newPlayersCount"
-                    type="number"
-                    class="form-control"
-                  />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="mb-3 text-center w-50 m-2">
+                    <label for="currentPlayersCount" class="form-label"
+                      ><span>C</span>urrent Players Count</label
+                    >
+                    <input
+                      name="CurrentPlayersCount"
+                      id="currentPlayersCount"
+                      type="number"
+                      class="form-control text-center"
+                    />
+                  </div>
+                  
+                  <div class="mb-3 text-center w-50 m-2">
+                    <label for="newPlayersCount" class="form-label"
+                      ><span>N</span>ew Players Count</label
+                    >
+                    <input
+                      name="NewPlayersCount"
+                      id="newPlayersCount"
+                      type="number"
+                      class="form-control text-center"
+                    />
+                  </div>
                 </div>
 
-                <div class="mb-3">
-                  <label for="newSessionDuration" class="form-label"
-                    >New Match Duration:</label
-                  >
-                  <input
-                    name="NewDuration_minutes"
-                    id="newSessionDuration"
-                    type="number"
-                    class="form-control"
-                  />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="mb-3 text-center w-50  m-2">
+                    <label for="currentSessionDuration" class="form-label"
+                      ><span>C</span>urrent Match Duration:</label
+                    >
+                    <input
+                      name="CurrentDuration_minutes"
+                      id="currentSessionDuration"
+                      type="number"
+                      class="form-control text-center"
+                    />
+                  </div>
+                  <div class="mb-3 text-center w-50  m-2">
+                    <label for="newSessionDuration" class="form-label"
+                      ><span>N</span>ew Match Duration:</label
+                    >
+                    <input
+                      name="NewDuration_minutes"
+                      id="newSessionDuration"
+                      type="number"
+                      class="form-control text-center"
+                    />
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   id="confirm-editSession"
-                  class="btn btn-outline-info"
+                  class="btn btn-lg btn-outline-info mt-3"
                   disabled
                 >
                   Log new Session
@@ -243,10 +290,15 @@
             </div>
 
             <div id="delete-session-template">
-              <form id="delete-session-form">
-                <div class="mb-3">
+              <h3 class="pb-3"><span style="color: var(--reddish)">D</span>elete Session</h3>
+              <form
+                id="delete-session-form"
+                class="d-flex flex-column align-items-center"
+              >
+                <div class="mb-3 text-start w-100">
                   <label class="bgList-lbl" for="bgSelection-deleteSession"
-                    >Select a Board Game</label
+                    ><span style="color: var(--reddish)">S</span>elect a Board
+                    Game</label
                   >
                   <select
                     name="BoardGameId"
@@ -255,12 +307,13 @@
                   ></select>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 text-center w-50">
                   <label
                     id="delete-session-label"
                     class="bgList-lbl"
                     for="sessionSelection-delete"
-                    >Select a Session</label
+                    ><span style="color: var(--reddish)">S</span>elect a
+                    Session</label
                   >
                   <select
                     name="SessionId"
@@ -269,14 +322,21 @@
                   ></select>
                 </div>
 
-                <div id="playersCount-delSession" class="mb-3"></div>
+                <div
+                  id="playersCount-delSession"
+                  class="mb-3 text-center w-50"
+                ></div>
 
-                <div id="matchDuration-delSession" class="mb-3"></div>
+                <div
+                  id="matchDuration-delSession"
+                  class="mb-3 text-center w-50"
+                ></div>
 
                 <button
                   type="submit"
                   id="confirm-deleteSession"
-                  class="btn btn-outline-info"
+                  class="btn btn-lg btn-outline-info mt-3"
+                  style="color: var(--reddish)"
                   disabled
                 >
                   Delete Session
@@ -285,10 +345,14 @@
             </div>
 
             <div id="rate-bg-template">
-              <form id="rate-bg-form">
-                <div class="mb-3">
+              <h3 class="pb-3"><span>R</span>ate a Game</h3>
+              <form
+                id="rate-bg-form"
+                class="d-flex flex-column align-items-center"
+              >
+                <div class="mb-3 text-start w-100">
                   <label class="bgList-lbl" for="bgSelection-rate"
-                    >Select a Board Game</label
+                    ><span>S</span>elect a Board Game</label
                   >
                   <select
                     name="BoardGameId"
@@ -297,20 +361,20 @@
                   ></select>
                 </div>
 
-                <div class="mb-3">
-                  <label for="rate" class="form-label">Rate</label>
+                <div class="mb-3 text-center w-50">
+                  <label for="rate" class="form-label"><span>R</span>ate</label>
                   <input
                     name="Rate"
                     id="rate"
                     type="number"
-                    class="form-control"
+                    class="form-control text-center"
                   />
                 </div>
 
                 <button
                   type="submit"
                   id="confirm-rateBG"
-                  class="btn btn-outline-info"
+                  class="btn btn-lg btn-outline-info mt-3"
                   disabled
                 >
                   Confirm Rating
@@ -319,10 +383,14 @@
             </div>
 
             <div id="edit-rate-template">
-              <form id="edit-rate-form">
-                <div class="mb-3">
+              <h3 class="pb-3"><span>E</span>dit Rate</h3>
+              <form
+                id="edit-rate-form"
+                class="d-flex flex-column align-items-center"
+              >
+                <div class="mb-3 text-start w-100">
                   <label class="bgList-lbl" for="bgSelection-edit-rate"
-                    >Select a Board Game</label
+                    ><span>S</span>elect a Board Game</label
                   >
                   <select
                     name="BoardGameId"
@@ -331,20 +399,33 @@
                   ></select>
                 </div>
 
-                <div class="mb-3">
-                  <label for="newRate" class="form-label">Rate</label>
-                  <input
-                    name="Rate"
-                    id="newRate"
-                    type="number"
-                    class="form-control"
-                  />
+                <div class="d-flex flex-row align-items-center">
+                  <div class="mb-3 text-center w-50 m-2">
+                    <label for="currentRate" class="form-label"><span>C</span>urrent Rate</label>
+                    <input
+                      name="oldRate"
+                      id="currentRate"
+                      type="number"
+                      class="form-control text-center"
+                      disabled
+                    />
+                  </div>
+  
+                  <div class="mb-3 text-center w-50 m-2 ">
+                    <label for="newRate" class="form-label"><span>N</span>ew Rate</label>
+                    <input
+                      name="Rate"
+                      id="newRate"
+                      type="number"
+                      class="form-control text-center"
+                    />
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   id="confirm-newRateBG"
-                  class="btn btn-outline-info"
+                  class="btn btn-lg btn-outline-info mt-3"
                   disabled
                 >
                   Confirm new Rating
@@ -372,7 +453,7 @@
 
             <div class="mb-3 d-flex flex-column">
               <label for="user-name" class="form-label"
-                ><span>Name</span></label
+                ><span>N</span>ame</label
               >
 
               <div class="d-flex flex-row">
@@ -391,7 +472,7 @@
 
             <div class="mb-3 d-flex flex-column">
               <label for="user-email" class="form-label"
-                ><span>Email</span></label
+                ><span>E</span>mail</label
               >
 
               <div class="d-flex flex-row">
@@ -411,7 +492,7 @@
 
             <div class="mb-3 d-flex flex-column">
               <label for="user-birthdate" class="form-label"
-                ><span>Birth Date</span></label
+                ><span>B</span>irth Date</label
               >
 
               <div class="d-flex flex-row">
@@ -466,7 +547,7 @@
     <script src="js/scripts/script_users/script_users_page_flipper.js"></script>
 
     <!-- Once the flipper is loaded, load scripts that handle form functionality -->
-    <script src="js/scripts/script_users/script_users_page_forms.js"></script>
+    <!-- <script src="js/scripts/script_users/script_users_page_forms.js"></script> -->
     <script src="js/scripts/script_users/script_users_page_log_session_form.js"></script>
     <script src="js/scripts/script_users/script_users_page_edit_session_form.js"></script>
     <script src="js/scripts/script_users/script_users_page_delete_session_form.js"></script>

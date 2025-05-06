@@ -1,29 +1,6 @@
 const FormHandler_LogSession = (function () {
-  // Format date from YYYY-MM-DD to DD/MM/YYYY for display
-  function formatDateToDDMMYYYY(dateStr) {
-    if (!dateStr) return "";
-    const [year, month, day] = dateStr.split("-");
-    return `${day}/${month}/${year}`;
-  }
-
-  // Debug helper function to inspect objects
-  function logObjectProperties(obj, name) {
-    console.log(`----- ${name} Properties -----`);
-    for (const key in obj) {
-      console.log(`${key}: ${obj[key]}`);
-    }
-    console.log("-------------------------");
-  }
-
   // Initialize Select2 dropdown for board games
   function loadBgDetails() {
-    console.log("Loading board game details...");
-
-    // First destroy any existing select2 instance to prevent duplicates
-    if ($("#bgSelection-logSession").hasClass("select2-hidden-accessible")) {
-      $("#bgSelection-logSession").select2("destroy");
-    }
-
     // Initialize select2 for LOG SESSION
     $("#bgSelection-logSession").select2({
       ajax: {
@@ -51,6 +28,24 @@ const FormHandler_LogSession = (function () {
     });
   }
 
+  function checkFormFilling() {
+    const isBGSelected =
+      $("#bgSelection-logSession").val() !== null &&
+      $("#bgSelection-logSession").val() !== "";
+    let areFieldsFilled = true;
+
+    $("#log-session-form .required:visible:enabled").each(function () {
+      if ($(this).val().trim() === "") {
+        areFieldsFilled = false;
+      }
+    });
+
+    $("#confirm-logNewSession").prop(
+      "disabled",
+      !(isBGSelected && areFieldsFilled)
+    );
+  }
+
   // Set up handlers for the log session form
   function setupLogSessionForm() {
     $(document)
@@ -62,8 +57,6 @@ const FormHandler_LogSession = (function () {
         if (window.Flipper) {
           Flipper.setSubmitting(true);
         }
-
-        console.log("#log-session-form submitted");
 
         // Disable submit button to prevent double submissions
         const submitBtn = $(this).find("button[type='submit']");
@@ -78,8 +71,7 @@ const FormHandler_LogSession = (function () {
             withCredentials: true,
           },
           success: (resp) => {
-            console.log("Success:", resp);
-            alert("Session logged successfully!");
+            alert(resp.message);
 
             // Reset form
             $(this)[0].reset();
@@ -88,10 +80,11 @@ const FormHandler_LogSession = (function () {
             ) {
               $("#bgSelection-logSession").val(null).trigger("change");
             }
+
+            $("#confirm-logNewSession").prop("disabled", true);
           },
           error: (err) => {
-            console.error("Error:", err);
-            alert("Failed to log session. Please try again.");
+            alert(err);
           },
           complete: () => {
             // Re-enable button
@@ -104,33 +97,26 @@ const FormHandler_LogSession = (function () {
           },
         });
       });
+
+    // React to typing in any input
+    $("#log-session-form input").on("input", checkFormFilling);
+
+    // React to board game selection
+    $("#bgSelection-logSession").on("select2:select", checkFormFilling);
+    $("#bgSelection-logSession").on("select2:clear", checkFormFilling);
   }
 
   // Public API
   return {
     init: function () {
-      console.log("Initializing >LOG SESSION< form handler...");
-
       // Listen for content changes from the Flipper module
       $(document).on("flipper:contentChanged", (event, templateId) => {
-        console.log(
-          `Form handler responding to template change: ${templateId}`
-        );
-
         // Initialize specific functionality based on which template was loaded
         if (templateId === "log-session-template") {
-          console.log(">LOG SESSION< template loaded, initializing components");
           loadBgDetails();
           setupLogSessionForm();
         }
       });
-
-      // Also set up handlers on document ready to handle the initial load
-      if ($("#log-session-template").length) {
-        console.log(">LOG SESSION< template found on initial load");
-        loadBgDetails();
-        setupLogSessionForm();
-      }
     },
 
     // Set up all form handlers
