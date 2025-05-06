@@ -160,7 +160,8 @@
                 <button
                   type="submit"
                   id="confirm-logNewSession"
-                  class="btn btn-primary"
+                  class="btn btn-outline-info"
+                  disabled
                 >
                   Log new Session
                 </button>
@@ -233,7 +234,8 @@
                 <button
                   type="submit"
                   id="confirm-editSession"
-                  class="btn btn-primary"
+                  class="btn btn-outline-info"
+                  disabled
                 >
                   Log new Session
                 </button>
@@ -274,7 +276,8 @@
                 <button
                   type="submit"
                   id="confirm-deleteSession"
-                  class="btn btn-primary"
+                  class="btn btn-outline-info"
+                  disabled
                 >
                   Delete Session
                 </button>
@@ -307,7 +310,8 @@
                 <button
                   type="submit"
                   id="confirm-rateBG"
-                  class="btn btn-primary"
+                  class="btn btn-outline-info"
+                  disabled
                 >
                   Confirm Rating
                 </button>
@@ -340,7 +344,8 @@
                 <button
                   type="submit"
                   id="confirm-newRateBG"
-                  class="btn btn-primary"
+                  class="btn btn-outline-info"
+                  disabled
                 >
                   Confirm new Rating
                 </button>
@@ -352,6 +357,101 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <section id="users-profile-configurations" class="d-none">
+        <div id="edit-profile">
+          <form id="edit-profile-form">
+            <div class="mb-3 d-flex flex-row w-100 justify-content-between">
+              <h3 class="text-center"><span>E</span>dit Profile</h3>
+
+              <button type="" id="cancel-edit-profile" class="btn btn-danger">
+                close
+              </button>
+            </div>
+
+            <div class="mb-3 d-flex flex-column">
+              <label for="user-name" class="form-label"
+                ><span>Name</span></label
+              >
+
+              <div class="d-flex flex-row">
+                <input
+                  name="NewName"
+                  id="user-name"
+                  type="text"
+                  class="form-control"
+                  disabled
+                />
+                <button type="" id="change-name" class="btn btn-warning">
+                  edit
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-3 d-flex flex-column">
+              <label for="user-email" class="form-label"
+                ><span>Email</span></label
+              >
+
+              <div class="d-flex flex-row">
+                <input
+                  name="NewEmail"
+                  id="user-email"
+                  type="email"
+                  class="form-control"
+                  disabled
+                />
+
+                <button type="" id="change-email" class="btn btn-warning">
+                  edit
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-3 d-flex flex-column">
+              <label for="user-birthdate" class="form-label"
+                ><span>Birth Date</span></label
+              >
+
+              <div class="d-flex flex-row">
+                <input
+                  name="NewBirthDate"
+                  id="user-birthdate"
+                  type="date"
+                  class="form-control"
+                  disabled
+                />
+
+                <button type="" id="change-birthdate" class="btn btn-warning">
+                  edit
+                </button>
+              </div>
+            </div>
+
+            <div
+              class="d-flex flex-column flex-nowrap w-100 align-items-center"
+            >
+              <button
+                type=""
+                id="change-password"
+                class="btn btn-warning w-50 m-2"
+              >
+                <a href="users_change_password.html">Change Password</a>
+              </button>
+
+              <button
+                type="submit"
+                id="confirm-save-changes"
+                class="btn btn-success w-50 m-2"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+        <div id="delete-profile"></div>
+        <div id="sign-out"></div>
       </section>
     </main>
 

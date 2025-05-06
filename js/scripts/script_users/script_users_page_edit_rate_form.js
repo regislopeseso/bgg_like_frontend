@@ -32,6 +32,8 @@ const FormHandler_EditRate = (function () {
       width: "100%",
       placeholder: "Type at least 3 characters to search",
     });
+
+    $("#bgSelection-edit-rate").on("select2:select", function () {});
   }
 
   // Set up handlers for EDITING A RATE form
@@ -44,12 +46,25 @@ const FormHandler_EditRate = (function () {
         const boardGameId = $(this).val();
         console.log("Selected board game Id:", boardGameId);
 
-        // Fetch the old rating
-        //const oldRate = boardGameDB.rate;
-        console.log("HEYYY Z THE OLD RATE ISSSSSS:", boardGameDB);
+        $.ajax({
+          url: `https://localhost:7081/users/getrate?boardgameid=${boardGameId}`,
+          type: "GET",
+          xhrFields: { withCredentials: true },
+          success: function (response) {
+            $("#newRate").empty();
+            // Fetch the old rating
+            const oldRate = response.content.rate;
 
-        // Pre-fill form fields with session data
-        $("#newRate").val(oldRate);
+            // Pre-fill form fields with session data
+            $("#newRate").val(oldRate);
+          },
+          error: function (xhr, status, error) {
+            console.error("Error fetching rating:", error);
+            console.log("Status:", status);
+            console.log("Response:", xhr.responseText);
+            alert("Failed to fetch rating. Try again later.");
+          },
+        });
       });
 
     // Set up form submission handler
@@ -72,7 +87,7 @@ const FormHandler_EditRate = (function () {
       const updatedRate = $("#newRate").val();
 
       $.ajax({
-        url: "https://localhost:7081/users/editrate",
+        url: "https://localhost:7081/users/editrating",
         type: "PUT",
         data: JSON.stringify({
           boardGameId: selectedBoardGameId,
