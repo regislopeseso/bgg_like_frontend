@@ -34,6 +34,24 @@ const FormHandler_EditRate = (function () {
     $("#bgSelection-edit-rate").on("select2:select", function () {});
   }
 
+  function checkFormFilling() {
+    const isBGSelected =
+      $("#bgSelection-edit-rate").val() !== null &&
+      $("#bgSelection-edit-rate").val() !== "";
+    let areFieldsFilled = true;
+
+    $("#edit-rate-form .required:visible:enabled").each(function () {
+      if ($(this).val().trim() === "") {
+        areFieldsFilled = false;
+      }
+    });
+
+    $("#confirm-newRateBG").prop(
+      "disabled",
+      !(isBGSelected && areFieldsFilled)
+    );
+  }
+
   // Set up handlers for EDITING A RATE form
   function setupEditRateForm() {
     // Set up board game selection change handler
@@ -53,7 +71,7 @@ const FormHandler_EditRate = (function () {
             const oldRate = response.content.rate;
 
             // Pre-fill form fields with session data
-            $("#newRate").val(oldRate);
+            $("#currentRate").val(oldRate);
           },
           error: function (xhr, status, error) {
             console.error("Error fetching rating:", error);
@@ -115,6 +133,12 @@ const FormHandler_EditRate = (function () {
         },
       });
     });
+
+    // React to board game selection
+    $("#bgSelection-edit-rate").on("select2:select", checkFormFilling);
+    $("#bgSelection-edit-rate").on("select2:clear", checkFormFilling);
+    // React to typing in any input
+    $("#edit-rate-form input").on("input", checkFormFilling);
   }
 
   // Public API
@@ -124,7 +148,15 @@ const FormHandler_EditRate = (function () {
       $(document).on("flipper:contentChanged", (event, templateId) => {
         // Initialize specific functionality based on which template was loaded
         if (templateId === "edit-rate-template") {
+          $("#userOption-editRate")
+            .addClass("selectedUserMenuOption")
+            .prop("disabled", true);
+
           loadBgDetails();
+        } else {
+          $("#userOption-editRate")
+            .removeClass("selectedUserMenuOption")
+            .prop("disabled", false);
         }
 
         // Set up all form handlers

@@ -1,7 +1,6 @@
 const FormHandler_EditSession = (function () {
   // Private variables
   let sessionsDB = []; // Store sessions data globally
-  let countSessions = 0; // Store how sessions logged for a board game the user has
 
   // Format date from YYYY-MM-DD to DD/MM/YYYY for display
   function formatDateToDDMMYYYY(dateStr) {
@@ -56,6 +55,29 @@ const FormHandler_EditSession = (function () {
     });
   }
 
+  function checkFormFilling() {
+    const isBGSelected =
+      $("#bgSelection-editSession").val() !== null &&
+      $("#bgSelection-editSession").val() !== "";
+
+    const isSessionSelected =
+      $("#sessionSelection-edit").val() !== null &&
+      $("#sessionSelection-edit").val() !== "";
+
+    let areFieldsFilled = true;
+
+    $("#edit-session-form .required:visible:enabled").each(function () {
+      if ($(this).val().trim() === "") {
+        areFieldsFilled = false;
+      }
+    });
+
+    $("#confirm-editSession").prop(
+      "disabled",
+      !(isBGSelected && isSessionSelected && areFieldsFilled)
+    );
+  }
+
   // Set up handlers for the >EDIT SESSION< form
   function setupEditSessionForm() {
     // Set up board game selection change handler
@@ -97,9 +119,9 @@ const FormHandler_EditSession = (function () {
             if (response.content && response.content.sessions) {
               sessionsDB = response.content.sessions;
 
-              $("#edit-session-label span").empty();
+              $("#edit-session-label").empty();
               $("#edit-session-label").append(
-                ` <span>(${sessionsDB.length})</span>`
+                `<span>S</span>elect a Board Game <span>(${sessionsDB.length})</span>`
               );
 
               // Add options dynamically
@@ -203,9 +225,9 @@ const FormHandler_EditSession = (function () {
             "";
 
           // Pre-fill form fields with session data
-          $("#newSessionDate").val(date);
-          $("#newPlayersCount").val(playersCount);
-          $("#newSessionDuration").val(duration);
+          $("#currentSessionDate").val(formatDateToDDMMYYYY(date));
+          $("#currentPlayersCount").val(playersCount);
+          $("#currentSessionDuration").val(duration + " minutes");
         } else {
           console.warn("Session not found in sessionsDB:", sessionId);
         }
@@ -273,6 +295,15 @@ const FormHandler_EditSession = (function () {
           },
         });
       });
+
+    // React to board game selection
+    $("#bgSelection-editSession").on("select2:select", checkFormFilling);
+    $("#bgSelection-editSession").on("select2:clear", checkFormFilling);
+    // React to session selection
+    $("#sessionSelection-edit").on("select2:select", checkFormFilling);
+    $("#sessionSelection-edit").on("select2:clear", checkFormFilling);
+    // React to typing in any input
+    $("#edit-session-form input").on("input", checkFormFilling);
   }
 
   // Public API
@@ -282,8 +313,16 @@ const FormHandler_EditSession = (function () {
       $(document).on("flipper:contentChanged", (event, templateId) => {
         // Initialize specific functionality based on which template was loaded
         if (templateId === "edit-session-template") {
+          $("#userOption-editSession")
+            .addClass("selectedUserMenuOption")
+            .prop("disabled", true);
+
           loadBgDetails();
           setupEditSessionForm();
+        } else {
+          $("#userOption-editSession")
+            .removeClass("selectedUserMenuOption")
+            .prop("disabled", false);
         }
       });
 

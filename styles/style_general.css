@@ -2,11 +2,11 @@
 @import "/node_modules/bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
-  --bg-color: #1f242e;
+  --bg-color: rgb(31, 36, 46);
   --second-bg-color: rgb(50, 57, 70);
   --text-color: rgb(255, 255, 255);
   --main-color: rgb(0, 238, 255);
-  --reddish: #ff3300;
+  --reddish: rgb(255, 51, 0);
 }
 
 * {
@@ -45,6 +45,26 @@ span {
 .btn:hover {
   color: var(--text-color);
   box-shadow: 1px 1px 15px 1px var(--text-color);
+}
+
+.btn-outline-warning {
+  --bs-btn-active-color: var(--text-color);
+  --bs-btn-active-bg: var(--reddish);
+  --bs-btn-active-border-color: var(--reddish);
+
+  --bs-btn-color: var(--reddish);
+  --bs-btn-disabled-color: var(--bg-color);
+
+  --bs-btn-border-color: var(--reddish);
+  --bs-btn-disabled-border-color: var(--bg-color);
+
+  --bs-btn-hover-bg: var(--text-color);
+  --bs-btn-hover-border-color: var(--text-color);
+}
+.btn-refresh:hover {
+  color: var(--reddish);
+  box-shadow: 1px 1px 10px 5px var(--reddish);
+  transform: rotate(5deg) scale(0.9);
 }
 
 @media screen and (max-width: 3500px) {

@@ -34,407 +34,78 @@
     <main class="ps-0 pe-0">
       <section class="users-menu d-flex flex-row">
         <div class="users-options d-flex w-100">
-          <div
+          <button
             id="userOption-playGame"
             class="user-menu-button btn border p-2 flex-fill text-center"
+            disabled
           >
             <h4><span>P</span>lay</h4>
-          </div>
+          </button>
 
-          <div
+          <button
             id="userOption-logSession"
             class="user-menu-button btn border p-2 flex-fill text-center"
           >
             <h4><span>L</span>og Session</h4>
-          </div>
+          </button>
 
-          <div
+          <button
             id="userOption-editSession"
             class="user-menu-button btn border p-2 flex-fill text-center"
           >
             <h4><span>E</span>dit Session</h4>
-          </div>
+          </button>
 
-          <div
+          <button
             id="userOption-deleteSession"
             class="user-menu-button btn border p-2 flex-fill text-center"
           >
             <h4><span>D</span>elete Session</h4>
-          </div>
+          </button>
 
-          <div
+          <button
             id="userOption-rateBg"
             class="user-menu-button btn border p-2 flex-fill text-center"
           >
             <h4><span>R</span>ate a Game</h4>
-          </div>
+          </button>
 
-          <div
+          <button
             id="userOption-editRate"
             class="user-menu-button btn border p-2 flex-fill text-center"
           >
             <h4><span>E</span>dit Rate</h4>
-          </div>
+          </button>
 
-          <div
+          <button
             id="userOption-newLifeCounter"
             class="user-menu-button btn border p-2 flex-fill text-center"
+            disabled
           >
             <h4><span>N</span>ew Life Counter</h4>
-          </div>
+          </button>
         </div>
       </section>
 
       <section id="users-content" class="flip-card-wrapper pt-5">
         <div class="flip-card">
-          <div id="toggleUserDetails"><button class="btn m-2"></button></div>
-          
+          <div id="toggleUserDetails">
+            <button class="btn m-2"></button>
+          </div>
+
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <div id="flip-front-content"></div>
+              <div
+                id="flip-front-content"
+                class="d-flex flex-column h-100"
+              ></div>
             </div>
 
             <div class="flip-card-back">
-              <div id="flip-back-content"></div>
-            </div>
-          </div>
-
-          <div id="templates" style="display: none">
-            <div id="user-details-template"></div>
-
-            <div id="play-template">yet to be implemented (play)</div>
-
-            <div id="log-session-template">
-              <h3 class="pb-3"><span>L</span>og a new Session</h3>
-              <form id="log-session-form" class="d-flex flex-column align-items-center">
-                <div class="mb-3 text-start w-100">
-                  <label class="bgList-lbl" for="bgSelection-logSession"
-                    ><span>S</span>elect a Board Game</label
-                  >
-                  <div class="comboBox-wrapper">
-                    <div class="comboBox">
-                      <select
-                        name="BoardGameId"
-                        class="form-control form-select bg-select"
-                        id="bgSelection-logSession"
-                      >
-                        <option value=""></option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mb-3 text-center w-50"">
-                  <label for="sessionDate" class="form-label"
-                    ><span>W</span>hen did you play?</label
-                  >
-                  <input
-                    name="Date"
-                    id="sessionDate"
-                    type="date"
-                    class="form-control text-center required"
-                  />
-                </div>
-
-                <div class="mb-3 text-center w-50"">
-                  <label for="playersCount" class="form-label"
-                    ><span>P</span>layers Count</label
-                  >
-                  <input
-                    name="PlayersCount"
-                    id="playersCount"
-                    type="number"
-                    class="form-control text-center required"
-                  />
-                </div>
-
-                <div class="mb-3 text-center w-50"">
-                  <label for="sessionDuration" class="form-label"
-                    ><span>H</span>ow long did the match last:</label
-                  >
-                  <input
-                    name="Duration_minutes"
-                    id="sessionDuration"
-                    type="number"
-                    class="form-control text-center required"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  id="confirm-logNewSession"
-                  class="btn btn-lg btn-outline-info mt-3"
-                  disabled
-                >
-                  Log new Session
-                </button>
-              </form>
-            </div>
-
-            <div id="edit-session-template">
-              <h3 class="pb-3"><span>E</span>dit Session</h3>
-              <form
-                id="edit-session-form"
-                class="d-flex flex-column align-items-center"
-              >
-                <div class="mb-3 text-start w-100">
-                  <label class="bgList-lbl" for="bgSelection-editSession"
-                    ><span>S</span>elect a Board Game</label
-                  >
-                  <select
-                    name="BoardGameId"
-                    class="form-control form-select bg-select text-center"
-                    id="bgSelection-editSession"
-                  ></select>
-                </div>
-
-                <div class="mb-3 text-center w-50">
-                  <label
-                    id="edit-session-label"
-                    class="bgList-lbl"
-                    for="sessionSelection-edit"
-                    ><span>S</span>elect a Session</label
-                  >
-                  <select
-                    name="SessionId"
-                    class="form-control form-select bg-select"
-                    id="sessionSelection-edit"
-                  ></select>
-                </div>
-
-                <div class="d-flex flex-row align-items-center">
-                  <div class="mb-3 text-center w-50 m-2">
-                    <label for="currentSessionDate" class="form-label"
-                      ><span>C</span>urrent Session Date</label
-                    >
-                    <input
-                      name="CurrentDate"
-                      id="currentSessionDate"
-                      type="date"
-                      class="form-control text-center"
-                    />
-                  </div>
-                  <div class="mb-3 text-center w-50 m-2">
-                    <label for="newSessionDate" class="form-label"
-                      ><span>N</span>ew Session Date</label
-                    >
-                    <input
-                      name="NewDate"
-                      id="newSessionDate"
-                      type="date"
-                      class="form-control text-center"
-                    />
-                  </div>
-                </div>
-
-                <div class="d-flex flex-row align-items-center">
-                  <div class="mb-3 text-center w-50 m-2">
-                    <label for="currentPlayersCount" class="form-label"
-                      ><span>C</span>urrent Players Count</label
-                    >
-                    <input
-                      name="CurrentPlayersCount"
-                      id="currentPlayersCount"
-                      type="number"
-                      class="form-control text-center"
-                    />
-                  </div>
-                  
-                  <div class="mb-3 text-center w-50 m-2">
-                    <label for="newPlayersCount" class="form-label"
-                      ><span>N</span>ew Players Count</label
-                    >
-                    <input
-                      name="NewPlayersCount"
-                      id="newPlayersCount"
-                      type="number"
-                      class="form-control text-center"
-                    />
-                  </div>
-                </div>
-
-                <div class="d-flex flex-row align-items-center">
-                  <div class="mb-3 text-center w-50  m-2">
-                    <label for="currentSessionDuration" class="form-label"
-                      ><span>C</span>urrent Match Duration:</label
-                    >
-                    <input
-                      name="CurrentDuration_minutes"
-                      id="currentSessionDuration"
-                      type="number"
-                      class="form-control text-center"
-                    />
-                  </div>
-                  <div class="mb-3 text-center w-50  m-2">
-                    <label for="newSessionDuration" class="form-label"
-                      ><span>N</span>ew Match Duration:</label
-                    >
-                    <input
-                      name="NewDuration_minutes"
-                      id="newSessionDuration"
-                      type="number"
-                      class="form-control text-center"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  id="confirm-editSession"
-                  class="btn btn-lg btn-outline-info mt-3"
-                  disabled
-                >
-                  Log new Session
-                </button>
-              </form>
-            </div>
-
-            <div id="delete-session-template">
-              <h3 class="pb-3"><span style="color: var(--reddish)">D</span>elete Session</h3>
-              <form
-                id="delete-session-form"
-                class="d-flex flex-column align-items-center"
-              >
-                <div class="mb-3 text-start w-100">
-                  <label class="bgList-lbl" for="bgSelection-deleteSession"
-                    ><span style="color: var(--reddish)">S</span>elect a Board
-                    Game</label
-                  >
-                  <select
-                    name="BoardGameId"
-                    class="form-control form-select bg-select"
-                    id="bgSelection-deleteSession"
-                  ></select>
-                </div>
-
-                <div class="mb-3 text-center w-50">
-                  <label
-                    id="delete-session-label"
-                    class="bgList-lbl"
-                    for="sessionSelection-delete"
-                    ><span style="color: var(--reddish)">S</span>elect a
-                    Session</label
-                  >
-                  <select
-                    name="SessionId"
-                    class="form-control form-select bg-select"
-                    id="sessionSelection-delete"
-                  ></select>
-                </div>
-
-                <div
-                  id="playersCount-delSession"
-                  class="mb-3 text-center w-50"
-                ></div>
-
-                <div
-                  id="matchDuration-delSession"
-                  class="mb-3 text-center w-50"
-                ></div>
-
-                <button
-                  type="submit"
-                  id="confirm-deleteSession"
-                  class="btn btn-lg btn-outline-info mt-3"
-                  style="color: var(--reddish)"
-                  disabled
-                >
-                  Delete Session
-                </button>
-              </form>
-            </div>
-
-            <div id="rate-bg-template">
-              <h3 class="pb-3"><span>R</span>ate a Game</h3>
-              <form
-                id="rate-bg-form"
-                class="d-flex flex-column align-items-center"
-              >
-                <div class="mb-3 text-start w-100">
-                  <label class="bgList-lbl" for="bgSelection-rate"
-                    ><span>S</span>elect a Board Game</label
-                  >
-                  <select
-                    name="BoardGameId"
-                    class="form-control form-select bg-select"
-                    id="bgSelection-rate"
-                  ></select>
-                </div>
-
-                <div class="mb-3 text-center w-50">
-                  <label for="rate" class="form-label"><span>R</span>ate</label>
-                  <input
-                    name="Rate"
-                    id="rate"
-                    type="number"
-                    class="form-control text-center"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  id="confirm-rateBG"
-                  class="btn btn-lg btn-outline-info mt-3"
-                  disabled
-                >
-                  Confirm Rating
-                </button>
-              </form>
-            </div>
-
-            <div id="edit-rate-template">
-              <h3 class="pb-3"><span>E</span>dit Rate</h3>
-              <form
-                id="edit-rate-form"
-                class="d-flex flex-column align-items-center"
-              >
-                <div class="mb-3 text-start w-100">
-                  <label class="bgList-lbl" for="bgSelection-edit-rate"
-                    ><span>S</span>elect a Board Game</label
-                  >
-                  <select
-                    name="BoardGameId"
-                    class="form-control form-select bg-select"
-                    id="bgSelection-edit-rate"
-                  ></select>
-                </div>
-
-                <div class="d-flex flex-row align-items-center">
-                  <div class="mb-3 text-center w-50 m-2">
-                    <label for="currentRate" class="form-label"><span>C</span>urrent Rate</label>
-                    <input
-                      name="oldRate"
-                      id="currentRate"
-                      type="number"
-                      class="form-control text-center"
-                      disabled
-                    />
-                  </div>
-  
-                  <div class="mb-3 text-center w-50 m-2 ">
-                    <label for="newRate" class="form-label"><span>N</span>ew Rate</label>
-                    <input
-                      name="Rate"
-                      id="newRate"
-                      type="number"
-                      class="form-control text-center"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  id="confirm-newRateBG"
-                  class="btn btn-lg btn-outline-info mt-3"
-                  disabled
-                >
-                  Confirm new Rating
-                </button>
-              </form>
-            </div>
-
-            <div id="new-life-counter-template">
-              yet to be implemented (new life counter)
+              <div
+                id="flip-back-content"
+                class="d-flex flex-column h-100"
+              ></div>
             </div>
           </div>
         </div>
@@ -547,7 +218,7 @@
     <script src="js/scripts/script_users/script_users_page_flipper.js"></script>
 
     <!-- Once the flipper is loaded, load scripts that handle form functionality -->
-    <!-- <script src="js/scripts/script_users/script_users_page_forms.js"></script> -->
+    <script src="js/scripts/script_users/script_users_page_user_details.js"></script>
     <script src="js/scripts/script_users/script_users_page_log_session_form.js"></script>
     <script src="js/scripts/script_users/script_users_page_edit_session_form.js"></script>
     <script src="js/scripts/script_users/script_users_page_delete_session_form.js"></script>

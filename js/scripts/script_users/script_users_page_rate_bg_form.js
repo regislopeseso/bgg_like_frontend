@@ -30,6 +30,21 @@ const FormHandler_RateBg = (function () {
     });
   }
 
+  function checkFormFilling() {
+    const isBGSelected =
+      $("#bgSelection-rate").val() !== null &&
+      $("#bgSelection-rate").val() !== "";
+    let areFieldsFilled = true;
+
+    $("#rate-bg-form .required:visible:enabled").each(function () {
+      if ($(this).val().trim() === "") {
+        areFieldsFilled = false;
+      }
+    });
+
+    $("#confirm-rateBG").prop("disabled", !(isBGSelected && areFieldsFilled));
+  }
+
   // Set up handlers for the RATING a board game form
   // Set up handlers for the edit session form
   function setupRateBgForm() {
@@ -78,6 +93,12 @@ const FormHandler_RateBg = (function () {
         },
       });
     });
+
+    // React to board game selection
+    $("#bgSelection-rate").on("select2:select", checkFormFilling);
+    $("#bgSelection-rate").on("select2:clear", checkFormFilling);
+    // React to typing in any input
+    $("#rate-bg-form input").on("input", checkFormFilling);
   }
 
   // Public API
@@ -87,7 +108,15 @@ const FormHandler_RateBg = (function () {
       $(document).on("flipper:contentChanged", (event, templateId) => {
         // Initialize specific functionality based on which template was loaded
         if (templateId === "rate-bg-template") {
+          $("#userOption-rateBg")
+            .addClass("selectedUserMenuOption")
+            .prop("disabled", true);
+
           loadBgDetails();
+        } else {
+          $("#userOption-rateBg")
+            .removeClass("selectedUserMenuOption")
+            .prop("disabled", false);
         }
 
         // Set up all form handlers

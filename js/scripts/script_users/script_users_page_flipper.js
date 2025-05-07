@@ -8,6 +8,14 @@
  */
 
 // Immediately-invoked Function Expression (IIFE) to avoid polluting global scope
+let userDB = {};
+const today = new Date();
+const hundredYearsAgo = new Date(today);
+hundredYearsAgo.setFullYear(hundredYearsAgo.getFullYear() - 100);
+
+const maxDate = today.toISOString().split("T")[0];
+const minDate = hundredYearsAgo.toISOString().split("T")[0];
+
 const Flipper = (function () {
   // Private variables
   let isRotating = false; // Track if animation is in progress
@@ -18,38 +26,58 @@ const Flipper = (function () {
   // Public API
   return {
     // Initialize the flipper
+    // init: function () {
+    //   this.setupAnimation();
+    //   this.setupEventListeners();
+
+    //   $.ajax({
+    //     url: "https://localhost:7081/users/getprofiledetails",
+    //     type: "GET",
+    //     xhrFields: { withCredentials: true },
+    //     success: function (response) {
+    //       const userDB = response.content;
+    //       const [year, month, day] = userDB.signUpDate.split("-");
+
+    //       $("#toggleUserDetails button").html(`
+    //         <span>SHOW USER DETAILS</span>`);
+
+    //       $("#user-details-template").html(`
+    //           <h3 class="text-center pb-5">Welcome <span>${userDB.name}</span></h3>
+    //           <h5 class="text-start">Member since: <span>${day}/${month}/${year}</span></h5>
+    //           <h5 class="text-start">Board Games Rated: <span>${userDB.ratedBgCount}</span></h5>
+    //           <h5 class="text-start">Played Matches: <span>${userDB.sessionsCount}</span></h5>
+    //           <h5 class="text-start">Won matches: <span>to be implemented</span></h5>
+    //           <h5 class="text-start">Win rate: <span>to be implemented</span></h5>
+
+    //         `);
+
+    //       // NOW rotate after content is loaded
+    //       Flipper.rotateTo("user-details-template");
+    //     },
+    //     error: function (xhr, status, error) {
+    //       alert("Failed to fetch user details. Try again later.");
+    //     },
+    //   });
+    // },
     init: function () {
       this.setupAnimation();
-      this.setupEventListeners();
 
-      $.ajax({
-        url: "https://localhost:7081/users/getprofiledetails",
-        type: "GET",
-        xhrFields: { withCredentials: true },
-        success: function (response) {
-          const userDB = response.content;
-          const [year, month, day] = userDB.signUpDate.split("-");
+      // monte o HTML já com os dados
+      // injete direto no front
+      $("#flip-front-content").html(
+        loadTemplate("user-details-template", userDB)
+      );
 
-          $("#toggleUserDetails button").html(`
-            <span>SHOW USER DETAILS</span>`);
+      // esconde o botão “SHOW USER DETAILS”, já que estamos nele
+      $("#toggleUserDetails").slideUp();
 
-          $("#user-details-template").html(`
-              <h3 class="text-center pb-5">Welcome <span>${userDB.name}</span></h3>
-              <h5 class="text-start">Member since: <span>${day}/${month}/${year}</span></h5>
-              <h5 class="text-start">Board Games Rated: <span>${userDB.ratedBgCount}</span></h5>
-              <h5 class="text-start">Played Matches: <span>${userDB.sessionsCount}</span></h5>
-              <h5 class="text-start">Won matches: <span>to be implemented</span></h5>
-              <h5 class="text-start">Win rate: <span>to be implemented</span></h5>
-            
-            `);
+      // marque que o front está visível
+      isBackVisible = false;
 
-          // NOW rotate after content is loaded
-          Flipper.rotateTo("user-details-template");
-        },
-        error: function (xhr, status, error) {
-          alert("Failed to fetch user details. Try again later.");
-        },
-      });
+      Flipper.setupEventListeners();
+
+      $("#toggleUserDetails button").html(`
+             <span>SHOW USER DETAILS</span>`);
     },
 
     // Set up the CSS transition for the flip animation
@@ -123,7 +151,8 @@ const Flipper = (function () {
         : "#flip-back-content";
 
       // Load the selected template into the target face
-      $(target).html($(`#${templateId}`).html());
+
+      $(target).html(loadTemplate(templateId));
 
       if (templateId === "user-details-template") {
         $("#toggleUserDetails").slideUp(400);
@@ -193,7 +222,22 @@ $(function () {
       if (data.content.isUserLoggedIn == true) {
         // If the user is logged in, initialize the flipper
         console.log("User is authenticated. Initializing flipper...");
+
         Flipper.init();
+
+        // Fetch user details and attribute the data to userDB
+        // $.ajax({
+        //   url: "https://localhost:7081/users/getprofiledetails",
+        //   type: "GET",
+        //   xhrFields: { withCredentials: true },
+        //   success: function (response) {
+        //     userDB = response.content;
+        //     Flipper.init();
+        //   },
+        //   error: function (xhr, status, error) {
+        //     alert("Failed to fetch user details. Try again later.");
+        //   },
+        // });
       } else {
         // If the user is not authenticated, redirect them to the authentication page
         console.log("User is not authenticated. Redirecting...");
@@ -205,3 +249,506 @@ $(function () {
       alert("Failed to verify login status. Please try again later.");
     });
 });
+
+function loadTemplate(templateId, userDB) {
+  switch (templateId) {
+    case "play-template":
+      return `<p>Template "${templateId}" not yet implemented.</p>`;
+    case "user-details-template":
+      return `
+        <div id="user-details-template">
+          <h3 class="text-center pb-5">Welcome <span id="userName"></span></h3>
+          <h5 class="text-start">Member since: <span id="signupDate"></span></h5>
+          <h5 class="text-start">Board Games Rated: <span id="ratedBgCount"></span></h5>
+          <h5 class="text-start">Played Matches: <span id="sessionsCount"></span></h5>
+          <h5 class="text-start">Won matches: <span>to be implemented</span></h5>
+          <h5 class="text-start">Win rate: <span>to be implemented</span></h5>
+        </div>
+      `;
+    case "log-session-template":
+      return `
+      <div id="log-session-template">
+        <h3 class="pb-0"><span>L</span>og a new Session</h3>
+
+        <hr/>
+
+        <form id="log-session-form" class="d-flex flex-column align-items-center">
+          <div class="text-center w-80">
+            <label class="bgList-lbl" for="bgSelection-logSession"
+              ><span>S</span>elect a Board Game</label
+            >
+            <div class="comboBox-wrapper">
+              <div class="comboBox">
+                <select
+                  name="BoardGameId"
+                  class="form-control form-select bg-select"
+                  id="bgSelection-logSession"
+                >
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <hr/>
+  
+          <div class="text-center w-50">
+            <label for="sessionDate" class="form-label"
+              ><span>W</span>hen did you play?</label
+            >
+            <input
+              name="Date"
+              id="sessionDate"
+              class="new-data form-control text-center required"
+              type="date"
+              min="${minDate}"
+              max="${maxDate}"
+              oninput="if (this.value > '${maxDate}') {this.value = '${maxDate}';}"
+            />
+          </div>
+
+          <hr/>
+  
+          <div class="text-center w-50">
+            <label for="playersCount" class="form-label"
+              ><span>P</span>layers Count</label
+            >
+            <input
+              name="PlayersCount"
+              id="playersCount"
+              class="new-data form-control text-center required"
+              type="number"
+              min="1"
+              max="15"
+              value="1"
+              oninput="if (this.value < 0) this.value = 1;"
+            />
+          </div>
+
+          <hr/>
+  
+          <div class="text-center w-50">
+            <label for="sessionDuration" class="form-label"
+              ><span>H</span>ow long did the match last (minutes):</label
+            >
+            <input
+              name="Duration_minutes"
+              id="sessionDuration"
+              class="new-data form-control text-center required"
+              type="number"
+              min="5"
+              max="1440"
+              oninput="
+                if (this.value < 0 )
+                  {this.value = 5;} 
+                else if(this.value > 1440)
+                  {this.value = 1440;}"
+                else
+                  {this.value}
+            />
+          </div>
+
+          <hr/>
+  
+          <div class="d-flex flex-row w-100 justify-content-between mt-2 gap-3">
+            <button
+              type="submit"
+              id="confirm-logNewSession"
+              class="btn btn-lg btn-outline-info "
+              disabled
+            >
+              Log new Session
+            </button>
+
+            <button
+              type="reset"
+              id="reset-logNewSession"
+              class="btn-refresh btn btn-sm btn-outline-warning"
+            >
+              Clear Form
+            </button>
+          </div>
+        </form>
+      </div>
+      `;
+    case "edit-session-template":
+      return `
+        <div id="edit-session-template">
+          <h3 class="pb-0"><span>E</span>dit Session</h3>
+
+          <hr/>
+
+          <form
+            id="edit-session-form"
+            class="d-flex flex-column align-items-center"         
+          >
+            <div class="text-center w-80">
+              <label class="bgList-lbl" for="bgSelection-editSession"
+                ><span>S</span>elect a Board Game</label
+              >
+              <div class="comboBox-wrapper">
+                <div class="comboBox">
+                  <select
+                    name="BoardGameId"
+                    class="form-control form-select bg-select text-center"
+                    id="bgSelection-editSession"
+                  ></select>
+                </div>
+              </div>
+            </div>
+
+            <hr/>
+
+            <div class="text-center w-50">
+              <label
+                id="edit-session-label"
+                class="bgList-lbl"
+                for="sessionSelection-edit"
+                >
+                <span>S</span>elect a Session</label
+              >
+              <select
+                name="SessionId"
+                class="form-control form-select bg-select"
+                id="sessionSelection-edit"
+              ></select>
+            </div>
+
+            <hr/>
+
+            <div class="d-flex flex-row align-items-center gap-5">
+              <div class="text-center w-50">
+                <label for="currentSessionDate" class="form-label"
+                  ><span>C</span>urrent Session Date</label
+                >
+                <input
+                  name="CurrentDate"
+                  id="currentSessionDate"
+                  type="text"
+                  class="current-data form-control text-center"
+                  disabled
+                />
+              </div>
+              <div class="text-center w-50">
+                <label for="newSessionDate" class="form-label"
+                  ><span>N</span>ew Session Date</label
+                >
+                <input
+                  name="NewDate"
+                  id="newSessionDate"
+                  class="new-data form-control text-center required"                  
+                  type="date"
+                  min="${minDate}"
+                  max="${maxDate}"
+                />
+              </div>
+            </div>
+
+            <hr/>
+
+            <div class="d-flex flex-row align-items-center gap-5">
+              <div class="text-center w-50">
+                <label for="currentPlayersCount" class="form-label"
+                  ><span>C</span>urrent Players Count</label
+                >
+                <input
+                  name="CurrentPlayersCount"
+                  id="currentPlayersCount"
+                  class="current-data form-control text-center"
+                  type="number"
+                  disabled
+                />
+              </div>
+
+              <div class="text-center w-50">
+                <label for="newPlayersCount" class="form-label"
+                  ><span>N</span>ew Players Count</label
+                >
+                <input
+                  name="NewPlayersCount"
+                  id="newPlayersCount"
+                  class="new-data form-control text-center"
+                  type="number"
+                  min="1"
+                  max="15"
+                  value="1"
+                  oninput="
+                    if (this.value < 0 )
+                      {this.value = 5;} 
+                    else if(this.value > 1440)
+                      {this.value = 1440;}"
+                    else
+                      {this.value}
+                />
+              </div>
+            </div>
+
+            <hr/>
+
+            <div class="d-flex flex-row align-items-center gap-5">
+              <div class="text-center w-50">
+                <label for="currentSessionDuration" class="form-label"
+                  ><span>C</span>urrent Match Duration:</label
+                >
+                <input
+                  name="CurrentDuration_minutes"
+                  id="currentSessionDuration"
+                  type="text"
+                  class="current-data form-control text-center"
+                  disabled
+                />
+              </div>
+              <div class="text-center w-50">
+                <label for="newSessionDuration" class="form-label"
+                  ><span>N</span>ew Match Duration:</label
+                >
+                <input
+                  name="NewDuration_minutes"
+                  id="newSessionDuration"
+                  class="new-data form-control text-center required "
+                  type="number"
+                  min="5"
+                  max="1440"
+                  oninput="if (this.value < 0) this.value = 5;"
+                />
+              </div>
+            </div>
+
+            <hr/>
+
+            <div class="d-flex flex-row w-100 justify-content-between mt-2">
+              <button
+                type="submit"
+                id="confirm-editSession"
+                class="btn btn-lg btn-outline-info"
+                disabled
+              >
+                Confirm Alteration
+              </button>
+            <button
+              type="reset"
+              id="reset-editSession"
+              class="btn-refresh btn btn-sm btn-outline-warning"
+            >
+              Clear Form
+            </button>
+
+           
+          </div>
+
+          </form>
+        </div>`;
+    case "delete-session-template":
+      return `  
+        <div id="delete-session-template">
+          <h3 class="pb-0">
+            <span style="color: var(--reddish)">D</span>elete Session
+          </h3>
+
+          <hr/>
+
+          <form
+            id="delete-session-form"
+            class="d-flex flex-column align-items-center"
+          >
+            <div class="text-center w-80">
+              <label class="bgList-lbl" for="bgSelection-deleteSession"
+                ><span style="color: var(--reddish)">S</span>elect a Board
+                Game</label
+              >
+              <div class="comboBox-wrapper">
+                <div class="comboBox">
+                  <select
+                    name="BoardGameId"
+                    class="form-control form-select bg-select"
+                    id="bgSelection-deleteSession"
+                  ></select>
+                </div>
+              </div>
+            </div>
+
+            <hr/>
+
+            <div class="text-center w-50">
+              <label
+                id="delete-session-label"
+                class="bgList-lbl"
+                for="sessionSelection-delete"
+                ><span style="color: var(--reddish)">S</span>elect a
+                Session</label
+              >
+              <select
+                name="SessionId"
+                class="form-control form-select bg-select"
+                id="sessionSelection-delete"
+              ></select>
+            </div>
+
+              <hr/>
+
+            <div
+              id="playersCount-delSession"
+              class="sessionDataPreview mb-3 text-center w-50"
+            ></div>
+
+            <div
+              id="matchDuration-delSession"
+              class="sessionDataPreview mb-3 text-center w-50"
+            ></div>
+
+            <button
+              type="submit"
+              id="confirm-deleteSession"
+              class="btn btn-lg btn-outline-info mt-2"
+              style="color: var(--reddish)"
+              disabled
+            >
+              Delete Session
+            </button>
+          </form>
+        </div>`;
+    case "rate-bg-template":
+      return `
+        <div id="rate-bg-template">
+          <h3 class="pb-0"><span>R</span>ate a Game</h3>
+          
+          <hr/>
+
+          <form
+            id="rate-bg-form"
+            class="d-flex flex-column align-items-center"
+          >
+            <div class="text-start w-80">
+              <label class="bgList-lbl" for="bgSelection-rate"
+                ><span>S</span>elect a Board Game</label
+              >
+              <div class="comboBox-wrapper">
+                <div class="comboBox">
+                  <select
+                    name="BoardGameId"
+                    class="form-control form-select bg-select"
+                    id="bgSelection-rate"
+                  ></select>
+                </div>
+              </div>
+            </div>
+
+            <hr/>
+
+            <div class="text-center w-50">
+              <label for="rate" class="form-label"><span>R</span>ate</label>
+              <input
+                name="Rate"
+                id="rate"
+                class="new-data form-control text-center required"
+                placeholder="rate between 0 and 5"
+                type="number"
+                min="0"
+                max="5"
+                oninput="
+                    if (this.value < 0 )
+                      {this.value = 0;} 
+                    else if(this.value > 5)
+                      {this.value = 5;}"
+                    else
+                      {this.value}
+              />
+            </div>
+
+            <hr/>
+
+            <button
+              type="submit"
+              id="confirm-rateBG"
+              class="btn btn-lg btn-outline-info mt-2"
+              disabled
+            >
+              Confirm Rating
+            </button>
+          </form>
+        </div>`;
+    case "edit-rate-template":
+      return `
+        <div id="edit-rate-template">
+          <h3 class="pb-0"><span>E</span>dit Rate</h3>
+
+          <hr/>
+
+          <form
+            id="edit-rate-form"
+            class="d-flex flex-column align-items-center"
+          >
+            <div class="text-start w-100">
+              <label class="bgList-lbl" for="bgSelection-edit-rate"
+                ><span>S</span>elect a Board Game</label
+              >
+              <div class="comboBox-wrapper">
+                <div class="comboBox">
+                  <select
+                    name="BoardGameId"
+                    class="form-control form-select bg-select"
+                    id="bgSelection-edit-rate"
+                  ></select>
+                </div>
+              </div>
+            </div>
+
+            <hr/>
+
+            <div class="d-flex flex-row align-items-center gap-5">
+              <div class="text-center w-50">
+                <label for="currentRate" class="form-label"
+                  ><span>C</span>urrent Rate</label
+                >
+                <input
+                  name="oldRate"
+                  id="currentRate"
+                  type="number"
+                  class="current-data form-control text-center"
+                  disabled
+                />
+              </div>
+
+              <div class="text-center w-50">
+                <label for="newRate" class="form-label"
+                  ><span>N</span>ew Rate</label
+                >
+                <input
+                  name="Rate"
+                  id="newRate"
+                  class="new-data form-control text-center required"
+                  type="number"
+                  min="0"
+                  max="5"
+                  placeholder="0 < rate < 5"
+                  oninput="
+                    if (this.value < 0 )
+                      {this.value = 0;} 
+                    else if(this.value > 5)
+                      {this.value = 5;}"
+                    else
+                      {this.value}
+                />
+              </div>
+            </div>
+
+            <hr/>
+
+            <button
+              type="submit"
+              id="confirm-newRateBG"
+              class="btn btn-lg btn-outline-info mt-2"
+              disabled
+            >
+              Confirm new Rating
+            </button>
+          </form>
+        </div>`;
+    case "new-life-counter-template":
+      return `<p>Template "${templateId}" not yet implemented.</p>`;
+    default:
+      return `<p>Template "${templateId}" não encontrado.</p>`;
+  }
+}
+
+//$(target).html($(`#${templateId}`).html());

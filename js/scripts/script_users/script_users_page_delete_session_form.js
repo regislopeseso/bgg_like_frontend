@@ -51,6 +51,21 @@ const FormHandler_DeleteSession = (function () {
     });
   }
 
+  function checkFormFilling() {
+    const isBGSelected =
+      $("#bgSelection-deleteSession").val() !== null &&
+      $("#bgSelection-deleteSession").val() !== "";
+
+    const isSessionSelected =
+      $("#sessionSelection-delete").val() !== null &&
+      $("#sessionSelection-delete").val() !== "";
+
+    $("#confirm-deleteSession").prop(
+      "disabled",
+      !(isBGSelected && isSessionSelected)
+    );
+  }
+
   // Set up handlers for the DELETE SESSION form
   // Set up handlers for the edit session form
   function setupDeleteSessionForm() {
@@ -81,10 +96,10 @@ const FormHandler_DeleteSession = (function () {
               sessionsDB = response.content.sessions;
               console.log("Sessions found:", sessionsDB);
 
-              $("#delete-session-label span").empty();
+              $("#delete-session-label").empty();
 
               $("#delete-session-label").append(
-                ` <span>(${sessionsDB.length})</span>`
+                `<span style="color: var(--reddish)">S</span>elect a Board Game <span style="color: var(--reddish)">(${sessionsDB.length})</span>`
               );
 
               // Add options dynamically
@@ -157,10 +172,10 @@ const FormHandler_DeleteSession = (function () {
           // Check all possible property name formats (handle case inconsistency)
           // Pre-fill form fields with session data
           $("#playersCount-delSession").html(
-            `<div class="text-start">Players Count: <span>${selectedSession.playersCount}</span></div>`
+            `<div class="text-start">Players Count: <span style="color: var(--reddish)">${selectedSession.playersCount}</span></div>`
           );
           $("#matchDuration-delSession").html(
-            `<div class="text-start">Match Duration: <span>${selectedSession.duration_minutes}</span></div>`
+            `<div class="text-start">Match Duration: <span style="color: var(--reddish)">${selectedSession.duration_minutes}</span></div>`
           );
         } else {
           console.warn("Session not found in sessionsDB:", sessionId);
@@ -191,6 +206,30 @@ const FormHandler_DeleteSession = (function () {
           xhrFields: { withCredentials: true },
           success: function (resp) {
             alert(resp.message);
+
+            // Clear selects
+            if (
+              $("#bgSelection-deleteSession").hasClass(
+                "select2-hidden-accessible"
+              )
+            ) {
+              $("#bgSelection-deleteSession").val(null).trigger("change");
+            }
+            if (
+              $("#sessionSelection-delete").hasClass(
+                "select2-hidden-accessible"
+              )
+            ) {
+              $("#sessionSelection-delete").val(null).trigger("change");
+            }
+            // Replace second select2 label removing its sessions counter
+            $("#delete-session-label").html(`<span>S</span>elect a Board Game`);
+            //Clear form
+            $("#delete-session-form")[0].reset();
+            //Clear session details
+            $(".sessionDataPreview").empty();
+            // Block form submission button
+            $("#confirm-deleteSession").prop("disabled", true);
           },
           error: function (err) {
             alert(err);
@@ -206,6 +245,13 @@ const FormHandler_DeleteSession = (function () {
           },
         });
       });
+
+    // React to board game selection
+    $("#bgSelection-deleteSession").on("select2:select", checkFormFilling);
+    $("#bgSelection-deleteSession").on("select2:clear", checkFormFilling);
+    // React to session selection
+    $("#sessionSelection-delete").on("select2:select", checkFormFilling);
+    $("#sessionSelection-delete").on("select2:clear", checkFormFilling);
   }
 
   // Public API
@@ -215,7 +261,15 @@ const FormHandler_DeleteSession = (function () {
       $(document).on("flipper:contentChanged", (event, templateId) => {
         // Initialize specific functionality based on which template was loaded
         if (templateId === "delete-session-template") {
+          $("#userOption-deleteSession")
+            .addClass("selectedUserMenuOption")
+            .prop("disabled", true);
+
           loadBgDetails();
+        } else {
+          $("#userOption-deleteSession")
+            .removeClass("selectedUserMenuOption")
+            .prop("disabled", false);
         }
 
         // Set up all form handlers

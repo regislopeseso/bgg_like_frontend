@@ -7,6 +7,9 @@ main {
 #toggleUserDetails {
   display: none;
 }
+#toggleUserDetails button {
+  animation: pulse 1s infinite;
+}
 
 .users-options {
   background-color: var(--second-bg-color);
@@ -14,7 +17,7 @@ main {
 .users-options .btn {
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   border: none !important;
-  margin: 1rem;
+  margin: 1.5rem;
 }
 .users-options .btn:hover {
   box-shadow: 1px 1px 15px 1px var(--text-color);
@@ -24,6 +27,10 @@ main {
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
+}
+
+.selectedUserMenuOption {
+  box-shadow: 1px 1px 10px 8px black !important;
 }
 
 .flip-card-wrapper {
@@ -39,11 +46,11 @@ main {
 .flip-card {
   align-self: center;
   background-color: transparent;
-  max-width: 500px;
-  width: 55vw;
+  max-width: 600px;
+  width: 60vw;
   min-width: 400px;
   max-height: 700px;
-  height: 50vw;
+  height: 70vw;
   min-height: 350px;
   border: 1px solid var(--bg-color);
   border-radius: 2rem;
@@ -76,20 +83,16 @@ main {
 /* Style the front side (fallback if image is missing) */
 .flip-card-front {
   background-color: var(--second-bg-color);
-  align-items: start;
 }
 
 /* Style the back side */
 .flip-card-back {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   background-color: var(--second-bg-color);
   color: white;
   transform: rotateY(180deg);
 }
 
-/* Select2 Bootstrap integration styling */
+/*Select2 Bootstrap integration styling */
 
 /* Main container and selection box */
 .select2-container--classic .select2-selection--single {
@@ -157,6 +160,16 @@ main {
   margin-right: 10px !important;
 }
 
+.current-data {
+  background-color: var(--second-bg-colorbg-color) !important;
+  color: var(--text-color);
+}
+.new-data {
+  font-weight: 600;
+  background-color: rgba(50, 57, 70, 0.9);
+  color: var(--main-color);
+}
+
 /* MOVE EVERYTHING BELLOW TO THE HEADER CSS */
 #users-profile-configurations {
   position: absolute;
@@ -179,4 +192,24 @@ main {
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   background-color: var(--second-bg-color);
   z-index: 2000;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1.02);
+  }
+}
+
+hr {
+  border: none; /* remove bordas padrão */
+  border-top: 1px solid #ccc; /* desenha apenas uma linha fina */
+  margin: 10px 0; /* espaçamento acima e abaixo */
+  width: 100%; /* opcional: define largura */
+  opacity: 0.6; /* opcional: semitransparente */
 }

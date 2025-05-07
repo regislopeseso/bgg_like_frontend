@@ -98,12 +98,11 @@ const FormHandler_LogSession = (function () {
         });
       });
 
-    // React to typing in any input
-    $("#log-session-form input").on("input", checkFormFilling);
-
     // React to board game selection
     $("#bgSelection-logSession").on("select2:select", checkFormFilling);
     $("#bgSelection-logSession").on("select2:clear", checkFormFilling);
+    // React to typing in any input
+    $("#log-session-form input").on("input", checkFormFilling);
   }
 
   // Public API
@@ -113,9 +112,19 @@ const FormHandler_LogSession = (function () {
       $(document).on("flipper:contentChanged", (event, templateId) => {
         // Initialize specific functionality based on which template was loaded
         if (templateId === "log-session-template") {
+          $("#userOption-logSession")
+            .addClass("selectedUserMenuOption")
+            .prop("disabled", true);
+
           loadBgDetails();
-          setupLogSessionForm();
+        } else {
+          $("#userOption-logSession")
+            .removeClass("selectedUserMenuOption")
+            .prop("disabled", false);
         }
+
+        // Set up all form handlers
+        this.setupAllForms();
       });
     },
 
