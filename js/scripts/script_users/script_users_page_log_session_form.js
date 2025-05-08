@@ -46,6 +46,17 @@ const FormHandler_LogSession = (function () {
     );
   }
 
+  function clearBgSelection() {
+    $("#bgSelection-logSession").val(null).trigger("change");
+  }
+
+  function forceClearForm() {
+    //Clear form
+    $("#log-session-form")[0].reset();
+    // Block form submission button
+    $("#confirm-logNewSession").prop("disabled", true);
+  }
+
   // Set up handlers for the log session form
   function setupLogSessionForm() {
     $(document)
@@ -74,21 +85,20 @@ const FormHandler_LogSession = (function () {
             alert(resp.message);
 
             // Reset form
-            $(this)[0].reset();
             if (
               $("#bgSelection-logSession").hasClass("select2-hidden-accessible")
             ) {
-              $("#bgSelection-logSession").val(null).trigger("change");
+              clearBgSelection();
             }
 
-            $("#confirm-logNewSession").prop("disabled", true);
+            forceClearForm();
           },
           error: (err) => {
             alert(err);
           },
           complete: () => {
             // Re-enable button
-            submitBtn.attr("disabled", false).text(originalBtnText);
+            submitBtn.attr("disabled", true).text(originalBtnText);
 
             // Tell the Flipper module that we're done submitting
             if (window.Flipper) {
@@ -100,9 +110,18 @@ const FormHandler_LogSession = (function () {
 
     // React to board game selection
     $("#bgSelection-logSession").on("select2:select", checkFormFilling);
-    $("#bgSelection-logSession").on("select2:clear", checkFormFilling);
+    $("#bgSelection-logSession").on("select2:clear", () => {
+      checkFormFilling();
+      forceClearForm();
+      clearBgSelection();
+    });
     // React to typing in any input
     $("#log-session-form input").on("input", checkFormFilling);
+    // React to clicking on the clear button:
+    $("#reset-logNewSession").on("click", () => {
+      clearBgSelection();
+      forceClearForm();
+    });
   }
 
   // Public API

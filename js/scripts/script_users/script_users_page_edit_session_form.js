@@ -78,6 +78,23 @@ const FormHandler_EditSession = (function () {
     );
   }
 
+  function clearBgSelection() {
+    $("#bgSelection-editSession").val(null).trigger("change");
+  }
+
+  function clearSessionSelection() {
+    $("#sessionSelection-edit").val(null).trigger("change");
+  }
+
+  function forceClearForm() {
+    // Replace second select2 label removing its sessions counter
+    $("#edit-session-label").html(`<span>S</span>elect a Board Game`);
+    //Clear form
+    $("#edit-session-form")[0].reset();
+    // Block form submission button
+    $("#confirm-editSession").prop("disabled", true);
+  }
+
   // Set up handlers for the >EDIT SESSION< form
   function setupEditSessionForm() {
     // Set up board game selection change handler
@@ -272,11 +289,9 @@ const FormHandler_EditSession = (function () {
             alert(resp.message);
 
             // Clear form fields after successful update
-            $("#bgSelection-editSession").val(null).trigger("change");
-            $("#sessionSelection-edit").empty().trigger("change");
-            $("#newSessionDate").val("");
-            $("#newPlayersCount").val("");
-            $("#newSessionDuration").val("");
+            clearBgSelection();
+            clearSessionSelection();
+            forceClearForm();
           },
           error: function (xhr, status, error) {
             console.error("Error updating session:", error);
@@ -286,7 +301,7 @@ const FormHandler_EditSession = (function () {
           },
           complete: () => {
             // Re-enable button
-            submitBtn.attr("disabled", false).text(originalBtnText);
+            submitBtn.attr("disabled", true).text(originalBtnText);
 
             // Tell the Flipper module that we're done submitting
             if (window.Flipper) {
@@ -298,12 +313,23 @@ const FormHandler_EditSession = (function () {
 
     // React to board game selection
     $("#bgSelection-editSession").on("select2:select", checkFormFilling);
-    $("#bgSelection-editSession").on("select2:clear", checkFormFilling);
+    $("#bgSelection-editSession").on("select2:clear", () => {
+      checkFormFilling();
+      clearSessionSelection();
+      forceClearForm();
+      clearBgSelection();
+    });
     // React to session selection
     $("#sessionSelection-edit").on("select2:select", checkFormFilling);
     $("#sessionSelection-edit").on("select2:clear", checkFormFilling);
     // React to typing in any input
     $("#edit-session-form input").on("input", checkFormFilling);
+    // React to clicking on the clear button:
+    $("#reset-editSession").on("click", () => {
+      forceClearForm();
+      clearSessionSelection();
+      clearBgSelection();
+    });
   }
 
   // Public API

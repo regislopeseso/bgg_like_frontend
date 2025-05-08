@@ -52,6 +52,17 @@ const FormHandler_EditRate = (function () {
     );
   }
 
+  function clearBgSelection() {
+    $("#bgSelection-edit-rate").val(null).trigger("change");
+  }
+
+  function forceClearForm() {
+    //Clear form
+    $("#edit-rate-form")[0].reset();
+    // Block form submission button
+    $("#confirm-newRateBG").prop("disabled", true);
+  }
+
   // Set up handlers for EDITING A RATE form
   function setupEditRateForm() {
     // Set up board game selection change handler
@@ -113,8 +124,13 @@ const FormHandler_EditRate = (function () {
         success: function (response) {
           alert(response.message);
 
-          $("#bgSelection-edit-rate").val(null).trigger("change");
-          $("#newRate").empty().trigger("change");
+          // Reset form
+          if (
+            $("#bgSelection-edit-rate").hasClass("select2-hidden-accessible")
+          ) {
+            clearBgSelection();
+          }
+          forceClearForm();
         },
         error: function (xhr, status, error) {
           console.error("Error editing rate:", error);
@@ -124,7 +140,7 @@ const FormHandler_EditRate = (function () {
         },
         complete: () => {
           // Re-enable button
-          submitBtn.attr("disabled", false).text(originalBtnText);
+          submitBtn.attr("disabled", true).text(originalBtnText);
 
           // Tell the Flipper module that we're done submitting
           if (window.Flipper) {
@@ -136,7 +152,11 @@ const FormHandler_EditRate = (function () {
 
     // React to board game selection
     $("#bgSelection-edit-rate").on("select2:select", checkFormFilling);
-    $("#bgSelection-edit-rate").on("select2:clear", checkFormFilling);
+    $("#bgSelection-edit-rate").on("select2:clear", () => {
+      checkFormFilling();
+      forceClearForm();
+      clearBgSelection();
+    });
     // React to typing in any input
     $("#edit-rate-form input").on("input", checkFormFilling);
   }

@@ -66,8 +66,26 @@ const FormHandler_DeleteSession = (function () {
     );
   }
 
+  function clearBgSelection() {
+    $("#bgSelection-deleteSession").val(null).trigger("change");
+  }
+
+  function clearSessionSelection() {
+    $("#sessionSelection-delete").val(null).trigger("change");
+  }
+
+  function forceClearForm() {
+    // Replace second select2 label removing its sessions counter
+    $("#delete-session-label").html(`<span>S</span>elect a Board Game`);
+    //Clear form
+    $("#delete-session-form")[0].reset();
+    //Clear session details
+    $(".sessionDataPreview").empty();
+    // Block form submission button
+    $("#confirm-deleteSession").prop("disabled", true);
+  }
+
   // Set up handlers for the DELETE SESSION form
-  // Set up handlers for the edit session form
   function setupDeleteSessionForm() {
     // Set up board game selection change handler
     $(document)
@@ -213,30 +231,26 @@ const FormHandler_DeleteSession = (function () {
                 "select2-hidden-accessible"
               )
             ) {
-              $("#bgSelection-deleteSession").val(null).trigger("change");
+              clearBgSelection();
             }
+
             if (
               $("#sessionSelection-delete").hasClass(
                 "select2-hidden-accessible"
               )
             ) {
-              $("#sessionSelection-delete").val(null).trigger("change");
+              clearSessionSelection();
             }
-            // Replace second select2 label removing its sessions counter
-            $("#delete-session-label").html(`<span>S</span>elect a Board Game`);
+
             //Clear form
-            $("#delete-session-form")[0].reset();
-            //Clear session details
-            $(".sessionDataPreview").empty();
-            // Block form submission button
-            $("#confirm-deleteSession").prop("disabled", true);
+            forceClearForm();
           },
           error: function (err) {
             alert(err);
           },
           complete: () => {
             // Re-enable button
-            submitBtn.attr("disabled", false).text(originalBtnText);
+            submitBtn.attr("disabled", true).text(originalBtnText);
 
             // Tell the Flipper module that we're done submitting
             if (window.Flipper) {
@@ -248,7 +262,13 @@ const FormHandler_DeleteSession = (function () {
 
     // React to board game selection
     $("#bgSelection-deleteSession").on("select2:select", checkFormFilling);
-    $("#bgSelection-deleteSession").on("select2:clear", checkFormFilling);
+
+    $("#bgSelection-deleteSession").on("select2:clear", () => {
+      checkFormFilling();
+      clearSessionSelection();
+      forceClearForm();
+      clearBgSelection();
+    });
     // React to session selection
     $("#sessionSelection-delete").on("select2:select", checkFormFilling);
     $("#sessionSelection-delete").on("select2:clear", checkFormFilling);

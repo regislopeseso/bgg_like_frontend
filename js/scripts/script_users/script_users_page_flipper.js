@@ -369,8 +369,7 @@ function loadTemplate(templateId, userDB) {
             </button>
           </div>
         </form>
-      </div>
-      `;
+      </div>`;
     case "edit-session-template":
       return `
         <div id="edit-session-template">
@@ -516,7 +515,7 @@ function loadTemplate(templateId, userDB) {
 
             <hr/>
 
-            <div class="d-flex flex-row w-100 justify-content-between mt-2">
+            <div class="d-flex flex-row w-100 justify-content-between mt-2 gap-3">
               <button
                 type="submit"
                 id="confirm-editSession"
@@ -525,17 +524,14 @@ function loadTemplate(templateId, userDB) {
               >
                 Confirm Alteration
               </button>
-            <button
-              type="reset"
-              id="reset-editSession"
-              class="btn-refresh btn btn-sm btn-outline-warning"
-            >
-              Clear Form
-            </button>
-
-           
-          </div>
-
+              <button
+                type="reset"
+                id="reset-editSession"
+                class="btn-refresh btn btn-sm btn-outline-warning"
+              >
+                Clear Form
+              </button>
+            </div>         
           </form>
         </div>`;
     case "delete-session-template":
@@ -577,11 +573,15 @@ function loadTemplate(templateId, userDB) {
                 ><span style="color: var(--reddish)">S</span>elect a
                 Session</label
               >
-              <select
-                name="SessionId"
-                class="form-control form-select bg-select"
-                id="sessionSelection-delete"
-              ></select>
+              <div class="comboBox-wrapper">
+                <div class="comboBox">
+                  <select
+                    name="SessionId"
+                    class="form-control form-select bg-select"
+                    id="sessionSelection-delete"
+                  ></select>
+                </div>
+              </div>
             </div>
 
               <hr/>
@@ -678,7 +678,7 @@ function loadTemplate(templateId, userDB) {
             id="edit-rate-form"
             class="d-flex flex-column align-items-center"
           >
-            <div class="text-start w-100">
+            <div class="text-start w-80">
               <label class="bgList-lbl" for="bgSelection-edit-rate"
                 ><span>S</span>elect a Board Game</label
               >

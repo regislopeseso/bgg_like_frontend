@@ -45,6 +45,17 @@ const FormHandler_RateBg = (function () {
     $("#confirm-rateBG").prop("disabled", !(isBGSelected && areFieldsFilled));
   }
 
+  function clearBgSelection() {
+    $("#bgSelection-rate").val(null).trigger("change");
+  }
+
+  function forceClearForm() {
+    //Clear form
+    $("#rate-bg-form")[0].reset();
+    // Block form submission button
+    $("#confirm-rateBG").prop("disabled", true);
+  }
+
   // Set up handlers for the RATING a board game form
   // Set up handlers for the edit session form
   function setupRateBgForm() {
@@ -78,13 +89,20 @@ const FormHandler_RateBg = (function () {
         xhrFields: { withCredentials: true },
         success: function (resp) {
           alert(resp.message);
+
+          // Reset form
+          if ($("#bgSelection-rate").hasClass("select2-hidden-accessible")) {
+            clearBgSelection();
+          }
+          clearBgSelection();
+          forceClearForm();
         },
         error: function (err) {
           alert("Rating failed. Please try again. Error:", err);
         },
         complete: () => {
           // Re-enable button
-          submitBtn.attr("disabled", false).text(originalBtnText);
+          submitBtn.attr("disabled", true).text(originalBtnText);
 
           // Tell the Flipper module that we're done submitting
           if (window.Flipper) {
@@ -96,7 +114,11 @@ const FormHandler_RateBg = (function () {
 
     // React to board game selection
     $("#bgSelection-rate").on("select2:select", checkFormFilling);
-    $("#bgSelection-rate").on("select2:clear", checkFormFilling);
+    $("#bgSelection-rate").on("select2:clear", () => {
+      checkFormFilling();
+      forceClearForm();
+      clearBgSelection();
+    });
     // React to typing in any input
     $("#rate-bg-form input").on("input", checkFormFilling);
   }
