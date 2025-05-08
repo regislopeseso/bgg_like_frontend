@@ -76,9 +76,58 @@ $(function () {
     // $("#edit-profile-form").on("submit", () => {});
   }
 
+  function setUpEditProfileForm() {
+    $(document)
+      .off("submit", "#edit-profile-form")
+      .on("submit", "#edit-profile-form", function (e) {
+        e.preventDefault();
+
+        // Disable submit button to prevent double submissions
+        const submitBtn = $(this).find("button[type='submit']");
+        const originalBtnText = submitBtn.text();
+        submitBtn.attr("disabled", true).text("Submitting...");
+
+        // Get form values
+        const newName = $("#user-name").val();
+        const newEmail = $("#user-email").val();
+        const newBirthDate = $("#user-birthdate").val();
+
+        $.ajax({
+          url: "https://localhost:7081/users/editprofile",
+          type: "PUT",
+          data: JSON.stringify({
+            NewName: newName,
+            NewEmail: newEmail,
+            NewBirthDate: newBirthDate,
+          }),
+          contentType: "application/json",
+          xhrFields: { withCredentials: true },
+          success: function (resp) {
+            alert(resp.message);
+
+            // Clear form fields after successful update
+            // clearBgSelection();
+            // clearSessionSelection();
+            // forceClearForm();
+          },
+          error: function (xhr, status, error) {
+            console.error("Error updating session:", error);
+            console.log("Status:", status);
+            console.log("Response:", xhr.responseText);
+            alert("Failed to edit session. Please try again.");
+          },
+          complete: () => {
+            // Re-enable button
+            submitBtn.attr("disabled", true).text(originalBtnText);
+          },
+        });
+      });
+  }
+
   function Build() {
     loadUserDetails();
     loadEvents();
+    setUpEditProfileForm();
   }
 
   Build();
