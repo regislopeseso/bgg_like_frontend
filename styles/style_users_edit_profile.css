@@ -1,0 +1,42 @@
+#users-configurations-edit-profile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+#edit-profile {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25rem;
+  height: 35rem;
+  padding: 2rem;
+  border-radius: 2rem;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  background-color: var(--second-bg-color);
+  z-index: 2000;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+
+hr {
+  border: none; /* remove bordas padrão */
+  border-top: 1px solid #ccc; /* desenha apenas uma linha fina */
+  margin: 10px 0; /* espaçamento acima e abaixo */
+  width: 100%; /* opcional: define largura */
+  opacity: 0.6; /* opcional: semitransparente */
+}

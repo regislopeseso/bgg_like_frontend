@@ -1,5 +1,4 @@
 const FormHandler_UserDetails = (function () {
-  // Public API
   function loadUserDetails() {
     $.ajax({
       url: "https://localhost:7081/users/getprofiledetails",
@@ -19,6 +18,7 @@ const FormHandler_UserDetails = (function () {
     });
   }
 
+  // Public API
   return {
     init: function () {
       // Listen for content changes from the Flipper module

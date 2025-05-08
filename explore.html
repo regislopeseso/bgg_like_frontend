@@ -10,17 +10,24 @@
       integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
-    />   
-     
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"> 
+    />
+
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
     <link
       rel="stylesheet"
       href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
-    /> 
-    <link rel="stylesheet" href="node_modules/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="styles/loaders.css">
+    />
 
-    <link rel="stylesheet" href="styles/style_general.css" />   
+    <link
+      rel="stylesheet"
+      href="node_modules/select2/dist/css/select2.min.css"
+    />
+    <link rel="stylesheet" href="styles/loaders.css" />
+
+    <link rel="stylesheet" href="styles/style_general.css" />
     <link rel="stylesheet" href="styles/style_header.css" />
     <link rel="stylesheet" href="styles/style_explore.css" />
     <link rel="stylesheet" href="styles/style_footer.css" />
@@ -29,29 +36,44 @@
     <section class="explore" id="explore">
       <div class="viewBlock">
         <div class="explore-menu">
-          <div class="explore-option allBG">        
-            <a href="" id="displayAllBoardGames"><span>All</span> <span class="hiddenOption">Board Games</span></a>
+          <div class="explore-option allBG">
+            <a href="" id="displayAllBoardGames"
+              ><span>All</span> <span class="hiddenOption">Board Games</span></a
+            >
           </div>
-          <div class="explore-option searchBG">        
-            <a href="" id="searchBoardGames"><span>Find</span> <span class="hiddenOption">a Board Game</span></a>
+          <div class="explore-option searchBG">
+            <a href="" id="searchBoardGames"
+              ><span>Find</span>
+              <span class="hiddenOption">a Board Game</span></a
+            >
           </div>
-          <div class="explore-option">  
-            <a href="" id="displayBoardGamesRankings">B<span class="hiddenOption">oard</span><span class="hiddenOption"> </span>G<span class="hiddenOption">ames</span> <span>Ranking</a>            
+          <div class="explore-option">
+            <a href="" id="displayBoardGamesRankings">
+              B<span class="hiddenOption">oard</span
+              ><span class="hiddenOption"> </span>G<span class="hiddenOption"
+                >ames</span
+              >
+              <span>Ranking</span>
+            </a>
           </div>
-          <div class="explore-option">  
-            <a href="" id="displayCategoriesRankings">Cat<span class="hiddenOption">egories</span> <span>Ranking</span></a>       
+          <div class="explore-option">
+            <a href="" id="displayCategoriesRankings">
+              Cat<span class="hiddenOption">egories</span> <span>Ranking</span>
+            </a>
           </div>
-          
         </div>
 
         <div class="explore-content">
-          <div class="content-wrapper">               
-            <div id="bgRecordsToggler" class="bgRecords" >
-              <div class="table-responsive .allBGtable-container">
+          <div class="content-wrapper">
+            <div id="bgRecordsToggler" class="bgRecords">
+              <div class="table-responsive allBGtable-container">
                 <table class="table caption-top table-allBoardGames">
-                  <caption><span>All</span> Board Games</caption>
+                  <caption>
+                    <span>All</span>
+                    Board Games
+                  </caption>
                   <thead>
-                    <tr>  
+                    <tr>
                       <th>Name</th>
                       <th id="wrapedTh">Average Rating</th>
                       <th>Number of Voters</th>
@@ -60,162 +82,195 @@
                       <th>Sessions Logged</th>
                     </tr>
                   </thead>
-                  <tbody>                  
-                  </tbody>
+                  <tbody></tbody>
                 </table>
               </div>
-            </div>               
+            </div>
 
             <div id="bgFinderToggler">
               <div id="searchBGToggler">
-                <div class="form-group BGfinder" >
-                  <label class="bgList-lbl" for="bgSelection">Select a Board Game</label>
+                <div class="form-group BGfinder">
+                  <label class="bgList-lbl" for="bgSelection"
+                    >Select a Board Game</label
+                  >
                   <div class="comboBox-wrapper">
                     <div class="comboBox">
                       <select
-                      name="selectecBG"                
-                      class="form-control form-select bg-select "
-                      id="bgSelection"                   
+                        name="selectedBG"
+                        class="form-control form-select bg-select"
+                        id="bgSelection"
                       >
-                        <option value=""></optio>
+                        <option value=""></option>
                       </select>
                     </div>
                     <div class="detailsButton">
-                      <button class="btn btn-outline-info" type="submit" id="submitBG" disabled>Show Details</button>
+                      <button
+                        class="btn btn-outline-info"
+                        type="submit"
+                        id="submitBG"
+                        disabled
+                      >
+                        Show Details
+                      </button>
                     </div>
-                  </div>              
+                  </div>
                 </div>
               </div>
-              
+
               <div id="detailsTableToggler">
-                <div class="outerBox">                 
+                <div class="outerBox">
                   <div class="vLayer">
                     <div class="firstBoxDivider">
                       <div class="leftBox" id="gameDetails"></div>
-                      <div class="rightBox" id="gamePics"></div>               
+                      <div class="rightBox" id="gamePics"></div>
                     </div>
-                    <div class="secondBoxDivider" >
+                    <div class="secondBoxDivider">
                       <div class="descriptionBox" id="gameDescription"></div>
                     </div>
-                    <div class="thirdBoxDivider expandBox unselectedState" id="showLastFiveSessions">  
-                      <h3>Last 5 Logged Sessions</h3>                                               
+                    <div
+                      class="thirdBoxDivider expandBox unselectedState"
+                      id="showLastFiveSessions"
+                    >
+                      <h3>Last 5 Logged Sessions</h3>
                     </div>
-                  </div>           
-                
-                  <div class="iLayer iLayer-hide">                
-                    <div class="tableBox table-responsive">       
-                      <table class="table table-sm table-bordered table-custom" id="gameSessions">                      
+                  </div>
+
+                  <div class="iLayer iLayer-hide">
+                    <div class="tableBox table-responsive">
+                      <table
+                        class="table table-sm table-bordered table-custom"
+                        id="gameSessions"
+                      >
                         <thead class="table-light">
                           <tr class="text-center align-middle">
                             <th scope="col">User</th>
-                            <th scope="col" >Date</th>
+                            <th scope="col">Date</th>
                             <th scope="col">Players Count</th>
                             <th scope="col">Duration</th>
                           </tr>
                         </thead>
-                        <tbody class="table-group-divider">                             
-                        </tbody>
-                      </table>                                 
+                        <tbody class="table-group-divider"></tbody>
+                      </table>
                     </div>
 
                     <div class="collapseBox" id="hideLastFiveSessions">
-                      <a href="" >                                         
-                          <i class="bi bi-arrow-down-short"></i>     
+                      <a href="">
+                        <i class="bi bi-arrow-down-short"></i>
                       </a>
-                    </div>                                                                          
+                    </div>
                   </div>
-                </div> 
+                </div>
               </div>
-            </div> 
-       
+            </div>
+
             <div id="bgRankingsToggler">
               <div class="bgRankingsLists">
                 <div class="list-box">
                   <div class="rankingType">
-                    <h5><span style="color: var(--reddish);">Most</span> Played</h5>
-                    <h5>Board Games </h5>
+                    <h5>
+                      <span style="color: var(--reddish)">Most</span> Played
+                    </h5>
+                    <h5>Board Games</h5>
                   </div>
                   <div class="middleLine"></div>
                   <div class="rankingList">
                     <ol class="mostPlayedGames">
-                      <li ></li>             
+                      <li></li>
                     </ol>
                   </div>
                 </div>
 
                 <div class="list-box">
                   <div class="rankingType">
-                    <h5><span style="color: var(--reddish);">Best</span> Rated</h5>
+                    <h5>
+                      <span style="color: var(--reddish)">Best</span> Rated
+                    </h5>
                     <h5>Board Games</h5>
                   </div>
                   <div class="middleLine"></div>
                   <div class="rankingList">
                     <ol class="bestRatedGames">
-                      <li ></li>             
+                      <li></li>
                     </ol>
                   </div>
-                </div>      
-                
+                </div>
+
                 <div class="list-box">
                   <div class="rankingType">
-                    <h5><span style="color: var(--reddish);">Shortest</span></h5>
+                    <h5><span style="color: var(--reddish)">Shortest</span></h5>
                     <h5>Board Games</h5>
                   </div>
                   <div class="middleLine"></div>
                   <div class="rankingList">
                     <ol class="shortestGames">
-                      <li ></li>             
+                      <li></li>
                     </ol>
                   </div>
-                </div>   
+                </div>
 
                 <div class="list-box">
                   <div class="rankingType">
-                    <h5><span style="color: var(--reddish);">Longest</span></h5>
+                    <h5><span style="color: var(--reddish)">Longest</span></h5>
                     <h5>Board Games</h5>
                   </div>
                   <div class="middleLine"></div>
                   <div class="rankingList">
                     <ol class="longestGames">
-                      <li ></li>             
+                      <li></li>
                     </ol>
                   </div>
-                </div>     
-                
+                </div>
+
                 <div class="list-box">
                   <div class="rankingType">
-                    <h5><span style="color: var(--reddish);">Adults</span> Favorite</h5>
+                    <h5>
+                      <span style="color: var(--reddish)">Adults</span> Favorite
+                    </h5>
                     <h5>Board Games</h5>
                   </div>
                   <div class="middleLine"></div>
                   <div class="rankingList">
                     <ol class="adultsFavoriteGames">
-                      <li ></li>             
+                      <li></li>
                     </ol>
                   </div>
-                </div>    
-                
+                </div>
+
                 <div class="list-box">
                   <div class="rankingType">
-                    <h5><span style="color: var(--reddish);">Teens</span> Favorite </h5>
+                    <h5>
+                      <span style="color: var(--reddish)">Teens</span> Favorite
+                    </h5>
                     <h5>Board Games</h5>
                   </div>
                   <div class="middleLine"></div>
                   <div class="rankingList">
                     <ol class="teensFavoriteGames">
-                      <li ></li>             
+                      <li></li>
                     </ol>
                   </div>
-                </div>               
+                </div>
               </div>
-            </div>     
-                       
-            <div id="categoryRankingsToggler" class="category-tables container-fluid" >
+            </div>
+
+            <div
+              id="categoryRankingsToggler"
+              class="category-tables container-fluid"
+            >
               <div class="row justify-content-center">
                 <div class="row justify-content-center">
-                  <div class="col-md-4 col-sm-12 table-responsive tableCustomizer">
-                    <table class="table caption-top " id="mostPlayedCategories">
-                      <caption><span>Most Played</span> Categories <img src="images/icons/love tag@1x-1.0s-50px-50px.svg" alt=""></caption>
+                  <div
+                    class="col-md-4 col-sm-12 table-responsive tableCustomizer"
+                  >
+                    <table class="table caption-top" id="mostPlayedCategories">
+                      <caption>
+                        <span>Most Played</span>
+                        Categories
+                        <img
+                          src="images/icons/love tag@1x-1.0s-50px-50px.svg"
+                          alt=""
+                        />
+                      </caption>
                       <thead class="text-center">
                         <tr>
                           <th>Rank</th>
@@ -226,12 +281,24 @@
                       <tbody class="text-center"></tbody>
                     </table>
                   </div>
-                                                
-                  <div class="col-md-4 col-sm-12 table-responsive tableCustomizer">
-                    <table class="table caption-top col-4" id="bestRatedCategories">
-                      
-                      <caption><span>Most Popular</span> Categories <img src="images/icons/crowdsourcing@1x-1.0s-100px-100px.svg" width="50" height="50"></caption>
-                      
+
+                  <div
+                    class="col-md-4 col-sm-12 table-responsive tableCustomizer"
+                  >
+                    <table
+                      class="table caption-top col-4"
+                      id="bestRatedCategories"
+                    >
+                      <caption>
+                        <span>Most Popular</span>
+                        Categories
+                        <img
+                          src="images/icons/crowdsourcing@1x-1.0s-100px-100px.svg"
+                          width="50"
+                          height="50"
+                        />
+                      </caption>
+
                       <thead class="text-center">
                         <tr>
                           <th>Rank</th>
@@ -246,9 +313,21 @@
                 </div>
 
                 <div class="row justify-content-center">
-                  <div class="col-md-4 col-sm-12 table-responsive tableCustomizer">
-                    <table class="table caption-top col-4" id="mostPopularCategories">
-                      <caption><span>Best Rated</span> Categories <img src="images/icons/empty star@1x-1.0s-50px-50px.svg" alt=""></caption>
+                  <div
+                    class="col-md-4 col-sm-12 table-responsive tableCustomizer"
+                  >
+                    <table
+                      class="table caption-top col-4"
+                      id="mostPopularCategories"
+                    >
+                      <caption>
+                        <span>Best Rated</span>
+                        Categories
+                        <img
+                          src="images/icons/empty star@1x-1.0s-50px-50px.svg"
+                          alt=""
+                        />
+                      </caption>
                       <thead class="text-center">
                         <tr>
                           <th>Rank</th>
@@ -263,9 +342,21 @@
                 </div>
 
                 <div class="row justify-content-center">
-                  <div class="col-md-4 col-sm-12 table-responsive tableCustomizer">
-                    <table class="table caption-top col-6" id="longestCategories">
-                      <caption><span><dfn>Longest</dfn>-Playtime</span> Categories  <img src="images/icons/timer@1x-1.0s-50px-50px.svg" alt=""></caption>
+                  <div
+                    class="col-md-4 col-sm-12 table-responsive tableCustomizer"
+                  >
+                    <table
+                      class="table caption-top col-6"
+                      id="longestCategories"
+                    >
+                      <caption>
+                        <span><dfn>Longest</dfn>-Playtime</span>
+                        Categories
+                        <img
+                          src="images/icons/timer@1x-1.0s-50px-50px.svg"
+                          alt=""
+                        />
+                      </caption>
                       <thead class="text-center">
                         <tr>
                           <th>Rank</th>
@@ -277,45 +368,56 @@
                       <tbody class="text-center"></tbody>
                     </table>
                   </div>
-                    
+
                   <div class="col-md-4 col-sm-12 tableCustomizer">
-                    <table class="table caption-top col-6" id="shortestCategories">
-                    <caption><span><span style="display: inline-block; transform: skewX(15deg);">Shortest</span>-Playtime</span> Categories <img src="images/icons/timer@_short1x-1.0s-50px-50px.svg" alt=""></caption>
-                    <thead class="text-center">
-                      <tr>
-                        <th>Rank</th>
-                        <th>Category</th>
-                        <th>Avg. Duration</th>
-                        <th>Sessions Logged</th>
-                      </tr>
-                    </thead>
-                    <tbody class="text-center"></tbody>
+                    <table
+                      class="table caption-top col-6"
+                      id="shortestCategories"
+                    >
+                      <caption>
+                        <span
+                          ><span
+                            style="
+                              display: inline-block;
+                              transform: skewX(15deg);
+                            "
+                            >Shortest</span
+                          >-Playtime</span
+                        >
+                        Categories
+                        <img
+                          src="images/icons/timer@_short1x-1.0s-50px-50px.svg"
+                          alt=""
+                        />
+                      </caption>
+                      <thead class="text-center">
+                        <tr>
+                          <th>Rank</th>
+                          <th>Category</th>
+                          <th>Avg. Duration</th>
+                          <th>Sessions Logged</th>
+                        </tr>
+                      </thead>
+                      <tbody class="text-center"></tbody>
                     </table>
-                  </div> 
-                </div>  
-              </div>            
-            </div>                                       
-          </div>  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>    
+      </div>
     </section>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
     <script src="node_modules/select2/dist/js/select2.min.js"></script>
     <script src="js/scripts/loader.js"></script>
 
     <script src="js/components/header.js"></script>
     <script src="js/scripts/script_explore.js"></script>
-    <script src="js/components/footer.js"></script>   
-    
+    <script src="js/components/footer.js"></script>
   </body>
-
 </html>

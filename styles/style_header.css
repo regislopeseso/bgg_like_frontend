@@ -35,10 +35,18 @@
   font-weight: bold;
   box-shadow: 0 0 1rem var(--text-color) !important;
 }
+.dropdown-menu li:first-child > .dropdown-item:hover {
+  color: var(--main-color);
+  box-shadow: 0 0 1rem var(--main-color) !important;
+}
 .dropdown-menu li:nth-of-type(2) > .dropdown-item:hover {
   color: var(--reddish);
-  font-weight: bold;
   box-shadow: 0 0 1rem var(--reddish) !important;
+}
+.dropdown-menu li:last-child > .dropdown-item:hover {
+  color: var(--yellowish);
+  font-weight: bold;
+  box-shadow: 0 0 1rem var(--yellowish) !important;
 }
 
 .navHamburger {
