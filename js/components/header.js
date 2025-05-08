@@ -25,7 +25,7 @@ function loadHeader(userData, roleData) {
               <li><a class="dropdown-item m-0 " href="#">Edit Profile</a></li>
               <li><a class="dropdown-item m-0" href="#">Delete Profile</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item m-0" href="#">Sign Out</a></li>
+              <li><a class="logOut dropdown-item m-0" href="#">Sign Out</a></li>
             </ul>
           </div>
           

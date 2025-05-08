@@ -8,7 +8,6 @@
  */
 
 // Immediately-invoked Function Expression (IIFE) to avoid polluting global scope
-let userDB = {};
 const today = new Date();
 const hundredYearsAgo = new Date(today);
 hundredYearsAgo.setFullYear(hundredYearsAgo.getFullYear() - 100);
@@ -25,48 +24,13 @@ const Flipper = (function () {
 
   // Public API
   return {
-    // Initialize the flipper
-    // init: function () {
-    //   this.setupAnimation();
-    //   this.setupEventListeners();
-
-    //   $.ajax({
-    //     url: "https://localhost:7081/users/getprofiledetails",
-    //     type: "GET",
-    //     xhrFields: { withCredentials: true },
-    //     success: function (response) {
-    //       const userDB = response.content;
-    //       const [year, month, day] = userDB.signUpDate.split("-");
-
-    //       $("#toggleUserDetails button").html(`
-    //         <span>SHOW USER DETAILS</span>`);
-
-    //       $("#user-details-template").html(`
-    //           <h3 class="text-center pb-5">Welcome <span>${userDB.name}</span></h3>
-    //           <h5 class="text-start">Member since: <span>${day}/${month}/${year}</span></h5>
-    //           <h5 class="text-start">Board Games Rated: <span>${userDB.ratedBgCount}</span></h5>
-    //           <h5 class="text-start">Played Matches: <span>${userDB.sessionsCount}</span></h5>
-    //           <h5 class="text-start">Won matches: <span>to be implemented</span></h5>
-    //           <h5 class="text-start">Win rate: <span>to be implemented</span></h5>
-
-    //         `);
-
-    //       // NOW rotate after content is loaded
-    //       Flipper.rotateTo("user-details-template");
-    //     },
-    //     error: function (xhr, status, error) {
-    //       alert("Failed to fetch user details. Try again later.");
-    //     },
-    //   });
-    // },
     init: function () {
       this.setupAnimation();
 
       // monte o HTML já com os dados
       // injete direto no front
-      $("#flip-front-content").html(
-        loadTemplate("user-details-template", userDB)
-      );
+      this.onContentChanged("user-details-template");
+      $("#flip-front-content").html(loadTemplate("user-details-template"));
 
       // esconde o botão “SHOW USER DETAILS”, já que estamos nele
       $("#toggleUserDetails").slideUp();
@@ -224,20 +188,6 @@ $(function () {
         console.log("User is authenticated. Initializing flipper...");
 
         Flipper.init();
-
-        // Fetch user details and attribute the data to userDB
-        // $.ajax({
-        //   url: "https://localhost:7081/users/getprofiledetails",
-        //   type: "GET",
-        //   xhrFields: { withCredentials: true },
-        //   success: function (response) {
-        //     userDB = response.content;
-        //     Flipper.init();
-        //   },
-        //   error: function (xhr, status, error) {
-        //     alert("Failed to fetch user details. Try again later.");
-        //   },
-        // });
       } else {
         // If the user is not authenticated, redirect them to the authentication page
         console.log("User is not authenticated. Redirecting...");
@@ -250,7 +200,7 @@ $(function () {
     });
 });
 
-function loadTemplate(templateId, userDB) {
+function loadTemplate(templateId) {
   switch (templateId) {
     case "play-template":
       return `<p>Template "${templateId}" not yet implemented.</p>`;
@@ -750,5 +700,3 @@ function loadTemplate(templateId, userDB) {
       return `<p>Template "${templateId}" não encontrado.</p>`;
   }
 }
-
-//$(target).html($(`#${templateId}`).html());
