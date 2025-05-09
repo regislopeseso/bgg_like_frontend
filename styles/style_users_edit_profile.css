@@ -32,11 +32,3 @@
     transform: scale(0.9);
   }
 }
-
-hr {
-  border: none; /* remove bordas padrão */
-  border-top: 1px solid #ccc; /* desenha apenas uma linha fina */
-  margin: 10px 0; /* espaçamento acima e abaixo */
-  width: 100%; /* opcional: define largura */
-  opacity: 0.6; /* opcional: semitransparente */
-}

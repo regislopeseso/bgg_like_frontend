@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
   function buildTypeWriterEffect() {
     const text1 = $("#welcomingText1");
     const text2 = $("#welcomingText2");
@@ -49,24 +49,107 @@ $(document).ready(function () {
     $("#signUp").on("click", function (e) {
       e.preventDefault();
 
-      $(".signInBox").hide("slow");
+      if ($("#signIn").hasClass("active")) {
+        $("#signIn").removeClass("active");
+      }
 
-      $(".signUpBox")
+      $("#signUp").addClass("active");
+
+      $("#signInBox").hide("slow");
+
+      $("#signing-options").show();
+
+      $("#signUpBox")
         .css({
           display: "block",
-          marginRight: "auto", // Align to right
-
+          position: "absolute",
+          left: "0", // Align to left
+          transform: "translateX(-50%)",
           opacity: 0,
         })
         .animate(
           {
-            width: "100%", // Expand to full width
+            left: "50%",
             opacity: 1,
           },
           "slow"
         );
     });
 
+    $("#signIn").on("click", function (e) {
+      e.preventDefault();
+
+      if ($("#signUp").hasClass("active")) {
+        $("#signUp").removeClass("active");
+      }
+
+      $("#signIn").addClass("active");
+
+      $("#signUpBox").hide("slow");
+
+      $("#signing-options").show();
+
+      $("#signInBox")
+        .css({
+          display: "block",
+          position: "absolute",
+          right: "0", // Align to right
+          transform: "translateX(50%)",
+          opacity: 0,
+        })
+        .animate(
+          {
+            right: "50%",
+            opacity: 1,
+          },
+          "slow"
+        );
+    });
+
+    let eyeState = 0;
+    const openEye = "images/icons/eye_show.svg";
+    const closeEye = "images/icons/eye_hide.svg";
+
+    $("#toggle-show-password").on("click", function (e) {
+      e.preventDefault();
+
+      console.log("Eye state1:", eyeState);
+
+      eyeState = eyeState === 0 ? 1 : 0;
+
+      console.log("Eye state2:", eyeState);
+
+      if (eyeState === 1) {
+        $("#toggle-show-password").attr("src", closeEye);
+        $("#newUserPassword").attr("type", "text");
+      }
+      if (eyeState === 0) {
+        $("#toggle-show-password").attr("src", openEye);
+        $("#newUserPassword").attr("type", "password");
+      }
+    });
+
+    $("#toggle-show-password-confirmation").on("click", function (e) {
+      e.preventDefault();
+
+      console.log("Eye state1:", eyeState);
+
+      eyeState = eyeState === 0 ? 1 : 0;
+
+      console.log("Eye state2:", eyeState);
+
+      if (eyeState === 1) {
+        $("#toggle-show-password-confirmation").attr("src", closeEye);
+        $("#passwordConfirmation").attr("type", "text");
+      }
+      if (eyeState === 0) {
+        $("#toggle-show-password-confirmation").attr("src", openEye);
+        $("#passwordConfirmation").attr("type", "password");
+      }
+    });
+  }
+
+  function setUpSignUpForm() {
     $("#signUp-form").on("submit", function (e) {
       e.preventDefault();
 
@@ -76,52 +159,37 @@ $(document).ready(function () {
         function (response) {}
       )
         .done(function (response) {
-          $("#welcomeTexts").addClass("d-none");
-          $(".signUpBox").hide("slow");
-          $("#signIn-Button").html(`Sign In`);
+          if (response.content === null) {
+            alert(response.message);
+          } else {
+            $("#welcomeTexts").addClass("d-none");
+            $(".signUpBox").hide("slow");
+            $("#signIn-Button").html(`Sign In`);
 
-          $(".signInBox")
-            .css({
-              display: "block",
-              marginLeft: "auto", // Align to left
+            $(".signInBox")
+              .css({
+                display: "block",
+                marginLeft: "auto", // Align to left
 
-              opacity: 0,
-            })
-            .animate(
-              {
-                width: "100%", // Expand to full width
-                opacity: 1,
-              },
-              "slow"
-            );
+                opacity: 0,
+              })
+              .animate(
+                {
+                  width: "100%", // Expand to full width
+                  opacity: 1,
+                },
+                "slow"
+              );
 
-          $("#signUpSucess").removeClass("d-none");
+            $("#signUpSucess").removeClass("d-none");
+          }
         })
         .fail(function (response) {})
         .always(function (response) {});
     });
+  }
 
-    $("#signIn").on("click", function (e) {
-      e.preventDefault();
-
-      $(".signUpBox").hide("slow");
-
-      $(".signInBox")
-        .css({
-          display: "block",
-          marginLeft: "auto", // Align to left
-
-          opacity: 0,
-        })
-        .animate(
-          {
-            width: "100%", // Expand to full width
-            opacity: 1,
-          },
-          "slow"
-        );
-    });
-
+  function setUpSignInForm() {
     $("#signIn-form").on("submit", function (e) {
       e.preventDefault();
 
@@ -153,6 +221,8 @@ $(document).ready(function () {
   function Build() {
     buildTypeWriterEffect();
     loadEvents();
+    setUpSignUpForm();
+    setUpSignInForm();
   }
 
   Build();

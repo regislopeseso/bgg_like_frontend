@@ -1,5 +1,8 @@
 main {
+  display: flex;
   padding-top: 10rem;
+  justify-content: center;
+  align-items: center;
 }
 .no-select {
   -webkit-user-select: none; /* Safari */
@@ -13,152 +16,21 @@ main {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-.signUpBox,
-.signInBox {
+
+#signing-options {
   display: none;
+  width: 25rem;
 }
 
-.devs-zone,
-.flip-card-wrapper {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: center;
-}
-.flip-card-wrapper p {
-  color: var(--text-color);
-}
-
-/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
-.flip-card {
-  align-self: center;
-  background-color: transparent;
-  max-width: 400px;
-  width: 50vw;
-  min-width: 300px;
-  max-height: 600px;
-  height: 50vw;
-  min-height: 350px;
+#signUpBox,
+#signInBox {
+  background-color: var(--second-bg-color);
   border: 1px solid var(--bg-color);
   border-radius: 2rem;
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
-  perspective: 10000px; /* Remove this if you don't want the 3D effect */
 }
 
-/* This container is needed to position the front and back side */
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 1.5s;
-  transform-style: preserve-3d;
-}
-
-/* Position the front and back side */
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 2rem;
-  -webkit-backface-visibility: hidden; /* Safari */
-  backface-visibility: hidden;
-  padding: 2rem;
-}
-
-/* Style the front side (fallback if image is missing) */
-.flip-card-front {
-  background-color: var(--second-bg-color);
-  align-items: start;
-}
-.flip-card-front form {
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-}
-.flip-card-front input {
-  justify-self: center;
-  margin: 5px;
-}
-.flip-card-front p {
-  padding-top: 10px;
-  text-align: start;
-  justify-self: start;
-}
-.flip-card-front form .button-wrapper {
-  display: flex;
-  align-self: center;
-  justify-content: center;
-  align-items: center;
-  width: 200px;
-  height: 60px;
-}
-
-/* Style the back side */
-.flip-card-back {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: var(--second-bg-color);
-  color: white;
-  transform: rotateY(180deg);
-}
-
-.hiddenBlock,
-.bgBlock,
-.mabBlock {
-  display: flex;
-  flex-direction: column;
-  border: 2px solid var(--bg-color);
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 5px;
-}
-
-.hiddenBlock {
-  display: none;
-}
-
-.upperBlock {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-.Block-Text {
-  transform: rotate(-45deg);
-  padding-right: 20px;
-}
-.lowerBlock {
-  display: flex;
-  align-self: center;
-  padding-top: 20px;
-}
-
-.ldBar-label {
-  width: 100%;
-  font-weight: 1;
-  margin: 0rem;
-  padding-bottom: 15px;
-}
-
-#seedBg,
-#deleteSeededBg,
-#seedMab,
-#deleteSeededMab {
-  align-self: center;
-  text-align: center;
-  width: 100px;
-  height: 50px;
-}
-
-#logIn-flipper,
-#logOut-flipper {
-  align-self: center;
-  width: 200px;
-  height: 60px;
+.active {
+  color: var(--main-color);
+  pointer-events: none;
 }

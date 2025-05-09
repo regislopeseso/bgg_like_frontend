@@ -104,6 +104,7 @@ $(function () {
           xhrFields: { withCredentials: true },
           success: function (resp) {
             alert(resp.message);
+            window.location.href = "users_page.html";
 
             // Clear form fields after successful update
             // clearBgSelection();

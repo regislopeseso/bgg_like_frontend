@@ -38,6 +38,14 @@ span {
   color: var(--main-color);
 }
 
+hr {
+  border: none; /* remove bordas padrão */
+  border-top: 1px solid #ccc; /* desenha apenas uma linha fina */
+  margin: 10px 0; /* espaçamento acima e abaixo */
+  width: 100%; /* opcional: define largura */
+  opacity: 0.6; /* opcional: semitransparente */
+}
+
 .btn-outline-info {
   --bs-btn-disabled-color: var(--bg-color);
   --bs-btn-disabled-border-color: var(--bg-color);
@@ -66,6 +74,27 @@ span {
   color: var(--reddish);
   box-shadow: 1px 1px 10px 5px var(--reddish);
   transform: rotate(5deg) scale(0.9);
+}
+
+input[type="radio"] {
+  border: 2px solid var(--main-color); /* Custom border */
+  border-radius: 50%; /* Make it round */
+  background-color: var(--text-color);
+}
+
+input[type="radio"]:checked {
+  background-color: var(--main-color); /* Fill color when checked */
+  border: 2px solid var(--main-color);
+  box-shadow: 0 0 5px 5px var(--main-color);
+}
+
+input[type="radio"]::before {
+  background-color: var(--main-color);
+  transition: transform 0.2s ease;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1); /* Show inner dot */
 }
 
 @media screen and (max-width: 3500px) {

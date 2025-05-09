@@ -54,7 +54,7 @@
               class="d-flex flex-column flex-nowrap w-100 align-items-center"
             >
               <button
-                type="submit"
+                type="button"
                 id="request-delete-profile"
                 class="btn btn-warning w-50 m-2"
               >
@@ -62,15 +62,21 @@
               </button>
             </div>
 
-            <div class="d-none">
+            <div id="user-password-confirmation" class="d-none">
               <label for="user-password" class="form-label w-100 text-start"
                 >Enter your password</label
               >
-              <input id="user-password" class="form-control" type="password" />
+              <input
+                name="Password"
+                id="user-password"
+                class="form-control"
+                type="password"
+              />
               <button
                 type="submit"
                 id="confirm-delete-profile"
                 class="btn btn-danger w-50 m-2"
+                disabled
               >
                 CONFIRM DELETE
               </button>
