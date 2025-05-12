@@ -224,7 +224,7 @@ function loadTemplate(templateId) {
 
         <form id="log-session-form" class="d-flex flex-column align-items-center">
           <div class="text-center w-80">
-            <label class="bgList-lbl" for="bgSelection-logSession"
+            <label class="bgList-lbl form-label" for="bgSelection-logSession"
               ><span>S</span>elect a Board Game</label
             >
             <div class="comboBox-wrapper">

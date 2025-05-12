@@ -7,7 +7,7 @@ const FormHandler_UserDetails = (function () {
       success: function (response) {
         const userDB = response.content;
 
-        $("#userName").html(userDB.name);
+        $("#userName").html(userDB.treatmentTitle + userDB.name);
         $("#signupDate").html(userDB.signUpDate);
         $("#ratedBgCount").html(userDB.ratedBgCount);
         $("#sessionsCount").html(userDB.sessionsCount);

@@ -45,9 +45,38 @@ $(function () {
     typeFirst();
   }
 
+  function checkFormFilling() {
+    let areFieldsFilled = true;
+
+    $("#signUp-form .required:visible:enabled").each(function () {
+      if ($(this).val().trim() === "") {
+        areFieldsFilled = false;
+      }
+    });
+
+    $("#confirm-signup").prop("disabled", !areFieldsFilled);
+  }
+  function checkSignInFormFilling() {
+    let areFieldsFilled = true;
+
+    $("#signIn-form .required:visible:enabled").each(function () {
+      if ($(this).val().trim() === "") {
+        areFieldsFilled = false;
+      }
+    });
+
+    $("#confirm-signin").prop("disabled", !areFieldsFilled);
+  }
+
   function loadEvents() {
+    const openEye = "images/icons/eye_show.svg";
+    const closeEye = "images/icons/eye_hide.svg";
+
+    // Sign UP Events
     $("#signUp").on("click", function (e) {
       e.preventDefault();
+
+      $("#typewritter-texts").slideUp("slow");
 
       if ($("#signIn").hasClass("active")) {
         $("#signIn").removeClass("active");
@@ -76,8 +105,85 @@ $(function () {
         );
     });
 
+    let signUpEyeState = 0;
+
+    $("#toggle-show-password").on("click", function (e) {
+      e.preventDefault();
+
+      signUpEyeState = signUpEyeState === 0 ? 1 : 0;
+
+      console.log("Eye state2:", signUpEyeState);
+
+      if (signUpEyeState === 1) {
+        $("#toggle-show-password").attr("src", closeEye);
+        $("#newUserPassword").attr("type", "text");
+        $("#toggle-show-password").attr("title", "Hide password");
+      }
+      if (signUpEyeState === 0) {
+        $("#toggle-show-password").attr("src", openEye);
+        $("#newUserPassword").attr("type", "password");
+        $("#toggle-show-password").attr("title", "Show password");
+      }
+    });
+
+    $("#toggle-show-password-confirmation").on("click", function (e) {
+      e.preventDefault();
+
+      console.log("Eye state1:", signUpEyeState);
+
+      signUpEyeState = signUpEyeState === 0 ? 1 : 0;
+
+      console.log("Eye state2:", signUpEyeState);
+
+      if (signUpEyeState === 1) {
+        $("#toggle-show-password-confirmation").attr("src", closeEye);
+        $("#passwordConfirmation").attr("type", "text");
+        $("#toggle-show-password-confirmation").attr("title", "Hide password");
+      }
+      if (signUpEyeState === 0) {
+        $("#toggle-show-password-confirmation").attr("src", openEye);
+        $("#passwordConfirmation").attr("type", "password");
+        $("#toggle-show-password-confirmation").attr("title", "Show password");
+      }
+    });
+
+    $("#newUserPassword, #passwordConfirmation").on("input", function () {
+      const password = $("#newUserPassword").val();
+      const confirm = $("#passwordConfirmation").val();
+      const $submit = $("#confirm-signup");
+      const $confirmField = $("#passwordConfirmation");
+
+      if (!password || !confirm) {
+        // Disable submit if either field is empty
+        $submit.prop("disabled", true);
+        bootstrap.Popover.getInstance($confirmField[0])?.dispose();
+        return;
+      }
+
+      if (password !== confirm) {
+        $submit.prop("disabled", true);
+
+        $confirmField.attr({
+          "data-bs-toggle": "popover",
+          "data-bs-placement": "bottom",
+          "data-bs-content": "Passwords do not match",
+        });
+
+        if (!bootstrap.Popover.getInstance($confirmField[0])) {
+          new bootstrap.Popover($confirmField[0]).show();
+        }
+      } else {
+        $submit.prop("disabled", false);
+        bootstrap.Popover.getInstance($confirmField[0])?.dispose();
+      }
+    });
+
+    // Sign IN events
+
     $("#signIn").on("click", function (e) {
       e.preventDefault();
+
+      $("#typewritter-texts").slideUp("slow");
 
       if ($("#signUp").hasClass("active")) {
         $("#signUp").removeClass("active");
@@ -106,45 +212,28 @@ $(function () {
         );
     });
 
-    let eyeState = 0;
-    const openEye = "images/icons/eye_show.svg";
-    const closeEye = "images/icons/eye_hide.svg";
-
-    $("#toggle-show-password").on("click", function (e) {
-      e.preventDefault();
-
-      console.log("Eye state1:", eyeState);
-
-      eyeState = eyeState === 0 ? 1 : 0;
-
-      console.log("Eye state2:", eyeState);
-
-      if (eyeState === 1) {
-        $("#toggle-show-password").attr("src", closeEye);
-        $("#newUserPassword").attr("type", "text");
-      }
-      if (eyeState === 0) {
-        $("#toggle-show-password").attr("src", openEye);
-        $("#newUserPassword").attr("type", "password");
-      }
+    $("#signIn-form").on("input", function () {
+      checkSignInFormFilling();
     });
 
-    $("#toggle-show-password-confirmation").on("click", function (e) {
+    let signIpEyeState = 0;
+
+    $("#toggle-signin-password").on("click", function (e) {
       e.preventDefault();
 
-      console.log("Eye state1:", eyeState);
+      signIpEyeState = signIpEyeState === 0 ? 1 : 0;
 
-      eyeState = eyeState === 0 ? 1 : 0;
+      console.log("Eye state2:", signIpEyeState);
 
-      console.log("Eye state2:", eyeState);
-
-      if (eyeState === 1) {
-        $("#toggle-show-password-confirmation").attr("src", closeEye);
-        $("#passwordConfirmation").attr("type", "text");
+      if (signIpEyeState === 1) {
+        $("#toggle-signin-password").attr("src", closeEye);
+        $("#signInPassword").attr("type", "text");
+        $("#toggle-signin-password").attr("title", "Hide password");
       }
-      if (eyeState === 0) {
-        $("#toggle-show-password-confirmation").attr("src", openEye);
-        $("#passwordConfirmation").attr("type", "password");
+      if (signIpEyeState === 0) {
+        $("#toggle-signin-password").attr("src", openEye);
+        $("#signInPassword").attr("type", "password");
+        $("#toggle-signin-password").attr("title", "Show password");
       }
     });
   }
@@ -152,6 +241,11 @@ $(function () {
   function setUpSignUpForm() {
     $("#signUp-form").on("submit", function (e) {
       e.preventDefault();
+
+      // Disable submit button to prevent double submissions
+      const submitBtn = $(this).find("button[type='submit']");
+      const originalBtnText = submitBtn.text();
+      submitBtn.attr("disabled", true).text("Submitting...");
 
       $.post(
         "https://localhost:7081/users/signup",
@@ -163,10 +257,11 @@ $(function () {
             alert(response.message);
           } else {
             $("#welcomeTexts").addClass("d-none");
-            $(".signUpBox").hide("slow");
+
+            $("#signUpBox").hide("slow");
             $("#signIn-Button").html(`Sign In`);
 
-            $(".signInBox")
+            $("#signInBox")
               .css({
                 display: "block",
                 marginLeft: "auto", // Align to left
@@ -185,7 +280,13 @@ $(function () {
           }
         })
         .fail(function (response) {})
-        .always(function (response) {});
+        .always(function (response) {
+          // Re-enable button
+          submitBtn.attr("disabled", true).text(originalBtnText);
+        });
+
+      // React to typing in any input
+      $("#signUp-form").on("input", checkFormFilling);
     });
   }
 

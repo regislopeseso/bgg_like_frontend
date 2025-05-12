@@ -37,7 +37,7 @@
           class="d-flex flex-column align-items-center justify-content-center entryBox"
           id="welcomeTexts"
         >
-          <div class="text-center no-select">
+          <div id="typewritter-texts" class="text-center no-select">
             <h1 id="welcomingText1"></h1>
             <h3 id="welcomingText2"></h3>
           </div>
@@ -62,15 +62,16 @@
             >
               <!-- Input: Name -->
               <div class="w-100">
-                <label for="newuser-first-name" class=""
+                <label for="newuser-first-name" class="form-label"
                   ><span>F</span>irst and <span>L</span>ast
                   <span>N</span>ame</label
                 >
                 <input
                   name="Name"
-                  type="text"
                   id="newuser-name"
-                  class="form-control required"
+                  class="new-data form-control required"
+                  type="text"
+                  minlength="3"
                   aria-label="First Name"
                   id="newUserName"
                 />
@@ -80,11 +81,11 @@
 
               <!-- Input: Email -->
               <div class="w-100">
-                <label for=""><span>E</span>mail</label>
+                <label class="form-label" for=""><span>E</span>mail</label>
                 <input
                   name="UserEmail"
                   type="email"
-                  class="form-control required"
+                  class="new-data form-control required"
                   id="newUserEmail"
                   placeholder="Enter your email"
                 />
@@ -94,11 +95,13 @@
 
               <!-- Input: BirthDate -->
               <div class="w-100">
-                <label for=""><span>B</span>irth <span>D</span>ate</label>
+                <label class="form-label" for=""
+                  ><span>B</span>irth <span>D</span>ate</label
+                >
                 <input
                   name="UserBirthDate"
                   id="newUserBirthdate"
-                  class="form-control required"
+                  class="new-data form-control required"
                   type="date"
                   placeholder="Enter your birth date"
                 />
@@ -114,9 +117,9 @@
                 >
                   <div class="form-check form-check-inline">
                     <input
-                      class="form-check-input"
+                      class="new-data form-check-input"
                       type="radio"
-                      name="gender"
+                      name="Gender"
                       id="genderMale"
                       value="male"
                     />
@@ -128,7 +131,7 @@
                     <input
                       class="form-check-input"
                       type="radio"
-                      name="gender"
+                      name="Gender"
                       id="genderFemale"
                       value="female"
                     />
@@ -144,12 +147,12 @@
               <!-- Input: Password -->
               <div class="d-flex flex-column w-100 gap-2">
                 <div>
-                  <label for=""><span>P</span>assword</label>
+                  <label class="form-label" for=""><span>P</span>assword</label>
                   <div class="d-flex flex-row w-100 align-items-center">
                     <input
                       name="Password"
                       id="newUserPassword"
-                      class="form-control required"
+                      class="new-data form-control required"
                       type="password"
                       placeholder="Enter your Password"
                       minlength="6"
@@ -175,7 +178,7 @@
                   <div class="d-flex flex-row w-100 align-items-center">
                     <input
                       id="passwordConfirmation"
-                      class="form-control required"
+                      class="new-data form-control required"
                       type="password"
                       placeholder="Confirm your Password"
                       minlength="6"
@@ -195,7 +198,12 @@
 
               <hr />
 
-              <button class="btn btn-lg btn-outline-info mt-2" type="submit">
+              <button
+                id="confirm-signup"
+                class="btn btn-lg btn-outline-info mt-2"
+                type="submit"
+                disabled
+              >
                 Confirm
               </button>
             </form>
@@ -213,12 +221,12 @@
               >
                 <!-- Input: Name -->
                 <div class="w-100 pb-3">
-                  <label for=""><span>N</span>ame</label>
+                  <label class="form-label" for=""><span>N</span>ame</label>
                   <input
                     name="Email"
-                    type="email"
-                    class="form-control required"
                     id="newUser-Name"
+                    class="new-data form-control required"
+                    type="email"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -226,23 +234,35 @@
                 <hr />
 
                 <!-- Input: Passwor -->
-                <div class="w-100 pt-3 pb-3">
-                  <label for=""><span>P</span>assword</label>
-                  <input
-                    name="Password"
-                    type="password"
-                    class="form-control required"
-                    id="devsPassword"
-                    placeholder="Enter your Password"
-                  />
+                <div>
+                  <label class="form-label" for=""><span>P</span>assword</label>
+                  <div class="d-flex flex-row w-100 align-items-center">
+                    <input
+                      name="Password"
+                      id="signInPassword"
+                      class="new-data form-control required"
+                      type="password"
+                      placeholder="Enter your Password"
+                    />
+
+                    <span class="d-flex align-items-center">
+                      <img
+                        id="toggle-signin-password"
+                        src="images/icons/eye_show.svg"
+                        style="height: 2.5em; cursor: pointer"
+                        title="Show password"
+                      />
+                    </span>
+                  </div>
                 </div>
 
                 <hr />
 
                 <button
-                  id="signIn-Button"
-                  class="btn btn-lg btn-outline-info mt-5"
+                  id="confirm-signin"
+                  class="btn btn-lg btn-outline-info mt-2"
                   type="submit"
+                  disabled
                 >
                   Confirm
                 </button>
