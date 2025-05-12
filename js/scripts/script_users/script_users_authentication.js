@@ -56,6 +56,7 @@ $(function () {
 
     $("#confirm-signup").prop("disabled", !areFieldsFilled);
   }
+
   function checkSignInFormFilling() {
     let areFieldsFilled = true;
 
@@ -111,8 +112,6 @@ $(function () {
       e.preventDefault();
 
       signUpEyeState = signUpEyeState === 0 ? 1 : 0;
-
-      console.log("Eye state2:", signUpEyeState);
 
       if (signUpEyeState === 1) {
         $("#toggle-show-password").attr("src", closeEye);

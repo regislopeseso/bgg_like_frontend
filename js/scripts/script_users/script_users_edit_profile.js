@@ -51,6 +51,8 @@ $(function () {
 
       $("#user-name").val(null);
 
+      $("#user-name").removeClass("current-data").addClass("new-data");
+
       $("#user-name").prop("disabled", false).trigger("focus");
     });
 
@@ -58,6 +60,8 @@ $(function () {
       e.preventDefault();
 
       $("#user-email").val(null);
+
+      $("#user-email").removeClass("current-data").addClass("new-data");
 
       $("#user-email").prop("disabled", false).trigger("focus");
     });
@@ -67,13 +71,78 @@ $(function () {
 
       $("#user-birthdate").val(null);
 
+      $("#user-birthdate").removeClass("current-data").addClass("new-data");
+
       $("#user-birthdate")
         .prop("disabled", false)
         .attr("min", minDate)
         .attr("max", maxDate)
         .trigger("focus");
     });
-    // $("#edit-profile-form").on("submit", () => {});
+
+    $("#toggle-current-password").on("input", function (e) {
+      $("#new-password")
+        .attr("disabled", false)
+        .removeClass("current-data")
+        .addClass("new-data");
+    });
+
+    const openEye = "images/icons/eye_show.svg";
+    const closeEye = "images/icons/eye_hide.svg";
+
+    let currentPasswordEyeState = 0;
+    $("#toggle-current-password").on("click", function (e) {
+      e.preventDefault();
+
+      currentPasswordEyeState = currentPasswordEyeState === 0 ? 1 : 0;
+
+      if (currentPasswordEyeState === 1) {
+        $("#toggle-current-password").attr("src", closeEye);
+        $("#current-password").attr("type", "text");
+        $("#toggle-current-password").attr("title", "Hide password");
+      }
+      if (currentPasswordEyeState === 0) {
+        $("#toggle-current-password").attr("src", openEye);
+        $("#current-password").attr("type", "password");
+        $("#toggle-current-password").attr("title", "Show password");
+      }
+    });
+
+    let newPasswordEyeState = 0;
+    $("#toggle-new-password").on("click", function (e) {
+      e.preventDefault();
+
+      newPasswordEyeState = newPasswordEyeState === 0 ? 1 : 0;
+
+      if (newPasswordEyeState === 1) {
+        $("#toggle-new-password").attr("src", closeEye);
+        $("#new-password").attr("type", "text");
+        $("#toggle-new-password").attr("title", "Hide password");
+      }
+      if (newPasswordEyeState === 0) {
+        $("#toggle-new-password").attr("src", openEye);
+        $("#new-password").attr("type", "password");
+        $("#toggle-new-password").attr("title", "Show password");
+      }
+    });
+
+    let confirmPasswordEyeState = 0;
+    $("#toggle-confirm-password").on("click", function (e) {
+      e.preventDefault();
+
+      confirmPasswordEyeState = confirmPasswordEyeState === 0 ? 1 : 0;
+
+      if (confirmPasswordEyeState === 1) {
+        $("#toggle-confirm-password").attr("src", closeEye);
+        $("#confirm-password").attr("type", "text");
+        $("#toggle-confirm-password").attr("title", "Hide password");
+      }
+      if (confirmPasswordEyeState === 0) {
+        $("#toggle-confirm-password").attr("src", openEye);
+        $("#confirm-password").attr("type", "password");
+        $("#toggle-confirm-password").attr("title", "Show password");
+      }
+    });
   }
 
   function setUpEditProfileForm() {
@@ -125,10 +194,52 @@ $(function () {
       });
   }
 
+  function setUpChangePasswordForm() {
+    $(document)
+      .off("submit", "#change-password-form")
+      .on("submit", "#change-password-form", function (e) {
+        e.preventDefault();
+
+        // Disable submit button to prevent double submissions
+        const submitBtn = $(this).find("button[type='submit']");
+        const originalBtnText = submitBtn.text();
+        submitBtn.attr("disabled", true).text("Submitting...");
+
+        // Get form values
+        const currentPassword = $("#current-password").val();
+        const newPassword = $("#new-password").val();
+
+        $.ajax({
+          url: "https://localhost:7081/users/changepassword",
+          type: "PUT",
+          data: JSON.stringify({
+            CurrentPassword: currentPassword,
+            NewPassword: newPassword,
+          }),
+          contentType: "application/json",
+          xhrFields: { withCredentials: true },
+          success: function (resp) {
+            alert(resp.message);
+            window.location.href = "users_page.html";
+          },
+          error: function (xhr, status, error) {
+            console.error("Error updating session:", error);
+            console.log("Status:", status);
+            console.log("Response:", xhr.responseText);
+            alert("Failed to edit session. Please try again.");
+          },
+          complete: () => {
+            // Re-enable button
+            submitBtn.attr("disabled", true).text(originalBtnText);
+          },
+        });
+      });
+  }
+
   function Build() {
-    loadUserDetails();
     loadEvents();
     setUpEditProfileForm();
+    setUpChangePasswordForm();
   }
 
   Build();

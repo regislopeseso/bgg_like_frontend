@@ -11,18 +11,22 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+
     <link
       rel="stylesheet"
       href="node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
+
     <link
       rel="stylesheet"
       href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
     />
+
     <link
       rel="stylesheet"
       href="node_modules/select2/dist/css/select2.min.css"
     />
+
     <link rel="stylesheet" href="styles/loaders.css" />
 
     <link rel="stylesheet" href="styles/style_general.css" />
@@ -41,7 +45,7 @@
               <a
                 id="cancel-edit-profile"
                 href="users_page.html"
-                class="btn btn-danger"
+                class="btn btn-outline-danger"
               >
                 close
               </a>
@@ -56,11 +60,15 @@
                 <input
                   name="NewName"
                   id="user-name"
-                  class="form-control"
+                  class="current-data form-control"
                   type="text"
                   disabled
                 />
-                <button type="button" id="change-name" class="btn btn-warning">
+                <button
+                  type="button"
+                  id="change-name"
+                  class="btn btn-outline-warning"
+                >
                   edit
                 </button>
               </div>
@@ -75,12 +83,16 @@
                 <input
                   name="NewEmail"
                   id="user-email"
-                  class="form-control"
+                  class="current-data form-control"
                   type="email"
                   disabled
                 />
 
-                <button type="button" id="change-email" class="btn btn-warning">
+                <button
+                  type="button"
+                  id="change-email"
+                  class="btn btn-outline-warning"
+                >
                   edit
                 </button>
               </div>
@@ -95,12 +107,16 @@
                 <input
                   name="NewBirthDate"
                   id="user-birthdate"
-                  class="form-control"
+                  class="current-data form-control"
                   type="date"
                   disabled
                 />
 
-                <button type="" id="change-birthdate" class="btn btn-warning">
+                <button
+                  type=""
+                  id="change-birthdate"
+                  class="btn btn-outline-warning"
+                >
                   edit
                 </button>
               </div>
@@ -109,18 +125,18 @@
             <div
               class="d-flex flex-column flex-nowrap w-100 align-items-center"
             >
-              <button
-                type=""
-                id="change-password"
-                class="btn btn-warning w-50 m-2"
+              <a
+                id="change-password-redirect"
+                class="btn btn-outline-warning w-50 m-2"
+                href="users_change_password.html"
+                style="color: none; text-decoration: none"
+                >Change Password</a
               >
-                <a href="users_change_password.html">Change Password</a>
-              </button>
 
               <button
                 type="submit"
                 id="confirm-save-changes"
-                class="btn btn-success w-50 m-2"
+                class="btn btn-outline-info w-50 m-2"
               >
                 Save Changes
               </button>

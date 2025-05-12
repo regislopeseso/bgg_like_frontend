@@ -21,6 +21,14 @@
   z-index: 2000;
 }
 
+#change-password a {
+  text-decoration: none;
+  color: var(--reddish);
+}
+#change-password:hover {
+  box-shadow: 0 0 10px 1px var(--reddish);
+}
+
 @keyframes pulse {
   0% {
     transform: scale(0.9);
