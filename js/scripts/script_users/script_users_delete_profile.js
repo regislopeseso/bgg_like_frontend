@@ -24,8 +24,8 @@ $(function () {
       xhrFields: {
         withCredentials: true,
       },
-      success: (resp) => {
-        alert("Session expired!", resp.message);
+      success: () => {
+        alert("Session expired!");
         window.location.href = "index.html";
       },
       error: (err) => {
@@ -43,9 +43,12 @@ $(function () {
 
     $("#user-password").on("input", function () {
       const requestedPassword = $(this).val();
-      let remainingAttempts = 3;
 
-      $("#confirm-delete-profile").prop("disabled", false);
+      if (requestedPassword.length > 5) {
+        $("#confirm-delete-profile").prop("disabled", false);
+      } else {
+        $("#confirm-delete-profile").prop("disabled", true);
+      }
     });
   }
 
@@ -54,7 +57,7 @@ $(function () {
       .off("submit", "#delete-profile-form")
       .on("submit", "#delete-profile-form", function (e) {
         e.preventDefault();
-        const requestedPassword = $(this).val();
+        const requestedPassword = $("#user-password").val();
 
         // Disable submit button to prevent double submissions
         const submitBtn = $(this).find("button[type='submit']");
@@ -70,12 +73,28 @@ $(function () {
           contentType: "application/json",
           xhrFields: { withCredentials: true },
           success: function (resp) {
-            alert("Profile deleted with success!", resp.message);
-
-            forceLogOut();
+            if (resp.content.remainingPasswordAttempts === null) {
+              alert(resp.message);
+              window.location.href = "index.html";
+            } else {
+              if (
+                resp.content.remainingPasswordAttempts !== 0 &&
+                resp.content.remainingPasswordAttempts < 3
+              ) {
+                alert(resp.message);
+              }
+              if (resp.content.remainingPasswordAttempts === 0) {
+                alert(resp.message);
+                forceLogOut();
+              }
+            }
           },
           error: function (err) {
             alert(err);
+          },
+          complete: () => {
+            // Re-enable button
+            submitBtn.attr("disabled", true).text(originalBtnText);
           },
         });
       });

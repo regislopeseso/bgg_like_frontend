@@ -44,7 +44,7 @@
               <a
                 id="cancel-delete-profile"
                 href="users_page.html"
-                class="btn btn-danger"
+                class="btn btn-outline-danger"
               >
                 cancel
               </a>
@@ -56,7 +56,7 @@
               <button
                 type="button"
                 id="request-delete-profile"
-                class="btn btn-warning w-50 m-2"
+                class="btn btn-outline-warning w-50 m-2"
               >
                 DELETE
               </button>
@@ -66,20 +66,32 @@
               <label for="user-password" class="form-label w-100 text-start"
                 >Enter your password</label
               >
-              <input
-                name="Password"
-                id="user-password"
-                class="form-control"
-                type="password"
-              />
-              <button
-                type="submit"
-                id="confirm-delete-profile"
-                class="btn btn-danger w-50 m-2"
-                disabled
-              >
-                CONFIRM DELETE
-              </button>
+              <div class="d-flex flex-column align-items-center gap-3">
+                <div class="d-flex flex-row w-100 align-items-center">
+                  <input
+                    name="Password"
+                    id="user-password"
+                    class="new-data form-control"
+                    type="password"
+                  />
+                  <span class="d-flex align-items-center">
+                    <img
+                      id="toggle-new-password"
+                      src="images/icons/eye_show.svg"
+                      style="height: 2.5em; cursor: pointer"
+                      title="Show password"
+                    />
+                  </span>
+                </div>
+                <button
+                  type="submit"
+                  id="confirm-delete-profile"
+                  class="btn btn-outline-danger w-50 m-2"
+                  disabled
+                >
+                  CONFIRM DELETE
+                </button>
+              </div>
             </div>
           </form>
         </div>

@@ -10,6 +10,7 @@ $(function () {
       if (data.content.isUserLoggedIn == true) {
         // If the user is logged in, proceed to load the page normally
         console.log("User is authenticated. Welcome!");
+        $("body").load("unload");
       } else {
         // If the user is not authenticated, redirect them to the authentication page
         window.location.href = "users_authentication.html";
@@ -43,6 +44,28 @@ $(function () {
         alert("Failed to fetch user details. Try again later.");
       },
     });
+  }
+
+  function checkPasswords() {
+    const currentPasswordContent = $("#current-password").val();
+    const newPasswordContent = $("#new-password").val();
+    const confirmPasswordContent = $("#confirm-password").val();
+
+    if (
+      currentPasswordContent.length > 5 &&
+      newPasswordContent.length > 5 &&
+      confirmPasswordContent.length > 5 &&
+      newPasswordContent === confirmPasswordContent
+    ) {
+      $("#confirm-password-change").attr("disabled", false);
+
+      $("#change-password-block")
+        .removeClass("red-alert-one")
+        .removeClass("red-alert-two")
+        .addClass("blue-alert");
+    } else {
+      $("#confirm-password-change").attr("disabled", true);
+    }
   }
 
   function loadEvents() {
@@ -80,11 +103,29 @@ $(function () {
         .trigger("focus");
     });
 
-    $("#toggle-current-password").on("input", function (e) {
-      $("#new-password")
-        .attr("disabled", false)
-        .removeClass("current-data")
-        .addClass("new-data");
+    $("#current-password").on("input", function (e) {
+      if ($("#current-password").val().length > 5) {
+        $("#new-password")
+          .attr("disabled", false)
+          .removeClass("current-data")
+          .addClass("new-data");
+
+        $("#toggle-new-password").css({
+          "visibility": "visible",
+          "opacity": "1",
+        });
+      } else {
+        $("#new-password, #confirm-password")
+          .val("")
+          .attr("disabled", true)
+          .addClass("current-data")
+          .removeClass("new-data");
+
+        $("#toggle-new-password, #toggle-confirm-password").css({
+          "visibility": "hidden",
+          "opacity": "0",
+        });
+      }
     });
 
     const openEye = "images/icons/eye_show.svg";
@@ -105,6 +146,31 @@ $(function () {
         $("#toggle-current-password").attr("src", openEye);
         $("#current-password").attr("type", "password");
         $("#toggle-current-password").attr("title", "Show password");
+      }
+    });
+
+    $("#new-password").on("input", function (e) {
+      if ($("#new-password").val().length > 5) {
+        $("#confirm-password")
+          .attr("disabled", false)
+          .removeClass("current-data")
+          .addClass("new-data");
+
+        $("#toggle-confirm-password").css({
+          "visibility": "visible",
+          "opacity": "1",
+        });
+      } else {
+        $("#confirm-password")
+          .val("")
+          .attr("disabled", true)
+          .addClass("current-data")
+          .removeClass("new-data");
+
+        $("#toggle-confirm-password").css({
+          "visibility": "hidden",
+          "opacity": "0",
+        });
       }
     });
 
@@ -143,6 +209,44 @@ $(function () {
         $("#toggle-confirm-password").attr("title", "Show password");
       }
     });
+
+    $("#new-password, #confirm-password").on("input", () => {
+      const newPasswordcontent = $("#new-password").val();
+      const confirmPasswordcontent = $("#confirm-password").val();
+
+      if (
+        newPasswordcontent !== confirmPasswordcontent &&
+        confirmPasswordcontent.length > 0
+      ) {
+        $("#confirm-password").attr({
+          "data-bs-toggle": "popover",
+          "data-bs-placement": "bottom",
+          "data-bs-content": "Passwords do not match",
+        });
+
+        if (!bootstrap.Popover.getInstance($("#confirm-password")[0])) {
+          new bootstrap.Popover($("#confirm-password")[0]).show();
+        }
+      }
+      if (newPasswordcontent === confirmPasswordcontent) {
+        bootstrap.Popover.getInstance($("#confirm-password"))?.dispose();
+      }
+    });
+
+    // Bind to input events on all three fields
+    $("#current-password, #new-password, #confirm-password").on("input", () => {
+      checkPasswords();
+
+      if ($("#change-password-block").hasClass("red-alert-one")) {
+        $("#change-password-block")
+          .removeClass("red-alert-one")
+          .addClass("red-alert-two");
+      } else {
+        $("#change-password-block")
+          .removeClass("red-alert-two")
+          .addClass("red-alert-one");
+      }
+    });
   }
 
   function setUpEditProfileForm() {
@@ -174,11 +278,6 @@ $(function () {
           success: function (resp) {
             alert(resp.message);
             window.location.href = "users_page.html";
-
-            // Clear form fields after successful update
-            // clearBgSelection();
-            // clearSessionSelection();
-            // forceClearForm();
           },
           error: function (xhr, status, error) {
             console.error("Error updating session:", error);
@@ -238,6 +337,7 @@ $(function () {
 
   function Build() {
     loadEvents();
+    loadUserDetails();
     setUpEditProfileForm();
     setUpChangePasswordForm();
   }
