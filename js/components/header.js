@@ -115,6 +115,8 @@ function loadHeader(userData, roleData) {
 
     // Attach logout event after role is handled
     $(".logOut").on("click", async function (e) {
+      e.preventDefault();
+
       const response = await fetch("https://localhost:7081/users/signout", {
         method: "POST",
         credentials: "include",
@@ -165,6 +167,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   loadHeader(userData, roleData);
 
   $(".logOut").on("click", async function (e) {
+    e.preventDefault();
+
     const response = await fetch("https://localhost:7081/users/signout", {
       method: "POST",
       credentials: "include",

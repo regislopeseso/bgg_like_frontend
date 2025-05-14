@@ -62,9 +62,9 @@ const FormHandler_LogSession = (function () {
     $("#confirm-logNewSession").prop("disabled", true);
 
     //Clear form
-    $("#sessionDate").val(null);
-    $("#playersCount").val(null);
-    $("#sessionDuration").val(null);
+    $("#sessionDate").val(null).addClass("current-data");
+    $("#playersCount").val(null).addClass("current-data");
+    $("#sessionDuration").val(null).addClass("current-data");
 
     // Clear board game selection
     $("#bgSelection-logSession").html("").trigger("change");

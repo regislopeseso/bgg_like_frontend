@@ -270,7 +270,7 @@ function loadTemplate(templateId) {
               type="number"
               min="1"
               max="15"
-              
+              value="1"
               oninput="if (this.value < 0) this.value = 1;"
             />
           </div>
@@ -379,7 +379,7 @@ function loadTemplate(templateId) {
                 />
               </div>
               <div class="text-center w-50">
-                <label for="newSessionDate" class="form-label"
+                <label class="form-label"
                   ><span>N</span>ew Session Date</label
                 >
                 <input
@@ -410,7 +410,7 @@ function loadTemplate(templateId) {
               </div>
 
               <div class="text-center w-50">
-                <label for="newPlayersCount" class="form-label"
+                <label class="form-label"
                   ><span>N</span>ew Players Count</label
                 >
                 <input
@@ -448,7 +448,7 @@ function loadTemplate(templateId) {
                 />
               </div>
               <div class="text-center w-50">
-                <label for="newSessionDuration" class="form-label"
+                <label class="form-label"
                   ><span>N</span>ew Match Duration:</label
                 >
                 <input
@@ -527,8 +527,8 @@ function loadTemplate(templateId) {
                 <div class="comboBox">
                   <select
                     name="SessionId"
-                    class="form-control form-select bg-select"
                     id="sessionSelection-delete"
+                    class="current-data form-control form-select bg-select"
                   ></select>
                 </div>
               </div>
@@ -586,11 +586,11 @@ function loadTemplate(templateId) {
             <hr/>
 
             <div class="text-center w-50">
-              <label for="rate" class="form-label"><span>R</span>ate</label>
+              <label class="form-label"><span>R</span>ate</label>
               <input
                 name="Rate"
                 id="rate"
-                class="new-data form-control text-center required"
+                class="current-data form-control text-center required"
                 placeholder="rate between 0 and 5"
                 type="number"
                 min="0"
@@ -660,13 +660,13 @@ function loadTemplate(templateId) {
               </div>
 
               <div class="text-center w-50">
-                <label for="newRate" class="form-label"
+                <label class="form-label"
                   ><span>N</span>ew Rate</label
                 >
                 <input
                   name="Rate"
                   id="newRate"
-                  class="new-data form-control text-center required"
+                  class="current-data form-control text-center required"
                   type="number"
                   min="0"
                   max="5"

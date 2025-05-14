@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HOME</title>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -15,17 +17,18 @@
       rel="stylesheet"
       href="node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
+
     <link
       rel="stylesheet"
       href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
     />
 
+    <link rel="stylesheet" href="styles/loaders.css" />
+
     <link rel="stylesheet" href="styles/style_general.css" />
     <link rel="stylesheet" href="styles/style_header.css" />
     <link rel="stylesheet" href="styles/styles_index.css" />
     <link rel="stylesheet" href="styles/style_footer.css" />
-
-    <title>BGG Like</title>
   </head>
   <body>
     <section class="home" id="home">
@@ -113,11 +116,17 @@
         </div>
       </div>
     </section>
+
+    <!-- Load jQuery and other libraries first -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/select2/dist/js/select2.min.js"></script>
+    <script src="js/scripts/loader.js"></script>
 
+    <!-- Other existing scripts -->
     <script src="js/components/header.js"></script>
+    <script src="js/scripts/script_index.js"></script>
     <script src="js/components/footer.js"></script>
   </body>
 </html>

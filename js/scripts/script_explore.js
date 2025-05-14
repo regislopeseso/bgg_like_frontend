@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
   fetch("https://localhost:7081/users/validatestatus", {
     method: "GET",
     credentials: "include",

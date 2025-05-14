@@ -51,6 +51,21 @@ const FormHandler_DeleteSession = (function () {
     });
   }
 
+  function loadSessionSelect2() {
+    // First destroy any existing select2 instance to prevent duplicates
+    if ($("#sessionSelection-delete").hasClass("select2-hidden-accessible")) {
+      $("#sessionSelection-delete").select2("destroy");
+    }
+
+    // Initialize select2 for session selection
+    $("#sessionSelection-delete").select2({
+      theme: "classic",
+      width: "100%",
+      placeholder: "Pick a session",
+      allowClear: true,
+    });
+  }
+
   function checkFormFilling() {
     const isBGSelected =
       $("#bgSelection-deleteSession").val() !== null &&
@@ -66,23 +81,28 @@ const FormHandler_DeleteSession = (function () {
     );
   }
 
-  function clearBgSelection() {
-    $("#bgSelection-deleteSession").val(null).trigger("change");
-  }
-
-  function clearSessionSelection() {
-    $("#sessionSelection-delete").val(null).trigger("change");
-  }
-
   function forceClearForm() {
-    // Replace second select2 label removing its sessions counter
-    $("#delete-session-label").html(`<span>S</span>elect a Board Game`);
-    //Clear form
-    $("#delete-session-form")[0].reset();
-    //Clear session details
-    $(".sessionDataPreview").empty();
     // Block form submission button
     $("#confirm-deleteSession").prop("disabled", true);
+
+    //Clear session details
+    $(".sessionDataPreview").empty();
+
+    //Clear session selection
+    $("#sessionSelection-delete").html("").trigger("change");
+    // Replace second select2 label removing its sessions counter
+    $("#delete-session-label").html(`<span>S</span>elect a Session`);
+    // Destroys select 2 to display just a blocked select
+    if ($("#sessionSelection-delete").hasClass("select2-hidden-accessible")) {
+      $("#sessionSelection-delete").select2("destroy");
+    }
+    $("#sessionSelection-delete").addClass("current-data");
+
+    // Replace second select2 label removing its sessions counter
+    $("#delete-session-label").html(`<span>S</span>elect a Board Game`);
+
+    // Clear board game selection
+    $("#bgSelection-deleteSession").html("").trigger("change");
   }
 
   // Set up handlers for the DELETE SESSION form
@@ -97,8 +117,19 @@ const FormHandler_DeleteSession = (function () {
         if (!boardGameId) {
           // Clear the second select if nothing is selected
           $("#sessionSelection-delete").empty().trigger("change");
+
+          // Refresh select2
+          if (
+            $("#sessionSelection-delete").hasClass("select2-hidden-accessible")
+          ) {
+            $("#sessionSelection-delete").select2("destroy");
+          }
+
           return;
         }
+
+        $("#sessionSelection-delete").removeClass("current-data");
+        loadSessionSelect2();
 
         // Fetch sessions based on selected boardGameId
         $.ajax({
@@ -112,12 +143,11 @@ const FormHandler_DeleteSession = (function () {
             // Check if any sessions are returned
             if (response.content && response.content.sessions) {
               sessionsDB = response.content.sessions;
-              console.log("Sessions found:", sessionsDB);
 
               $("#delete-session-label").empty();
 
               $("#delete-session-label").append(
-                `<span style="color: var(--reddish)">S</span>elect a Board Game <span style="color: var(--reddish)">(${sessionsDB.length})</span>`
+                `<span style="color: var(--reddish)">S</span>elect a Session <span style="color: var(--reddish)">(${sessionsDB.length})</span>`
               );
 
               // Add options dynamically
@@ -225,23 +255,6 @@ const FormHandler_DeleteSession = (function () {
           success: function (resp) {
             alert(resp.message);
 
-            // Clear selects
-            if (
-              $("#bgSelection-deleteSession").hasClass(
-                "select2-hidden-accessible"
-              )
-            ) {
-              clearBgSelection();
-            }
-
-            if (
-              $("#sessionSelection-delete").hasClass(
-                "select2-hidden-accessible"
-              )
-            ) {
-              clearSessionSelection();
-            }
-
             //Clear form
             forceClearForm();
           },
@@ -265,9 +278,7 @@ const FormHandler_DeleteSession = (function () {
 
     $("#bgSelection-deleteSession").on("select2:clear", () => {
       checkFormFilling();
-      clearSessionSelection();
       forceClearForm();
-      clearBgSelection();
     });
     // React to session selection
     $("#sessionSelection-delete").on("select2:select", checkFormFilling);
@@ -295,6 +306,12 @@ const FormHandler_DeleteSession = (function () {
         // Set up all form handlers
         this.setupAllForms();
       });
+
+      // Also set up handlers on document ready to handle the initial load
+      if ($("#delete-session-template").length) {
+        loadBgDetails();
+        setupDeleteSessionForm();
+      }
     },
 
     // Set up all form handlers

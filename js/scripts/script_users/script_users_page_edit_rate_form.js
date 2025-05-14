@@ -23,7 +23,10 @@ const FormHandler_EditRate = (function () {
         },
       },
       templateResult: (data) => data.text,
-      templateSelection: (data) => data.text,
+      templateSelection: (data) => {
+        if (!data.id) return data.text;
+        return $("<strong>").text(data.text);
+      },
       minimumInputLength: 3,
       allowClear: true,
       theme: "classic",
@@ -52,15 +55,15 @@ const FormHandler_EditRate = (function () {
     );
   }
 
-  function clearBgSelection() {
-    $("#bgSelection-edit-rate").val(null).trigger("change");
-  }
-
   function forceClearForm() {
-    //Clear form
-    $("#edit-rate-form")[0].reset();
+    // Clear form
+    $("#newRate").val(null).addClass("current-data");
+
     // Block form submission button
     $("#confirm-newRateBG").prop("disabled", true);
+
+    // Clear board game selection
+    $("#bgSelection-edit-rate").val(null).trigger("change");
   }
 
   // Set up handlers for EDITING A RATE form
@@ -71,6 +74,8 @@ const FormHandler_EditRate = (function () {
       .on("select2:select", "#bgSelection-edit-rate", function () {
         // Get selected boardGameId
         const boardGameId = $(this).val();
+
+        $("#newRate").removeClass("current-data").addClass("new-data");
 
         $.ajax({
           url: `https://localhost:7081/users/getrate?boardgameid=${boardGameId}`,
@@ -125,11 +130,6 @@ const FormHandler_EditRate = (function () {
           alert(response.message);
 
           // Reset form
-          if (
-            $("#bgSelection-edit-rate").hasClass("select2-hidden-accessible")
-          ) {
-            clearBgSelection();
-          }
           forceClearForm();
         },
         error: function (xhr, status, error) {
@@ -155,7 +155,6 @@ const FormHandler_EditRate = (function () {
     $("#bgSelection-edit-rate").on("select2:clear", () => {
       checkFormFilling();
       forceClearForm();
-      clearBgSelection();
     });
     // React to typing in any input
     $("#edit-rate-form input").on("input", checkFormFilling);
@@ -182,6 +181,12 @@ const FormHandler_EditRate = (function () {
         // Set up all form handlers
         this.setupAllForms();
       });
+
+      // Also set up handlers on document ready to handle the initial load
+      if ($("#edit-rate-template").length) {
+        loadBgDetails();
+        setupEditRateForm();
+      }
     },
 
     // Set up all form handlers

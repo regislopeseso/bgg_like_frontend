@@ -92,11 +92,11 @@ const FormHandler_EditSession = (function () {
 
     //Clear form
     $("#currentSessionDate").val(null);
-    $("#newSessionDate").val(null);
+    $("#newSessionDate").val(null).addClass("current-data");
     $("#currentPlayersCount").val(null);
-    $("#newPlayersCount").val(null);
+    $("#newPlayersCount").val(null).addClass("current-data");
     $("#currentSessionDuration").val(null);
-    $("#newSessionDuration").val(null);
+    $("#newSessionDuration").val(null).addClass("current-data");
 
     //Clear session selection
     $("#sessionSelection-edit").html("").trigger("change");
@@ -152,6 +152,7 @@ const FormHandler_EditSession = (function () {
               sessionsDB = response.content.sessions;
 
               $("#edit-session-label").empty();
+
               $("#edit-session-label").append(
                 `<span>S</span>elect a Session <span>(${sessionsDB.length})</span>`
               );
@@ -352,12 +353,14 @@ const FormHandler_EditSession = (function () {
             .prop("disabled", true);
 
           loadBgDetails();
-          setupEditSessionForm();
         } else {
           $("#userOption-editSession")
             .removeClass("selectedUserMenuOption")
             .prop("disabled", false);
         }
+
+        // Set up all form handlers
+        this.setupAllForms();
       });
 
       // Also set up handlers on document ready to handle the initial load

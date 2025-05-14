@@ -21,7 +21,10 @@ const FormHandler_RateBg = (function () {
         },
       },
       templateResult: (data) => data.text,
-      templateSelection: (data) => data.text,
+      templateSelection: (data) => {
+        if (!data.id) return data.text;
+        return $("<strong>").text(data.text);
+      },
       minimumInputLength: 3,
       allowClear: true,
       theme: "classic",
@@ -45,15 +48,15 @@ const FormHandler_RateBg = (function () {
     $("#confirm-rateBG").prop("disabled", !(isBGSelected && areFieldsFilled));
   }
 
-  function clearBgSelection() {
-    $("#bgSelection-rate").val(null).trigger("change");
-  }
-
   function forceClearForm() {
-    //Clear form
-    $("#rate-bg-form")[0].reset();
+    // Clear form
+    $("#rate").val(null).addClass("current-data");
+
     // Block form submission button
     $("#confirm-rateBG").prop("disabled", true);
+
+    // Clear board game selection
+    $("#bgSelection-rate").val(null).trigger("change");
   }
 
   // Set up handlers for the RATING a board game form
@@ -65,6 +68,8 @@ const FormHandler_RateBg = (function () {
       .on("select2:select", "#bgSelection-rate", function () {
         // Get selected boardGameId
         const boardGameId = $(this).val();
+
+        $("#rate").removeClass("current-data").addClass("new-data");
       });
 
     // Set up form submission handler
@@ -91,10 +96,6 @@ const FormHandler_RateBg = (function () {
           alert(resp.message);
 
           // Reset form
-          if ($("#bgSelection-rate").hasClass("select2-hidden-accessible")) {
-            clearBgSelection();
-          }
-          clearBgSelection();
           forceClearForm();
         },
         error: function (err) {
@@ -117,7 +118,6 @@ const FormHandler_RateBg = (function () {
     $("#bgSelection-rate").on("select2:clear", () => {
       checkFormFilling();
       forceClearForm();
-      clearBgSelection();
     });
     // React to typing in any input
     $("#rate-bg-form input").on("input", checkFormFilling);
@@ -144,6 +144,12 @@ const FormHandler_RateBg = (function () {
         // Set up all form handlers
         this.setupAllForms();
       });
+
+      // Also set up handlers on document ready to handle the initial load
+      if ($("#rate-bg-template").length) {
+        loadBgDetails();
+        setupRateBgForm();
+      }
     },
 
     // Set up all form handlers
