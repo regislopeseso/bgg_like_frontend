@@ -1,6 +1,6 @@
 function loadHeader(userData, roleData) {
   const isLoggedIn = userData?.content?.isUserLoggedIn === true;
-  const rule = roleData?.content?.role || "";
+  const userRole = roleData?.content?.role || "";
 
   const header = document.createElement("header");
   header.className = "header";
@@ -14,8 +14,8 @@ function loadHeader(userData, roleData) {
           <a href="explore.html">EXPLORE</a>
           <a href="users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
           <a href="users_page.html" class="loggedIn-clearance d-none">USER</a>
-          <a href="admins.html" class="admins-clearence d-none">ADMIN</a>
-          <a href="devs.html" class="devs-clearence d-none">DEV</a>
+          <a href="admins.html" class="admins-clearance d-none">ADMIN</a>
+          <a href="devs.html" class="devs-clearance d-none">DEV</a>
 
           <div class="dropdown loggedIn-clearance d-none">
             <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -101,15 +101,18 @@ function loadHeader(userData, roleData) {
   document.body.appendChild(header);
 
   if (isLoggedIn === true) {
+    console.log("User type: " + roleData.content.role);
+    console.log("This is rule: " + userRole);
+
     $(".anonymous-clearance").addClass("d-none");
     $(".loggedIn-clearance").removeClass("d-none");
 
-    if (roleData.content.role === "Developer") {
+    if (userRole === "Developer") {
       $(".admins-clearance").removeClass("d-none");
       $(".devs-clearance").removeClass("d-none");
-    } else if (roleData.content.role === "Administrator") {
+    } else if (userRole === "Administrator") {
       $(".admins-clearance").removeClass("d-none");
-    } else if (roleData.content.role === "User") {
+    } else if (userRole === "User") {
       $(".loggedIn-clearance").removeClass("d-none");
     }
 

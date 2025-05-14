@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ADM</title>
+    <title>ADMINS</title>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -11,26 +12,114 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+
     <link
       rel="stylesheet"
       href="node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
+
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
+    />
+
     <link
       rel="stylesheet"
       href="node_modules/select2/dist/css/select2.min.css"
     />
+
+    <link rel="stylesheet" href="styles/loaders.css" />
+
     <link rel="stylesheet" href="styles/style_general.css" />
     <link rel="stylesheet" href="styles/style_header.css" />
-    <link rel="stylesheet" href="styles/loaders.css" />
     <link rel="stylesheet" href="styles/style_admins.css" />
     <link rel="stylesheet" href="styles/style_footer.css" />
   </head>
   <body>
-    <script src="js/components/header.js"></script>
-    <script src="js/components/footer.js"></script>
+    <main>
+      <section class="d-flex w-100 justify-content-center">
+        <div id="adm-tools" class="d-flex flex-column gap-2">
+          <div id="title-wrapper" class="d-flex align-items-center p-4 pb-0">
+            <h3 class="p-0"><span>ADM</span>INS <span>TOOLS</span></h3>
+          </div>
+
+          <div id="adm-options" class="d-flex flex-column pt-5 pb-5 gap-4">
+            <button class="btn">Board Games Tools</button>
+            <button class="btn">Categories Tools</button>
+            <button class="btn">Mechanics Tools</button>
+          </div>
+
+          <div>
+            <div id="board-game-tools">
+              <div id="add-board-game" class="d-flex w-50">
+                <button id="add-board-game-button" class="btn btn-outline-info">
+                  Add a Board Game
+                </button>
+                <form id="add-board-game-form" class="d-flex flex-column gap-2">
+                  <input
+                    name="BoardGameName"
+                    type="text"
+                    placeholder="Board game name..."
+                    id="newbg-name"
+                    class="form-control required"
+                  />
+                  <input
+                    name="BoardGameDescription"
+                    type="text"
+                    placeholder="Board game description..."
+                    id="newbg-description"
+                    class="form-control required"
+                  />
+                  <input
+                    name="MinPlayersCount"
+                    type="number"
+                    placeholder="Min. players count..."
+                    id="newbg-min-players"
+                    class="form-control required"
+                  />
+                  <input
+                    name="MaxPlayersCount"
+                    type="number"
+                    placeholder="Max. players count..."
+                    id="newbg-max-players"
+                    class="form-control required"
+                  />
+                  <input
+                    name="MinAge"
+                    type="number"
+                    placeholder="Min. age..."
+                    id="newbg-min-age"
+                    class="form-control required"
+                  />
+                  <select name="CategoryId" type="number" />
+                  <select name="MechanicIds" type="text" />
+                </form>
+              </div>
+              <div id="edit-board-game">
+                <button class="btn">Edit a Board Game</button>
+              </div>
+              <div id="delete-board-game">
+                <button class="btn">Delete a Board Game</button>
+              </div>
+            </div>
+
+            <div id="category-tools"></div>
+
+            <div id="mechanic-tools"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Load jQuery and other libraries first -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/select2/dist/js/select2.min.js"></script>
-    <script src="js/scripts/script_admins.js"></script>
     <script src="js/scripts/loader.js"></script>
+
+    <!-- Other existing scripts -->
+    <script src="js/components/header.js"></script>
+    <script src="js/scripts/script_admins.js"></script>
+    <script src="js/components/footer.js"></script>
   </body>
 </html>

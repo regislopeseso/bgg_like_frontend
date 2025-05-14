@@ -1,26 +1,29 @@
-$(document).ready(function () {
-  function loadEvents() {
-    $("#devsPassword").on("input", function () {
-      const inputLength = $(this).val().length;
+$(function () {
+  $("body").load("load");
 
-      if (inputLength >= 5) {
-        $("#logIn-flipper").prop("disabled", false);
+  fetch("https://localhost:7081/users/validatestatus", {
+    method: "GET",
+    credentials: "include",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.content.isUserLoggedIn == true) {
+        // If the user is logged in, proceed to load the page normally
+        console.log("User is authenticated. Welcome!");
+        setTimeout(function (e) {
+          $("body").load("unload");
+        }, 600);
+
+        $("body").show();
+
+        builder();
       } else {
-        $("#logIn-flipper").prop("disabled", true);
+        // If the user is not authenticated, redirect them to the authentication page
+        window.location.href = "users_authentication.html";
       }
     });
 
-    $("#logIn-flipper").on("click", function (e) {
-      e.preventDefault();
-
-      $(".flip-card-inner").css("transform", "rotateY(180deg)");
-    });
-
-    // $("#logIn-flipper").on("dblclick", function (e) {
-    //   $(".imgBlock").hide();
-    //   $(".hiddenBlock").show();
-    // });
-
+  function loadEvents() {
     $("#seedBg").on("click", function (e) {
       e.preventDefault();
 
@@ -33,7 +36,6 @@ $(document).ready(function () {
           data-stroke-trail="white"
         ></div>
       `;
-
       $(".bg-progressBar").append(pg);
 
       let bar = new ldBar(".ldBar"); // target the ldBar element
@@ -358,17 +360,11 @@ $(document).ready(function () {
         },
       });
     });
-
-    $("#logOut-flipper").on("click", function (e) {
-      e.preventDefault();
-
-      $(".flip-card-inner").css("transform", "rotateY(0)");
-    });
   }
 
   function builder() {
     loadEvents();
   }
 
-  builder();
+  //builder();
 });

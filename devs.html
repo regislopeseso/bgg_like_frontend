@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DEV</title>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -11,152 +12,111 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+
     <link
       rel="stylesheet"
       href="node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
+
     <link
       rel="stylesheet"
       href="node_modules/select2/dist/css/select2.min.css"
     />
+
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
+    />
+
+    <link rel="stylesheet" href="styles/loaders.css" />
+    <link rel="stylesheet" href="loading-bar/dist/loading-bar.min.css" />
+
     <link rel="stylesheet" href="styles/style_general.css" />
     <link rel="stylesheet" href="styles/style_header.css" />
     <link rel="stylesheet" href="styles/style_devs.css" />
     <link rel="stylesheet" href="styles/style_footer.css" />
-    <link rel="stylesheet" href="styles/loaders.css" />
-    <link rel="stylesheet" href="loading-bar/dist/loading-bar.min.css" />
   </head>
 
   <body>
     <main>
-      <section class="devs-zone">
-        <h3><span>DEV</span>ELOPERS ZONE</h3>
-      </section>
-      <section class="flip-card-wrapper">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <form>
-                <div class="input-wrapper">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="devsLogin"
-                    placeholder="Enter your Login"
-                  />
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="devsPassword"
-                    placeholder="Enter your Password"
-                  />
-                  <p>Access to restricted dev tools:</p>
-                  <p>*Seed/Delete Board Games testing data</p>
-                  <p>*Seed/Delete Medieval battler data</p>
-                </div>
-                <button
-                  class="button-wrapper btn btn-outline-info"
-                  type="submit"
-                  id="logIn-flipper"
-                >
-                  Log in
-                </button>
-              </form>
-            </div>
-            <div class="flip-card-back">
-              <div class="hiddenBlock">
-                <div class="upperBlock">
-                  <div class="Block-Text">
-                    <h6><span>D</span>ev</h6>
-                    <h6><span>U</span>ser</h6>
-                  </div>
-                  <button
-                    class="btn btn-outline-danger"
-                    id="addDevUser"
-                    type="submit"
-                  >
-                    Create
-                  </button>
-                  <div class="separator"><h2>-</h2></div>
-                  <button
-                    class="btn btn-outline-danger"
-                    id="deleteDevUser"
-                    type="submit"
-                  >
-                    Delete
-                  </button>
-                </div>
-
-                <div class="lowerBlock">
-                  <div class="bg-progressBar"></div>
-                </div>
-              </div>
-
-              <div class="imgBlock">
-                <img src="images/icons/board-game.png" alt="" />
-              </div>
-
-              <div class="bgBlock">
-                <div class="upperBlock">
-                  <div class="Block-Text">
-                    <h6><span>B</span>oard</h6>
-                    <h6><span>G</span>ames</h6>
-                  </div>
-                  <button class="btn btn-outline-danger" id="seedBg">
-                    Seed
-                  </button>
-                  <div class="separator"><h2>-</h2></div>
-                  <button class="btn btn-outline-danger" id="deleteSeededBg">
-                    Delete
-                  </button>
-                </div>
-
-                <div class="lowerBlock">
-                  <div class="bg-progressBar"></div>
-                </div>
-              </div>
-
-              <div class="mabBlock">
-                <div class="upperBlock">
-                  <div class="Block-Text">
-                    <h6><span>M</span>edieval</h6>
-                    <h6><span>B</span>attler</h6>
-                  </div>
-                  <button class="btn btn-outline-danger" id="seedMab">
-                    Seed
-                  </button>
-                  <div class="separator"><h2>-</h2></div>
-                  <button class="btn btn-outline-danger" id="deleteSeededMab">
-                    Delete
-                  </button>
-                </div>
-
-                <div class="lowerBlock">
-                  <div class="mab-progressBar"></div>
-                </div>
-              </div>
-
-              <div class="logOutBlock">
-                <button
-                  class="btn btn-outline-info"
-                  id="logOut-flipper"
-                  type="submit"
-                >
-                  Log out
-                </button>
-              </div>
-            </div>
+      <section class="d-flex w-100 justify-content-center">
+        <div id="developers-tools" class="d-flex flex-column gap-2">
+          <div id="title-box" class="d-flex align-items-center p-4 pb-0">
+            <h3 class="p-0"><span>DEV</span>ELOPERS <span>TOOLS</span></h3>
           </div>
+
+          <hr />
+
+          <div id="boardGame-box" class="d-flex flex-column w-100">
+            <div class="text-center">
+              <h4><span>B</span>oard <span>G</span>ames</h4>
+            </div>
+
+            <div class="d-flex flex-row w-100 justify-content-center pb-3">
+              <button class="btn btn-lg btn-outline-info" id="seedBg">
+                Seed
+              </button>
+              <div class="separator"><h2>-</h2></div>
+              <button class="btn btn-lg btn-outline-danger" id="deleteSeededBg">
+                Delete
+              </button>
+            </div>
+
+            <div
+              class="bg-progressBar d-flex w-100 justify-content-center"
+            ></div>
+          </div>
+
+          <div
+            id="image-box"
+            class="d-flex flex-row w-100 justify-content-center align-items-center p-3"
+          >
+            <hr />
+            <img class="p-1" src="images/icons/board-game.png" alt="" />
+            <hr />
+          </div>
+
+          <div
+            id="medievelAutobattler-box"
+            class="d-flex flex-column w-100 pb-3"
+          >
+            <div class="Block-Text text-center">
+              <h4><span>M</span>edieval <span>B</span>attler</h4>
+            </div>
+
+            <div class="d-flex flex-row w-100 justify-content-center pb-3">
+              <button class="btn btn-lg btn-outline-info" id="seedMab">
+                Seed
+              </button>
+              <div class="separator"><h2>-</h2></div>
+              <button
+                class="btn btn-lg btn-outline-danger"
+                id="deleteSeededMab"
+              >
+                Delete
+              </button>
+            </div>
+
+            <div
+              class="mab-progressBar d-flex w-100 justify-content-center"
+            ></div>
+          </div>
+
+          <hr class="pb-4" />
         </div>
       </section>
     </main>
 
-    <script src="js/components/header.js"></script>
-    <script src="js/components/footer.js"></script>
+    <!-- Load jQuery and other libraries first -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/select2/dist/js/select2.min.js"></script>
-    <script src="js/scripts/script_devs.js"></script>
     <script src="js/scripts/loader.js"></script>
     <script src="loading-bar/dist/loading-bar.min.js"></script>
+
+    <script src="js/components/header.js"></script>
+    <script src="js/scripts/script_devs.js"></script>
+    <script src="js/components/footer.js"></script>
   </body>
 </html>
