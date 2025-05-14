@@ -50,6 +50,27 @@ $(function () {
         $("#confirm-delete-profile").prop("disabled", true);
       }
     });
+
+    const openEye = "images/icons/eye_show.svg";
+    const closeEye = "images/icons/eye_hide.svg";
+
+    let deletePasswordEyeState = 0;
+    $("#toggle-delete-profile-img").on("click", function (e) {
+      e.preventDefault();
+
+      deletePasswordEyeState = deletePasswordEyeState === 0 ? 1 : 0;
+
+      if (deletePasswordEyeState === 1) {
+        $("#toggle-delete-profile-img").attr("src", closeEye);
+        $("#delete-profile-input").attr("type", "text");
+        $("#toggle-delete-profile-img").attr("title", "Hide password");
+      }
+      if (deletePasswordEyeState === 0) {
+        $("#toggle-delete-profile-img").attr("src", openEye);
+        $("#delete-profile-input").attr("type", "password");
+        $("#toggle-delete-profile-img").attr("title", "Show password");
+      }
+    });
   }
 
   function setUpDeleteProfileForm() {

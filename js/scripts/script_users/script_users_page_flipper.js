@@ -249,7 +249,7 @@ function loadTemplate(templateId) {
             <input
               name="Date"
               id="sessionDate"
-              class="new-data form-control text-center required"
+              class="current-data new-data form-control text-center required"
               type="date"
               min="${minDate}"
               max="${maxDate}"
@@ -260,17 +260,17 @@ function loadTemplate(templateId) {
           <hr/>
   
           <div class="text-center w-50">
-            <label for="playersCount" class="form-label"
+            <label class="form-label"
               ><span>P</span>layers Count</label
             >
             <input
               name="PlayersCount"
               id="playersCount"
-              class="new-data form-control text-center required"
+              class="current-data form-control text-center required"
               type="number"
               min="1"
               max="15"
-              value="1"
+              
               oninput="if (this.value < 0) this.value = 1;"
             />
           </div>
@@ -278,13 +278,13 @@ function loadTemplate(templateId) {
           <hr/>
   
           <div class="text-center w-50">
-            <label for="sessionDuration" class="form-label"
+            <label class="form-label"
               ><span>H</span>ow long did the match last (minutes):</label
             >
             <input
               name="Duration_minutes"
               id="sessionDuration"
-              class="new-data form-control text-center required"
+              class="current-data form-control text-center required"
               type="number"
               min="5"
               max="1440"
@@ -311,7 +311,7 @@ function loadTemplate(templateId) {
             </button>
 
             <button
-              type="reset"
+              type="button"
               id="reset-logNewSession"
               class="btn-refresh btn btn-sm btn-outline-warning"
             >
@@ -348,7 +348,7 @@ function loadTemplate(templateId) {
 
             <hr/>
 
-            <div class="text-center w-50">
+            <div id="sessionComboBox" class="text-center w-50">
               <label
                 id="edit-session-label"
                 class="bgList-lbl"
@@ -358,8 +358,8 @@ function loadTemplate(templateId) {
               >
               <select
                 name="SessionId"
-                class="form-control form-select bg-select"
                 id="sessionSelection-edit"
+                class="current-data form-control form-select bg-select"
               ></select>
             </div>
 
@@ -385,7 +385,7 @@ function loadTemplate(templateId) {
                 <input
                   name="NewDate"
                   id="newSessionDate"
-                  class="new-data form-control text-center required"                  
+                  class="current-data form-control text-center required"                  
                   type="date"
                   min="${minDate}"
                   max="${maxDate}"
@@ -416,7 +416,7 @@ function loadTemplate(templateId) {
                 <input
                   name="NewPlayersCount"
                   id="newPlayersCount"
-                  class="new-data form-control text-center"
+                  class="current-data form-control text-center required"
                   type="number"
                   min="1"
                   max="15"
@@ -454,7 +454,7 @@ function loadTemplate(templateId) {
                 <input
                   name="NewDuration_minutes"
                   id="newSessionDuration"
-                  class="new-data form-control text-center required "
+                  class="current-data form-control text-center required "
                   type="number"
                   min="5"
                   max="1440"
@@ -475,7 +475,7 @@ function loadTemplate(templateId) {
                 Confirm Alteration
               </button>
               <button
-                type="reset"
+                type="button"
                 id="reset-editSession"
                 class="btn-refresh btn btn-sm btn-outline-warning"
               >

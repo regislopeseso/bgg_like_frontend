@@ -1,6 +1,11 @@
 const FormHandler_LogSession = (function () {
   // Initialize Select2 dropdown for board games
   function loadBgDetails() {
+    // First destroy any existing select2 instance to prevent duplicates
+    if ($("#bgSelection-logSession").hasClass("select2-hidden-accessible")) {
+      $("#bgSelection-logSession").select2("destroy");
+    }
+
     // Initialize select2 for LOG SESSION
     $("#bgSelection-logSession").select2({
       ajax: {
@@ -34,6 +39,12 @@ const FormHandler_LogSession = (function () {
       $("#bgSelection-logSession").val() !== "";
     let areFieldsFilled = true;
 
+    if (isBGSelected === true) {
+      $("#log-session-form .required:visible:enabled").each(function () {
+        $(this).removeClass("current-data").addClass("new-data");
+      });
+    }
+
     $("#log-session-form .required:visible:enabled").each(function () {
       if ($(this).val().trim() === "") {
         areFieldsFilled = false;
@@ -46,15 +57,17 @@ const FormHandler_LogSession = (function () {
     );
   }
 
-  function clearBgSelection() {
-    $("#bgSelection-logSession").val(null).trigger("change");
-  }
-
   function forceClearForm() {
-    //Clear form
-    $("#log-session-form")[0].reset();
     // Block form submission button
     $("#confirm-logNewSession").prop("disabled", true);
+
+    //Clear form
+    $("#sessionDate").val(null);
+    $("#playersCount").val(null);
+    $("#sessionDuration").val(null);
+
+    // Clear board game selection
+    $("#bgSelection-logSession").html("").trigger("change");
   }
 
   // Set up handlers for the log session form
@@ -84,13 +97,6 @@ const FormHandler_LogSession = (function () {
           success: (resp) => {
             alert(resp.message);
 
-            // Reset form
-            if (
-              $("#bgSelection-logSession").hasClass("select2-hidden-accessible")
-            ) {
-              clearBgSelection();
-            }
-
             forceClearForm();
           },
           error: (err) => {
@@ -113,13 +119,11 @@ const FormHandler_LogSession = (function () {
     $("#bgSelection-logSession").on("select2:clear", () => {
       checkFormFilling();
       forceClearForm();
-      clearBgSelection();
     });
     // React to typing in any input
     $("#log-session-form input").on("input", checkFormFilling);
     // React to clicking on the clear button:
     $("#reset-logNewSession").on("click", () => {
-      clearBgSelection();
       forceClearForm();
     });
   }

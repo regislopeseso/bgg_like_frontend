@@ -16,10 +16,6 @@ const FormHandler_EditSession = (function () {
       $("#bgSelection-editSession").select2("destroy");
     }
 
-    if ($("#sessionSelection-edit").hasClass("select2-hidden-accessible")) {
-      $("#sessionSelection-edit").select2("destroy");
-    }
-
     // Initialize select2 for EDIT SESSION boardgame selection
     $("#bgSelection-editSession").select2({
       ajax: {
@@ -45,6 +41,12 @@ const FormHandler_EditSession = (function () {
       width: "100%",
       placeholder: "Type at least 3 characters to search",
     });
+  }
+
+  function loadSessionDetails() {
+    if ($("#sessionSelection-edit").hasClass("select2-hidden-accessible")) {
+      $("#sessionSelection-edit").select2("destroy");
+    }
 
     // Initialize select2 for session selection
     $("#sessionSelection-edit").select2({
@@ -59,6 +61,12 @@ const FormHandler_EditSession = (function () {
     const isBGSelected =
       $("#bgSelection-editSession").val() !== null &&
       $("#bgSelection-editSession").val() !== "";
+
+    if (isBGSelected === true) {
+      $("#edit-session-form .required:visible:enabled").each(function () {
+        $(this).removeClass("current-data").addClass("new-data");
+      });
+    }
 
     const isSessionSelected =
       $("#sessionSelection-edit").val() !== null &&
@@ -78,21 +86,30 @@ const FormHandler_EditSession = (function () {
     );
   }
 
-  function clearBgSelection() {
-    $("#bgSelection-editSession").val(null).trigger("change");
-  }
-
-  function clearSessionSelection() {
-    $("#sessionSelection-edit").val(null).trigger("change");
-  }
-
   function forceClearForm() {
-    // Replace second select2 label removing its sessions counter
-    $("#edit-session-label").html(`<span>S</span>elect a Board Game`);
-    //Clear form
-    $("#edit-session-form")[0].reset();
     // Block form submission button
     $("#confirm-editSession").prop("disabled", true);
+
+    //Clear form
+    $("#currentSessionDate").val(null);
+    $("#newSessionDate").val(null);
+    $("#currentPlayersCount").val(null);
+    $("#newPlayersCount").val(null);
+    $("#currentSessionDuration").val(null);
+    $("#newSessionDuration").val(null);
+
+    //Clear session selection
+    $("#sessionSelection-edit").html("").trigger("change");
+    // Replace second select2 label removing its sessions counter
+    $("#edit-session-label").html(`<span>S</span>elect a Session`);
+    // Destroys select 2 to display just a blocked select
+    if ($("#sessionSelection-edit").hasClass("select2-hidden-accessible")) {
+      $("#sessionSelection-edit").select2("destroy");
+    }
+    $("#sessionSelection-edit").addClass("current-data");
+
+    // Clear board game selection
+    $("#bgSelection-editSession").html("").trigger("change");
   }
 
   // Set up handlers for the >EDIT SESSION< form
@@ -114,14 +131,12 @@ const FormHandler_EditSession = (function () {
           ) {
             $("#sessionSelection-edit").select2("destroy");
           }
-          $("#sessionSelection-edit").select2({
-            theme: "classic",
-            width: "100%",
-            placeholder: "Select a session",
-            allowClear: true,
-          });
+
           return;
         }
+
+        $("#sessionSelection-edit").removeClass("current-data");
+        loadSessionDetails();
 
         // Fetch sessions based on selected boardGameId
         $.ajax({
@@ -138,7 +153,7 @@ const FormHandler_EditSession = (function () {
 
               $("#edit-session-label").empty();
               $("#edit-session-label").append(
-                `<span>S</span>elect a Board Game <span>(${sessionsDB.length})</span>`
+                `<span>S</span>elect a Session <span>(${sessionsDB.length})</span>`
               );
 
               // Add options dynamically
@@ -287,10 +302,7 @@ const FormHandler_EditSession = (function () {
           xhrFields: { withCredentials: true },
           success: function (resp) {
             alert(resp.message);
-
             // Clear form fields after successful update
-            clearBgSelection();
-            clearSessionSelection();
             forceClearForm();
           },
           error: function (xhr, status, error) {
@@ -315,9 +327,7 @@ const FormHandler_EditSession = (function () {
     $("#bgSelection-editSession").on("select2:select", checkFormFilling);
     $("#bgSelection-editSession").on("select2:clear", () => {
       checkFormFilling();
-      clearSessionSelection();
       forceClearForm();
-      clearBgSelection();
     });
     // React to session selection
     $("#sessionSelection-edit").on("select2:select", checkFormFilling);
@@ -327,8 +337,6 @@ const FormHandler_EditSession = (function () {
     // React to clicking on the clear button:
     $("#reset-editSession").on("click", () => {
       forceClearForm();
-      clearSessionSelection();
-      clearBgSelection();
     });
   }
 
