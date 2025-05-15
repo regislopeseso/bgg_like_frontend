@@ -7,25 +7,25 @@ function loadHeader(userData, roleData) {
 
   header.innerHTML = `
     <header class="header">
-      <a href="index.html" class="logo">BBG <span>LIKE</span></a>
+      <a href="/index.html" class="logo">BBG <span>LIKE</span></a>
       <nav class="navbar">
         <div class="navOptions d-flex flex-row">
-          <a href="index.html">HOME</a>
-          <a href="explore.html">EXPLORE</a>
-          <a href="users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
-          <a href="users_page.html" class="loggedIn-clearance d-none">USER</a>
-          <a href="admins.html" class="admins-clearance d-none">ADMIN</a>
-          <a href="devs.html" class="devs-clearance d-none">DEV</a>
+          <a href="/index.html">HOME</a>
+          <a href="/html/explore.html">EXPLORE</a>
+          <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
+          <a href="/html/pages_users/users_page.html" class="loggedIn-clearance d-none">USER</a>
+          <a href="/html/pages_admins/admins.html" class="admins-clearance d-none">ADMIN</a>
+          <a href="/html/pages_devs/devs.html" class="devs-clearance d-none">DEV</a>
 
           <div class="dropdown loggedIn-clearance d-none">
             <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person-gear"></i>
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item m-0 " href="users_edit_profile.html">Edit Profile</a></li>
-              <li><a class="dropdown-item m-0" href="users_delete_profile.html">Delete Profile</a></li>
+              <li><a class="dropdown-item m-0 " href="/html/pages_users/users_edit_profile.html">Edit Profile</a></li>
+              <li><a class="dropdown-item m-0" href="/html/pages_users/users_delete_profile.html">Delete Profile</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="logOut dropdown-item m-0" href="index.html">Sign Out</a></li>
+              <li><a class="logOut dropdown-item m-0" href="/index.html">Sign Out</a></li>
             </ul>
           </div>
           
@@ -44,22 +44,22 @@ function loadHeader(userData, roleData) {
               <div class="collapse navbar-collapse text-end" id="navbarTogglerDemo01">                 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="nav-link" href="index.html">HOME</a>
+                    <a class="nav-link" href="/index.html">HOME</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="explore.html">EXPLORE</a>
+                    <a class="nav-link" href="/html/explore.html">EXPLORE</a>
                   </li>
                   <li class="nav-item">
-                    <a href="users_authentication.html" class="anonymous-clearance nav-link d-none">SIGN UP/IN</a>
+                    <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance nav-link d-none">SIGN UP/IN</a>
                   </li>
                   <li class="nav-item">
-                    <a href="users_page.html" class="loggedIn-clearence nav-link d-none">USER</a>
+                    <a href="/html/pages_users/users_page.html" class="loggedIn-clearence nav-link d-none">USER</a>
                   </li>
                   <li class="nav-item">
-                    <a href="admins.html" class="admins-clearence nav-link d-none">ADMIN</a>
+                    <a href="/html/pages_admins/admins.html" class="admins-clearence nav-link d-none">ADMIN</a>
                   </li>
                   <li class="nav-item">
-                    <a href="devs.html" class="devs-clearence nav-link d-none">DEV</a>
+                    <a href="/html/pages_devs/devs.html" class="devs-clearence nav-link d-none">DEV</a>
                   </li>
 
                   <div class="dropdown">
@@ -130,7 +130,7 @@ function loadHeader(userData, roleData) {
 
       if (response.content?.isUserSignOut) {
         // Successfully logged out
-        window.location.href = "index.html";
+        window.location.href = "/index.html";
       } else {
         alert("Failed to log out. Please try again.");
       }
@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }).then((res) => res.json());
 
     if (response.content?.isUserSignOut) {
-      window.location.href = "index.html";
+      window.location.href = "/index.html";
     } else {
       alert("Failed to log out. Please try again.");
     }

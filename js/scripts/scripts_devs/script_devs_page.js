@@ -19,7 +19,7 @@ $(function () {
         builder();
       } else {
         // If the user is not authenticated, redirect them to the authentication page
-        window.location.href = "users_authentication.html";
+        window.location.href = "html/pages_users/users_authentication.html";
       }
     });
 

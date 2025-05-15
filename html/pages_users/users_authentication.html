@@ -13,23 +13,24 @@
     />
     <link
       rel="stylesheet"
-      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+      href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
     <link
       rel="stylesheet"
-      href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
+      href="/node_modules/bootstrap-icons/font/bootstrap-icons.css"
     />
     <link
       rel="stylesheet"
-      href="node_modules/select2/dist/css/select2.min.css"
+      href="/node_modules/select2/dist/css/select2.min.css"
     />
 
-    <link rel="stylesheet" href="styles/loaders.css" />
+    <link rel="stylesheet" href="/css/loaders.css" />
 
-    <link rel="stylesheet" href="styles/style_general.css" />
-    <link rel="stylesheet" href="styles/style_header.css" />
-    <link rel="stylesheet" href="styles/style_users_authentication.css" />
-    <link rel="stylesheet" href="styles/style_footer.css" />
+    <link rel="stylesheet" href="/css/style_general.css" />
+    <link rel="stylesheet" href="/css/style_header.css" />
+    <link rel="stylesheet"
+    href="/css/style_users/style_users_authentication.css"" />
+    <link rel="stylesheet" href="/css/style_footer.css" />
   </head>
   <body>
     <main>
@@ -167,7 +168,7 @@
                     <span class="d-flex align-items-center">
                       <img
                         id="toggle-show-password"
-                        src="images/icons/eye_show.svg"
+                        src="/images/icons/eye_show.svg"
                         style="height: 2.5em; cursor: pointer"
                         title="Show password"
                       />
@@ -188,7 +189,7 @@
                     <span class="d-flex align-items-center">
                       <img
                         id="toggle-show-password-confirmation"
-                        src="images/icons/eye_show.svg"
+                        src="/images/icons/eye_show.svg"
                         style="height: 2.5em; cursor: pointer"
                         title="Show password"
                       />
@@ -249,7 +250,7 @@
                     <span class="d-flex align-items-center">
                       <img
                         id="toggle-signin-password"
-                        src="images/icons/eye_show.svg"
+                        src="/images/icons/eye_show.svg"
                         style="height: 2.5em; cursor: pointer"
                         title="Show password"
                       />
@@ -274,20 +275,16 @@
       </section>
     </main>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const input = document.getElementById("newUserPassword");
-        new bootstrap.Popover(input);
-      });
+   
     </script>
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="node_modules/select2/dist/js/select2.min.js"></script>
-    <script src="js/scripts/loader.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/node_modules/select2/dist/js/select2.min.js"></script>
+    <script src="/js/scripts/loader.js"></script>
 
-    <script src="js/components/header.js"></script>
-    <script src="js/scripts/script_users/script_users_authentication.js"></script>
-    <script src="js/components/footer.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/scripts/scripts_users/script_users_authentication.js"></script>
+    <script src="/js/components/footer.js"></script>
   </body>
 </html>

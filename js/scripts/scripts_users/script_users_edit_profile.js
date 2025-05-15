@@ -13,7 +13,7 @@ $(function () {
         $("body").load("unload");
       } else {
         // If the user is not authenticated, redirect them to the authentication page
-        window.location.href = "users_authentication.html";
+        window.location.href = "html/pages_users/users_authentication.html";
       }
     });
 
@@ -128,8 +128,8 @@ $(function () {
       }
     });
 
-    const openEye = "images/icons/eye_show.svg";
-    const closeEye = "images/icons/eye_hide.svg";
+    const openEye = "/images/icons/eye_show.svg";
+    const closeEye = "/images/icons/eye_hide.svg";
 
     let currentPasswordEyeState = 0;
     $("#toggle-current-password").on("click", function (e) {
@@ -277,7 +277,7 @@ $(function () {
           xhrFields: { withCredentials: true },
           success: function (resp) {
             alert(resp.message);
-            window.location.href = "users_page.html";
+            window.location.href = "/html/pages_users/users_page.html";
           },
           error: function (xhr, status, error) {
             console.error("Error updating session:", error);
@@ -319,7 +319,7 @@ $(function () {
           xhrFields: { withCredentials: true },
           success: function (resp) {
             alert(resp.message);
-            window.location.href = "users_page.html";
+            window.location.href = "/html/pages_users/users_page.html";
           },
           error: function (xhr, status, error) {
             console.error("Error updating session:", error);

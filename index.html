@@ -15,20 +15,20 @@
 
     <link
       rel="stylesheet"
-      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+      href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
 
     <link
       rel="stylesheet"
-      href="node_modules/bootstrap-icons/font/bootstrap-icons.css"
+      href="/node_modules/bootstrap-icons/font/bootstrap-icons.css"
     />
 
-    <link rel="stylesheet" href="styles/loaders.css" />
+    <link rel="stylesheet" href="/css/loaders.css" />
 
-    <link rel="stylesheet" href="styles/style_general.css" />
-    <link rel="stylesheet" href="styles/style_header.css" />
-    <link rel="stylesheet" href="styles/styles_index.css" />
-    <link rel="stylesheet" href="styles/style_footer.css" />
+    <link rel="stylesheet" href="/css/style_general.css" />
+    <link rel="stylesheet" href="/css/style_header.css" />
+    <link rel="stylesheet" href="/css/styles_index.css" />
+    <link rel="stylesheet" href="/css/style_footer.css" />
   </head>
   <body>
     <section class="home" id="home">
@@ -43,13 +43,13 @@
 
         <div class="social-media">
           <a href="https://boardgamegeek.com/" target="_blank">
-            <img src="images/bgg.png" alt="" />
+            <img src="/images/bgg.png" alt="" />
           </a>
           <a href="https://en.boardgamearena.com" target="_blank">
-            <img src="images/boardgamearena.png" alt="" />
+            <img src="/images/boardgamearena.png" alt="" />
           </a>
           <a href="https://ludopedia.com.br/" target="_blank"
-            ><img src="images/ludopedia.svg" alt=""
+            ><img src="/images/ludopedia.svg" alt=""
           /></a>
           <a href="https://www.spiel-des-jahres.de/" target="_blank"
             ><img src="/images/spieldesjahres.png" alt=""
@@ -73,7 +73,7 @@
             <a
               href="https://www.youtube.com/watch?v=vztcik0ZZkU"
               target="_blank"
-              ><img src="images/brass_birmingham.webp" alt=""
+              ><img src="/images/brass_birmingham.webp" alt=""
             /></a>
           </div>
           <div class="el el-2">
@@ -81,52 +81,54 @@
               href="https://www.youtube.com/watch?v=uRbFP_DP6yo"
               target="_blank"
             ></a>
-            <img src="images/pandemic.webp" alt="" />
+            <img src="/images/pandemic.webp" alt="" />
           </div>
           <div class="el el-3">
             <a
               href="https://www.youtube.com/watch?v=itsCTmC5Iy4"
               target="_blank  "
             ></a>
-            <img src="images/terraformingMars.webp" alt="" />
+            <img src="/images/terraformingMars.webp" alt="" />
           </div>
           <div class="el el-4">
-            <img src="images/scythe.webp" alt="" />
+            <img src="/images/scythe.webp" alt="" />
           </div>
           <div class="el el-5">
-            <img src="images/throughTheAges.webp" alt="" />
+            <img src="/images/throughTheAges.webp" alt="" />
           </div>
           <div class="el el-6">
-            <img src="images/wingspan_pic1.png" alt="" />
+            <img src="/images/wingspan_pic1.png" alt="" />
           </div>
           <div class="el el-7">
-            <img src="images/azul.webp" alt="" />
+            <img src="/images/azul.webp" alt="" />
           </div>
           <div class="el el-8">
-            <img src="images/obcession.webp" alt="" />
+            <img src="/images/obcession.webp" alt="" />
           </div>
           <div class="last-row">
             <div class="el el-9 el-left">
-              <img src="images/root.webp" alt="" />
+              <img src="/images/root.webp" alt="" />
             </div>
             <div class="el el-9 el-right">
-              <img src="images/clans.webp" alt="" />
+              <img src="/images/clans.webp" alt="" />
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Load jQuery and other libraries first -->
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="node_modules/select2/dist/js/select2.min.js"></script>
-    <script src="js/scripts/loader.js"></script>
+    <!-- Load jQuery, Popper, Bootstrap, Select2 and Loader libraries first -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/node_modules/select2/dist/js/select2.min.js"></script>
+    <script src="/js/scripts/loader.js"></script>
 
-    <!-- Other existing scripts -->
-    <script src="js/components/header.js"></script>
-    <script src="js/scripts/script_index.js"></script>
-    <script src="js/components/footer.js"></script>
+    <!-- Load JS Components: Header and Footer -->
+    <script src="/js/components/header.js"></script>
+    <script src="/js/components/footer.js"></script>
+
+    <!-- Load INDEX Page Script -->
+    <script src="/js/scripts/script_index.js"></script>
   </body>
 </html>

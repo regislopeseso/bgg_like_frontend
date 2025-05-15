@@ -70,8 +70,8 @@ $(function () {
   }
 
   function loadEvents() {
-    const openEye = "images/icons/eye_show.svg";
-    const closeEye = "images/icons/eye_hide.svg";
+    const openEye = "/images/icons/eye_show.svg";
+    const closeEye = "/images/icons/eye_hide.svg";
 
     // Sign UP Events
     $("#signUp").on("click", function (e) {
@@ -305,10 +305,10 @@ $(function () {
             response.message &&
             response.message.includes("signed in successfully")
           ) {
-            window.location.href = "users_page.html";
+            window.location.href = "/html/pages_users/users_page.html";
           } else {
             alert(response.message || "Login failed");
-            window.location.href = "users_authentication.html";
+            window.location.href = "html/pages_users/users_authentication.html";
           }
         },
         error: function (response) {

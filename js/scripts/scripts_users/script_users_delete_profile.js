@@ -12,7 +12,7 @@ $(function () {
         console.log("User is authenticated. Welcome!");
       } else {
         // If the user is not authenticated, redirect them to the authentication page
-        window.location.href = "users_authentication.html";
+        window.location.href = "html/pages_users/users_authentication.html";
       }
     });
 
@@ -26,7 +26,7 @@ $(function () {
       },
       success: () => {
         alert("Session expired!");
-        window.location.href = "index.html";
+        window.location.href = "/index.html";
       },
       error: (err) => {
         alert(err);
@@ -51,8 +51,8 @@ $(function () {
       }
     });
 
-    const openEye = "images/icons/eye_show.svg";
-    const closeEye = "images/icons/eye_hide.svg";
+    const openEye = "/images/icons/eye_show.svg";
+    const closeEye = "/images/icons/eye_hide.svg";
 
     let deletePasswordEyeState = 0;
     $("#toggle-delete-profile-img").on("click", function (e) {
@@ -96,7 +96,7 @@ $(function () {
           success: function (resp) {
             if (resp.content.remainingPasswordAttempts === null) {
               alert(resp.message);
-              window.location.href = "index.html";
+              window.location.href = "/index.html";
             } else {
               if (
                 resp.content.remainingPasswordAttempts !== 0 &&

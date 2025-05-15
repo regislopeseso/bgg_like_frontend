@@ -517,7 +517,7 @@ $(function () {
         `);
 
         let imgFolder = game.boardGameName.toLowerCase().split(" ").join("_");
-        let imgSrc = `images/${imgFolder}/${imgFolder}_pic`;
+        let imgSrc = `/images/${imgFolder}/${imgFolder}_pic`;
         $("#gamePics").html(`
              <h3><span>I</span>mages</h3>
                 <div class="slideShowBox">
