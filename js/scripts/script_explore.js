@@ -218,7 +218,7 @@ $(function () {
   }
 
   function loadCategoriesRankings(data = {}) {
-    $("body").load("load");
+    $("body").loadpage("charge");
 
     $.get(
       "https://localhost:7081/explore/categoriesranking",
@@ -249,7 +249,7 @@ $(function () {
 
         console.log(response.message);
 
-        $("body").load("unload");
+        $("body").loadpage("demolish");
       }
     );
   }
@@ -408,12 +408,26 @@ $(function () {
     $("#displayAllBoardGames").on("click", function (e) {
       e.preventDefault();
 
+      $("a").css({
+        "pointer-events": "none",
+      });
+
+      $(".explore-menu .explore-option.selectedOption").removeClass(
+        "selectedOption"
+      );
+
       $("#bgFinderToggler").hide();
       $("#bgRankingsToggler").hide();
       $("#categoryRankingsToggler").hide();
 
       $("body").trigger("load");
       setTimeout(() => {
+        $("a").css({
+          "pointer-events": "all",
+        });
+
+        $("#bg-table").addClass("selectedOption");
+
         $("body").trigger("unload");
 
         const $target = $("#bgRecordsToggler");
@@ -427,14 +441,28 @@ $(function () {
     $("#searchBoardGames").on("click", function (e) {
       e.preventDefault();
 
+      $("a").css({
+        "pointer-events": "none",
+      });
+
+      $(".explore-menu .explore-option.selectedOption").removeClass(
+        "selectedOption"
+      );
+
       $("#bgRecordsToggler").hide();
       $("#detailsTableToggler").hide();
       $("#bgRankingsToggler").hide();
       $("#categoryRankingsToggler").hide();
 
-      $("body").load("load");
+      $("body").loadpage("charge");
       setTimeout(() => {
-        $("body").load("unload");
+        $("a").css({
+          "pointer-events": "all",
+        });
+
+        $("#bg-search").addClass("selectedOption");
+
+        $("body").loadpage("demolish");
 
         $("#bgFinderToggler").show();
         $("#searchBGToggler").show();
@@ -444,12 +472,26 @@ $(function () {
     $("#displayBoardGamesRankings").on("click", function (e) {
       e.preventDefault();
 
+      $("a").css({
+        "pointer-events": "none",
+      });
+
+      $(".explore-menu .explore-option.selectedOption").removeClass(
+        "selectedOption"
+      );
+
       $("#bgRecordsToggler").hide();
       $("#bgFinderToggler").hide();
       $("#categoryRankingsToggler").hide();
 
       $("body").trigger("load");
       setTimeout(() => {
+        $("a").css({
+          "pointer-events": "all",
+        });
+
+        $("#rankings-tables").addClass("selectedOption");
+
         $("body").trigger("unload");
 
         const $target = $("#bgRankingsToggler");
@@ -463,12 +505,26 @@ $(function () {
     $("#displayCategoriesRankings").on("click", function (e) {
       e.preventDefault();
 
+      $("a").css({
+        "pointer-events": "none",
+      });
+
+      $(".explore-menu .explore-option.selectedOption").removeClass(
+        "selectedOption"
+      );
+
       $("#bgRecordsToggler").hide();
       $("#bgFinderToggler").hide();
       $("#bgRankingsToggler").hide();
 
       $("body").trigger("load");
       setTimeout(() => {
+        $("a").css({
+          "pointer-events": "all",
+        });
+
+        $("#categories-tables").addClass("selectedOption");
+
         $("body").trigger("unload");
 
         const $target = $("#categoryRankingsToggler");

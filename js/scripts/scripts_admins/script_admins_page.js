@@ -1,6 +1,6 @@
 $(function () {
   $("body").hide();
-  $("body").load("load");
+  $("body").loadpage("charge");
 
   fetch("https://localhost:7081/users/validatestatus", {
     method: "GET",
@@ -11,7 +11,7 @@ $(function () {
       if (data.content.isUserLoggedIn == true) {
         // If the user is logged in, proceed to load the page normally
         setTimeout(() => {
-          $("body").load("unload");
+          $("body").loadpage("demolish");
           $("body").show();
         }, 600);
       } else {

@@ -5,7 +5,7 @@ $(function () {
   })
     .then((response) => response.json())
     .then((data) => {
-      $("body").load("load");
+      $("body").loadpage("charge");
 
       if (data.content.isUserLoggedIn == true) {
         // If the user is logged in, proceed to load the page normally

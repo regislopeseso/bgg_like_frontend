@@ -47,6 +47,10 @@
 .explore-option:hover {
   box-shadow: 1px 1px 15px 1px var(--text-color);
 }
+.selectedOption {
+  pointer-events: none !important;
+  box-shadow: 1px 1px 15px 1px var(--text-color) !important;
+}
 /*! END */
 
 /*

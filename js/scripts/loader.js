@@ -1,8 +1,8 @@
 (function ($) {
-  $.fn.load = function (action = "load") {
+  $.fn.loadpage = function (action = "load") {
     return this.each(function () {
       switch (action) {
-        case "load":
+        case "charge":
           let divToAppend = document.createElement("div");
 
           divToAppend.id = "loader";
@@ -33,7 +33,7 @@
           $(this).append(divToAppend).hide().fadeIn("slow");
 
           break;
-        case "unload":
+        case "demolish":
           $("#loader").fadeOut("slow", function () {
             $(this).remove();
           });

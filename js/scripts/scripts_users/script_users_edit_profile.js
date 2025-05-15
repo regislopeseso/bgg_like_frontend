@@ -5,12 +5,12 @@ $(function () {
   })
     .then((response) => response.json())
     .then((data) => {
-      $("body").load("load");
+      $("body").loadpage("charge");
 
       if (data.content.isUserLoggedIn == true) {
         // If the user is logged in, proceed to load the page normally
         console.log("User is authenticated. Welcome!");
-        $("body").load("unload");
+        $("body").loadpage("demolish");
       } else {
         // If the user is not authenticated, redirect them to the authentication page
         window.location.href = "html/pages_users/users_authentication.html";
