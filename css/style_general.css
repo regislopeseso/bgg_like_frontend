@@ -186,6 +186,13 @@ input.new-data:focus {
   margin-right: 10px !important;
 }
 
+.modal-content {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+.modal-header {
+  justify-content: space-between;
+}
 @media screen and (max-width: 3500px) {
   html {
     font-size: 120%;

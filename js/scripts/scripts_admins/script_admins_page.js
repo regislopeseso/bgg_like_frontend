@@ -20,6 +20,10 @@ $(function () {
       }
     });
 
+  $("#bg-modal").load("admins_bg_modal.html", () => {
+    loadEvents();
+  });
+
   function loadEvents() {
     $("#bg-data-button").on("click", function (e) {
       e.preventDefault();
@@ -32,5 +36,5 @@ $(function () {
     loadEvents();
   }
 
-  Build();
+  //Build();
 });

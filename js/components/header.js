@@ -10,6 +10,7 @@ function loadHeader(userData, roleData) {
       <a href="/index.html" class="logo">BBG <span>LIKE</span></a>
       <nav class="navbar">
         <div class="navOptions d-flex flex-row">
+          <h5><span style="color: var(--reddish)">${userRole}</span></h5>
           <a href="/index.html">HOME</a>
           <a href="/html/explore.html">EXPLORE</a>
           <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>

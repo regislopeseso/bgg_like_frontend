@@ -1,0 +1,16 @@
+.custom-close {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.25rem;
+}
+.custom-close:hover {
+  color: var(--reddish);
+}
+
+.table > :not(caption) > * > * {
+  background-color: var(--second-bg-color) !important;
+}
+.table-dark {
+  border: var(--bg-color);
+}
