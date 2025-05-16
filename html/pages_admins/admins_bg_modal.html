@@ -1,115 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BG Data Base</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+<link rel="stylesheet" href="/css/style_admins/style_admins_bg_modal.css" />
 
-    <link
-      rel="stylesheet"
-      href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
-    />
+<!--? Modal BG DATA TABLE-->
+<div
+  class="modal fade"
+  id="bg-data-table"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="bg-data-modal-title"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-fullscreen-md-down"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="d-flex flex-row gap-2">
+          <h1 class="modal-title fs-5" id="bg-data-modal-title">
+            <span>B</span>oard <span>G</span>ames
+          </h1>
 
-    <link
-      rel="stylesheet"
-      href="/node_modules/bootstrap-icons/font/bootstrap-icons.css"
-    />
+          <button
+            class="btn btn-outline-info d-flex align-items-center justify-content-center"
+            style="
+              width: 2rem;
 
-    <link
-      rel="stylesheet"
-      href="/node_modules/select2/dist/css/select2.min.css"
-    />
+              height: 2rem;
+              margin: 0 !important;
+              padding: 0 !important;
+              border: 3px solid var(--main-color);
+              border-radius: 50%;
+              overflow: hidden;
+            "
+          >
+            <i class="bi bi-plus" style="font-size: 50px"></i>
+          </button>
+        </div>
 
-    <link rel="stylesheet" href="/css/style_general.css" />
-    <link rel="stylesheet" href="/css/style_admins/style_admins_bg_modal.css" />
-  </head>
-  <body>
-    <section>
-      <!-- Modal -->
-      <div
-        class="modal fade"
-        id="bg-data-table"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-        tabindex="-1"
-        aria-labelledby="bg-data-modal-title"
-        aria-hidden="true"
-      >
-        <div
-          class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-fullscreen-md-down"
+        <button
+          type="button"
+          class="custom-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
         >
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="bg-data-modal-title">
-                <span>B</span>oard <span>G</span>ames
-              </h1>
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
 
-              <button
-                type="button"
-                class="custom-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-            <div class="modal-body">
-              <button class="btn btn-outline-info">Add a new Board Game</button>
-            </div>
-
-            <div class="table-responsive ps-3 pe-3">
-              <table
-                id="admins-bg-table"
-                class="table table-bordered table-dark align-middle"
-              >
-                <thead class="text-center">
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Players Count</th>
-                    <th scope="col">Min. Age</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Mechanics</th>
-                    <th scope="col">Is Deleted</th>
-                    <th scope="col">*</th>
-                  </tr>
-                </thead>
-                <tbody class="table-group-divider text-center"></tbody>
-              </table>
-            </div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-outline-danger"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
+      <div class="modal-body">
+        <div class="table-responsive ps-3 pe-3">
+          <table
+            id="admins-bg-table"
+            class="table-fixed table table-bordered table-dark align-middle table-sm"
+          >
+            <thead class="text-center">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Players Count</th>
+                <th scope="col">Min. Age</th>
+                <th scope="col">Category</th>
+                <th scope="col">Mechanics</th>
+                <th scope="col">Is Deleted</th>
+                <th scope="col">*</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider text-center"></tbody>
+          </table>
         </div>
       </div>
-    </section>
 
-    <section>
-      <div id="bg-description-modal"></div>
-    </section>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <!-- Load jQuery and other libraries first -->
-    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
-    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/node_modules/select2/dist/js/select2.min.js"></script>
-
-    <!-- Other existing scripts -->
-    <script src="/js/scripts/scripts_admins/script_admins_bg_modal.js"></script>
-  </body>
-</html>
+<script src="/js/scripts/scripts_admins/script_admins_bg_modal.js"></script>

@@ -25,6 +25,7 @@ $(function () {
     });
 
     $("#bg-modal").load("admins_bg_modal.html");
+    $("#bg-description-modal").load("admins_bg_description_modal.html");
   }
 
   function Build() {

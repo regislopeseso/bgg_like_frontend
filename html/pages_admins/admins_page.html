@@ -43,12 +43,25 @@
             <h3 class="p-0"><span>ADM</span>INS <span>TOOLS</span></h3>
           </div>
 
-          <div id="adm-options" class="d-flex flex-column pt-5 pb-5 gap-4">
-            <button id="bg-data-button" type="button" class="btn">
+          <div
+            id="adm-options"
+            class="d-flex flex-column align-items-center pt-3 pb-3 gap-3"
+          >
+            <button
+              id="bg-data-button"
+              class="btn btn-lg btn-outline-info"
+              style="border: none"
+            >
               Board Games Data Tools
             </button>
-            <button class="btn">Board Game Simulator Tools</button>
-            <button class="btn">Life Counters Tools</button>
+
+            <button class="btn btn-lg btn-outline-info" style="border: none">
+              Board Game Simulator Tools
+            </button>
+
+            <button class="btn btn-lg btn-outline-info" style="border: none">
+              Life Counters Tools
+            </button>
           </div>
 
           <div id="bg-tools-wrapper">
@@ -65,6 +78,7 @@
                 class="d-flex flex-column align-items-center gap-3"
               >
                 <button
+                  id="load-bg-button"
                   class="btn btn-outline-info w-100"
                   data-bs-toggle="modal"
                   data-bs-target="#bg-data-table"
@@ -80,7 +94,10 @@
       </section>
 
       <section id="admins-modals">
+        <!-- Modal BG Data Table-->
         <div id="bg-modal"></div>
+        <!-- Modal BG Details-->
+        <div id="bg-description-modal"></div>
       </section>
     </main>
     <!-- Load jQuery and other libraries first -->

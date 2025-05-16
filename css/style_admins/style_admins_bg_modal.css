@@ -9,8 +9,19 @@
 }
 
 .table > :not(caption) > * > * {
-  background-color: var(--second-bg-color) !important;
+  background-color: var(--bg-color) !important;
 }
 .table-dark {
-  border: var(--bg-color);
+  border: var(--second-bg-color);
+}
+
+.table-fixed {
+  table-layout: fixed;
+  width: 110%; /* obrigatório para o 'fixed' funcionar corretamente */
+}
+.tabela-fixed th,
+.tabela-fixed td {
+  text-align: center; /* opcional */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
