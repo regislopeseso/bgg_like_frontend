@@ -8,11 +8,14 @@ $(function () {
       if (data.content.isUserLoggedIn == true) {
         // If the user is logged in, proceed to load the page normally
         console.log("User is authenticated. Welcome!");
+        Build();
       } else {
         // If the user is not authenticated, redirect them to the authentication page
         window.location.href = "html/pages_users/users_authentication.html";
       }
     });
+
+  //$("#bg-description-modal").load("admins_bg_description_modal.html");
 
   function loadAllGames(data = {}) {
     $.ajax({
@@ -34,13 +37,28 @@ $(function () {
         $.each(response.content, function (index, item) {
           let tr = `
         <tr>
-          <td class="text-start">${item.boardGameName}</td>
-          <td>${item.description}</td>
+          <td class="text-start">${item.name}</td>
+          <td style="max-width: 200px;">
+            <div id="bg-description-modal" class="d-block text-truncate description-preview" style="cursor: pointer;">
+              ${item.description}
+            </div>
+          </td>
           <td>${item.playersCount}</td>
           <td>${item.minAge}</td>
           <td>${item.category}</td>
           <td>${item.mechanics}</td>
           <td>${item.isDeleted}</td>
+          <td>
+          <div class="d-flex flex-row align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-warning w-100">
+              Edit
+            </button>
+
+            <button class="btn btn-sm btn-outline-danger w-100">
+              Delete
+            </button>
+          </div>
+        </td>
         </tr>
       `;
           $("#admins-bg-table tbody").append(tr);
@@ -52,11 +70,9 @@ $(function () {
     });
   }
 
-  function loadEvents() {}
-
   function Build() {
     loadAllGames();
-  }
 
-  Build();
+    //$("#bg-description-modal").load("admins_bg_description_modal.html");
+  }
 });

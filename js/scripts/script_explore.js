@@ -1,4 +1,6 @@
 $(function () {
+  $("body").loadpage("charge");
+
   fetch("https://localhost:7081/users/validatestatus", {
     method: "GET",
     credentials: "include",
@@ -6,9 +8,12 @@ $(function () {
     .then((response) => response.json())
     .then((data) => {
       if (data.content.isUserLoggedIn == true) {
-        // If the user is logged in, proceed to load the page normally
-        console.log("User is authenticated. Welcome!");
+        console.log("User is authenticated at EXPLORE PAGE. Welcome!");
+      } else {
+        console.log("User is NOT authenticated at EXPLORE PAGE. Welcome!");
       }
+      Build();
+      $("body").loadpage("demolish");
     });
 
   function loadAllGames(data = {}) {
@@ -218,7 +223,7 @@ $(function () {
   }
 
   function loadCategoriesRankings(data = {}) {
-    $("body").loadpage("charge");
+    //$("body").loadcontent("charge");
 
     $.get(
       "https://localhost:7081/explore/categoriesranking",
@@ -249,7 +254,7 @@ $(function () {
 
         console.log(response.message);
 
-        $("body").loadpage("demolish");
+        //$("body").loadcontent("demolish");
       }
     );
   }
@@ -408,6 +413,8 @@ $(function () {
     $("#displayAllBoardGames").on("click", function (e) {
       e.preventDefault();
 
+      $("main").loadcontent("charge-contentloader");
+
       $("a").css({
         "pointer-events": "none",
       });
@@ -420,7 +427,6 @@ $(function () {
       $("#bgRankingsToggler").hide();
       $("#categoryRankingsToggler").hide();
 
-      $("body").trigger("load");
       setTimeout(() => {
         $("a").css({
           "pointer-events": "all",
@@ -428,10 +434,10 @@ $(function () {
 
         $("#bg-table").addClass("selectedOption");
 
-        $("body").trigger("unload");
-
         const $target = $("#bgRecordsToggler");
         $target.show();
+
+        $("main").loadcontent("demolish-contentloader");
 
         // Ensure the element is visible before trying to scroll to it
         $target[0].scrollIntoView({ behavior: "smooth", block: "start" });
@@ -440,6 +446,8 @@ $(function () {
 
     $("#searchBoardGames").on("click", function (e) {
       e.preventDefault();
+
+      $("main").loadcontent("charge-contentloader");
 
       $("a").css({
         "pointer-events": "none",
@@ -454,7 +462,7 @@ $(function () {
       $("#bgRankingsToggler").hide();
       $("#categoryRankingsToggler").hide();
 
-      $("body").loadpage("charge");
+      $("body").loadcontent("demolish-contentloader");
       setTimeout(() => {
         $("a").css({
           "pointer-events": "all",
@@ -462,15 +470,17 @@ $(function () {
 
         $("#bg-search").addClass("selectedOption");
 
-        $("body").loadpage("demolish");
-
         $("#bgFinderToggler").show();
         $("#searchBGToggler").show();
+
+        $("main").loadcontent("demolish-contentloader");
       }, 500);
     });
 
     $("#displayBoardGamesRankings").on("click", function (e) {
       e.preventDefault();
+
+      $("main").loadcontent("charge-contentloader");
 
       $("a").css({
         "pointer-events": "none",
@@ -484,7 +494,7 @@ $(function () {
       $("#bgFinderToggler").hide();
       $("#categoryRankingsToggler").hide();
 
-      $("body").trigger("load");
+      //$("body").trigger("load");
       setTimeout(() => {
         $("a").css({
           "pointer-events": "all",
@@ -492,10 +502,12 @@ $(function () {
 
         $("#rankings-tables").addClass("selectedOption");
 
-        $("body").trigger("unload");
+        //$("body").trigger("unload");
 
         const $target = $("#bgRankingsToggler");
         $target.show();
+
+        $("main").loadcontent("demolish-contentloader");
 
         // Ensure the element is visible before trying to scroll to it
         $target[0].scrollIntoView({ behavior: "smooth", block: "start" });
@@ -504,6 +516,8 @@ $(function () {
 
     $("#displayCategoriesRankings").on("click", function (e) {
       e.preventDefault();
+
+      $("main").loadcontent("charge-contentloader");
 
       $("a").css({
         "pointer-events": "none",
@@ -517,7 +531,7 @@ $(function () {
       $("#bgFinderToggler").hide();
       $("#bgRankingsToggler").hide();
 
-      $("body").trigger("load");
+      //$("body").trigger("load");
       setTimeout(() => {
         $("a").css({
           "pointer-events": "all",
@@ -525,10 +539,12 @@ $(function () {
 
         $("#categories-tables").addClass("selectedOption");
 
-        $("body").trigger("unload");
+        //$("body").trigger("unload");
 
         const $target = $("#categoryRankingsToggler");
         $target.show();
+
+        $("main").loadcontent("demolish-contentloader");
 
         // Ensure the element is visible before trying to scroll to it
         $target[0].scrollIntoView({ behavior: "smooth", block: "start" });
@@ -735,10 +751,10 @@ $(function () {
   }
 
   function Build() {
-    loadRankings();
     loadEvents();
+    loadRankings();
     loadBgDetails();
   }
 
-  Build();
+  //Build();
 });

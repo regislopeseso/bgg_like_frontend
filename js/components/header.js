@@ -15,7 +15,7 @@ function loadHeader(userData, roleData) {
           <a href="/html/explore.html">EXPLORE</a>
           <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
           <a href="/html/pages_users/users_page.html" class="loggedIn-clearance d-none">USER</a>
-          <a href="/html/pages_admins/admins.html" class="admins-clearance d-none">ADMIN</a>
+          <a href="/html/pages_admins/admins_page.html" class="admins-clearance d-none">ADMIN</a>
           <a href="/html/pages_devs/devs.html" class="devs-clearance d-none">DEV</a>
 
           <div class="dropdown loggedIn-clearance d-none">
@@ -57,7 +57,7 @@ function loadHeader(userData, roleData) {
                     <a href="/html/pages_users/users_page.html" class="loggedIn-clearence nav-link d-none">USER</a>
                   </li>
                   <li class="nav-item">
-                    <a href="/html/pages_admins/admins.html" class="admins-clearence nav-link d-none">ADMIN</a>
+                    <a href="/html/pages_admins/admins_page.html" class="admins-clearence nav-link d-none">ADMIN</a>
                   </li>
                   <li class="nav-item">
                     <a href="/html/pages_devs/devs.html" class="devs-clearence nav-link d-none">DEV</a>

@@ -1,11 +1,12 @@
 (function ($) {
-  $.fn.loadpage = function (action = "load") {
+  $.fn.loadpage = function (action = "charge") {
     return this.each(function () {
       switch (action) {
         case "charge":
+          console.log("Adding the loading effect");
           let divToAppend = document.createElement("div");
 
-          divToAppend.id = "loader";
+          divToAppend.id = "page-loader";
 
           $(divToAppend).css({
             position: "fixed",
@@ -15,7 +16,7 @@
             height: "100%",
             width: "100%",
             "z-index": 100,
-            "background-color": "rgba(0,0,0,0.5)",
+            "background-color": "var(--bg-color)",
           });
 
           let divLoad = document.createElement("div");
@@ -26,17 +27,22 @@
             top: "50%",
             left: "50%",
             position: "absolute",
+            transform: "translate(-50%, -50%)",
           });
 
           $(divToAppend).append(divLoad);
 
-          $(this).append(divToAppend).hide().fadeIn("slow");
+          $(this).append(divToAppend).hide().fadeIn("fast");
 
           break;
         case "demolish":
-          $("#loader").fadeOut("slow", function () {
-            $(this).remove();
-          });
+          console.log("Removing the loading effect");
+
+          setTimeout(() => {
+            $("#page-loader").fadeOut(600, function () {
+              $(this).remove();
+            });
+          }, 300);
           break;
 
         default:
