@@ -301,14 +301,10 @@ $(function () {
           withCredentials: true,
         },
         success: function (response) {
-          if (
-            response.message &&
-            response.message.includes("signed in successfully")
-          ) {
+          if (response.content.remainingSignInAttempts === null) {
             window.location.href = "/html/pages_users/users_page.html";
           } else {
             alert(response.message || "Login failed");
-            window.location.href = "html/pages_users/users_authentication.html";
           }
         },
         error: function (response) {

@@ -12,7 +12,7 @@ $(function () {
         $("body").loadpage("demolish");
       } else {
         // If the user is not authenticated, redirect them to the authentication page
-        window.location.href = "html/pages_users/users_authentication.html";
+        alert("Users page authentication failed, access denied");
       }
     });
 });

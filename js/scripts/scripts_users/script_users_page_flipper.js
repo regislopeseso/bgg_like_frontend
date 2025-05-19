@@ -191,7 +191,6 @@ $(function () {
       } else {
         // If the user is not authenticated, redirect them to the authentication page
         console.log("User is not authenticated. Redirecting...");
-        window.location.href = "html/pages_users/users_authentication.html";
       }
     })
     .catch((error) => {
