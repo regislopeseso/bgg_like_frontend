@@ -3,7 +3,6 @@
     return this.each(function () {
       switch (action) {
         case "charge-contentloader":
-          console.log("Adding CONTENT loading effect");
           let divToAppend_content = document.createElement("div");
 
           divToAppend_content.id = "content-loader";
@@ -36,8 +35,6 @@
 
           break;
         case "demolish-contentloader":
-          console.log("Removing CONTENT loading effect");
-
           $("#content-loader").fadeOut(400, function () {
             $(this).remove();
           });

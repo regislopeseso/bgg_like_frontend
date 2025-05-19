@@ -1,0 +1,151 @@
+<!--? Modal: BG ADD/EDIT -->
+<div
+  class="modal fade"
+  id="bg-add-edit-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="edit-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="edit-modal-title">
+          <span>A</span>dd a new <span>B</span>oard <span>G</span>ame
+        </h3>
+
+        <button
+          type="button"
+          class="custom-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <!-- Input: BG Name -->
+          <div class="mb-3">
+            <label class="form-label">Board Game <span>Name</span></label>
+            <input
+              name="BoardGameName"
+              type="text"
+              class="new-data form-control"
+              id="new-bg-name"
+            />
+          </div>
+
+          <!-- Input: BG Description -->
+          <div class="mb-3">
+            <label class="form-label"
+              >Board Games <span>Description</span></label
+            >
+            <textarea
+              name="BoardGameDescription"
+              class="new-data form-control"
+              id="new-bg-description"
+            ></textarea>
+          </div>
+
+          <!-- Input: BG Min.-Max. Players Count -->
+          <div class="d-flex flex-column">
+            Players Count
+            <div class="d-flex flex-row">
+              <div class="mb-3">
+                <label class="form-label"><span>Min.</span></label>
+                <input
+                  name="MinPlayersCount"
+                  type="number"
+                  class="new-data form-control"
+                  id="new-bg-min-players"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label"><span>Max.</span></label>
+                <input
+                  name="MaxPlayersCount"
+                  type="number"
+                  class="new-data form-control"
+                  id="new-bg-max-players"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Input: BG Min. Age -->
+          <div class="mb-3">
+            <label class="form-label">Board Game <span>Min. Age</span></label>
+            <input
+              name="MinAge"
+              type="text"
+              class="new-data form-control"
+              id="new-bg-min-age"
+            />
+          </div>
+
+          <!-- Input: BG Category -->
+          <div class="mb-3">
+            <label class="form-label"
+              >Select a Board Game <span>Category</span></label
+            >
+            <div class="comboBox-wrapper">
+              <div class="comboBox">
+                <select
+                  name="CategoryId"
+                  id="new-bg-category-select"
+                  class="form-control form-select bg-select"
+                >
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Input: BG Mechanics -->
+          <div class="mb-3">
+            <label class="form-label"
+              >Select the Board Game <span>Mechanics</span></label
+            >
+            <div class="comboBox-wrapper">
+              <div class="comboBox">
+                <select
+                  name="MechanicIds"
+                  id="new-bg-mechanics-select"
+                  class="form-control form-select bg-select"
+                  multiple
+                >
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-info">Confirm</button>
+
+        <button
+          type="button"
+          id="reset-logNewSession"
+          class="btn-refresh btn btn-sm btn-outline-warning"
+        >
+          Clear Form
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/scripts/scripts_admins/script_admins_modal_bg_edit.js"></script>

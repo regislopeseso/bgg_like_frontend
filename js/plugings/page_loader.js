@@ -3,7 +3,6 @@
     return this.each(function () {
       switch (action) {
         case "charge":
-          console.log("Adding the loading effect");
           let divToAppend = document.createElement("div");
 
           divToAppend.id = "page-loader";
@@ -36,8 +35,6 @@
 
           break;
         case "demolish":
-          console.log("Removing the loading effect");
-
           setTimeout(() => {
             $("#page-loader").fadeOut(600, function () {
               $(this).remove();

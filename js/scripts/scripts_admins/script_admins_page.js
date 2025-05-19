@@ -24,8 +24,13 @@ $(function () {
       $("#bg-tools-wrapper").slideToggle();
     });
 
-    $("#bg-modal").load("admins_bg_modal.html");
-    $("#bg-description-modal").load("admins_bg_description_modal.html");
+    // Load modal HTML, THEN initialize modal logic
+    $("#bg-modal").load("admins_modal_bg_data_base.html", function () {
+      // Hook up the button to open the modal AFTER it's ready
+      $("#load-bg-button").on("click", function () {
+        __global.BgDatabBaseModalController.OpenModal();
+      });
+    });
   }
 
   function Build() {

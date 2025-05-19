@@ -1,3 +1,5 @@
+let __global = {};
+
 function loadHeader(userData, roleData) {
   const isLoggedIn = userData?.content?.isUserLoggedIn === true;
   const userRole = roleData?.content?.role || "";
@@ -102,9 +104,6 @@ function loadHeader(userData, roleData) {
   document.body.appendChild(header);
 
   if (isLoggedIn === true) {
-    console.log("User type: " + roleData.content.role);
-    console.log("This is rule: " + userRole);
-
     $(".anonymous-clearance").addClass("d-none");
     $(".loggedIn-clearance").removeClass("d-none");
 

@@ -230,8 +230,8 @@ function loadTemplate(templateId) {
               <div class="comboBox">
                 <select
                   name="BoardGameId"
-                  class="form-control form-select bg-select"
                   id="bgSelection-logSession"
+                  class="form-control form-select bg-select"
                 >
                   <option value=""></option>
                 </select>
