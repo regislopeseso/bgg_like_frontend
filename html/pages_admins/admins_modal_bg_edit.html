@@ -8,8 +8,8 @@
   aria-labelledby="edit-modal-title"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
+  <div class="modal-dialog">
+    <div class="bg-add-edit-content modal-content">
       <div class="modal-header">
         <h3 class="modal-title fs-5" id="edit-modal-title">
           <span>A</span>dd a new <span>B</span>oard <span>G</span>ame
@@ -25,41 +25,39 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="bg-add-edit-form">
           <!-- Input: BG Name -->
           <div class="mb-3">
-            <label class="form-label">Board Game <span>Name</span></label>
+            <label class="form-label"><span>N</span>ame</label>
             <input
               name="BoardGameName"
-              type="text"
-              class="new-data form-control"
               id="new-bg-name"
+              class="new-data form-control required"
+              type="text"
             />
           </div>
 
           <!-- Input: BG Description -->
           <div class="mb-3">
-            <label class="form-label"
-              >Board Games <span>Description</span></label
-            >
+            <label class="form-label"><span>D</span>escription</label>
             <textarea
               name="BoardGameDescription"
-              class="new-data form-control"
               id="new-bg-description"
+              class="new-data form-control required"
             ></textarea>
           </div>
 
           <!-- Input: BG Min.-Max. Players Count -->
-          <div class="d-flex flex-column">
-            Players Count
-            <div class="d-flex flex-row">
+          <div class="d-flex flex-column w-100">
+            <div><span>P</span>layers <span>C</span>ount</div>
+            <div class="d-flex flex-row w-50 gap-2">
               <div class="mb-3">
                 <label class="form-label"><span>Min.</span></label>
                 <input
                   name="MinPlayersCount"
-                  type="number"
-                  class="new-data form-control"
                   id="new-bg-min-players"
+                  class="new-data form-control required"
+                  type="number"
                 />
               </div>
 
@@ -67,9 +65,9 @@
                 <label class="form-label"><span>Max.</span></label>
                 <input
                   name="MaxPlayersCount"
-                  type="number"
-                  class="new-data form-control"
                   id="new-bg-max-players"
+                  class="new-data form-control required"
+                  type="number"
                 />
               </div>
             </div>
@@ -77,26 +75,32 @@
 
           <!-- Input: BG Min. Age -->
           <div class="mb-3">
-            <label class="form-label">Board Game <span>Min. Age</span></label>
+            <label class="form-label"><span>M</span>in. <span>A</span>ge</label>
             <input
               name="MinAge"
               type="text"
-              class="new-data form-control"
+              class="new-data form-control required"
               id="new-bg-min-age"
             />
           </div>
 
           <!-- Input: BG Category -->
           <div class="mb-3">
-            <label class="form-label"
-              >Select a Board Game <span>Category</span></label
-            >
+            <label class="form-label">
+              <span>S</span>elect
+              <span style="text-decoration: underline; color: var(--text-color)"
+                >a</span
+              >
+              <span>B</span>oard <span>G</span>ame
+              <span>Category</span>
+            </label>
+
             <div class="comboBox-wrapper">
               <div class="comboBox">
                 <select
                   name="CategoryId"
                   id="new-bg-category-select"
-                  class="form-control form-select bg-select"
+                  class="form-control form-select required"
                 >
                   <option value=""></option>
                 </select>
@@ -106,15 +110,19 @@
 
           <!-- Input: BG Mechanics -->
           <div class="mb-3">
-            <label class="form-label"
-              >Select the Board Game <span>Mechanics</span></label
+            <label class="form-label">
+              <span>S</span>elect
+              <span style="text-decoration: underline; color: var(--text-color)"
+                >the</span
+              >
+              <span>B</span>oard <span>G</span>ame <span>Mechanics</span></label
             >
             <div class="comboBox-wrapper">
               <div class="comboBox">
                 <select
                   name="MechanicIds"
                   id="new-bg-mechanics-select"
-                  class="form-control form-select bg-select"
+                  class="form-control form-select required"
                   multiple
                 >
                   <option value=""></option>
@@ -126,11 +134,18 @@
       </div>
 
       <div class="modal-footer">
-        <button type="submit" class="btn btn-outline-info">Confirm</button>
+        <button
+          id="bg-submit-button"
+          class="btn btn-outline-info"
+          type="submit"
+          disabled
+        >
+          Confirm
+        </button>
 
         <button
           type="button"
-          id="reset-logNewSession"
+          id="reset-add-edit-bg-form"
           class="btn-refresh btn btn-sm btn-outline-warning"
         >
           Clear Form

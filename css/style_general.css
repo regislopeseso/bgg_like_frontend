@@ -128,6 +128,8 @@ input.new-data:focus {
   box-shadow: 0 0 1rem 0.1rem var(--main-color) !important;
 }
 
+/*? !!!!!!!!!!!!!!!!! */
+/* SELECT2 SINGLE*/
 /* Main container and selection box */
 .select2-container--classic .select2-selection--single {
   height: calc(1.5em + 0.75rem + 2px) !important;
@@ -185,14 +187,71 @@ input.new-data:focus {
   .select2-selection__clear {
   margin-right: 10px !important;
 }
+/*? !!!!!!!!!!!!!!!!! */
 
-.modal-content {
-  color: var(--text-color);
-  background-color: var(--bg-color);
+/*! !!!!!!!!!!!!!!!!! */
+/* SELECT2 MULTIPLE*/
+/* Main container and selection box for multiple */
+.select2-container--classic .select2-selection--multiple {
+  min-height: calc(1.5em + 0.75rem + 2px) !important;
+  padding: 0 0.75rem !important;
+  border-radius: 0.25rem !important;
+  border: 1px solid var(--main-color) !important;
+  background-color: white !important;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
-.modal-header {
-  justify-content: space-between;
+
+/* Open state - focus styling */
+.select2-container--classic.select2-container--open
+  .select2-selection--multiple {
+  border-color: var(--text-color) !important;
+  box-shadow: 0 0 1rem 0.1rem var(--main-color) !important;
 }
+
+/* Individual selected items (tags) */
+.select2-container--classic
+  .select2-selection--multiple
+  .select2-selection__choice {
+  background-color: var(--text-color) !important;
+  color: var(--second-bg-color) !important;
+  border: none !important;
+  padding: 0.25rem 0.5rem !important;
+  margin: 0.125rem !important;
+  border-radius: 0.2rem !important;
+}
+
+.select2-container--classic
+  .select2-selection--multiple
+  .select2-selection__choice__display {
+  color: var(--second-bg-color) !important;
+}
+
+/* Placeholder text color for multiple */
+.select2-container--classic
+  .select2-selection--multiple
+  .select2-selection__placeholder {
+  color: var(--second-bg-color) !important;
+  padding-left: 0 !important;
+}
+
+/* Clear button for multiple (optional, only shown if `allowClear` is true) */
+.select2-container--classic
+  .select2-selection--multiple
+  .select2-selection__clear {
+  margin-right: 10px !important;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+  margin-bottom: 8px !important;
+  vertical-align: middle !important;
+  height: 18px !important;
+  font-family: "Anta", sans-serif !important;
+}
+
+/*! !!!!!!!!!!!!!!!!! */
+
 @media screen and (max-width: 3500px) {
   html {
     font-size: 120%;

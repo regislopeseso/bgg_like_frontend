@@ -1,3 +1,11 @@
+.bg-data-base-content {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+.modal-header {
+  justify-content: space-between;
+}
+
 .custom-close {
   background: none;
   border: none;

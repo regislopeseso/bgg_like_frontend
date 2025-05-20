@@ -1,0 +1,7 @@
+.bg-add-edit-content {
+  color: var(--text-color);
+  background-color: var(--second-bg-color);
+}
+.modal-header {
+  justify-content: space-between;
+}
