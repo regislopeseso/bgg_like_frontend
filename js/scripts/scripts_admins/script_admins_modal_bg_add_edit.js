@@ -11,7 +11,6 @@ function modal_BG_Edit() {
   self.LoadReferences = () => {
     self.DOM = $("#bg-add-edit-modal");
 
-    self.Body = $("body");
     self.ModalTitle = self.DOM.find("#edit-modal-title");
     self.Form = $("#bg-add-edit-form");
 
@@ -115,7 +114,7 @@ function modal_BG_Edit() {
       $("#new-bg-mechanics-select").select2("destroy");
     }
 
-    // First, fetch the category list once from the backend
+    // First, fetch the mechanics list once from the backend
     fetch("https://localhost:7081/admins/showmechanics", {
       method: "GET",
       credentials: "include",
@@ -132,11 +131,13 @@ function modal_BG_Edit() {
           text: item.mechanicName,
         }));
 
+        console.log(mechanics);
+
         $("#new-bg-mechanics-select").select2({
           data: mechanics,
           dropdownParent: self.DOM,
           placeholder: "Select mechanics",
-          allowClear: true,
+          allowClear: false,
           theme: "classic",
           width: "100%",
           templateSelection: (data) => {
@@ -153,6 +154,8 @@ function modal_BG_Edit() {
   // New method to fetch board game details for editing
   self.FetchBoardGameDetails = (boardGameId) => {
     self.AddContentLoader();
+    self.currentBoardGameId = boardGameId;
+
     $.ajax({
       url: `https://localhost:7081/admins/showboardgamedetails?BoardGameId=${boardGameId}`,
       method: "GET",
@@ -239,6 +242,7 @@ function modal_BG_Edit() {
 
     // Clear catergory and mechanics selection
     self.SelectCategory.trigger("change");
+    //self.SelectMechanics.trigger("change");
     self.SelectMechanics.trigger("change");
   };
 
@@ -282,13 +286,30 @@ function modal_BG_Edit() {
     const originalBtnText = submitBtn.text();
     submitBtn.attr("disabled", true).text("Submitting...");
 
-    console.log(self.Form.serialize());
+    // Get form values
+    const boardGameId = self.currentBoardGameId;
+    const boardGameName = $("#new-bg-name").val();
+    const boardGameDescription = $("#new-bg-description").val();
+    const minPlayersCount = $("#new-bg-min-players").val();
+    const maxPlayersCount = $("#new-bg-max-players").val();
+    const minAge = $("#new-bg-min-age").val();
+    const category = $("#new-bg-category-select").val();
+    const mechanics = $("#new-bg-mechanics-select").val();
 
     $.ajax({
-      type: "PUT",
       url: "https://localhost:7081/admins/editboardgame",
-      data: self.Form.serialize(),
-
+      type: "PUT",
+      data: JSON.stringify({
+        BoardGameId: boardGameId,
+        BoardGameName: boardGameName,
+        BoardGameDescription: boardGameDescription,
+        MinPlayersCount: minPlayersCount,
+        MaxPlayersCount: maxPlayersCount,
+        MinAge: minAge,
+        CategoryId: category,
+        MechanicIds: mechanics,
+      }),
+      contentType: "application/json",
       xhrFields: {
         withCredentials: true,
       },
@@ -300,10 +321,7 @@ function modal_BG_Edit() {
         self.ResetToAddMode();
 
         // Close the modal
-        const modalInstance = bootstrap.Modal.getInstance(self.DOM[0]);
-        if (modalInstance) {
-          modalInstance.hide();
-        }
+        self.CloseModal();
 
         // Refresh the board games list
         if (__global.BgDatabBaseModalController) {
@@ -412,7 +430,13 @@ function modal_BG_Edit() {
     self.FetchBoardGameDetails(boardGameData);
   };
 
-  self.CloseModal = () => {};
+  self.CloseModal = () => {
+    const modalInstance = bootstrap.Modal.getInstance(self.DOM[0]);
+    if (modalInstance) {
+      self.forceClearForm();
+      modalInstance.hide();
+    }
+  };
 
   self.BuildModal();
 }

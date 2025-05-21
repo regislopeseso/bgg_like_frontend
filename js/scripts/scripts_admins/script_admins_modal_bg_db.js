@@ -21,21 +21,35 @@ function modal_BG_DataBase() {
 
   self.LoadEvents = () => {
     // Load modal HTML, THEN initialize modal logic
-    self.DOMadmPage.load("admins_modal_bg_edit.html", function () {
+    self.DOMadmPage.load("admins_modal_bg_add_edit.html", function () {
       // Initialize the Edit Modal Controller after loading HTML
       __global.BgEditModalController = new modal_BG_Edit();
 
-      // Hook up the button to open the modal AFTER it's ready
+      // Hook up the buttons to open the modals AFTER they are ready
+      // Opens ADD BG MODAL
       self.Buttons.BgAdd.on("click", function () {
         __global.BgEditModalController.OpenModal();
       });
 
-      // Hook up the button to open the modal AFTER it's ready
+      // Opens EDIT BG MODAL
       self.DOM.on("click", ".bg-edit-button", function () {
         const bgId = $(this).attr("data-bg-id");
 
         __global.BgEditModalController.OpenEditModal(bgId);
       });
+
+      // Opens DELETE BG MODAL
+
+      // Opens RESTORE BG MODAL
+
+      // Closes ALL BG TABLE MODAL
+      self.DOM.on(
+        "click",
+        "#close-x-bg-db-modal, #close-button-bg-db-modal",
+        () => {
+          self.CloseModal();
+        }
+      );
     });
   };
 
@@ -65,7 +79,12 @@ function modal_BG_DataBase() {
     self.LoadAllGames();
   };
 
-  self.CloseModal = () => {};
+  self.CloseModal = () => {
+    const modalInstance = bootstrap.Modal.getInstance(self.DOM[0]);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
 
   self.LoadAllGames = () => {
     self.AddContentLoader();
@@ -85,6 +104,7 @@ function modal_BG_DataBase() {
         self.TableResult.empty();
 
         $.each(response.content, function (index, item) {
+          let mechanics = item.mechanics.join(", ");
           let tr = `
         <tr class="align-middle">
           <td class="text-start align-middle">${item.name}</td>
@@ -96,14 +116,14 @@ function modal_BG_DataBase() {
             <button
               id="bg-description-button"
               class="d-flex w-100 align-items-center justify-content-center m-0 p-0"
-              style="border: none; background-color: var(--bg-color); color: var(--main-color);"            
+              style="border: none; background-color: var(--bg-color); color: var(--main-color);">            
                 <i class="bi bi-arrows-angle-expand"></i>
             </button>
           </td>
           <td class="text-center align-middle">${item.playersCount}</td>
           <td class="text-center align-middle">${item.minAge}</td>
           <td class="text-start align-middle">${item.category}</td>
-          <td class="text-start align-middle">${item.mechanics}</td>
+          <td class="text-start align-middle">${mechanics}</td>
           <td class="text-center align-middle">${item.isDeleted}</td>
           <td class="align-middle">
             <div class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2">
@@ -111,14 +131,27 @@ function modal_BG_DataBase() {
                 Edit
               </button>
 
-              <button class="btn btn-sm btn-outline-danger w-60">
+              <button id="delete-bg-button-${index}" class="btn btn-sm btn-outline-danger w-60">
                 Delete
+              </button>
+
+              <button id="restore-bg-button-${index}" class="btn btn-sm btn-outline-info w-60">
+                Restore
               </button>
             </div>
           </td>
         </tr>
       `;
           self.TableResult.append(tr);
+
+          if (item.isDeleted === false) {
+            $(`#delete-bg-button-${index}`).show();
+            $(`#restore-bg-button-${index}`).hide();
+          }
+          if (item.isDeleted === true) {
+            $(`#delete-bg-button-${index}`).hide();
+            $(`#restore-bg-button-${index}`).show();
+          }
         });
         self.RemoveContentLoader();
       },
