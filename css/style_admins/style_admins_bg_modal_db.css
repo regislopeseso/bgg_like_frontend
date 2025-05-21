@@ -25,7 +25,7 @@
 
 .table-fixed {
   table-layout: fixed;
-  width: 110%; /* obrigatório para o 'fixed' funcionar corretamente */
+  width: 100%; /* obrigatório para o 'fixed' funcionar corretamente */
 }
 .tabela-fixed th,
 .tabela-fixed td {

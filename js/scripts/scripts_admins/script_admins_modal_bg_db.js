@@ -1,6 +1,8 @@
 function modal_BG_DataBase() {
   let self = this;
   self.IsBuilt = false;
+  self.isEditMode = false;
+  self.currentBoardGameId = null;
 
   self.LoadReferences = () => {
     self.DOMadmPage = $("#bg-add");
@@ -10,7 +12,11 @@ function modal_BG_DataBase() {
 
     self.AddEditModal = self.DOM.find("#bg-add");
 
-    self.OpenAddEditModal = self.DOM.find("#bg-add-button");
+    self.Buttons = [];
+    self.Buttons[self.Buttons.length] = self.Buttons.BgAdd =
+      self.DOM.find("#bg-add-button");
+    self.Buttons[self.Buttons.length] = self.Buttons.BgEdit =
+      self.DOM.find(".bg-edit-button");
   };
 
   self.LoadEvents = () => {
@@ -20,8 +26,15 @@ function modal_BG_DataBase() {
       __global.BgEditModalController = new modal_BG_Edit();
 
       // Hook up the button to open the modal AFTER it's ready
-      self.OpenAddEditModal.on("click", function () {
+      self.Buttons.BgAdd.on("click", function () {
         __global.BgEditModalController.OpenModal();
+      });
+
+      // Hook up the button to open the modal AFTER it's ready
+      self.DOM.on("click", ".bg-edit-button", function () {
+        const bgId = $(this).attr("data-bg-id");
+
+        __global.BgEditModalController.OpenEditModal(bgId);
       });
     });
   };
@@ -33,11 +46,18 @@ function modal_BG_DataBase() {
     }
 
     const modalInstance = new bootstrap.Modal(self.DOM[0], {
-      backdrop: "static", // optional
-      keyboard: false, // optional
+      backdrop: "static",
+      keyboard: false,
     });
 
     modalInstance.show();
+  };
+
+  self.AddContentLoader = () => {
+    self.DOM.loadcontent("charge-contentloader");
+  };
+  self.RemoveContentLoader = () => {
+    self.DOM.loadcontent("demolish-contentloader");
   };
 
   self.OpenModal = () => {
@@ -48,11 +68,12 @@ function modal_BG_DataBase() {
   self.CloseModal = () => {};
 
   self.LoadAllGames = () => {
+    self.AddContentLoader();
     $.ajax({
       url: "https://localhost:7081/admins/listboardgames",
       method: "GET",
       xhrFields: {
-        withCredentials: true, // This enables sending cookies with the request
+        withCredentials: true,
       },
       success: function (response) {
         if (!response.content || !Array.isArray(response.content)) {
@@ -86,7 +107,7 @@ function modal_BG_DataBase() {
           <td class="text-center align-middle">${item.isDeleted}</td>
           <td class="align-middle">
             <div class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2">
-              <button class="btn btn-sm btn-outline-warning w-60">
+              <button id="bg-edit-button-${index}" class="bg-edit-button btn btn-sm btn-outline-warning w-60" data-bg-id="${item.boardGameId}">
                 Edit
               </button>
 
@@ -99,6 +120,7 @@ function modal_BG_DataBase() {
       `;
           self.TableResult.append(tr);
         });
+        self.RemoveContentLoader();
       },
       error: function (xhr, status, error) {
         console.error("Request failed:", error);
