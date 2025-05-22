@@ -1,4 +1,4 @@
-function modal_BG_Edit() {
+function modal_BG_Add_Edit() {
   let self = this;
   self.IsBuilt = false;
   /* NOVO */
@@ -375,7 +375,7 @@ function modal_BG_Edit() {
     self.isEditMode = false;
     self.currentBoardGameId = null;
     self.ModalTitle.html(
-      "<span>A</span>dd a new <span>B</span>oard <span>G</span>ame"
+      "<span>A</span>dd a <span>N</span>ew <span>B</span>oard <span>G</span>ame"
     );
     self.Buttons.Submit.text("Confirm");
   };
@@ -413,7 +413,7 @@ function modal_BG_Edit() {
     self.DOM.loadcontent("demolish-contentloader");
   };
 
-  self.OpenModal = () => {
+  self.OpenAddModal = () => {
     self.ResetToAddMode();
     self.forceClearForm();
     self.Show();

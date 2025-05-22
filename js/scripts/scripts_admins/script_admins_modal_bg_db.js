@@ -28,14 +28,14 @@ function modal_BG_DataBase() {
       self.DOMadmPage.append(deleteRestoreHtml[0]);
 
       // Initialize the ADD/EDIT Modal Controller after loading HTML
-      __global.BgEditModalController = new modal_BG_Edit();
+      __global.BgEditModalController = new modal_BG_Add_Edit();
       // Initialize the DELETE/RESTORE Modal Controller after loading HTML
       __global.BgDeleteRestoreModalController = new modal_BG_Delete_Restore();
 
       // Hook up the buttons to open the modals AFTER they are ready
       // Opens ADD BG MODAL
       self.Buttons.BgAdd.on("click", function () {
-        __global.BgEditModalController.OpenModal();
+        __global.BgEditModalController.OpenAddModal();
       });
 
       // Opens EDIT BG MODAL
