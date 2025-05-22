@@ -131,8 +131,6 @@ function modal_BG_Edit() {
           text: item.mechanicName,
         }));
 
-        console.log(mechanics);
-
         $("#new-bg-mechanics-select").select2({
           data: mechanics,
           dropdownParent: self.DOM,
@@ -358,11 +356,8 @@ function modal_BG_Edit() {
     // Fill in the form fields
     self.Inputs.BgName.val(boardGame.boardGameName);
     self.Inputs.BgDescription.val(boardGame.boardGameDescription);
-
-    // Parse players count and set min/max
     self.Inputs.BgMinPlayers.val(boardGame.minPlayersCount);
     self.Inputs.BgMaxPlayers.val(boardGame.maxPlayerCount);
-
     self.Inputs.BgMinAge.val(boardGame.minAge);
 
     // Set category (need to wait for select2 to be initialized)
@@ -425,9 +420,9 @@ function modal_BG_Edit() {
   };
 
   // New method to open the modal in edit mode
-  self.OpenEditModal = (boardGameData) => {
+  self.OpenEditModal = (boardGameId) => {
     self.Show();
-    self.FetchBoardGameDetails(boardGameData);
+    self.FetchBoardGameDetails(boardGameId);
   };
 
   self.CloseModal = () => {

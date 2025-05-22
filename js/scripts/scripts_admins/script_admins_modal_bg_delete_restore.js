@@ -1,17 +1,18 @@
 function modal_BG_Delete_Restore() {
   let self = this;
   self.IsBuilt = false;
-  /* NOVO */
-  self.IsBuilt = false;
-  /* NOVO */
   self.isDeleteMode = false;
-  /* NOVO */
   self.currentBoardGameId = null;
+  self.onSuccessCallback = null;
 
   self.LoadReferences = () => {
     self.DOM = $("#bg-delete-restore-modal");
 
     self.ModalTitle = self.DOM.find("#delete-restore-modal-title");
+
+    self.ModalBody = self.DOM.find(".modal-body");
+
+    self.ModalBox = self.DOM.find("#bd-delete-restore-modalbox");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.Confirm = self.DOM.find(
@@ -31,6 +32,79 @@ function modal_BG_Delete_Restore() {
     });
   };
 
+  self.AddContentLoader = () => {
+    self.DOM.loadcontent("charge-contentloader");
+  };
+  self.RemoveContentLoader = () => {
+    self.DOM.loadcontent("demolish-contentloader");
+  };
+
+  self.FetchBoardGameDetails = () => {
+    self.AddContentLoader();
+
+    $.ajax({
+      url: `https://localhost:7081/admins/showboardgamedetails?BoardGameId=${self.currentBoardGameId}`,
+      method: "GET",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: function (response) {
+        if (!response.content) {
+          console.error(
+            "Failed to fetch board game details:",
+            response.message
+          );
+          return;
+        }
+
+        // Open the edit modal with the board game data
+        if (self.isDeleteMode === false) {
+          __global.BgDeleteRestoreModalController.RenderRestoreMode(
+            response.content.boardGameName
+          );
+          self.RemoveContentLoader();
+        } else {
+          __global.BgDeleteRestoreModalController.RenderDeleteMode(
+            response.content.boardGameName
+          );
+          self.RemoveContentLoader();
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching board game details:", error);
+      },
+    });
+  };
+
+  // Methods to fill the MODAL BODY with board game NAME
+  self.RenderRestoreMode = (bgName) => {
+    self.ModalBox.removeClass("delete-warning");
+    self.ModalBox.addClass("restore-warning");
+
+    // Update the modal title and button text
+    self.ModalTitle.html(
+      `<h5><span>R</span>estoring the following <span>B</span>oard <span>G</span>ame:</h5>`
+    );
+
+    // Fill in the MODAL BODY with the board game NAME
+    self.ModalBody.html(`<h3><span>${bgName}</span></h3>`);
+  };
+
+  self.RenderDeleteMode = (bgName) => {
+    self.ModalBox.removeClass("restore-warning");
+    self.ModalBox.addClass("delete-warning");
+
+    // Update the modal title and button text
+    self.ModalTitle.html(
+      `<h5><span style="color: var(--reddish)">D</span>eleting the following <span style="color: var(--reddish)">B</span>oard <span style="color: var(--reddish)">G</span>ame:</h5>`
+    );
+
+    // Fill in the MODAL BODY with the board game NAME
+    self.ModalBody.html(
+      `<h3><span style="color: var(--reddish)">${bgName}</span></h3>`
+    );
+  };
+
   self.SetUpDelete = () => {
     //Disable submit button to prevent double submissions
     const submitBtn = self.Buttons.Confirm;
@@ -40,69 +114,69 @@ function modal_BG_Delete_Restore() {
     $.ajax({
       type: "DELETE",
       url: "https://localhost:7081/admins/deleteboardgame",
-      data: self.Form.serialize(),
-
+      data: JSON.stringify({
+        BoardGameId: self.currentBoardGameId,
+      }),
+      contentType: "application/json",
       xhrFields: {
         withCredentials: true,
       },
       success: (resp) => {
         alert(resp.message);
 
+        // Re-enable button
+        submitBtn.attr("disabled", false).text(originalBtnText);
+
+        // Close the modal
+        self.CloseModal();
+
         // Refresh the board games list
-        if (__global.BgDatabBaseModalController) {
-          __global.BgDatabBaseModalController.LoadAllGames();
+        if (self.onSuccessCallback) {
+          self.onSuccessCallback();
         }
       },
       error: (err) => {
         alert(err);
       },
-      complete: () => {
-        // Re-enable button
-        submitBtn.attr("disabled", true).text(originalBtnText);
-      },
+      complete: () => {},
     });
   };
 
   self.SetUpRestore = () => {
     //Disable submit button to prevent double submissions
-    const submitBtn = self.Buttons.Confirm;
-    const originalBtnText = submitBtn.text();
-    submitBtn.attr("disabled", true).text("Submitting...");
+    const confirmBtn = self.Buttons.Confirm;
+    const originalBtnText = confirmBtn.text();
+    confirmBtn.attr("disabled", true).text("Submitting...");
 
     $.ajax({
       type: "POST",
       url: "https://localhost:7081/admins/restoreboardgame",
-      data: self.Form.serialize(),
-
+      data: JSON.stringify({
+        BoardGameId: self.currentBoardGameId,
+      }),
+      contentType: "application/json",
       xhrFields: {
         withCredentials: true,
       },
       success: (resp) => {
         alert(resp.message);
 
+        // Re-enable button
+        confirmBtn.attr("disabled", false).text(originalBtnText);
+
+        // Close the modal
+        self.CloseModal();
+
         // Refresh the board games list
-        if (__global.BgDatabBaseModalController) {
-          __global.BgDatabBaseModalController.LoadAllGames();
+        if (self.onSuccessCallback) {
+          self.onSuccessCallback();
         }
       },
       error: (err) => {
         alert(err);
       },
-      complete: () => {
-        // Re-enable button
-        submitBtn.attr("disabled", true).text(originalBtnText);
-      },
+      complete: () => {},
     });
-  };
-
-  // Reset the form to "Add" mode
-  self.ResetToDeleteMode = () => {
-    self.isEditMode = false;
-    self.currentBoardGameId = null;
-    self.ModalTitle.html(
-      "<span>A</span>dd a new <span>B</span>oard <span>G</span>ame"
-    );
-    self.Buttons.Submit.text("Confirm");
   };
 
   self.Show = () => {
@@ -129,18 +203,25 @@ function modal_BG_Delete_Restore() {
     self.IsBuilt = true;
   };
 
-  self.OpenDeleteModal = () => {
-    self.ResetToDeleteMode();
+  self.OpenDeleteRestoreModal = (
+    boardGameId,
+    onSuccessCallback,
+    isDeletedMode
+  ) => {
+    self.currentBoardGameId = boardGameId;
+    self.onSuccessCallback = onSuccessCallback;
+    self.isDeleteMode = isDeletedMode;
+    self.FetchBoardGameDetails();
     self.Show();
   };
 
-  // New method to open the modal in edit mode
-  self.OpenRestoreModal = (boardGameData) => {
-    self.Show();
-    self.FetchBoardGameDetails(boardGameData);
+  self.CloseModal = () => {
+    self.currentBoardGameId = null;
+    const modalInstance = bootstrap.Modal.getInstance(self.DOM[0]);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
   };
-
-  self.CloseModal = () => {};
 
   self.BuildModal();
 }

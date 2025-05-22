@@ -1,0 +1,10 @@
+.bg-delete-restore-content {
+  color: var(--text-color);
+  background-color: var(--second-bg-color);
+}
+.delete-warning {
+  box-shadow: 0 0 5px 5px var(--reddish) !important;
+}
+.restore-warning {
+  box-shadow: 0 0 5px 5px var(--main-color) !important;
+}

@@ -20,10 +20,17 @@ function modal_BG_DataBase() {
   };
 
   self.LoadEvents = () => {
-    // Load modal HTML, THEN initialize modal logic
-    self.DOMadmPage.load("admins_modal_bg_add_edit.html", function () {
-      // Initialize the Edit Modal Controller after loading HTML
+    $.when(
+      $.get("admins_modal_bg_add_edit.html"),
+      $.get("admins_modal_bg_delete_restore.html")
+    ).done(function (addEditHtml, deleteRestoreHtml) {
+      self.DOMadmPage.append(addEditHtml[0]);
+      self.DOMadmPage.append(deleteRestoreHtml[0]);
+
+      // Initialize the ADD/EDIT Modal Controller after loading HTML
       __global.BgEditModalController = new modal_BG_Edit();
+      // Initialize the DELETE/RESTORE Modal Controller after loading HTML
+      __global.BgDeleteRestoreModalController = new modal_BG_Delete_Restore();
 
       // Hook up the buttons to open the modals AFTER they are ready
       // Opens ADD BG MODAL
@@ -39,8 +46,28 @@ function modal_BG_DataBase() {
       });
 
       // Opens DELETE BG MODAL
+      self.DOM.on("click", ".bg-delete-button", function () {
+        const bgId = $(this).attr("data-bg-id");
+
+        console.log(bgId);
+
+        __global.BgDeleteRestoreModalController.OpenDeleteRestoreModal(
+          bgId,
+          self.LoadAllGames,
+          true
+        );
+      });
 
       // Opens RESTORE BG MODAL
+      self.DOM.on("click", ".bg-restore-button", function () {
+        const bgId = $(this).attr("data-bg-id");
+
+        __global.BgDeleteRestoreModalController.OpenDeleteRestoreModal(
+          bgId,
+          self.LoadAllGames,
+          false
+        );
+      });
 
       // Closes ALL BG TABLE MODAL
       self.DOM.on(
@@ -131,11 +158,11 @@ function modal_BG_DataBase() {
                 Edit
               </button>
 
-              <button id="delete-bg-button-${index}" class="btn btn-sm btn-outline-danger w-60">
+              <button id="bg-delete-button-${index}" class="bg-delete-button btn btn-sm btn-outline-danger" w-60 data-bg-id="${item.boardGameId}">
                 Delete
               </button>
 
-              <button id="restore-bg-button-${index}" class="btn btn-sm btn-outline-info w-60">
+              <button id="bg-restore-button-${index}" class="bg-restore-button btn btn-sm btn-outline-info w-60" data-bg-id="${item.boardGameId}">
                 Restore
               </button>
             </div>
@@ -145,12 +172,12 @@ function modal_BG_DataBase() {
           self.TableResult.append(tr);
 
           if (item.isDeleted === false) {
-            $(`#delete-bg-button-${index}`).show();
-            $(`#restore-bg-button-${index}`).hide();
+            $(`#bg-delete-button-${index}`).show();
+            $(`#bg-restore-button-${index}`).hide();
           }
           if (item.isDeleted === true) {
-            $(`#delete-bg-button-${index}`).hide();
-            $(`#restore-bg-button-${index}`).show();
+            $(`#bg-delete-button-${index}`).hide();
+            $(`#bg-restore-button-${index}`).show();
           }
         });
         self.RemoveContentLoader();

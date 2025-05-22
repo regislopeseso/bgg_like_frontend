@@ -9,30 +9,20 @@
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered">
-    <div class="bg-delete-restore-content modal-content">
+    <div
+      id="bd-delete-restore-modalbox"
+      class="bg-delete-restore-content modal-content"
+    >
       <div class="modal-header">
-        <h3 class="modal-title fs-5" id="delete-restore-modal-title">
-          <span>Y</span>ou are <span>D</span>eleting a <span>B</span>oard
-          <span>G</span>ame
-        </h3>
-
-        <button
-          type="button"
-          class="custom-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <h3 class="modal-title fs-5" id="delete-restore-modal-title"></h3>
       </div>
-      <div class="modal-body"></div>
+      <div class="modal-body d-flex justify-content-center w-100"></div>
 
       <div class="modal-footer">
         <button
           id="bg-delete-restore-confirm-button"
           class="btn btn-outline-info"
           type="submit"
-          disabled
         >
           Confirm
         </button>
