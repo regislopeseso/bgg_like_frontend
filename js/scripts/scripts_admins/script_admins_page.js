@@ -31,6 +31,17 @@ $(function () {
         __global.BgDatabBaseModalController.OpenModal();
       });
     });
+
+    // Load modal HTML, THEN initialize modal logic
+    $("#category-modal").load(
+      "admins_modal_category_data_base.html",
+      function () {
+        // Hook up the button to open the modal AFTER it's ready
+        $("#load-category-button").on("click", function () {
+          __global.CategoryDatabBaseModalController.OpenModal();
+        });
+      }
+    );
   }
 
   function Build() {

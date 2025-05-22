@@ -1,11 +1,11 @@
-<!--? Modal BG DATA TABLE-->
+<!--? Modal CATEGORY DATA TABLE-->
 <div
   class="modal fade"
-  id="bg-data-modal"
+  id="category-data-modal"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
   tabindex="-1"
-  aria-labelledby="bg-data-modal-title"
+  aria-labelledby="category-data-modal-title"
   aria-hidden="true"
 >
   <div
@@ -14,12 +14,12 @@
     <div class="data-base-content modal-content">
       <div class="modal-header">
         <div class="d-flex flex-row gap-2">
-          <h1 class="modal-title fs-5" id="bg-data-modal-title">
-            <span>B</span>oard <span>G</span>ames
+          <h1 class="modal-title fs-5" id="category-data-modal-title">
+            <span>C</span>ategories
           </h1>
 
           <button
-            id="bg-add-edit-button"
+            id="category-add-button"
             class="btn btn-outline-info d-flex align-items-center justify-content-center"
             style="
               width: 2rem;
@@ -35,7 +35,11 @@
           </button>
         </div>
 
-        <button type="button" id="close-x-bg-db-modal" class="custom-close">
+        <button
+          type="button"
+          id="close-x-category-db-modal"
+          class="custom-close"
+        >
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -43,17 +47,12 @@
       <div class="modal-body">
         <div class="table-responsive ps-3 pe-3">
           <table
-            id="admins-bg-table"
+            id="admins-category-table"
             class="table-fixed table table-bordered table-dark align-middle table-sm"
           >
             <thead class="text-center">
               <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Players Count</th>
-                <th scope="col">Min. Age</th>
-                <th scope="col">Category</th>
-                <th scope="col">Mechanics</th>
                 <th scope="col">Is Deleted</th>
                 <th scope="col">*</th>
               </tr>
@@ -66,7 +65,7 @@
       <div class="modal-footer">
         <button
           type="button"
-          id="close-button-bg-db-modal"
+          id="close-button-category-db-modal"
           class="btn btn-outline-danger"
         >
           Close
@@ -76,4 +75,4 @@
   </div>
 </div>
 
-<script src="/js/scripts/scripts_admins/script_admins_modal_bg_db.js"></script>
+<script src="/js/scripts/scripts_admins/script_admins_modal_category_db.js"></script>

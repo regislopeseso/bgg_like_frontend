@@ -5,18 +5,20 @@ function modal_BG_DataBase() {
   self.currentBoardGameId = null;
 
   self.LoadReferences = () => {
-    self.DOMadmPage = $("#bg-add");
+    self.DOMadmPage = $("#bg-add-edit");
     self.DOM = $("#bg-data-modal");
 
     self.TableResult = self.DOM.find("#admins-bg-table tbody");
 
-    self.AddEditModal = self.DOM.find("#bg-add");
+    self.AddEditModal = self.DOM.find("#bg-add-edit");
 
     self.Buttons = [];
-    self.Buttons[self.Buttons.length] = self.Buttons.BgAdd =
-      self.DOM.find("#bg-add-button");
-    self.Buttons[self.Buttons.length] = self.Buttons.BgEdit =
-      self.DOM.find(".bg-edit-button");
+    self.Buttons[self.Buttons.length] = self.Buttons.BgAdd = self.DOM.find(
+      "#bg-add-edit-button"
+    );
+    self.Buttons[self.Buttons.length] = self.Buttons.BgEdit = self.DOM.find(
+      ".bg-edit-edit-button"
+    );
   };
 
   self.LoadEvents = () => {

@@ -1,3 +1,5 @@
+<!-- ADMINS PAGE -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,17 +35,14 @@
     <link rel="stylesheet" href="/css/style_general.css" />
     <link rel="stylesheet" href="/css/style_header.css" />
     <link rel="stylesheet" href="/css/style_admins/style_admins_page.css" />
+    <link rel="stylesheet" href="/css/style_admins/style_admins_modal_db.css" />
     <link
       rel="stylesheet"
-      href="/css/style_admins/style_admins_bg_modal_db.css"
+      href="/css/style_admins/style_admins_modal_add_edit.css"
     />
     <link
       rel="stylesheet"
-      href="/css/style_admins/style_admins_bg_modal_add_edit.css"
-    />
-    <link
-      rel="stylesheet"
-      href="/css/style_admins/style_admins_bg_modal_delete_restore.css"
+      href="/css/style_admins/style_admins_modal_delete_restore.css"
     />
     <link rel="stylesheet" href="/css/style_footer.css" />
   </head>
@@ -92,8 +91,18 @@
                 <button id="load-bg-button" class="btn btn-outline-info w-100">
                   Data Base Table
                 </button>
-                <button class="btn btn-outline-info w-100">Categories</button>
-                <button class="btn btn-outline-info w-100">Mechanics</button>
+                <button
+                  id="load-category-button"
+                  class="btn btn-outline-info w-100"
+                >
+                  Categories
+                </button>
+                <button
+                  id="load-mechanics-button"
+                  class="btn btn-outline-info w-100"
+                >
+                  Mechanics
+                </button>
               </div>
             </div>
           </div>
@@ -104,7 +113,17 @@
         <!-- Modal BG Data Table-->
         <div id="bg-modal"></div>
         <!-- Modal BG Add-->
-        <div id="bg-add"></div>
+        <div id="bg-add-edit"></div>
+
+        <!-- Modal BG Data Table-->
+        <div id="category-modal"></div>
+        <!-- Modal BG Add-->
+        <div id="category-add"></div>
+
+        <!-- Modal BG Data Table-->
+        <div id="mechanics-modal"></div>
+        <!-- Modal BG Add-->
+        <div id="mechanics-add"></div>
       </section>
     </main>
     <!-- Load jQuery and other libraries first -->
