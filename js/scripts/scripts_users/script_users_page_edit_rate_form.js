@@ -58,6 +58,7 @@ const FormHandler_EditRate = (function () {
   function forceClearForm() {
     // Clear form
     $("#newRate").val(null).addClass("current-data");
+    $("#currentRate").val(null).addClass("current-data");
 
     // Block form submission button
     $("#confirm-newRateBG").prop("disabled", true);

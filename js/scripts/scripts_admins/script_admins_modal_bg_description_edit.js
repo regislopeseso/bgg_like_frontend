@@ -1,47 +1,48 @@
-function modal_Category_Add_Edit() {
+function modal_BG_Description_Edit() {
   let self = this;
   self.IsBuilt = false;
-  self.isEditMode = false;
-  self.currentCategoryId = null;
-  self.onSuccessCallback = null;
+  self.currentBoardGameId = null;
+
+  self.KeepBgName = null;
+  self.KeepBgNameBgMinPlayers = null;
+  self.KeepBgNameBgMaxPlayers = null;
+  self.KeepBgNameBgMinAge = null;
+  self.KeepCategory = null;
+  self.KeepMechanics = null;
 
   self.LoadReferences = () => {
-    self.DOM = $("#category-add-edit-modal");
+    self.DOM = $("#bg-description-edit-modal");
 
-    self.ModalTitle = self.DOM.find("#edit-modal-title");
-    self.Form = $("#category-add-edit-form");
+    self.ModalTitle = self.DOM.find("#description-edit-modal-title");
+    self.Form = $("#bg-description-edit-form");
 
-    // Add a hidden input for the CATEGORY ID when in edit mode
+    // Add a hidden input for the board game ID when in edit mode
     self.Form.append(
-      '<input type="hidden" id="category-id" name="CategoryId" value="">'
+      '<input type="hidden" id="board-game-id" name="BoardGameId" value="">'
     );
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.Required =
       self.DOM.find(".required");
-    self.Inputs[self.Inputs.length] = self.Inputs.CategoryId =
-      self.DOM.find("#category-id");
-    self.Inputs[self.Inputs.length] = self.Inputs.CategoryName =
-      self.DOM.find("#new-category-name");
+    self.Inputs[self.Inputs.length] = self.Inputs.BgId =
+      self.DOM.find("#board-game-id");
+    self.Inputs[self.Inputs.length] = self.Inputs.BgDescription = self.DOM.find(
+      "#edited-bg-description"
+    );
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.Submit = self.DOM.find(
-      "#category-submit-button"
+      "#bg-description-submit-button"
     );
     self.Buttons[self.Buttons.length] = self.Buttons.Reset = self.DOM.find(
-      "#reset-add-edit-category-form"
+      "#reset-description-edit-bg-form"
     );
   };
 
   self.LoadEvents = () => {
     self.Buttons.Submit.on("click", function (e) {
       e.preventDefault();
-
-      if (self.isEditMode === true) {
-        self.SetUpEditCategoryForm();
-      } else {
-        self.SetUpAddCategoryForm();
-      }
+      self.SetUpEditBgDescriptionForm();
     });
 
     self.Buttons.Reset.on("click", function (e) {
@@ -51,31 +52,34 @@ function modal_Category_Add_Edit() {
     self.CheckForm();
   };
 
-  // New method to fetch CATEGORY details for editing
-  self.FetchCategoryDetails = (categoryId) => {
+  // New method to fetch board game details for editing
+  self.FetchBoardGameDetails = (boardGameId) => {
     self.AddContentLoader();
-    self.currentCategoryId = categoryId;
+    self.currentBoardGameId = boardGameId;
 
     $.ajax({
-      url: `https://localhost:7081/admins/showcategorydetails?CategoryId=${categoryId}`,
+      url: `https://localhost:7081/admins/showboardgamedetails?BoardGameId=${boardGameId}`,
       method: "GET",
       xhrFields: {
         withCredentials: true,
       },
       success: function (response) {
         if (!response.content) {
-          console.error("Failed to fetch category details:", response.message);
+          console.error(
+            "Failed to fetch board game details:",
+            response.message
+          );
           return;
         }
 
         // Open the edit modal with the board game data
-        __global.CategoryEditModalController.PopulateFormForEditing(
+        __global.BgDescriptionEditModalController.PopulateFormForEditing(
           response.content
         );
         self.RemoveContentLoader();
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching category details:", error);
+        console.error("Error fetching board game details:", error);
       },
     });
   };
@@ -118,57 +122,34 @@ function modal_Category_Add_Edit() {
     });
   };
 
-  self.SetUpAddCategoryForm = () => {
-    //Disable submit button to prevent double submissions
-    const submitBtn = self.Buttons.Submit;
-    const originalBtnText = submitBtn.text();
-    submitBtn.attr("disabled", true).text("Submitting...");
-
-    $.ajax({
-      type: "POST",
-      url: "https://localhost:7081/admins/addcategory",
-      data: self.Form.serialize(),
-      xhrFields: {
-        withCredentials: true,
-      },
-      success: (resp) => {
-        alert(resp.message);
-
-        self.forceClearForm();
-
-        self.CloseModal();
-
-        // Refresh the CATEGORY list
-        if (self.onSuccessCallback) {
-          self.onSuccessCallback();
-        }
-      },
-      error: (err) => {
-        alert(err);
-      },
-      complete: () => {
-        // Re-enable button
-        submitBtn.attr("disabled", true).text(originalBtnText);
-      },
-    });
-  };
-
-  self.SetUpEditCategoryForm = () => {
+  self.SetUpEditBgDescriptionForm = () => {
     //Disable submit button to prevent double submissions
     const submitBtn = self.Buttons.Submit;
     const originalBtnText = submitBtn.text();
     submitBtn.attr("disabled", true).text("Submitting...");
 
     // Get form values
-    const categoryId = self.currentCategoryId;
-    const categoryName = $("#new-category-name").val();
+    const boardGameId = self.currentBoardGameId;
+    const boardGameName = self.KeepBgName;
+    const boardGameDescription = $("#new-bg-description").val();
+    const minPlayersCount = self.KeepBgNameBgMinPlayers;
+    const maxPlayersCount = self.KeepBgNameBgMaxPlayers;
+    const minAge = self.KeepBgNameBgMinAge;
+    const category = self.KeepCategory;
+    const mechanics = self.KeepMechanics;
 
     $.ajax({
-      url: "https://localhost:7081/admins/editcategory",
+      url: "https://localhost:7081/admins/editboardgame",
       type: "PUT",
       data: JSON.stringify({
-        CategoryId: categoryId,
-        CategoryName: categoryName,
+        BoardGameId: boardGameId,
+        BoardGameName: boardGameName,
+        BoardGameDescription: boardGameDescription,
+        MinPlayersCount: minPlayersCount,
+        MaxPlayersCount: maxPlayersCount,
+        MinAge: minAge,
+        CategoryId: category,
+        MechanicIds: mechanics,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -185,8 +166,8 @@ function modal_Category_Add_Edit() {
         self.CloseModal();
 
         // Refresh the board games list
-        if (__global.CategoryDataBaseModalController) {
-          __global.CategoryDataBaseModalController.LoadAllCategories();
+        if (__global.BgDataBaseModalController) {
+          __global.BgDataBaseModalController.LoadAllGames();
         }
 
         self.forceClearForm();
@@ -201,31 +182,27 @@ function modal_Category_Add_Edit() {
     });
   };
 
-  // Method to fill the form with CATEGORY data for editing
-  self.PopulateFormForEditing = (category) => {
+  // Method to fill the form with board game data for editing
+  self.PopulateFormForEditing = (boardGame) => {
     // Set the form to edit mode
     self.isEditMode = true;
-    self.Inputs.CategoryId = category.categoryId;
+    self.Inputs.BgId = boardGame.boardGameId;
+    self.Inputs.BgDescription.val(boardGame.boardGameDescription);
+    self.KeepBgName = boardGame.boardGameName;
+    self.KeepBgNameBgMinPlayers = boardGame.minPlayersCount;
+    self.KeepBgNameBgMaxPlayers = boardGame.maxPlayerCount;
+    self.KeepBgNameBgMinAge = boardGame.minAge;
+    self.KeepCategory = boardGame.category;
+    self.KeepMechanics = boardGame.mechanics;
 
     // Update the modal title and button text
-    self.ModalTitle.html("<span>E</span>dit <span>C</span>ategory");
+    let firstLetter = self.KeepBgName.charAt(0).toUpperCase();
+    let restOfString = self.KeepBgName.slice(1);
+    self.ModalTitle.html(`<h3><span>${firstLetter}</span>${restOfString}</h3>`);
     self.Buttons.Submit.text("Update");
-
-    // Fill in the form fields
-    self.Inputs.CategoryName.val(category.categoryName);
 
     // Recheck form to enable submit button if needed
     self.checkFormFilling();
-  };
-
-  // Reset the form to "Add" mode
-  self.ResetToAddMode = () => {
-    self.isEditMode = false;
-    self.currentCategoryId = null;
-    self.ModalTitle.html(
-      "<span>A</span>dd a <span>N</span>ew <span>C</span>ategory"
-    );
-    self.Buttons.Submit.text("Confirm");
   };
 
   self.Show = () => {
@@ -259,18 +236,10 @@ function modal_Category_Add_Edit() {
     self.DOM.loadcontent("demolish-contentloader");
   };
 
-  self.OpenAddModal = (onSuccessCallback) => {
-    self.onSuccessCallback = onSuccessCallback;
-    self.ResetToAddMode();
-    self.forceClearForm();
-    self.Show();
-  };
-
   // New method to open the modal in edit mode
-  self.OpenEditModal = (categoryId, onSuccessCallback) => {
-    self.onSuccessCallback = onSuccessCallback;
+  self.OpenDescriptionModal = (boardGameId) => {
     self.Show();
-    self.FetchCategoryDetails(categoryId);
+    self.FetchBoardGameDetails(boardGameId);
   };
 
   self.CloseModal = () => {

@@ -1,8 +1,6 @@
 function modal_BG_DataBase() {
   let self = this;
   self.IsBuilt = false;
-  self.isEditMode = false;
-  self.currentBoardGameId = null;
 
   self.LoadReferences = () => {
     self.DOMadmPage = $("#bg-add-edit");
@@ -24,15 +22,20 @@ function modal_BG_DataBase() {
   self.LoadEvents = () => {
     $.when(
       $.get("admins_modal_bg_add_edit.html"),
-      $.get("admins_modal_bg_delete_restore.html")
-    ).done(function (addEditHtml, deleteRestoreHtml) {
+      $.get("admins_modal_bg_delete_restore.html"),
+      $.get("admins_modal_bg_description_edit.html")
+    ).done(function (addEditHtml, deleteRestoreHtml, descriptionEditHtml) {
       self.DOMadmPage.append(addEditHtml[0]);
       self.DOMadmPage.append(deleteRestoreHtml[0]);
+      self.DOMadmPage.append(descriptionEditHtml[0]);
 
       // Initialize the ADD/EDIT Modal Controller after loading HTML
       __global.BgEditModalController = new modal_BG_Add_Edit();
       // Initialize the DELETE/RESTORE Modal Controller after loading HTML
       __global.BgDeleteRestoreModalController = new modal_BG_Delete_Restore();
+      // Initialize the BG-DESCRIPTION EDIT Modal Controller after loading HTML
+      __global.BgDescriptionEditModalController =
+        new modal_BG_Description_Edit();
 
       // Hook up the buttons to open the modals AFTER they are ready
       // Opens ADD BG MODAL
@@ -68,6 +71,16 @@ function modal_BG_DataBase() {
           bgId,
           self.LoadAllGames,
           false
+        );
+      });
+
+      // Opens BG-DESCRIPTION EDIT BG MODAL
+      self.DOM.on("click", "#bg-description-button", function () {
+        const bgId = $(this).attr("data-bg-id");
+
+        __global.BgDescriptionEditModalController.OpenDescriptionModal(
+          bgId,
+          self.LoadAllGames
         );
       });
 
@@ -145,7 +158,8 @@ function modal_BG_DataBase() {
             <button
               id="bg-description-button"
               class="d-flex w-100 align-items-center justify-content-center m-0 p-0"
-              style="border: none; background-color: var(--bg-color); color: var(--main-color);">            
+              style="border: none; background-color: var(--bg-color); color: var(--main-color);" 
+              data-bg-id="${item.boardGameId}">            
                 <i class="bi bi-arrows-angle-expand"></i>
             </button>
           </td>
@@ -160,7 +174,7 @@ function modal_BG_DataBase() {
                 Edit
               </button>
 
-              <button id="bg-delete-button-${index}" class="bg-delete-button btn btn-sm btn-outline-danger" w-60 data-bg-id="${item.boardGameId}">
+              <button id="bg-delete-button-${index}" class="bg-delete-button btn btn-sm btn-outline-danger w-60" data-bg-id="${item.boardGameId}">
                 Delete
               </button>
 
@@ -205,6 +219,6 @@ function modal_BG_DataBase() {
 
 $(
   (function (modalBgDataBase) {
-    __global.BgDatabBaseModalController = modalBgDataBase;
+    __global.BgDataBaseModalController = modalBgDataBase;
   })(new modal_BG_DataBase())
 );

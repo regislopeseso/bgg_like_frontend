@@ -74,7 +74,7 @@ function modal_BG_Add_Edit() {
     }
 
     // Fetch the category list once from the backend
-    fetch("https://localhost:7081/admins/showcategories", {
+    fetch("https://localhost:7081/admins/listcategories", {
       method: "GET",
       credentials: "include",
     })
@@ -87,7 +87,7 @@ function modal_BG_Add_Edit() {
 
         const categories = data.content.map((item) => ({
           id: item.categoryId,
-          text: item.categoryName,
+          text: item.name,
         }));
 
         $("#new-bg-category-select").select2({
@@ -115,7 +115,7 @@ function modal_BG_Add_Edit() {
     }
 
     // First, fetch the mechanics list once from the backend
-    fetch("https://localhost:7081/admins/showmechanics", {
+    fetch("https://localhost:7081/admins/listmechanics", {
       method: "GET",
       credentials: "include",
     })
@@ -128,7 +128,7 @@ function modal_BG_Add_Edit() {
 
         const mechanics = data.content.map((item) => ({
           id: item.mechanicId,
-          text: item.mechanicName,
+          text: item.name,
         }));
 
         $("#new-bg-mechanics-select").select2({
@@ -264,8 +264,8 @@ function modal_BG_Add_Edit() {
         self.forceClearForm();
 
         // Refresh the board games list
-        if (__global.BgDatabBaseModalController) {
-          __global.BgDatabBaseModalController.LoadAllGames();
+        if (__global.BgDataBaseModalController) {
+          __global.BgDataBaseModalController.LoadAllGames();
         }
       },
       error: (err) => {
@@ -322,8 +322,8 @@ function modal_BG_Add_Edit() {
         self.CloseModal();
 
         // Refresh the board games list
-        if (__global.BgDatabBaseModalController) {
-          __global.BgDatabBaseModalController.LoadAllGames();
+        if (__global.BgDataBaseModalController) {
+          __global.BgDataBaseModalController.LoadAllGames();
         }
 
         self.forceClearForm();

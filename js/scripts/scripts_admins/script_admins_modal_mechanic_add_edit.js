@@ -1,35 +1,36 @@
-function modal_Category_Add_Edit() {
+function modal_Mechanic_Add_Edit() {
   let self = this;
   self.IsBuilt = false;
+  self.IsBuilt = false;
   self.isEditMode = false;
-  self.currentCategoryId = null;
+  self.currentMechanicId = null;
   self.onSuccessCallback = null;
 
   self.LoadReferences = () => {
-    self.DOM = $("#category-add-edit-modal");
+    self.DOM = $("#mechanic-add-edit-modal");
 
     self.ModalTitle = self.DOM.find("#edit-modal-title");
-    self.Form = $("#category-add-edit-form");
+    self.Form = $("#mechanic-add-edit-form");
 
-    // Add a hidden input for the CATEGORY ID when in edit mode
+    // Add a hidden input for the mechanic ID when in edit mode
     self.Form.append(
-      '<input type="hidden" id="category-id" name="CategoryId" value="">'
+      '<input type="hidden" id="mechanic-id" name="MechanicId" value="">'
     );
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.Required =
       self.DOM.find(".required");
-    self.Inputs[self.Inputs.length] = self.Inputs.CategoryId =
-      self.DOM.find("#category-id");
-    self.Inputs[self.Inputs.length] = self.Inputs.CategoryName =
-      self.DOM.find("#new-category-name");
+    self.Inputs[self.Inputs.length] = self.Inputs.MechanicId =
+      self.DOM.find("#mechanic-id");
+    self.Inputs[self.Inputs.length] = self.Inputs.MechanicName =
+      self.DOM.find("#new-mechanic-name");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.Submit = self.DOM.find(
-      "#category-submit-button"
+      "#mechanic-submit-button"
     );
     self.Buttons[self.Buttons.length] = self.Buttons.Reset = self.DOM.find(
-      "#reset-add-edit-category-form"
+      "#reset-add-edit-mechanic-form"
     );
   };
 
@@ -38,9 +39,9 @@ function modal_Category_Add_Edit() {
       e.preventDefault();
 
       if (self.isEditMode === true) {
-        self.SetUpEditCategoryForm();
+        self.SetUpEditMechanicForm();
       } else {
-        self.SetUpAddCategoryForm();
+        self.SetUpAddMechanicForm();
       }
     });
 
@@ -51,31 +52,31 @@ function modal_Category_Add_Edit() {
     self.CheckForm();
   };
 
-  // New method to fetch CATEGORY details for editing
-  self.FetchCategoryDetails = (categoryId) => {
+  // New method to fetch MECHANIC details for editing
+  self.FetchMechanicDetails = (mechanicId) => {
     self.AddContentLoader();
-    self.currentCategoryId = categoryId;
+    self.currentMechanicId = mechanicId;
 
     $.ajax({
-      url: `https://localhost:7081/admins/showcategorydetails?CategoryId=${categoryId}`,
+      url: `https://localhost:7081/admins/showmechanicdetails?MechanicId=${mechanicId}`,
       method: "GET",
       xhrFields: {
         withCredentials: true,
       },
       success: function (response) {
         if (!response.content) {
-          console.error("Failed to fetch category details:", response.message);
+          console.error("Failed to fetch mechanic details:", response.message);
           return;
         }
 
-        // Open the edit modal with the board game data
-        __global.CategoryEditModalController.PopulateFormForEditing(
+        // Open the edit modal with the MECHANIC data
+        __global.MechanicEditModalController.PopulateFormForEditing(
           response.content
         );
         self.RemoveContentLoader();
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching category details:", error);
+        console.error("Error fetching mechanic details:", error);
       },
     });
   };
@@ -118,7 +119,7 @@ function modal_Category_Add_Edit() {
     });
   };
 
-  self.SetUpAddCategoryForm = () => {
+  self.SetUpAddMechanicForm = () => {
     //Disable submit button to prevent double submissions
     const submitBtn = self.Buttons.Submit;
     const originalBtnText = submitBtn.text();
@@ -126,7 +127,7 @@ function modal_Category_Add_Edit() {
 
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/admins/addcategory",
+      url: "https://localhost:7081/admins/addmechanic",
       data: self.Form.serialize(),
       xhrFields: {
         withCredentials: true,
@@ -138,7 +139,7 @@ function modal_Category_Add_Edit() {
 
         self.CloseModal();
 
-        // Refresh the CATEGORY list
+        // Refresh the MECHANIC list
         if (self.onSuccessCallback) {
           self.onSuccessCallback();
         }
@@ -153,22 +154,22 @@ function modal_Category_Add_Edit() {
     });
   };
 
-  self.SetUpEditCategoryForm = () => {
+  self.SetUpEditMechanicForm = () => {
     //Disable submit button to prevent double submissions
     const submitBtn = self.Buttons.Submit;
     const originalBtnText = submitBtn.text();
     submitBtn.attr("disabled", true).text("Submitting...");
 
     // Get form values
-    const categoryId = self.currentCategoryId;
-    const categoryName = $("#new-category-name").val();
+    const mechanicId = self.currentMechanicId;
+    const mechanicName = $("#new-mechanic-name").val();
 
     $.ajax({
-      url: "https://localhost:7081/admins/editcategory",
+      url: "https://localhost:7081/admins/editmechanic",
       type: "PUT",
       data: JSON.stringify({
-        CategoryId: categoryId,
-        CategoryName: categoryName,
+        MechanicId: mechanicId,
+        MechanicName: mechanicName,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -185,8 +186,8 @@ function modal_Category_Add_Edit() {
         self.CloseModal();
 
         // Refresh the board games list
-        if (__global.CategoryDataBaseModalController) {
-          __global.CategoryDataBaseModalController.LoadAllCategories();
+        if (__global.MechanicDataBaseModalController) {
+          __global.MechanicDataBaseModalController.LoadAllMechanics();
         }
 
         self.forceClearForm();
@@ -201,18 +202,18 @@ function modal_Category_Add_Edit() {
     });
   };
 
-  // Method to fill the form with CATEGORY data for editing
-  self.PopulateFormForEditing = (category) => {
+  // Method to fill the form with MECHANIC data for editing
+  self.PopulateFormForEditing = (mechanic) => {
     // Set the form to edit mode
     self.isEditMode = true;
-    self.Inputs.CategoryId = category.categoryId;
+    self.Inputs.MechanicId = mechanic.mechanicId;
 
     // Update the modal title and button text
-    self.ModalTitle.html("<span>E</span>dit <span>C</span>ategory");
+    self.ModalTitle.html("<span>E</span>dit <span>M</span>echanic");
     self.Buttons.Submit.text("Update");
 
     // Fill in the form fields
-    self.Inputs.CategoryName.val(category.categoryName);
+    self.Inputs.MechanicName.val(mechanic.mechanicName);
 
     // Recheck form to enable submit button if needed
     self.checkFormFilling();
@@ -221,9 +222,9 @@ function modal_Category_Add_Edit() {
   // Reset the form to "Add" mode
   self.ResetToAddMode = () => {
     self.isEditMode = false;
-    self.currentCategoryId = null;
+    self.currentMechanicId = null;
     self.ModalTitle.html(
-      "<span>A</span>dd a <span>N</span>ew <span>C</span>ategory"
+      "<span>A</span>dd a <span>N</span>ew <span>M</span>echanic"
     );
     self.Buttons.Submit.text("Confirm");
   };
@@ -267,10 +268,10 @@ function modal_Category_Add_Edit() {
   };
 
   // New method to open the modal in edit mode
-  self.OpenEditModal = (categoryId, onSuccessCallback) => {
+  self.OpenEditModal = (mechanicId, onSuccessCallback) => {
     self.onSuccessCallback = onSuccessCallback;
     self.Show();
-    self.FetchCategoryDetails(categoryId);
+    self.FetchMechanicDetails(mechanicId);
   };
 
   self.CloseModal = () => {

@@ -1,82 +1,82 @@
-function modal_Category_DataBase() {
+function modal_Mechanic_DataBase() {
   let self = this;
   self.IsBuilt = false;
 
   self.LoadReferences = () => {
-    self.DOMadmPage = $("#category-add");
-    self.DOM = $("#category-data-modal");
+    self.DOMadmPage = $("#mechanic-add");
+    self.DOM = $("#mechanic-data-modal");
 
-    self.TableResult = self.DOM.find("#admins-category-table tbody");
+    self.TableResult = self.DOM.find("#admins-mechanic-table tbody");
 
-    self.AddEditModal = self.DOM.find("#category-add");
+    self.AddEditModal = self.DOM.find("#mechanic-add");
 
     self.Buttons = [];
-    self.Buttons[self.Buttons.length] = self.Buttons.CategoryAdd =
-      self.DOM.find("#category-add-button");
-    self.Buttons[self.Buttons.length] = self.Buttons.CategoryEdit =
-      self.DOM.find(".category-edit-button");
+    self.Buttons[self.Buttons.length] = self.Buttons.MechanicAdd =
+      self.DOM.find("#mechanic-add-button");
+    self.Buttons[self.Buttons.length] = self.Buttons.MechanicEdit =
+      self.DOM.find(".mechanic-edit-button");
   };
 
   self.LoadEvents = () => {
     $.when(
-      $.get("admins_modal_category_add_edit.html"),
-      $.get("admins_modal_category_delete_restore.html")
+      $.get("admins_modal_mechanic_add_edit.html"),
+      $.get("admins_modal_mechanic_delete_restore.html")
     ).done(function (addEditHtml, deleteRestoreHtml) {
       self.DOMadmPage.append(addEditHtml[0]);
       self.DOMadmPage.append(deleteRestoreHtml[0]);
 
       // Initialize the ADD/EDIT Modal Controller after loading HTML
-      __global.CategoryEditModalController = new modal_Category_Add_Edit();
+      __global.MechanicEditModalController = new modal_Mechanic_Add_Edit();
       // Initialize the DELETE/RESTORE Modal Controller after loading HTML
-      __global.CategoryDeleteRestoreModalController =
-        new modal_Category_Delete_Restore();
+      __global.MechanicDeleteRestoreModalController =
+        new modal_Mechanic_Delete_Restore();
 
       // Hook up the buttons to open the modals AFTER they are ready
-      // Opens ADD CATEGORY MODAL
-      self.Buttons.CategoryAdd.on("click", function () {
-        __global.CategoryEditModalController.OpenAddModal(
-          self.LoadAllCategories
+      // Opens ADD MECHANIC MODAL
+      self.Buttons.MechanicAdd.on("click", function () {
+        __global.MechanicEditModalController.OpenAddModal(
+          self.LoadAllMechanics
         );
       });
 
-      // Opens EDIT CATEGORY MODAL
-      self.DOM.on("click", ".category-edit-button", function () {
-        const categoryId = $(this).attr("data-category-id");
+      // Opens EDIT MECHANIC MODAL
+      self.DOM.on("click", ".mechanic-edit-button", function () {
+        const mechanicId = $(this).attr("data-mechanic-id");
 
-        __global.CategoryEditModalController.OpenEditModal(
-          categoryId,
-          self.LoadAllCategories
+        __global.MechanicEditModalController.OpenEditModal(
+          mechanicId,
+          self.LoadAllMechanics
         );
       });
 
-      // Opens DELETE CATEGORY MODAL
-      self.DOM.on("click", ".category-delete-button", function () {
-        const categoryId = $(this).attr("data-category-id");
+      // Opens DELETE MECHANIC MODAL
+      self.DOM.on("click", ".mechanic-delete-button", function () {
+        const mechanicId = $(this).attr("data-mechanic-id");
 
-        console.log(categoryId);
+        console.log(mechanicId);
 
-        __global.CategoryDeleteRestoreModalController.OpenDeleteRestoreModal(
-          categoryId,
-          self.LoadAllCategories,
+        __global.MechanicDeleteRestoreModalController.OpenDeleteRestoreModal(
+          mechanicId,
+          self.LoadAllMechanics,
           true
         );
       });
 
-      // Opens RESTORE CATEGORY MODAL
-      self.DOM.on("click", ".category-restore-button", function () {
-        const categoryId = $(this).attr("data-category-id");
+      // Opens RESTORE MECHANIC MODAL
+      self.DOM.on("click", ".mechanic-restore-button", function () {
+        const mechanicId = $(this).attr("data-mechanic-id");
 
-        __global.CategoryDeleteRestoreModalController.OpenDeleteRestoreModal(
-          categoryId,
-          self.LoadAllCategories,
+        __global.MechanicDeleteRestoreModalController.OpenDeleteRestoreModal(
+          mechanicId,
+          self.LoadAllMechanics,
           false
         );
       });
 
-      // Closes ALL CATEGORY TABLE MODAL
+      // Closes ALL MECHANICS TABLE MODAL
       self.DOM.on(
         "click",
-        "#close-x-category-db-modal, #close-button-category-db-modal",
+        "#close-x-mechanic-db-modal, #close-button-mechanic-db-modal",
         () => {
           self.CloseModal();
         }
@@ -107,7 +107,7 @@ function modal_Category_DataBase() {
 
   self.OpenModal = () => {
     self.Show();
-    self.LoadAllCategories();
+    self.LoadAllMechanics();
   };
 
   self.CloseModal = () => {
@@ -117,10 +117,11 @@ function modal_Category_DataBase() {
     }
   };
 
-  self.LoadAllCategories = () => {
+  self.LoadAllMechanics = () => {
     self.AddContentLoader();
+
     $.ajax({
-      url: "https://localhost:7081/admins/listcategories",
+      url: "https://localhost:7081/admins/listmechanics",
       method: "GET",
       xhrFields: {
         withCredentials: true,
@@ -142,15 +143,15 @@ function modal_Category_DataBase() {
           <td class="text-center align-middle">${item.isDeleted}</td>
           <td class="align-middle">
             <div class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2">
-              <button id="category-edit-button-${index}" class="category-edit-button btn btn-sm btn-outline-warning w-60" data-category-id="${item.categoryId}">
+              <button id="mechanic-edit-button-${index}" class="mechanic-edit-button btn btn-sm btn-outline-warning w-60" data-mechanic-id="${item.mechanicId}">
                 Edit
               </button>
 
-              <button id="category-delete-button-${index}" class="category-delete-button btn btn-sm btn-outline-danger w-60" data-category-id="${item.categoryId}">
+              <button id="mechanic-delete-button-${index}" class="mechanic-delete-button btn btn-sm btn-outline-danger w-60" data-mechanic-id="${item.mechanicId}">
                 Delete
               </button>
 
-              <button id="category-restore-button-${index}" class="category-restore-button btn btn-sm btn-outline-info w-60" data-category-id="${item.categoryId}">
+              <button id="mechanic-restore-button-${index}" class="mechanic-restore-button btn btn-sm btn-outline-info w-60" data-mechanic-id="${item.mechanicId}">
                 Restore
               </button>
             </div>
@@ -160,12 +161,12 @@ function modal_Category_DataBase() {
           self.TableResult.append(tr);
 
           if (item.isDeleted === false) {
-            $(`#category-delete-button-${index}`).show();
-            $(`#category-restore-button-${index}`).hide();
+            $(`#mechanic-delete-button-${index}`).show();
+            $(`#mechanic-restore-button-${index}`).hide();
           }
           if (item.isDeleted === true) {
-            $(`#category-delete-button-${index}`).hide();
-            $(`#category-restore-button-${index}`).show();
+            $(`#mechanic-delete-button-${index}`).hide();
+            $(`#mechanic-restore-button-${index}`).show();
           }
         });
         self.RemoveContentLoader();
@@ -190,7 +191,7 @@ function modal_Category_DataBase() {
 }
 
 $(
-  (function (modalCategoryDataBase) {
-    __global.CategoryDataBaseModalController = modalCategoryDataBase;
-  })(new modal_Category_DataBase())
+  (function (modalMechanicDataBase) {
+    __global.MechanicDataBaseModalController = modalMechanicDataBase;
+  })(new modal_Mechanic_DataBase())
 );

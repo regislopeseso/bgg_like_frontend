@@ -5,6 +5,12 @@
 .delete-warning {
   box-shadow: 0 0 5px 5px var(--reddish) !important;
 }
+.delete-warning .modal-header {
+  border-bottom: 1px solid var(--reddish) !important;
+}
+.delete-warning .modal-footer {
+  border-top: 1px solid var(--reddish) !important;
+}
 .restore-warning {
   box-shadow: 0 0 5px 5px var(--main-color) !important;
 }

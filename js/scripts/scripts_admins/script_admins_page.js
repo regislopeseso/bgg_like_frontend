@@ -24,21 +24,32 @@ $(function () {
       $("#bg-tools-wrapper").slideToggle();
     });
 
-    // Load modal HTML, THEN initialize modal logic
+    // Load BOARD GAMES modal HTML, THEN initialize modal logic
     $("#bg-modal").load("admins_modal_bg_data_base.html", function () {
       // Hook up the button to open the modal AFTER it's ready
       $("#load-bg-button").on("click", function () {
-        __global.BgDatabBaseModalController.OpenModal();
+        __global.BgDataBaseModalController.OpenModal();
       });
     });
 
-    // Load modal HTML, THEN initialize modal logic
+    // Load CATEGORY modal HTML, THEN initialize modal logic
     $("#category-modal").load(
       "admins_modal_category_data_base.html",
       function () {
         // Hook up the button to open the modal AFTER it's ready
         $("#load-category-button").on("click", function () {
-          __global.CategoryDatabBaseModalController.OpenModal();
+          __global.CategoryDataBaseModalController.OpenModal();
+        });
+      }
+    );
+
+    // Load MECHANIC modal HTML, THEN initialize modal logic
+    $("#mechanic-modal").load(
+      "admins_modal_mechanic_data_base.html",
+      function () {
+        // Hook up the button to open the modal AFTER it's ready
+        $("#load-mechanic-button").on("click", function () {
+          __global.MechanicDataBaseModalController.OpenModal();
         });
       }
     );

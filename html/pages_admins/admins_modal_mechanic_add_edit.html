@@ -1,0 +1,70 @@
+<!--? Modal: MECHANIC ADD/EDIT -->
+<div
+  class="modal fade"
+  id="mechanic-add-edit-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="edit-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="add-edit-content modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="edit-modal-title"></h3>
+
+        <button
+          type="button"
+          class="custom-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="mechanic-add-edit-form">
+          <!-- Input: MECHANIC Name -->
+          <div class="mb-3">
+            <label class="form-label"><span>N</span>ame</label>
+            <input
+              name="MechanicName"
+              id="new-mechanic-name"
+              class="new-data form-control required"
+              type="text"
+            />
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          id="mechanic-submit-button"
+          class="btn btn-outline-info"
+          type="submit"
+          disabled
+        >
+          Confirm
+        </button>
+
+        <button
+          type="button"
+          id="reset-add-edit-mechanic-form"
+          class="btn-refresh btn btn-sm btn-outline-warning"
+        >
+          Clear Form
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/scripts/scripts_admins/script_admins_modal_mechanic_add_edit.js"></script>

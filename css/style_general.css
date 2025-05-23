@@ -263,6 +263,13 @@ textarea.new-data {
 }
 
 /*! !!!!!!!!!!!!!!!!! */
+.modal {
+  --bs-modal-header-border-color: var(--main-color);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--main-color) !important;
+}
 
 @media screen and (max-width: 3500px) {
   html {
@@ -279,7 +286,7 @@ textarea.new-data {
     font-size: 100%;
   }
 }
-@media screen and (max-width: 1232) {
+@media screen and (max-width: 1232px) {
 }
 @media screen and (max-width: 991px) {
 }

@@ -1,0 +1,77 @@
+<!--? Modal: BG-DESCRIPTION EDIT -->
+<div
+  class="modal fade"
+  id="bg-description-edit-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="description-edit-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="add-edit-content modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="description-edit-modal-title"></h3>
+
+        <button
+          type="button"
+          class="custom-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="bg-description-edit-form">
+          <!-- Input: BG Description -->
+          <div class="mb-3">
+            <label class="form-label"><span>D</span>escription</label>
+            <textarea
+              name="BoardGameDescription"
+              id="edited-bg-description"
+              class="new-data form-control required"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer d-flex justify-content-between">
+        <button
+          id="bg-description-edit-button"
+          class="btn btn-outline-warning"
+          type="submit"
+        >
+          Edit
+        </button>
+
+        <button
+          id="bg-description-submit-button"
+          class="btn btn-outline-info"
+          type="submit"
+          disabled
+        >
+          Confirm
+        </button>
+
+        <button
+          type="button"
+          id="reset-description-edit-bg-form"
+          class="btn-refresh btn btn-sm btn-outline-warning"
+        >
+          Clear Form
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/scripts/scripts_admins/script_admins_modal_bg_description_edit.js"></script>
