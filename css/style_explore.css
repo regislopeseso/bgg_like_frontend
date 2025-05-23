@@ -24,7 +24,7 @@
   flex-wrap: wrap;
   justify-content: center;
   align-self: center;
-  margin-top: 5rem;
+  margin-top: 6rem;
   width: 100%;
 }
 .explore-option {
@@ -60,7 +60,7 @@
   align-self: center;
   position: static;
   flex: 1;
-  margin: 5rem 0 5rem 0;
+  margin: 2rem 0 5rem 0 !important;
 }
 /*! END */
 

@@ -3,16 +3,17 @@ let __global = {};
 function loadHeader(userData, roleData) {
   const isLoggedIn = userData?.content?.isUserLoggedIn === true;
   const userRole = roleData?.content?.role || "";
+  const userRoleInitial = userRole.charAt(0).toUpperCase();
 
   const header = document.createElement("header");
   header.className = "header";
 
   header.innerHTML = `
-    <header class="header">
-      <a href="/index.html" class="logo">BBG <span>LIKE</span></a>
+    <header class="header">  
+      <a href="/index.html" class="logo">BBG <span>LIKE</span> </a>
+      
       <nav class="navbar">
-        <div class="navOptions d-flex flex-row">
-          <h5><span style="color: var(--reddish)">${userRole}</span></h5>
+        <div class="navOptions d-flex flex-row align-items-center justify-content-between"> 
           <a href="/index.html">HOME</a>
           <a href="/html/explore.html">EXPLORE</a>
           <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
@@ -35,6 +36,10 @@ function loadHeader(userData, roleData) {
           <a style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             <i class="bi bi-gear" ></i>
           </a>
+
+          <div id="role-initial-toggler">
+            
+          </div>
         </div>
 
         <div class="navHamburger">
@@ -78,9 +83,9 @@ function loadHeader(userData, roleData) {
                     </div>                 
 
                   <li class="nav-item">
-                    <a style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <butto style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                       <i class="bi bi-gear" ></i>
-                    </a>
+                    </butto>
                   </li>
                 </ul>
               </div>
@@ -89,21 +94,22 @@ function loadHeader(userData, roleData) {
         </div>
       </nav>
 
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasRightLabel">General Configurations</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <div class="offcanvas-custom offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">
+        <div class="offcanvas-header pb-5">
+          <h5 class=" offcanvas-title" id="offcanvasRightLabel"><span>T</span>heme <span>C</span>onfiguration</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="offcanvas-body">
-          <a>Change Language</a>
-          <a>Change Theme</a>
+        <div class="offcanvas-body d-flex flex-column align-items-center">            
+          <button id="theme-toggler" class="btn-theme btn btn-outline-info d-flex flex-row align-items-center justify-content-center" type="button" data-bs-dismiss="offcanvas">Light Theme</button>
         </div>
       </div>
+      
     </header>
   `;
   document.body.appendChild(header);
 
   if (isLoggedIn === true) {
+    $("header").css("border-bottom", "3px solid var(--main-color)");
     $(".anonymous-clearance").addClass("d-none");
     $(".loggedIn-clearance").removeClass("d-none");
 
@@ -119,6 +125,8 @@ function loadHeader(userData, roleData) {
     // Attach logout event after role is handled
     $(".logOut").on("click", async function (e) {
       e.preventDefault();
+
+      $("header").css("border-bottom", "none");
 
       const response = await fetch("https://localhost:7081/users/signout", {
         method: "POST",
@@ -136,6 +144,7 @@ function loadHeader(userData, roleData) {
       }
     });
   } else {
+    $("header").css("border-bottom", "none");
     $(".anonymous-clearance").removeClass("d-none");
   }
 }
@@ -168,6 +177,85 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   loadHeader(userData, roleData);
+
+  function SetTheme() {
+    let theme = localStorage.getItem("Theme");
+
+    if (!theme) {
+      theme = "Dark";
+      localStorage.setItem("Theme", theme);
+    }
+
+    if (theme === "Light") {
+      $("#theme-toggler").html("Dark");
+      document.documentElement.style.setProperty(
+        "--bg-color",
+        "rgb(200, 200, 210)"
+      );
+      document.documentElement.style.setProperty(
+        "--second-bg-color",
+        "rgb(190, 190, 200)"
+      );
+      document.documentElement.style.setProperty(
+        "--text-color",
+        "rgb(25, 25, 30)"
+      );
+      document.documentElement.style.setProperty(
+        "--main-color",
+        "rgb(0, 90, 100)"
+      );
+      document.documentElement.style.setProperty(
+        "--reddish",
+        "rgb(200, 50, 30)"
+      );
+      document.documentElement.style.setProperty(
+        "--yellowish",
+        "rgb(200, 180, 0)"
+      );
+      document.documentElement.style.setProperty(
+        "--greenish",
+        "rgb(0, 170, 110)"
+      );
+    } else {
+      $("#theme-toggler").html("Light");
+      document.documentElement.style.setProperty(
+        "--bg-color",
+        "rgb(31, 36, 46)"
+      );
+      document.documentElement.style.setProperty(
+        "--second-bg-color",
+        "rgb(50, 57, 70)"
+      );
+      document.documentElement.style.setProperty(
+        "--text-color",
+        "rgb(255, 255, 255)"
+      );
+      document.documentElement.style.setProperty(
+        "--main-color",
+        "rgb(0, 238, 255)"
+      );
+      document.documentElement.style.setProperty(
+        "--reddish",
+        "rgb(255, 51, 0)"
+      );
+      document.documentElement.style.setProperty(
+        "--yellowish",
+        "rgb(255, 230, 0)"
+      );
+      document.documentElement.style.setProperty(
+        "--greenish",
+        "rgb(0, 255, 128)"
+      );
+    }
+  }
+
+  $("#theme-toggler").on("click", function () {
+    const theme = localStorage.getItem("Theme");
+    localStorage.setItem("Theme", theme === "Light" ? "Dark" : "Light");
+    SetTheme();
+  });
+
+  SetTheme();
 
   $(".logOut").on("click", async function (e) {
     e.preventDefault();

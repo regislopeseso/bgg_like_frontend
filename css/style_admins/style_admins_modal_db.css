@@ -34,3 +34,11 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+
+.expand-details-icon {
+  transition: transform 0.3s ease;
+}
+.expand-details-icon:hover {
+  transform: scale(3) rotate(1800deg) !important;
+  color: var(--main-color);
+}

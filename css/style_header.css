@@ -16,6 +16,13 @@
   color: var(--text-color);
   font-weight: 600;
 }
+#role-initial {
+  font-size: 1rem;
+  height: 2rem;
+  width: 2rem;
+  border: 2px solid var(--main-color);
+  border-radius: 50%;
+}
 .navbar a {
   font-size: 1rem;
   color: var(--text-color);
@@ -75,6 +82,20 @@
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   background-color: var(--second-bg-color);
   z-index: 2000;
+}
+
+.btn-theme {
+  height: 3rem;
+  width: 10rem;
+  color: var(--text-color) !important;
+  border: none !important;
+  border-radius: 2rem !important;
+  box-shadow: 0px 0px 10px 10px var(--bg-color) !important;
+}
+.btn-theme:hover {
+  color: var(--main-color) !important;
+  background-color: var(--bg-color) !important;
+  box-shadow: 0px 0px 10px 5px var(--text-color) !important;
 }
 
 @media screen and (max-width: 1200px) {

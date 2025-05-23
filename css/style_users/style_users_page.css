@@ -6,7 +6,7 @@ main {
 
 .users-menu {
   width: 100%;
-  height: 250px !important;
+  height: 210px !important;
   background-color: var(--second-bg-color);
 }
 
@@ -112,7 +112,7 @@ main {
 /* Style the back side */
 .flip-card-back {
   background-color: var(--second-bg-color);
-  color: white;
+  color: var(--text-color);
   transform: rotateY(180deg);
 }
 

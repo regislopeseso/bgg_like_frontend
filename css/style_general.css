@@ -41,13 +41,14 @@ span {
 
 hr {
   border: none; /* remove bordas padrão */
-  border-top: 1px solid #ccc; /* desenha apenas uma linha fina */
+  border-top: 1px solid var(--text-color); /* desenha apenas uma linha fina */
   margin: 10px 0; /* espaçamento acima e abaixo */
   width: 100%; /* opcional: define largura */
   opacity: 0.6; /* opcional: semitransparente */
 }
 
 .btn-outline-info {
+  --bs-btn-color: var(--main-color);
   --bs-btn-disabled-color: var(--bg-color);
   --bs-btn-disabled-border-color: var(--bg-color);
   --bs-btn-hover-bg: var(--main-color);
@@ -209,7 +210,7 @@ textarea.new-data {
   padding: 5px 0.75rem !important;
   border-radius: 0.25rem !important;
   border: 1px solid var(--main-color) !important;
-  background-color: white !important;
+  background-color: var(--text-color) !important;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -269,6 +270,11 @@ textarea.new-data {
 
 .modal-footer {
   border-top: 1px solid var(--main-color) !important;
+}
+
+.offcanvas-custom {
+  background-color: var(--second-bg-color) !important;
+  color: var(--text-color) !important;
 }
 
 @media screen and (max-width: 3500px) {

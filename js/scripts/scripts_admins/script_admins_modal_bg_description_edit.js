@@ -30,16 +30,35 @@ function modal_BG_Description_Edit() {
       "#edited-bg-description"
     );
 
+    self.ButtonsBox = self.DOM.find("#bg-description-buttons-box");
     self.Buttons = [];
+    self.Buttons[self.Buttons.length] = self.Buttons.Edit = self.DOM.find(
+      "#bg-description-edit-button"
+    );
     self.Buttons[self.Buttons.length] = self.Buttons.Submit = self.DOM.find(
       "#bg-description-submit-button"
     );
     self.Buttons[self.Buttons.length] = self.Buttons.Reset = self.DOM.find(
       "#reset-description-edit-bg-form"
     );
+    self.Buttons[self.Buttons.length] = self.Buttons.Close = self.DOM.find(
+      "#bg-description-edit-close-button"
+    );
   };
 
   self.LoadEvents = () => {
+    self.Buttons.Edit.on("click", function (e) {
+      e.preventDefault();
+      self.Inputs.BgDescription.removeClass("current-data").addClass(
+        "new-data"
+      );
+      self.Buttons.Edit.fadeOut(600);
+      self.Buttons.Edit.attr("disabled", true);
+
+      self.Buttons.Submit.fadeIn(600);
+      self.Buttons.Reset.fadeIn(600);
+    });
+
     self.Buttons.Submit.on("click", function (e) {
       e.preventDefault();
       self.SetUpEditBgDescriptionForm();
@@ -47,6 +66,10 @@ function modal_BG_Description_Edit() {
 
     self.Buttons.Reset.on("click", function (e) {
       self.forceClearForm();
+    });
+
+    self.Buttons.Close.on("click", function (e) {
+      self.CloseModal();
     });
 
     self.CheckForm();
@@ -238,6 +261,8 @@ function modal_BG_Description_Edit() {
 
   // New method to open the modal in edit mode
   self.OpenDescriptionModal = (boardGameId) => {
+    self.Buttons.Submit.fadeOut(100);
+    self.Buttons.Reset.fadeOut(100);
     self.Show();
     self.FetchBoardGameDetails(boardGameId);
   };
@@ -246,6 +271,13 @@ function modal_BG_Description_Edit() {
     const modalInstance = bootstrap.Modal.getInstance(self.DOM[0]);
     if (modalInstance) {
       self.forceClearForm();
+      self.Inputs.BgDescription.removeClass("new-data").addClass(
+        "current-data"
+      );
+      self.Buttons.Edit.attr("disabled", false);
+      self.Buttons.Edit.removeClass("d-none");
+      self.Buttons.Submit.addClass("d-none");
+      self.Buttons.Reset.addClass("d-none");
       modalInstance.hide();
     }
   };

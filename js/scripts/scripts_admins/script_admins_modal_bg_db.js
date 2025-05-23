@@ -158,9 +158,9 @@ function modal_BG_DataBase() {
             <button
               id="bg-description-button"
               class="d-flex w-100 align-items-center justify-content-center m-0 p-0"
-              style="border: none; background-color: var(--bg-color); color: var(--main-color);" 
+              style="border: none; background-color: var(--bg-color); color: var(--text-color);" 
               data-bg-id="${item.boardGameId}">            
-                <i class="bi bi-arrows-angle-expand"></i>
+                <i class="expand-details-icon bi bi-arrows-angle-expand"></i>
             </button>
           </td>
           <td class="text-center align-middle">${item.playersCount}</td>
