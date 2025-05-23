@@ -60,7 +60,7 @@
   align-self: center;
   position: static;
   flex: 1;
-  margin: 2rem 0 5rem 0 !important;
+  margin: 2rem 0 5rem 0;
 }
 /*! END */
 
