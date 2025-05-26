@@ -44,3 +44,10 @@
 .credits a {
   color: var(--text-color);
 }
+
+@media screen and (max-height: 500px) {
+  .footer {
+    background-color: transparent;
+    z-index: 0;
+  }
+}

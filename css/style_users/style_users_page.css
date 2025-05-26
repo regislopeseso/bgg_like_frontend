@@ -1,44 +1,43 @@
 main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100vw;
-  height: 100vh;
-  padding-bottom: 10rem;
 }
 
 .users-menu {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  height: 210px !important;
   background-color: var(--second-bg-color);
 }
 
-#user-type {
-  border: 2.5px solid var(--main-color);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+.users-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  padding-top: 100px;
+  background-color: var(--second-bg-color);
+  justify-content: center;
 }
-
-#toggleUserDetails {
-  display: none;
-}
-#toggleUserDetails button {
-  animation: pulse 1s infinite;
-}
-
 .users-options .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  width: 300px;
+  height: 60px;
   box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
   border: none !important;
-  width: 300px;
-  min-width: 80px;
-  min-height: 40px;
   margin: 1.5rem;
-  background-color: var(--second-bg-color);
 }
 .users-options .btn:hover {
   box-shadow: 0 0 15px 1px var(--text-color);
 }
 .users-options .btn h4 {
-  padding: 0 !important;
-  margin: 0 !important;
+  padding: 0;
+  margin: 0;
 }
 
 .user-menu-button:disabled {
@@ -51,40 +50,41 @@ main {
   box-shadow: 0 0 10px 8px black !important;
 }
 
+#toggleUserDetails {
+  display: none;
+}
+#toggleUserDetails button {
+  animation: pulse 1s infinite;
+}
+
 .flip-card-wrapper {
   display: flex;
   flex-direction: column;
   text-align: center;
-  justify-content: center;
 }
 .flip-card-wrapper p {
   color: var(--text-color);
 }
-/* The flip card container - set the width and height to whatever you want. 
-We have added the border property to demonstrate that the flip itself goes out of the box on hover 
-(remove perspective if you don't want the 3D effect */
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flip-card {
+  position: relative;
   align-self: center;
   background-color: transparent;
   max-width: 600px;
   width: 60vw;
-  min-width: 400px;
-  max-height: 700px;
-  height: 100%;
-  border: 2px solid red;
-  /* border: 1px solid var(--bg-color); */
+  min-width: 300px;
+  height: 100px;
+  border: 1px solid var(--bg-color);
   border-radius: 2rem;
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
-  perspective: 10000px; /* Remove this if you don't want the 3D effect */
+  perspective: 10000px;
 }
 
 /* This container is needed to position the front and back side */
 .flip-card-inner {
   position: relative;
   width: 100%;
-  height: 100%;
   text-align: center;
-  transition: transform 60s;
   transform-style: preserve-3d;
 }
 
@@ -93,40 +93,22 @@ We have added the border property to demonstrate that the flip itself goes out o
 .flip-card-back {
   position: absolute;
   width: 100%;
+  border-radius: 2rem;
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
+  padding: 2rem;
 }
 
 /* Style the front side (fallback if image is missing) */
 .flip-card-front {
-  /* background-color: var(--second-bg-color); */
+  background-color: var(--second-bg-color);
 }
 
 /* Style the back side */
 .flip-card-back {
-  /* background-color: var(--second-bg-color); */
+  background-color: var(--second-bg-color);
   color: var(--text-color);
   transform: rotateY(180deg);
-}
-#user-details-template,
-#play-template,
-#log-session-template,
-#edit-session-template,
-#delete-session-template,
-#rate-bg-template,
-#edit-rate-template,
-#new-life-counter-template {
-  padding-top: 25px;
-  padding-bottom: 25px;
-  border-radius: 2rem;
-  background-color: var(--second-bg-color);
-  height: fit-content;
-}
-
-@media screen and (max-width: 1024px) {
-  /* main {
-    padding: 8rem 0 10rem 0 !important;
-  } */
 }
 
 @keyframes pulse {
@@ -141,37 +123,111 @@ We have added the border property to demonstrate that the flip itself goes out o
   }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 1200px) {
+  .users-options {
+    padding-top: 50px;
+  }
+}
+
+@media screen and (max-height: 1100px) {
+  .flip-card-inner {
+    height: 750px;
+  }
+  .users-options .btn {
+    width: 130px;
+    height: 85px;
+    padding: 3rem;
+    margin: 0.5rem;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .users-options {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    justify-items: center;
+    padding-top: 80px;
+  }
+  .users-options .btn {
+    width: 120px;
+    height: 60px;
+    margin: 1rem;
+    align-items: center;
+  }
+
+  #userOption-logSession {
+    grid-column-start: 1;
+    grid-column-end: 1;
+  }
+  #userOption-editSession {
+    grid-column-start: 2;
+    grid-column-end: 2;
+  }
+  #userOption-deleteSession {
+    grid-column-start: 3;
+    grid-column-end: 3;
+  }
+  #userOption-rateBg {
+    grid-column-start: 4;
+    grid-column-end: 4;
+  }
+  #userOption-editRate {
+    grid-column-start: 5;
+    grid-column-end: 5;
+  }
+  #userOption-logSession,
+  #userOption-editSession,
+  #userOption-deleteSession,
+  #userOption-rateBg,
+  #userOption-editRate {
+    grid-row-start: 1;
+    grid-row-end: 1;
+  }
+
+  #userOption-playGame {
+    grid-column-start: 2;
+    grid-column-end: 4;
+  }
+  #userOption-newLifeCounter {
+    grid-column-start: 3;
+    grid-column-end: 5;
+  }
+  #userOption-playGame,
+  #userOption-newLifeCounter {
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+
+  #users-content {
+    width: 100vw !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
   main {
     height: 100%;
-    padding-bottom: 50rem;
   }
 
   .users-menu {
-    padding-top: 60px;
     padding-bottom: 5px;
-    width: 100vw !important;
     height: fit-content !important;
     justify-content: center !important;
   }
   .users-options {
-    max-width: 100% !important;
     display: grid !important;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     justify-items: center !important;
+    padding-top: 60px;
   }
   .users-options .btn {
     max-width: 30px !important;
     margin: 1rem;
     align-items: center;
   }
-  #userOption-playGame {
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start: 1;
-    grid-row-end: 1;
-  }
+
   #userOption-logSession {
     grid-column-start: 1;
     grid-column-end: 1;
@@ -187,8 +243,8 @@ We have added the border property to demonstrate that the flip itself goes out o
   #userOption-logSession,
   #userOption-editSession,
   #userOption-deleteSession {
-    grid-row-start: 2;
-    grid-row-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 1;
   }
   #userOption-rateBg {
     grid-column-start: 1;
@@ -200,21 +256,24 @@ We have added the border property to demonstrate that the flip itself goes out o
   }
   #userOption-rateBg,
   #userOption-editRate {
-    grid-row-start: 3;
-    grid-row-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+  #userOption-playGame {
+    grid-column-start: 1;
+    grid-column-end: 3;
   }
   #userOption-newLifeCounter {
-    grid-column-start: 1;
+    grid-column-start: 2;
     grid-column-end: 4;
-    grid-row-start: 4;
-    grid-row-end: 4;
+  }
+  #userOption-playGame,
+  #userOption-newLifeCounter {
+    grid-row-start: 3;
+    grid-row-end: 3;
   }
 
   #users-content {
     width: 100vw !important;
-  }
-
-  .flip-card-inner-front,
-  .flip-card-inner-back {
   }
 }
