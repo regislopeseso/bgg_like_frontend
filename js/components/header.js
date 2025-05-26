@@ -33,7 +33,7 @@ function loadHeader(userData, roleData) {
             </ul>
           </div>
           
-          <a style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+          <a style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
             <i class="bi bi-gear" ></i>
           </a>
 
@@ -45,11 +45,11 @@ function loadHeader(userData, roleData) {
         <div class="navHamburger">
           <nav class="navbar navbar-expand-lg">
             <div class="d-flex flex-column align-items-end">
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggle-hamburguer-menu">
                   <i class="bi bi-list"></i>                
               </button>
 
-              <div class="collapse navbar-collapse text-end" id="navbarTogglerDemo01">                 
+              <div class="collapse navbar-collapse text-end" id="toggle-hamburguer-menu">                 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
                     <a class="nav-link" href="/index.html">HOME</a>
@@ -61,17 +61,17 @@ function loadHeader(userData, roleData) {
                     <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance nav-link d-none">SIGN UP/IN</a>
                   </li>
                   <li class="nav-item">
-                    <a href="/html/pages_users/users_page.html" class="loggedIn-clearence nav-link d-none">USER</a>
+                    <a href="/html/pages_users/users_page.html" class="loggedIn-clearance nav-link d-none">USER</a>
                   </li>
                   <li class="nav-item">
-                    <a href="/html/pages_admins/admins_page.html" class="admins-clearence nav-link d-none">ADMIN</a>
+                    <a href="/html/pages_admins/admins_page.html" class="admins-clearance nav-link d-none">ADMIN</a>
                   </li>
                   <li class="nav-item">
-                    <a href="/html/pages_devs/devs.html" class="devs-clearence nav-link d-none">DEV</a>
+                    <a href="/html/pages_devs/devs.html" class="devs-clearance nav-link d-none">DEV</a>
                   </li>
 
-                  <div class="dropdown">
-                      <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="dropdown loggedIn-clearance d-none">
+                      <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="bi bi-person-gear"></i>
                       </a>
                       <ul class="dropdown-menu">

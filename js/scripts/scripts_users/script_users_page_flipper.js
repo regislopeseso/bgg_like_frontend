@@ -1,13 +1,3 @@
-/**
- * Flipper Module - Handles the card flipping animation and content changes
- * This module is responsible for:
- * 1. Setting up the flip card animation
- * 2. Loading different templates when buttons are clicked
- * 3. Preventing multiple clicks during animations
- * 4. Managing the visible state of the card faces
- */
-
-// Immediately-invoked Function Expression (IIFE) to avoid polluting global scope
 const today = new Date();
 const hundredYearsAgo = new Date(today);
 hundredYearsAgo.setFullYear(hundredYearsAgo.getFullYear() - 100);
@@ -22,20 +12,15 @@ const Flipper = (function () {
   let currentAngle = 0; // Current rotation angle
   let isBackVisible = false; // Track which side is currently visible
 
-  // Public API
   return {
     init: function () {
       this.setupAnimation();
 
-      // monte o HTML já com os dados
-      // injete direto no front
       this.onContentChanged("user-details-template");
       $("#flip-front-content").html(loadTemplate("user-details-template"));
 
-      // esconde o botão “SHOW USER DETAILS”, já que estamos nele
       $("#toggleUserDetails").slideUp();
 
-      // marque que o front está visível
       isBackVisible = false;
 
       Flipper.setupEventListeners();
@@ -46,7 +31,6 @@ const Flipper = (function () {
 
     // Set up the CSS transition for the flip animation
     setupAnimation: function () {
-      // Add linear transition for smooth animation
       $(".flip-card-inner").css("transition", "transform 0.6s linear");
     },
 
@@ -113,8 +97,6 @@ const Flipper = (function () {
       const target = isBackVisible
         ? "#flip-front-content"
         : "#flip-back-content";
-
-      // Load the selected template into the target face
 
       $(target).html(loadTemplate(templateId));
 

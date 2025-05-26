@@ -10,17 +10,6 @@ main {
   background-color: var(--second-bg-color);
 }
 
-.neon-bar {
-  height: 2.5px;
-  background-color: var(--main-color);
-}
-.neon-bar:first-child {
-  width: 90%;
-}
-.neon-bar:last-child {
-  width: 10%;
-}
-
 #user-type {
   border: 2.5px solid var(--main-color);
   border-radius: 50%;
@@ -35,16 +24,21 @@ main {
   animation: pulse 1s infinite;
 }
 
-.users-options {
-  background-color: var(--second-bg-color);
-}
 .users-options .btn {
   box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
   border: none !important;
+  width: 300px;
+  min-width: 80px;
+  min-height: 40px;
   margin: 1.5rem;
+  background-color: var(--second-bg-color);
 }
 .users-options .btn:hover {
   box-shadow: 0 0 15px 1px var(--text-color);
+}
+.users-options .btn h4 {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .user-menu-button:disabled {
@@ -66,7 +60,9 @@ main {
 .flip-card-wrapper p {
   color: var(--text-color);
 }
-/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+/* The flip card container - set the width and height to whatever you want. 
+We have added the border property to demonstrate that the flip itself goes out of the box on hover 
+(remove perspective if you don't want the 3D effect */
 .flip-card {
   align-self: center;
   background-color: transparent;
@@ -74,9 +70,9 @@ main {
   width: 60vw;
   min-width: 400px;
   max-height: 700px;
-  height: 70vw;
-  min-height: 350px;
-  border: 1px solid var(--bg-color);
+  height: 100%;
+  border: 2px solid red;
+  /* border: 1px solid var(--bg-color); */
   border-radius: 2rem;
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   perspective: 10000px; /* Remove this if you don't want the 3D effect */
@@ -97,23 +93,34 @@ main {
 .flip-card-back {
   position: absolute;
   width: 100%;
-  height: 100%;
-  border-radius: 2rem;
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
-  padding: 2rem;
 }
 
 /* Style the front side (fallback if image is missing) */
 .flip-card-front {
-  background-color: var(--second-bg-color);
+  /* background-color: var(--second-bg-color); */
 }
 
 /* Style the back side */
 .flip-card-back {
-  background-color: var(--second-bg-color);
+  /* background-color: var(--second-bg-color); */
   color: var(--text-color);
   transform: rotateY(180deg);
+}
+#user-details-template,
+#play-template,
+#log-session-template,
+#edit-session-template,
+#delete-session-template,
+#rate-bg-template,
+#edit-rate-template,
+#new-life-counter-template {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  border-radius: 2rem;
+  background-color: var(--second-bg-color);
+  height: fit-content;
 }
 
 @media screen and (max-width: 1024px) {
@@ -131,5 +138,83 @@ main {
   }
   100% {
     transform: scale(0.9);
+  }
+}
+
+@media screen and (max-width: 375px) {
+  main {
+    height: 100%;
+    padding-bottom: 50rem;
+  }
+
+  .users-menu {
+    padding-top: 60px;
+    padding-bottom: 5px;
+    width: 100vw !important;
+    height: fit-content !important;
+    justify-content: center !important;
+  }
+  .users-options {
+    max-width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    justify-items: center !important;
+  }
+  .users-options .btn {
+    max-width: 30px !important;
+    margin: 1rem;
+    align-items: center;
+  }
+  #userOption-playGame {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 1;
+  }
+  #userOption-logSession {
+    grid-column-start: 1;
+    grid-column-end: 1;
+  }
+  #userOption-editSession {
+    grid-column-start: 2;
+    grid-column-end: 2;
+  }
+  #userOption-deleteSession {
+    grid-column-start: 3;
+    grid-column-end: 3;
+  }
+  #userOption-logSession,
+  #userOption-editSession,
+  #userOption-deleteSession {
+    grid-row-start: 2;
+    grid-row-end: 2;
+  }
+  #userOption-rateBg {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  #userOption-editRate {
+    grid-column-start: 2;
+    grid-column-end: 4;
+  }
+  #userOption-rateBg,
+  #userOption-editRate {
+    grid-row-start: 3;
+    grid-row-end: 3;
+  }
+  #userOption-newLifeCounter {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 4;
+  }
+
+  #users-content {
+    width: 100vw !important;
+  }
+
+  .flip-card-inner-front,
+  .flip-card-inner-back {
   }
 }

@@ -44,17 +44,3 @@
 .credits a {
   color: var(--text-color);
 }
-@media screen and (max-width: 1200px) {
-}
-@media screen and (max-width: 991px) {
-}
-@media screen and (max-width: 768px) {
-}
-@media screen and (max-width: 576px) {
-}
-@media screen and (max-width: 425px) {
-  .footer {
-    background-color: rgba(0, 0, 0, 0);
-    flex-direction: column-reverse;
-  }
-}

@@ -16,9 +16,9 @@ $(function () {
         // Add character one by one
         text1.text(text1.text() + message1.charAt(i));
         i++;
-        setTimeout(typeFirst, 75);
+        setTimeout(typeFirst, 25);
       } else {
-        setTimeout(typeSecond, 50);
+        setTimeout(typeSecond, 10);
       }
     }
 
@@ -26,7 +26,7 @@ $(function () {
       if (j < message2.length) {
         text2.text(text2.text() + message2.charAt(j));
         j++;
-        setTimeout(typeSecond, 75);
+        setTimeout(typeSecond, 25);
       } else {
         // Create h1 with initial hidden state
         const newH1 = $(
@@ -77,6 +77,8 @@ $(function () {
     $("#signUp").on("click", function (e) {
       e.preventDefault();
 
+      $("#signIn").css("pointer-events", "none");
+
       $("#typewritter-texts").slideUp("slow");
 
       if ($("#signIn").hasClass("active")) {
@@ -104,6 +106,10 @@ $(function () {
           },
           "slow"
         );
+
+      setTimeout(function () {
+        $("#signIn").css("pointer-events", "auto");
+      }, 1000);
     });
 
     let signUpEyeState = 0;
@@ -182,6 +188,8 @@ $(function () {
     $("#signIn").on("click", function (e) {
       e.preventDefault();
 
+      $("#signUp").css("pointer-events", "none");
+
       $("#typewritter-texts").slideUp("slow");
 
       if ($("#signUp").hasClass("active")) {
@@ -209,6 +217,10 @@ $(function () {
           },
           "slow"
         );
+
+      setTimeout(function () {
+        $("#signUp").css("pointer-events", "auto");
+      }, 1000);
     });
 
     $("#signIn-form").on("input", function () {
