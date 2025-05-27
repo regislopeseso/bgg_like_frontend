@@ -277,6 +277,69 @@ textarea.new-data {
   color: var(--text-color) !important;
 }
 
+/*? !!!!!! SweetAlert2 !!!!!! */
+/* Override the main popup font and background */
+.swal2-popup {
+  font-family: "Anta", sans-serif;
+  background-color: var(--second-bg-color); /* Light background */
+  color: var(--text-color); /* Text color */
+}
+
+/* Override the title style */
+.swal2-title {
+  color: var(--text-color); /* Your brand color */
+  font-weight: 100;
+}
+
+/* Override the confirm button */
+.swal2-confirm {
+  background-color: transparent !important;
+  color: var(--main-color) !important;
+  font-weight: bold;
+  border: 1px solid var(--main-color) !important;
+  border-radius: 6px;
+}
+.swal2-confirm:hover {
+  background-color: var(--main-color) !important;
+  color: var(--text-color) !important;
+  font-weight: bold;
+  border-radius: 6px;
+  box-shadow: 0 0 15px 1px var(--text-color);
+}
+
+/* Override the cancel button */
+.swal2-cancel {
+  background-color: transparent !important;
+  color: var(--reddish) !important;
+  font-weight: bold;
+  border: 1px solid var(--reddish) !important;
+  border-radius: 6px;
+}
+.swal2-cancel:hover {
+  background-color: var(--reddish) !important;
+  color: var(--text-color) !important;
+  font-weight: bold;
+  border-radius: 6px;
+  box-shadow: 0 0 15px 1px var(--text-color);
+}
+
+/* ✅ Outer ring of the success icon */
+.swal2-icon.swal2-success {
+  border-color: var(--main-color) !important;
+  color: var(--main-color);
+}
+
+/* ✅ Checkmark lines specifically */
+.swal2-icon.swal2-success .swal2-success-line-tip,
+.swal2-icon.swal2-success .swal2-success-line-long {
+  background-color: var(--main-color) !important;
+}
+
+/* ✅ Success ring animation fix (optional but safe) */
+.swal2-icon.swal2-success .swal2-success-ring {
+  border: 4px solid rgba(0, 238, 255, 0.3); /* you can also use `var(--main-color)` with alpha if needed */
+}
+
 @media screen and (max-width: 3500px) {
   html {
     font-size: 120%;

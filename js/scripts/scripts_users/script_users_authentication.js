@@ -1,4 +1,37 @@
 $(function () {
+  let self = this;
+
+  let userEmail = "";
+  let userPassword = "";
+
+  let isSignUpMode = true;
+
+  self.LoadReferences = () => {
+    self.DOM = $("#user-athentication-page");
+    self.Form = $("#bg-data-modal");
+
+    self.SignUpForm = self.DOM.find("#signUp-form");
+    self.SignInForm = self.DOM.find("#signIn-form");
+  };
+
+  function sweetAlertSuccess(text) {
+    Swal.fire({
+      position: "top-end",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: text,
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      redirectToUsersPage();
+    });
+  }
+
+  function redirectToUsersPage() {
+    window.location.href = "/html/pages_users/users_page.html";
+  }
+
   function buildTypeWriterEffect() {
     const text1 = $("#welcomingText1");
     const text2 = $("#welcomingText2");
@@ -258,6 +291,9 @@ $(function () {
       const originalBtnText = submitBtn.text();
       submitBtn.attr("disabled", true).text("Submitting...");
 
+      userEmail = self.SignUpForm.find("#newUserEmail").val();
+      userPassword = self.SignUpForm.find("#newUserPassword").val();
+
       $.post(
         "https://localhost:7081/users/signup",
         $(this).serialize(),
@@ -267,27 +303,7 @@ $(function () {
           if (response.content === null) {
             alert(response.message);
           } else {
-            $("#welcomeTexts").addClass("d-none");
-
-            $("#signUpBox").hide("slow");
-            $("#signIn-Button").html(`Sign In`);
-
-            $("#signInBox")
-              .css({
-                display: "block",
-                marginLeft: "auto", // Align to left
-
-                opacity: 0,
-              })
-              .animate(
-                {
-                  width: "100%", // Expand to full width
-                  opacity: 1,
-                },
-                "slow"
-              );
-
-            $("#signUpSucess").removeClass("d-none");
+            signIn(userEmail, userPassword, true);
           }
         })
         .fail(function (response) {})
@@ -301,32 +317,50 @@ $(function () {
     });
   }
 
-  function setUpSignInForm() {
-    $("#signIn-form").on("submit", function (e) {
+  function signIn(userEmail, userPassword, isSignUpMode) {
+    const formData = new FormData();
+    formData.append("Email", userEmail);
+    formData.append("Password", userPassword);
+
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/signin",
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: function (response) {
+        if (response.content.remainingSignInAttempts === null) {
+          if (isSignUpMode) {
+            sweetAlertSuccess("Successfully signed up!");
+          } else {
+            sweetAlertSuccess("Welcome back!");
+          }
+        } else {
+          alert(response.message || "Login failed");
+        }
+      },
+      error: function (response) {
+        alert("Login failed");
+      },
+    });
+  }
+
+  function setUpSignInForm(userEmail, userPassword) {
+    self.SignInForm.on("submit", function (e) {
       e.preventDefault();
 
-      $.ajax({
-        type: "POST",
-        url: "https://localhost:7081/users/signin",
-        data: $(this).serialize(),
-        xhrFields: {
-          withCredentials: true,
-        },
-        success: function (response) {
-          if (response.content.remainingSignInAttempts === null) {
-            window.location.href = "/html/pages_users/users_page.html";
-          } else {
-            alert(response.message || "Login failed");
-          }
-        },
-        error: function (response) {
-          alert("Login failed: ", response);
-        },
-      });
+      userEmail = self.SignInForm.find("#signInEmail").val();
+      userPassword = self.SignInForm.find("#signInPassword").val();
+
+      signIn(userEmail, userPassword, false);
     });
   }
 
   function Build() {
+    self.LoadReferences();
     buildTypeWriterEffect();
     loadEvents();
     setUpSignUpForm();

@@ -26,6 +26,14 @@
 
     <link rel="stylesheet" href="/css/loaders.css" />
 
+    <!-- SweetAlert2 core -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Bulma theme for SweetAlert2 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="/css/style_general.css" />
     <link rel="stylesheet" href="/css/style_header.css" />
     <link rel="stylesheet"
@@ -33,7 +41,7 @@
     <link rel="stylesheet" href="/css/style_footer.css" />
   </head>
   <body>
-    <main>
+    <main id="user-athentication-page">
       <section id="status-loggedOut">
         <div
           class="d-flex flex-column align-items-center justify-content-center entryBox"
@@ -85,10 +93,10 @@
               <div class="w-100">
                 <label class="form-label" for=""><span>E</span>mail</label>
                 <input
-                  name="UserEmail"
-                  type="email"
-                  class="new-data form-control required"
+                  name="Email"
                   id="newUserEmail"
+                  class="new-data form-control required"
+                  type="email"
                   placeholder="Enter your email"
                 />
               </div>
@@ -221,12 +229,12 @@
                 id="signIn-form"
                 class="d-flex flex-column align-items-center"
               >
-                <!-- Input: Name -->
+                <!-- Input: Email -->
                 <div class="w-100 pb-3">
                   <label class="form-label" for=""><span>N</span>ame</label>
                   <input
                     name="Email"
-                    id="newUser-Name"
+                    id="signInEmail"
                     class="new-data form-control required"
                     type="email"
                     placeholder="Enter your email"
@@ -235,7 +243,7 @@
 
                 <hr />
 
-                <!-- Input: Passwor -->
+                <!-- Input: Password -->
                 <div>
                   <label class="form-label" for=""><span>P</span>assword</label>
                   <div class="d-flex flex-row w-100 align-items-center">
@@ -275,13 +283,12 @@
       </section>
     </main>
 
-   
-    </script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/node_modules/select2/dist/js/select2.min.js"></script>
-     <script src="/js/plugings/page_loader.js"></script>
+    <script src="/js/plugings/page_loader.js"></script>
+    <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
     <script src="/js/components/header.js"></script>
     <script src="/js/scripts/scripts_users/script_users_authentication.js"></script>
