@@ -42,3 +42,47 @@
   transform: scale(3) rotate(1800deg) !important;
   color: var(--main-color);
 }
+
+/* Wrapper should allow horizontal scroll */
+.table-scroll-hint {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+/* The fade effect on the right side */
+.table-scroll-hint::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 100%;
+  pointer-events: none;
+  background: transparent;
+  animation: fadePulse 3s ease-in-out 1s 1;
+}
+
+/* Subtle pulsing animation to draw attention */
+@keyframes fadePulse {
+  0% {
+    opacity: 0;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent);
+  }
+  25% {
+    opacity: 0.5;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.5), transparent);
+  }
+  50% {
+    opacity: 1;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.7), transparent);
+  }
+  75% {
+    opacity: 0.5;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.5), transparent);
+  }
+  100% {
+    opacity: 1;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent);
+  }
+}
