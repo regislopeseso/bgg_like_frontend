@@ -4,9 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Explore</title>
-
     <link rel="stylesheet" href="/css/addons.css" />
-
     <link rel="stylesheet" href="/css/style_explore.css" />
   </head>
   <body>
@@ -402,23 +400,16 @@
       </section>
     </main>
 
-    <!-- <script src="/js/components/addons_body.js"></script> -->
-    <!-- <script src="/js/components/addons.js"></script> -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script>
-      function loadExplore(src, callback) {
-        const script = document.createElement("script");
-        script.src = src;
-        script.onload = callback || function () {};
-        script.async = false; // preserve execution order
-        document.body.appendChild(script);
-      }
+    <script src="/node_modules/select2/dist/js/select2.min.js"></script>
+    <script src="/js/plugins/page_loader.js"></script>
+    <script src="/js/plugins/content_loader.js"></script>
+    <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
-      loadExplore("/js/components/addons.js", () => {
-        loadExplore("/js/scripts/script_explore.js");
-      });
-    </script>
     <script src="/js/components/header.js"></script>
-    <!-- <script src="/js/scripts/script_explore.js"></script> -->
+    <script src="/js/scripts/script_explore.js"></script>
   </body>
 </html>
