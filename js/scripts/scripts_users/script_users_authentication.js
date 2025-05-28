@@ -4,8 +4,6 @@ $(function () {
   let userEmail = "";
   let userPassword = "";
 
-  let isSignUpMode = true;
-
   self.LoadReferences = () => {
     self.DOM = $("#user-athentication-page");
     self.Form = $("#bg-data-modal");
@@ -13,6 +11,10 @@ $(function () {
     self.SignUpForm = self.DOM.find("#signUp-form");
     self.SignInForm = self.DOM.find("#signIn-form");
   };
+
+  function redirectToUsersPage() {
+    window.location.href = "/html/pages_users/users_page.html";
+  }
 
   function sweetAlertSuccess(text) {
     Swal.fire({
@@ -28,8 +30,38 @@ $(function () {
     });
   }
 
-  function redirectToUsersPage() {
-    window.location.href = "/html/pages_users/users_page.html";
+  function sweetAlertError(title_text, message_text) {
+    let timerInterval;
+    let seconds = 5;
+
+    Swal.fire({
+      theme: "bulma",
+      position: "center",
+      title: title_text,
+      icon: "error",
+      showConfirmButton: false,
+      showCancelButton: true,
+      cancelButtonText: "Close",
+
+      html: `
+      <div>
+        <p>${message_text}</p>
+        <p>This window will close in <b>${seconds}</b>...</p>
+      </div>
+    `,
+      timer: seconds * 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        const content = Swal.getHtmlContainer().querySelector("b");
+        timerInterval = setInterval(() => {
+          seconds--;
+          content.textContent = seconds;
+        }, 1000);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    });
   }
 
   function buildTypeWriterEffect() {
@@ -301,14 +333,15 @@ $(function () {
       )
         .done(function (response) {
           if (response.content === null) {
-            alert(response.message);
+            sweetAlertError("Sign Up failed", response.message);
           } else {
             signIn(userEmail, userPassword, true);
           }
         })
-        .fail(function (response) {})
+        .fail(function (response) {
+          sweetAlertError("Sign Up failed", response.message);
+        })
         .always(function (response) {
-          // Re-enable button
           submitBtn.attr("disabled", true).text(originalBtnText);
         });
 
@@ -332,18 +365,21 @@ $(function () {
         withCredentials: true,
       },
       success: function (response) {
-        if (response.content.remainingSignInAttempts === null) {
+        if (response.content === null) {
+          sweetAlertError("Login failed!", response.message);
+          return;
+        } else if (response.content.remainingSignInAttempts === null) {
           if (isSignUpMode) {
             sweetAlertSuccess("Successfully signed up!");
           } else {
             sweetAlertSuccess("Welcome back!");
           }
         } else {
-          alert(response.message || "Login failed");
+          sweetAlertError("Login failed!", response.message);
         }
       },
       error: function (response) {
-        alert("Login failed");
+        sweetAlertError("Login failed!", response.message);
       },
     });
   }

@@ -17,24 +17,6 @@
   }
 }
 
-@media screen and (max-width: 991px) {
-  /* section {
-    padding: 10rem 3% 2rem;
-  }
-  .header {
-    padding: 2rem 3%;
-  }
-  .footer {
-    padding: 2rem 3%;
-  }
-  .services {
-    padding: 7rem;
-  }
-  .portfolio {
-    padding: 7rem;
-  } */
-}
-
 @media screen and (max-width: 768px) {
   .header {
     flex-direction: column;
@@ -98,8 +80,5 @@
   }
   .about-img img {
     width: 90vw;
-  }
-  .footer {
-    flex-direction: column-reverse;
   }
 }

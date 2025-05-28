@@ -288,7 +288,7 @@ textarea.new-data {
 /* Override the title style */
 .swal2-title {
   color: var(--text-color); /* Your brand color */
-  font-weight: 100;
+  font-weight: 100 !important;
 }
 
 /* Override the confirm button */
@@ -322,22 +322,39 @@ textarea.new-data {
   border-radius: 6px;
   box-shadow: 0 0 15px 1px var(--text-color);
 }
-
-/* ✅ Outer ring of the success icon */
+/** Success Icon */
+/* Outer ring of the success icon */
 .swal2-icon.swal2-success {
   border-color: var(--main-color) !important;
   color: var(--main-color);
 }
-
-/* ✅ Checkmark lines specifically */
+/* Checkmark lines specifically */
 .swal2-icon.swal2-success .swal2-success-line-tip,
 .swal2-icon.swal2-success .swal2-success-line-long {
   background-color: var(--main-color) !important;
 }
-
-/* ✅ Success ring animation fix (optional but safe) */
+/* Success ring animation fix (optional but safe) */
 .swal2-icon.swal2-success .swal2-success-ring {
-  border: 4px solid rgba(0, 238, 255, 0.3); /* you can also use `var(--main-color)` with alpha if needed */
+  border: 4px solid var(--main-color); /* you can also use `var(--main-color)` with alpha if needed */
+}
+/*! Error Icon */
+/* Outer ring of the error icon */
+.swal2-icon.swal2-error {
+  border-color: var(--reddish) !important;
+  color: var(--reddish);
+}
+/* Checkmark lines specifically */
+.swal2-icon.swal2-error .swal2-success-line-tip,
+.swal2-icon.swal2-error .swal2-success-line-long {
+  background-color: var(--reddish) !important;
+}
+/* Error ring animation fix (optional but safe) */
+.swal2-icon.swal2-error .swal2-error-ring {
+  border: 4px solid var(--reddish); /* you can also use `var(--main-color)` with alpha if needed */
+}
+.swal2-x-mark-line-left,
+.swal2-x-mark-line-right {
+  background-color: var(--reddish) !important;
 }
 
 @media screen and (max-width: 3500px) {

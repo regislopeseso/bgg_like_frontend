@@ -1,9 +1,37 @@
 let __global = {};
 
+function redirectToIndexPage() {
+  window.location.href = "/index.html";
+}
+
+function sweetAlertSuccess(text) {
+  Swal.fire({
+    position: "center",
+    icon: "success",
+    theme: "bulma",
+    title: text,
+    showConfirmButton: false,
+    timer: 1000,
+  }).then((result) => {
+    redirectToIndexPage();
+  });
+}
+function sweetAlertError(text) {
+  Swal.fire({
+    position: "center",
+    icon: "error",
+    theme: "bulma",
+    title: text,
+    showConfirmButton: false,
+    timer: 1500,
+  }).then((result) => {
+    redirectToIndexPage();
+  });
+}
+
 function loadHeader(userData, roleData) {
   const isLoggedIn = userData?.content?.isUserLoggedIn === true;
-  const userRole = roleData?.content?.role || "";
-  const userRoleInitial = userRole.charAt(0).toUpperCase();
+  const userRole = roleData?.content?.role || null;
 
   const header = document.createElement("header");
   header.className = "header";
@@ -108,7 +136,7 @@ function loadHeader(userData, roleData) {
   `;
   document.body.appendChild(header);
 
-  if (isLoggedIn === true) {
+  if (isLoggedIn === true && userRole !== null) {
     $("header").css("border-bottom", "3px solid var(--main-color)");
     $(".anonymous-clearance").addClass("d-none");
     $(".loggedIn-clearance").removeClass("d-none");
@@ -138,9 +166,9 @@ function loadHeader(userData, roleData) {
 
       if (response.content?.isUserSignOut) {
         // Successfully logged out
-        window.location.href = "/index.html";
+        sweetAlertSuccess("Bye Bye!");
       } else {
-        alert("Failed to log out. Please try again.");
+        sweetAlertError("Failed to log out.");
       }
     });
   } else {
@@ -165,15 +193,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     userData = await statusResponse.json();
 
     if (userData.content.isUserLoggedIn === true) {
+      console.log(userData.message);
       const roleResponse = await fetch("https://localhost:7081/users/getrole", {
         method: "GET",
         credentials: "include",
       });
-
       roleData = await roleResponse.json();
+      console.log(roleData.message);
+    } else {
+      console.log(userData.message);
     }
   } catch (err) {
-    console.error("Failed to fetch authentication status or role", err);
+    sweetAlertError("Failed to fetch authentication status or role", err);
   }
 
   loadHeader(userData, roleData);
@@ -256,22 +287,4 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   SetTheme();
-
-  $(".logOut").on("click", async function (e) {
-    e.preventDefault();
-
-    const response = await fetch("https://localhost:7081/users/signout", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => res.json());
-
-    if (response.content?.isUserSignOut) {
-      window.location.href = "/index.html";
-    } else {
-      alert("Failed to log out. Please try again.");
-    }
-  });
 });

@@ -1,0 +1,23 @@
+/* Font Awesome (via CDN) */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css");
+
+/* Bootstrap (local) */
+@import url("/node_modules/bootstrap/dist/css/bootstrap.min.css");
+
+/* Bootstrap Icons (local) */
+@import url("/node_modules/bootstrap-icons/font/bootstrap-icons.css");
+
+/* Select2 (local) */
+@import url("/node_modules/select2/dist/css/select2.min.css");
+
+/* Loaders (local) */
+@import url("/css/loaders.css");
+
+/* SweetAlert2 Bulma Theme (via CDN) */
+@import url("https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css");
+
+/* General Styles (local) */
+@import url("/css/style_general.css");
+
+/* Header Styles (local) */
+@import url("/css/style_header.css");

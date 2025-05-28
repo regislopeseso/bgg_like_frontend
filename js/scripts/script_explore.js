@@ -1,21 +1,6 @@
 $(function () {
   $("body").loadpage("charge");
 
-  fetch("https://localhost:7081/users/validatestatus", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.content.isUserLoggedIn == true) {
-        console.log("User is authenticated at EXPLORE PAGE. Welcome!");
-      } else {
-        console.log("User is NOT authenticated at EXPLORE PAGE. Welcome!");
-      }
-      Build();
-      $("body").loadpage("demolish");
-    });
-
   function loadAllGames(data = {}) {
     $.get(
       "https://localhost:7081/explore/listboardgames",
@@ -784,7 +769,9 @@ $(function () {
     loadEvents();
     loadRankings();
     loadBgDetails();
+
+    $("body").loadpage("demolish");
   }
 
-  //Build();
+  Build();
 });
