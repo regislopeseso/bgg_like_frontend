@@ -28,6 +28,18 @@ $(function () {
   const maxDate = twelveYearsAgo.toISOString().split("T")[0];
   const minDate = hundredYearsAgo.toISOString().split("T")[0];
 
+  function sweetAlertSuccess(text) {
+    Swal.fire({
+      position: "top-end",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: text,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
   function loadUserDetails() {
     $.ajax({
       url: "https://localhost:7081/users/getprofiledetails",
@@ -247,6 +259,13 @@ $(function () {
           .addClass("red-alert-one");
       }
     });
+
+    // Add Escape key listener for redirection
+    $(document).on("keydown", function (e) {
+      if (e.key === "Escape") {
+        window.location.href = "/index.html";
+      }
+    });
   }
 
   function setUpEditProfileForm() {
@@ -318,8 +337,7 @@ $(function () {
           contentType: "application/json",
           xhrFields: { withCredentials: true },
           success: function (resp) {
-            alert(resp.message);
-            window.location.href = "/html/pages_users/users_page.html";
+            sweetAlertSuccess(resp.message);
           },
           error: function (xhr, status, error) {
             console.error("Error updating session:", error);
@@ -330,6 +348,16 @@ $(function () {
           complete: () => {
             // Re-enable button
             submitBtn.attr("disabled", true).text(originalBtnText);
+            // Clear the password fields
+            $("#current-password").val(null);
+            $("#new-password")
+              .removeClass("new-data")
+              .addClass("current-data")
+              .val(null);
+            $("#confirm-password")
+              .removeClass("new-data")
+              .addClass("current-data")
+              .val(null);
           },
         });
       });

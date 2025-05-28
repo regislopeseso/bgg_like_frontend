@@ -1,22 +1,37 @@
 $(function () {
-  fetch("https://localhost:7081/users/validatestatus", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      $("body").loadpage("charge");
+  function redirectIndexPage() {
+    window.location.href = "/index.html";
+  }
 
-      if (data.content.isUserLoggedIn == true) {
-        // If the user is logged in, proceed to load the page normally
-        console.log("User is authenticated. Welcome!");
-      } else {
-        // If the user is not authenticated, redirect them to the authentication page
-        window.location.href = "html/pages_users/users_authentication.html";
-      }
+  function sweetAlertSuccess(text) {
+    Swal.fire({
+      position: "top-end",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: text,
+      showConfirmButton: false,
+      timer: 1500,
+    }).then(() => {
+      redirectIndexPage();
     });
+  }
 
-  function forceLogOut() {
+  function sweetAlertError(title_text) {
+    let timerInterval;
+    let seconds = 5;
+
+    return Swal.fire({
+      theme: "bulma",
+      position: "center",
+      title: title_text,
+      icon: "error",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  function forceLogOut(text) {
     $.ajax({
       type: "POST",
       url: "https://localhost:7081/users/signout",
@@ -25,11 +40,14 @@ $(function () {
         withCredentials: true,
       },
       success: () => {
-        alert("Session expired!");
-        window.location.href = "/index.html";
+        sweetAlertError(text + "Session expired!").then(() => {
+          redirectIndexPage();
+        });
       },
-      error: (err) => {
-        alert(err);
+      error: (text) => {
+        sweetAlertError(text + "Session expired!").then(() => {
+          redirectIndexPage();
+        });
       },
     });
   }
@@ -38,17 +56,10 @@ $(function () {
     $("#request-delete-profile").on("click", function (e) {
       e.preventDefault();
       $("#request-delete-profile").addClass("d-none");
+
       $("#user-password-confirmation").removeClass("d-none");
-    });
 
-    $("#user-password").on("input", function () {
-      const requestedPassword = $(this).val();
-
-      if (requestedPassword.length > 5) {
-        $("#confirm-delete-profile").prop("disabled", false);
-      } else {
-        $("#confirm-delete-profile").prop("disabled", true);
-      }
+      $("#delete-profile-input").trigger("focus");
     });
 
     const openEye = "/images/icons/eye_show.svg";
@@ -78,12 +89,7 @@ $(function () {
       .off("submit", "#delete-profile-form")
       .on("submit", "#delete-profile-form", function (e) {
         e.preventDefault();
-        const requestedPassword = $("#user-password").val();
-
-        // Disable submit button to prevent double submissions
-        const submitBtn = $(this).find("button[type='submit']");
-        const originalBtnText = submitBtn.text();
-        submitBtn.attr("disabled", true).text("Submitting...");
+        const requestedPassword = $("#delete-profile-input").val();
 
         $.ajax({
           type: "DELETE",
@@ -94,28 +100,26 @@ $(function () {
           contentType: "application/json",
           xhrFields: { withCredentials: true },
           success: function (resp) {
-            if (resp.content.remainingPasswordAttempts === null) {
-              alert(resp.message);
-              window.location.href = "/index.html";
+            console.log(resp);
+            if (resp.content === null) {
+              sweetAlertError(resp.message);
+            } else if (resp.content.remainingPasswordAttempts === null) {
+              sweetAlertSuccess(resp.message);
             } else {
               if (
-                resp.content.remainingPasswordAttempts !== 0 &&
+                resp.content.remainingPasswordAttempts > 0 &&
                 resp.content.remainingPasswordAttempts < 3
               ) {
-                alert(resp.message);
+                sweetAlertError(resp.message);
               }
               if (resp.content.remainingPasswordAttempts === 0) {
-                alert(resp.message);
-                forceLogOut();
+                forceLogOut(resp.message);
               }
             }
           },
           error: function (err) {
-            alert(err);
-          },
-          complete: () => {
-            // Re-enable button
-            submitBtn.attr("disabled", true).text(originalBtnText);
+            sweetAlertError(err);
+            $("confirm-delete-profile").trigger("focus");
           },
         });
       });

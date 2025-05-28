@@ -448,6 +448,7 @@ $(function () {
       $("#categoryRankingsToggler").hide();
 
       $("body").loadcontent("demolish-contentloader");
+
       setTimeout(() => {
         $("a").css({
           "pointer-events": "all",
@@ -459,6 +460,7 @@ $(function () {
         $("#searchBGToggler").show();
 
         $("main").loadcontent("demolish-contentloader");
+        $("#bgSelection").select2("open");
       }, 500);
     });
 

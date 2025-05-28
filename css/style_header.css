@@ -43,17 +43,21 @@
   box-shadow: 0 0 1rem var(--text-color) !important;
 }
 .dropdown-menu li:first-child > .dropdown-item:hover {
-  color: var(--main-color);
-  box-shadow: 0 0 1rem var(--main-color) !important;
+  color: var(--greenish);
+  box-shadow: 0 0 1rem var(--greenish) !important;
 }
 .dropdown-menu li:nth-of-type(2) > .dropdown-item:hover {
+  color: var(--yellowish);
+  box-shadow: 0 0 1rem var(--yellowish) !important;
+}
+.dropdown-menu li:nth-of-type(3) > .dropdown-item:hover {
   color: var(--reddish);
   box-shadow: 0 0 1rem var(--reddish) !important;
 }
 .dropdown-menu li:last-child > .dropdown-item:hover {
-  color: var(--yellowish);
+  color: var(--main-color);
   font-weight: bold;
-  box-shadow: 0 0 1rem var(--yellowish) !important;
+  box-shadow: 0 0 1rem var(--main-color) !important;
 }
 
 .navHamburger {

@@ -172,6 +172,8 @@ $(function () {
           "slow"
         );
 
+      $("#newUserName").trigger("focus");
+
       setTimeout(function () {
         $("#signIn").css("pointer-events", "auto");
       }, 1000);
@@ -282,6 +284,8 @@ $(function () {
           },
           "slow"
         );
+
+      $("#signInEmail").trigger("focus");
 
       setTimeout(function () {
         $("#signUp").css("pointer-events", "auto");
