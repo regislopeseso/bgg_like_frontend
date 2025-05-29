@@ -376,11 +376,7 @@ $(function () {
           sweetAlertError("Login failed!", response.message);
           return;
         } else if (response.content.remainingSignInAttempts === null) {
-          if (isSignUpMode) {
-            sweetAlertSuccess("Successfully signed up!");
-          } else {
-            sweetAlertSuccess("Welcome back!");
-          }
+          redirectToUsersPage();
         } else {
           sweetAlertError("Login failed!", response.message);
         }

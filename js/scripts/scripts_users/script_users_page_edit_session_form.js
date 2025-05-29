@@ -2,6 +2,10 @@ const FormHandler_EditSession = (function () {
   // Private variables
   let sessionsDB = []; // Store sessions data globally
 
+  let oldDate = "";
+  let oldPlayersCount = "";
+  let oldSessionDuration = "";
+
   // Format date from YYYY-MM-DD to DD/MM/YYYY for display
   function formatDateToDDMMYYYY(dateStr) {
     if (!dateStr) return "";
@@ -82,7 +86,7 @@ const FormHandler_EditSession = (function () {
       }
     });
 
-    $("#confirm-editSession").prop(
+    $("#delete-Session, #reset-editSession, #confirm-editSession").prop(
       "disabled",
       !(isBGSelected && isSessionSelected && areFieldsFilled)
     );
@@ -282,19 +286,39 @@ const FormHandler_EditSession = (function () {
         if (selectedSession) {
           // Handle case inconsistency in property names
           const date = selectedSession.date || selectedSession.Date || "";
+          oldDate = date;
+
           const playersCount =
             selectedSession.playersCount || selectedSession.PlayersCount || "";
+          oldPlayersCount = playersCount;
+
           const duration =
             selectedSession.duration_minutes ||
             selectedSession.Duration_minutes ||
             "";
+          oldSessionDuration = duration;
 
           // Pre-fill form fields with session data
           $("#currentSessionDate").val(formatDateToDDMMYYYY(date));
           $("#currentPlayersCount").val(playersCount);
           $("#currentSessionDuration").val(duration + " minutes");
 
+          $("#newSessionDate").val(date);
+          $("#newPlayersCount").val(playersCount);
+          $("#newSessionDuration").val(duration);
+
           $("#newSessionDate").trigger("focus");
+
+          $("#delete-Session, #reset-editSession, #confirm-editSession").prop(
+            "disabled",
+            false
+          );
+
+          $("#delete-Session").on("click", function (e) {
+            e.preventDefault();
+
+            setUpDeleteSession(sessionId);
+          });
         } else {
           console.warn("Session not found in sessionsDB:", sessionId);
         }
@@ -316,6 +340,8 @@ const FormHandler_EditSession = (function () {
         const originalBtnText = submitBtn.text();
         submitBtn.attr("disabled", true).text("Submitting...");
 
+        const buttons = $(this).find("button[type='button']");
+
         // Get form values
         const selectedBoardGameId = $("#bgSelection-editSession").val();
         const selectedSessionId = $("#sessionSelection-edit").val();
@@ -323,42 +349,54 @@ const FormHandler_EditSession = (function () {
         const updatedPlayersCount = $("#newPlayersCount").val();
         const updatedDuration = $("#newSessionDuration").val();
 
-        $.ajax({
-          url: "https://localhost:7081/users/editsession",
-          type: "PUT",
-          data: JSON.stringify({
-            boardGameId: selectedBoardGameId,
-            sessionId: selectedSessionId,
-            newDate: updatedDate,
-            newPlayersCount: updatedPlayersCount,
-            newDuration_minutes: updatedDuration,
-          }),
-          contentType: "application/json",
-          xhrFields: { withCredentials: true },
-          success: function (resp) {
-            sweetAlertSuccess("Session updated!", resp.message);
+        if (
+          updatedDate === oldDate &&
+          updatedPlayersCount == String(oldPlayersCount) &&
+          updatedDuration == String(oldSessionDuration)
+        ) {
+          sweetAlertSuccess("Session updated =)");
+          forceClearForm();
+          submitBtn.attr("disabled", true).text(originalBtnText);
+          buttons.attr("disabled", true);
+          $("#bgSelection-editSession").select2("open");
+        } else {
+          $.ajax({
+            url: "https://localhost:7081/users/editsession",
+            type: "PUT",
+            data: JSON.stringify({
+              boardGameId: selectedBoardGameId,
+              sessionId: selectedSessionId,
+              newDate: updatedDate,
+              newPlayersCount: updatedPlayersCount,
+              newDuration_minutes: updatedDuration,
+            }),
+            contentType: "application/json",
+            xhrFields: { withCredentials: true },
+            success: function (resp) {
+              sweetAlertSuccess("Session updated!", resp.message);
 
-            // Clear form fields after successful update
-            forceClearForm();
-          },
-          error: function (xhr, status, error) {
-            console.error("Error updating session:", error);
-            console.log("Status:", status);
-            console.log("Response:", xhr.responseText);
-            sweetAlertError("Failed to edit session.");
-          },
-          complete: () => {
-            // Re-enable button
-            submitBtn.attr("disabled", true).text(originalBtnText);
+              // Clear form fields after successful update
+              forceClearForm();
+            },
+            error: function (xhr, status, error) {
+              console.error("Error updating session:", error);
+              console.log("Status:", status);
+              console.log("Response:", xhr.responseText);
+              sweetAlertError("Failed to edit session.");
+            },
+            complete: () => {
+              // Re-enable button
+              submitBtn.attr("disabled", true).text(originalBtnText);
 
-            // Tell the Flipper module that we're done submitting
-            if (window.Flipper) {
-              Flipper.setSubmitting(false);
-            }
+              // Tell the Flipper module that we're done submitting
+              if (window.Flipper) {
+                Flipper.setSubmitting(false);
+              }
 
-            $("#bgSelection-editSession").select2("open");
-          },
-        });
+              $("#bgSelection-editSession").select2("open");
+            },
+          });
+        }
       });
 
     // React to board game selection
@@ -376,6 +414,34 @@ const FormHandler_EditSession = (function () {
     $("#reset-editSession").on("click", () => {
       forceClearForm();
       $("#bgSelection-editSession").select2("open");
+    });
+  }
+
+  function setUpDeleteSession(sessionId) {
+    $.ajax({
+      url: `https://localhost:7081/users/deletesession?SessionId=${sessionId}`,
+      type: "DELETE",
+      xhrFields: { withCredentials: true },
+      success: function (resp) {
+        sweetAlertSuccess(resp.message);
+
+        //Clear form
+        forceClearForm();
+      },
+      error: function (err) {
+        sweetAlertError(err);
+      },
+      complete: () => {
+        // Re-enable button
+        submitBtn.attr("disabled", true).text(originalBtnText);
+
+        // Tell the Flipper module that we're done submitting
+        if (window.Flipper) {
+          Flipper.setSubmitting(false);
+        }
+
+        $("#bgSelection-editSession").select2("open");
+      },
     });
   }
 

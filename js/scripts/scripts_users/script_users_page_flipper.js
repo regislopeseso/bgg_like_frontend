@@ -43,10 +43,7 @@ const Flipper = (function () {
         { id: "#userOption-playGame", template: "play-template" },
         { id: "#userOption-logSession", template: "log-session-template" },
         { id: "#userOption-editSession", template: "edit-session-template" },
-        {
-          id: "#userOption-deleteSession",
-          template: "delete-session-template",
-        },
+
         { id: "#userOption-rateBg", template: "rate-bg-template" },
         { id: "#userOption-editRate", template: "edit-rate-template" },
         {
@@ -285,20 +282,20 @@ function loadTemplate(templateId) {
   
           <div class="d-flex flex-row w-100 justify-content-between mt-2 gap-3">
             <button
-              type="submit"
-              id="confirm-logNewSession"
-              class="btn btn-lg btn-outline-info "
-              disabled
-            >
-              Log new Session
-            </button>
-
-            <button
               type="button"
               id="reset-logNewSession"
               class="btn-refresh btn btn-sm btn-outline-warning"
             >
               Clear Form
+            </button>
+
+            <button
+              type="submit"
+              id="confirm-logNewSession"
+              class="btn btn-lg btn-outline-info "
+              disabled
+            >
+              Confirm
             </button>
           </div>
         </form>
@@ -348,7 +345,7 @@ function loadTemplate(templateId) {
 
             <hr/>
 
-            <div class="d-flex flex-row align-items-center gap-5">
+            <div class="d-flex flex-row align-items-end gap-1">
               <div class="text-center w-50">
                 <label for="currentSessionDate" class="form-label"
                   ><span>C</span>urrent Session Date</label
@@ -360,6 +357,9 @@ function loadTemplate(templateId) {
                   class="current-data form-control text-center"
                   disabled
                 />
+              </div>
+              <div class="update-arrow-right">
+                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"></img>
               </div>
               <div class="text-center w-50">
                 <label class="form-label"
@@ -378,7 +378,7 @@ function loadTemplate(templateId) {
 
             <hr/>
 
-            <div class="d-flex flex-row align-items-center gap-5">
+            <div class="d-flex flex-row align-items-end gap-1">
               <div class="text-center w-50">
                 <label for="currentPlayersCount" class="form-label"
                   ><span>C</span>urrent Players Count</label
@@ -390,6 +390,10 @@ function loadTemplate(templateId) {
                   type="number"
                   disabled
                 />
+              </div>
+
+              <div class="update-arrow-right">
+                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"></img>
               </div>
 
               <div class="text-center w-50">
@@ -417,7 +421,7 @@ function loadTemplate(templateId) {
 
             <hr/>
 
-            <div class="d-flex flex-row align-items-center gap-5">
+            <div class="d-flex flex-row align-items-end gap-1">
               <div class="text-center w-50">
                 <label for="currentSessionDuration" class="form-label"
                   ><span>C</span>urrent Match Duration:</label
@@ -430,6 +434,11 @@ function loadTemplate(templateId) {
                   disabled
                 />
               </div>
+
+              <div class="update-arrow-right">
+                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"></img>
+              </div>
+
               <div class="text-center w-50">
                 <label class="form-label"
                   ><span>N</span>ew Match Duration:</label
@@ -450,94 +459,33 @@ function loadTemplate(templateId) {
 
             <div class="d-flex flex-row w-100 justify-content-between mt-2 gap-3">
               <button
+                type="button"
+                id="delete-Session"
+                class="btn btn-sm btn-outline-danger"
+                disabled
+              >
+                Delete
+              </button> 
+
+              <button
+                type="button"
+                id="reset-editSession"
+                class="btn-refresh btn btn-sm btn-outline-warning"
+                disabled
+              >
+                Clear
+              </button>
+
+               <button
                 type="submit"
                 id="confirm-editSession"
                 class="btn btn-lg btn-outline-info"
                 disabled
               >
-                Confirm Alteration
-              </button>
-              <button
-                type="button"
-                id="reset-editSession"
-                class="btn-refresh btn btn-sm btn-outline-warning"
-              >
-                Clear Form
+                Confirm
+                
               </button>
             </div>         
-          </form>
-        </div>`;
-    case "delete-session-template":
-      return `  
-        <div id="delete-session-template">
-          <h3 class="pb-0">
-            <span style="color: var(--reddish)">D</span>elete Session
-          </h3>
-
-          <hr/>
-
-          <form
-            id="delete-session-form"
-            class="d-flex flex-column align-items-center"
-          >
-            <div class="text-center w-80">
-              <label class="bgList-lbl" for="bgSelection-deleteSession"
-                ><span style="color: var(--reddish)">S</span>elect a Board
-                Game</label
-              >
-              <div class="comboBox-wrapper">
-                <div class="comboBox">
-                  <select
-                    name="BoardGameId"
-                    class="form-control form-select bg-select"
-                    id="bgSelection-deleteSession"
-                  ></select>
-                </div>
-              </div>
-            </div>
-
-            <hr/>
-
-            <div class="text-center w-50">
-              <label
-                id="delete-session-label"
-                class="bgList-lbl"
-                for="sessionSelection-delete"
-                ><span style="color: var(--reddish)">S</span>elect a
-                Session</label
-              >
-              <div class="comboBox-wrapper">
-                <div class="comboBox">
-                  <select
-                    name="SessionId"
-                    id="sessionSelection-delete"
-                    class="current-data form-control form-select bg-select"
-                  ></select>
-                </div>
-              </div>
-            </div>
-
-              <hr/>
-
-            <div
-              id="playersCount-delSession"
-              class="sessionDataPreview mb-3 text-center w-50"
-            ></div>
-
-            <div
-              id="matchDuration-delSession"
-              class="sessionDataPreview mb-3 text-center w-50"
-            ></div>
-
-            <button
-              type="submit"
-              id="confirm-deleteSession"
-              class="btn btn-lg btn-outline-info mt-2"
-              style="color: var(--reddish)"
-              disabled
-            >
-              Delete Session
-            </button>
           </form>
         </div>`;
     case "rate-bg-template":
@@ -613,7 +561,7 @@ function loadTemplate(templateId) {
           >
             <div class="text-start w-80">
               <label class="bgList-lbl" for="bgSelection-edit-rate"
-                ><span>S</span>elect a Board Game</label
+                ><span>S</span>elect a <span>B</span>oard Game <span>R</span>ating</label
               >
               <div class="comboBox-wrapper">
                 <div class="comboBox">
@@ -628,7 +576,7 @@ function loadTemplate(templateId) {
 
             <hr/>
 
-            <div class="d-flex flex-row align-items-center gap-5">
+            <div class="d-flex flex-row align-items-end gap-1">
               <div class="text-center w-50">
                 <label for="currentRate" class="form-label"
                   ><span>C</span>urrent Rate</label
@@ -640,6 +588,10 @@ function loadTemplate(templateId) {
                   class="current-data form-control text-center"
                   disabled
                 />
+              </div>
+
+              <div class="update-arrow-right">
+                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"></img>
               </div>
 
               <div class="text-center w-50">
@@ -666,15 +618,25 @@ function loadTemplate(templateId) {
             </div>
 
             <hr/>
+            <div class="d-flex flex-row w-100 justify-content-between mt-2 gap-3">
+              <button
+                type="button"
+                id="delete-rating"
+                class="btn btn-sm btn-outline-danger"
+                disabled
+              >
+                Delete
+              </button> 
 
-            <button
-              type="submit"
-              id="confirm-newRateBG"
-              class="btn btn-lg btn-outline-info mt-2"
-              disabled
-            >
-              Confirm new Rating
-            </button>
+              <button
+                type="submit"
+                id="confirm-newRateBG"
+                class="btn btn-lg btn-outline-info mt-2"
+                disabled
+              >
+                Confirm new Rating
+              </button>            
+            </div>
           </form>
         </div>`;
     case "new-life-counter-template":
