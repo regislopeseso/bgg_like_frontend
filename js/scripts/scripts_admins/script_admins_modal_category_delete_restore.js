@@ -39,6 +39,35 @@ function modal_Category_Delete_Restore() {
     self.DOM.loadcontent("demolish-contentloader");
   };
 
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      redirectToUsersPage();
+    });
+  }
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      redirectToUsersPage();
+    });
+  }
+
   self.FetchCategoryDetails = () => {
     self.AddContentLoader();
 
@@ -119,7 +148,7 @@ function modal_Category_Delete_Restore() {
         withCredentials: true,
       },
       success: (resp) => {
-        alert(resp.message);
+        sweetAlertSuccess(resp.message);
 
         // Re-enable button
         submitBtn.attr("disabled", false).text(originalBtnText);
@@ -133,9 +162,8 @@ function modal_Category_Delete_Restore() {
         }
       },
       error: (err) => {
-        alert(err);
+        sweetAlertError(err);
       },
-      complete: () => {},
     });
   };
 
@@ -156,7 +184,7 @@ function modal_Category_Delete_Restore() {
         withCredentials: true,
       },
       success: (resp) => {
-        alert(resp.message);
+        sweetAlertSuccess(resp.message);
 
         // Re-enable button
         confirmBtn.attr("disabled", false).text(originalBtnText);
@@ -170,9 +198,8 @@ function modal_Category_Delete_Restore() {
         }
       },
       error: (err) => {
-        alert(err);
+        sweetAlertError(err);
       },
-      complete: () => {},
     });
   };
 

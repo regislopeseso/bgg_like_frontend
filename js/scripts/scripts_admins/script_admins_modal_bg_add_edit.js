@@ -223,8 +223,39 @@ function modal_BG_Add_Edit() {
     // React to clicking on the clear button:
     self.Buttons.Reset.on("click", () => {
       self.forceClearForm();
+      self.Inputs.BgName.focus();
     });
   };
+
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      redirectToUsersPage();
+    });
+  }
+
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      redirectToUsersPage();
+    });
+  }
 
   self.forceClearForm = () => {
     // Block form submission button
@@ -259,9 +290,9 @@ function modal_BG_Add_Edit() {
         withCredentials: true,
       },
       success: (resp) => {
-        alert(resp.message);
-
         self.forceClearForm();
+
+        sweetAlertSuccess(resp.message);
 
         // Refresh the board games list
         if (__global.BgDataBaseModalController) {
@@ -269,11 +300,12 @@ function modal_BG_Add_Edit() {
         }
       },
       error: (err) => {
-        alert(err);
+        sweetAlertError(err);
       },
       complete: () => {
         // Re-enable button
         submitBtn.attr("disabled", true).text(originalBtnText);
+        self.Inputs.BgName.focus();
       },
     });
   };
@@ -312,7 +344,7 @@ function modal_BG_Add_Edit() {
         withCredentials: true,
       },
       success: (resp) => {
-        alert(resp.message);
+        sweetAlertSuccess(resp.message);
 
         // Reset form and exit edit mode
         self.forceClearForm();
@@ -329,7 +361,7 @@ function modal_BG_Add_Edit() {
         self.forceClearForm();
       },
       error: (err) => {
-        alert(err);
+        sweetAlertError(err);
       },
       complete: () => {
         // Re-enable button
@@ -392,6 +424,10 @@ function modal_BG_Add_Edit() {
     });
 
     modalInstance.show();
+    // Ensure focus is applied after modal is fully shown
+    self.DOM.on("shown.bs.modal", function () {
+      self.Inputs.BgName.focus();
+    });
   };
 
   self.BuildModal = () => {

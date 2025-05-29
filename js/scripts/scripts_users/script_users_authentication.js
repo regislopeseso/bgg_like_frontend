@@ -16,13 +16,14 @@ $(function () {
     window.location.href = "/html/pages_users/users_page.html";
   }
 
-  function sweetAlertSuccess(text) {
+  function sweetAlertSuccess(title_text, message_text) {
     Swal.fire({
       position: "center",
       confirmButtonText: "OK!",
       icon: "success",
       theme: "bulma",
-      title: text,
+      title: title_text,
+      text: message_text || "",
       showConfirmButton: false,
       timer: 1500,
     }).then((result) => {
@@ -33,6 +34,8 @@ $(function () {
   function sweetAlertError(title_text, message_text) {
     let timerInterval;
     let seconds = 5;
+
+    let text = message_text || "";
 
     Swal.fire({
       theme: "bulma",
@@ -45,7 +48,7 @@ $(function () {
 
       html: `
       <div>
-        <p>${message_text}</p>
+        <p>${text}</p>
         <p>This window will close in <b>${seconds}</b>...</p>
       </div>
     `,

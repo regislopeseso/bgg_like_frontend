@@ -105,6 +105,7 @@ function modal_Category_Add_Edit() {
     // React to clicking on the clear button:
     self.Buttons.Reset.on("click", () => {
       self.forceClearForm();
+      self.Inputs.CategoryName.focus();
     });
   };
 
@@ -132,7 +133,7 @@ function modal_Category_Add_Edit() {
         withCredentials: true,
       },
       success: (resp) => {
-        alert(resp.message);
+        sweetAlertSuccess(resp.message);
 
         self.forceClearForm();
 
@@ -144,7 +145,7 @@ function modal_Category_Add_Edit() {
         }
       },
       error: (err) => {
-        alert(err);
+        sweetAlertError(err);
       },
       complete: () => {
         // Re-enable button
@@ -175,7 +176,7 @@ function modal_Category_Add_Edit() {
         withCredentials: true,
       },
       success: (resp) => {
-        alert(resp.message);
+        sweetAlertSuccess(resp.message);
 
         // Reset form and exit edit mode
         self.forceClearForm();
@@ -192,7 +193,7 @@ function modal_Category_Add_Edit() {
         self.forceClearForm();
       },
       error: (err) => {
-        alert(err);
+        sweetAlertError(err);
       },
       complete: () => {
         // Re-enable button
@@ -259,6 +260,35 @@ function modal_Category_Add_Edit() {
     self.DOM.loadcontent("demolish-contentloader");
   };
 
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      redirectToUsersPage();
+    });
+  }
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      redirectToUsersPage();
+    });
+  }
+
   self.OpenAddModal = (onSuccessCallback) => {
     self.onSuccessCallback = onSuccessCallback;
     self.ResetToAddMode();
@@ -271,6 +301,11 @@ function modal_Category_Add_Edit() {
     self.onSuccessCallback = onSuccessCallback;
     self.Show();
     self.FetchCategoryDetails(categoryId);
+
+    // Ensure focus is applied after modal is fully shown
+    self.DOM.on("shown.bs.modal", function () {
+      self.Inputs.CategoryName.focus();
+    });
   };
 
   self.CloseModal = () => {

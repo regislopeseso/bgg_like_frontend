@@ -32,9 +32,7 @@ function modal_BG_Description_Edit() {
 
     self.ButtonsBox = self.DOM.find("#bg-description-buttons-box");
     self.Buttons = [];
-    self.Buttons[self.Buttons.length] = self.Buttons.Edit = self.DOM.find(
-      "#bg-description-edit-button"
-    );
+
     self.Buttons[self.Buttons.length] = self.Buttons.Submit = self.DOM.find(
       "#bg-description-submit-button"
     );
@@ -47,18 +45,6 @@ function modal_BG_Description_Edit() {
   };
 
   self.LoadEvents = () => {
-    self.Buttons.Edit.on("click", function (e) {
-      e.preventDefault();
-      self.Inputs.BgDescription.removeClass("current-data").addClass(
-        "new-data"
-      );
-      self.Buttons.Edit.fadeOut(600);
-      self.Buttons.Edit.attr("disabled", true);
-
-      self.Buttons.Submit.fadeIn(600);
-      self.Buttons.Reset.fadeIn(600);
-    });
-
     self.Buttons.Submit.on("click", function (e) {
       e.preventDefault();
       self.SetUpEditBgDescriptionForm();
@@ -132,8 +118,40 @@ function modal_BG_Description_Edit() {
     // React to clicking on the clear button:
     self.Buttons.Reset.on("click", () => {
       self.forceClearForm();
+
+      self.Inputs.BgDescription.focus();
     });
   };
+
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      redirectToUsersPage();
+    });
+  }
+
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      redirectToUsersPage();
+    });
+  }
 
   self.forceClearForm = () => {
     // Block form submission button
@@ -154,7 +172,7 @@ function modal_BG_Description_Edit() {
     // Get form values
     const boardGameId = self.currentBoardGameId;
     const boardGameName = self.KeepBgName;
-    const boardGameDescription = $("#new-bg-description").val();
+    const boardGameDescription = self.Inputs.BgDescription.val();
     const minPlayersCount = self.KeepBgNameBgMinPlayers;
     const maxPlayersCount = self.KeepBgNameBgMaxPlayers;
     const minAge = self.KeepBgNameBgMinAge;
@@ -179,11 +197,10 @@ function modal_BG_Description_Edit() {
         withCredentials: true,
       },
       success: (resp) => {
-        alert(resp.message);
+        sweetAlertSuccess(resp.message);
 
         // Reset form and exit edit mode
         self.forceClearForm();
-        self.ResetToAddMode();
 
         // Close the modal
         self.CloseModal();
@@ -196,7 +213,7 @@ function modal_BG_Description_Edit() {
         self.forceClearForm();
       },
       error: (err) => {
-        alert(err);
+        sweetAlertError(err);
       },
       complete: () => {
         // Re-enable button
@@ -261,23 +278,20 @@ function modal_BG_Description_Edit() {
 
   // New method to open the modal in edit mode
   self.OpenDescriptionModal = (boardGameId) => {
-    self.Buttons.Submit.fadeOut(100);
-    self.Buttons.Reset.fadeOut(100);
     self.Show();
     self.FetchBoardGameDetails(boardGameId);
+
+    // Ensure focus is applied after modal is fully shown
+    self.DOM.on("shown.bs.modal", function () {
+      self.Inputs.BgDescription.focus();
+    });
   };
 
   self.CloseModal = () => {
     const modalInstance = bootstrap.Modal.getInstance(self.DOM[0]);
     if (modalInstance) {
       self.forceClearForm();
-      self.Inputs.BgDescription.removeClass("new-data").addClass(
-        "current-data"
-      );
-      self.Buttons.Edit.attr("disabled", false);
-      self.Buttons.Edit.removeClass("d-none");
-      self.Buttons.Submit.addClass("d-none");
-      self.Buttons.Reset.addClass("d-none");
+
       modalInstance.hide();
     }
   };
