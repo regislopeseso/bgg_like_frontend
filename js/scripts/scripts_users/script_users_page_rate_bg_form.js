@@ -31,6 +31,8 @@ const FormHandler_RateBg = (function () {
       width: "100%",
       placeholder: "Type at least 3 characters to search",
     });
+
+    $("#bgSelection-rate").select2("open");
   }
 
   function checkFormFilling() {
@@ -46,6 +48,32 @@ const FormHandler_RateBg = (function () {
     });
 
     $("#confirm-rateBG").prop("disabled", !(isBGSelected && areFieldsFilled));
+  }
+
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 
   function forceClearForm() {
@@ -69,11 +97,12 @@ const FormHandler_RateBg = (function () {
         // Get selected boardGameId
         const boardGameId = $(this).val();
 
-        $("#rate").removeClass("current-data").addClass("new-data");
+        $("#rate")
+          .removeClass("current-data")
+          .addClass("new-data")
+          .trigger("focus");
       });
 
-    // Set up form submission handler
-    $(document);
     $("#rate-bg-form").on("submit", function (e) {
       e.preventDefault();
 
@@ -93,13 +122,18 @@ const FormHandler_RateBg = (function () {
         data: $(this).serialize(),
         xhrFields: { withCredentials: true },
         success: function (resp) {
-          alert(resp.message);
+          if (resp.content !== null) {
+            sweetAlertSuccess("Board game rated", resp.message);
+          }
+          if (resp.content === null) {
+            sweetAlertError("Rating failed", resp.message);
+          }
 
           // Reset form
           forceClearForm();
         },
         error: function (err) {
-          alert("Rating failed. Please try again. Error:", err);
+          sweetAlertError("Rating failed.", err);
         },
         complete: () => {
           // Re-enable button
@@ -109,6 +143,8 @@ const FormHandler_RateBg = (function () {
           if (window.Flipper) {
             Flipper.setSubmitting(false);
           }
+
+          $("#bgSelection-rate").select2("open");
         },
       });
     });

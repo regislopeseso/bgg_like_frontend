@@ -5,7 +5,7 @@ $(function () {
 
   function sweetAlertSuccess(text) {
     Swal.fire({
-      position: "top-end",
+      position: "center",
       confirmButtonText: "OK!",
       icon: "success",
       theme: "bulma",

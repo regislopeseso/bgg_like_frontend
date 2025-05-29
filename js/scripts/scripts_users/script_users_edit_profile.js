@@ -1,22 +1,4 @@
 $(function () {
-  fetch("https://localhost:7081/users/validatestatus", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      $("body").loadpage("charge");
-
-      if (data.content.isUserLoggedIn == true) {
-        // If the user is logged in, proceed to load the page normally
-        console.log("User is authenticated. Welcome!");
-        $("body").loadpage("demolish");
-      } else {
-        // If the user is not authenticated, redirect them to the authentication page
-        window.location.href = "html/pages_users/users_authentication.html";
-      }
-    });
-
   const today = new Date();
 
   const twelveYearsAgo = new Date(today);
@@ -30,9 +12,21 @@ $(function () {
 
   function sweetAlertSuccess(text) {
     Swal.fire({
-      position: "top-end",
+      position: "center",
       confirmButtonText: "OK!",
       icon: "success",
+      theme: "bulma",
+      title: text,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  function sweetAlertError(text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
       theme: "bulma",
       title: text,
       showConfirmButton: false,
@@ -295,17 +289,20 @@ $(function () {
           contentType: "application/json",
           xhrFields: { withCredentials: true },
           success: function (resp) {
-            alert(resp.message);
-            window.location.href = "/html/pages_users/users_page.html";
+            sweetAlertSuccess(resp.message);
           },
-          error: function (xhr, status, error) {
-            console.error("Error updating session:", error);
-            console.log("Status:", status);
-            console.log("Response:", xhr.responseText);
-            alert("Failed to edit session. Please try again.");
+          error: function (resp) {
+            sweetAlertError(resp.message);
           },
           complete: () => {
-            // Re-enable button
+            $("#user-name").removeClass("new-data").addClass("current-data");
+
+            $("#user-email").removeClass("new-data").addClass("current-data");
+
+            $("#user-birthdate")
+              .removeClass("new-data")
+              .addClass("current-data");
+
             submitBtn.attr("disabled", true).text(originalBtnText);
           },
         });

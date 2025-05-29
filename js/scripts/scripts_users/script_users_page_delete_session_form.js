@@ -1,11 +1,3 @@
-/**
- * Forms Module - Handles all form-related functionality
- * This module is responsible for:
- * 1. Initializing Select2 dropdowns
- * 2. Setting up form submission handlers
- * 3. Managing session data loading/editing
- */
-
 const FormHandler_DeleteSession = (function () {
   // Private variables
   let sessionsDB = []; // Store sessions data globally
@@ -49,6 +41,8 @@ const FormHandler_DeleteSession = (function () {
       width: "100%",
       placeholder: "Type at least 3 characters to search",
     });
+
+    $("#bgSelection-deleteSession").select2("open");
   }
 
   function loadSessionSelect2() {
@@ -79,6 +73,32 @@ const FormHandler_DeleteSession = (function () {
       "disabled",
       !(isBGSelected && isSessionSelected)
     );
+  }
+
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 
   function forceClearForm() {
@@ -198,7 +218,7 @@ const FormHandler_DeleteSession = (function () {
             }
           },
           error: function (response) {
-            alert("Failed to delete sessions. Try again later.", response);
+            sweetAlertError("Failed to delete sessions.", response);
           },
         });
       });
@@ -253,13 +273,13 @@ const FormHandler_DeleteSession = (function () {
           type: "DELETE",
           xhrFields: { withCredentials: true },
           success: function (resp) {
-            alert(resp.message);
+            sweetAlertSuccess(resp.message);
 
             //Clear form
             forceClearForm();
           },
           error: function (err) {
-            alert(err);
+            sweetAlertError(err);
           },
           complete: () => {
             // Re-enable button
@@ -269,6 +289,8 @@ const FormHandler_DeleteSession = (function () {
             if (window.Flipper) {
               Flipper.setSubmitting(false);
             }
+
+            $("#bgSelection-deleteSession").select2("open");
           },
         });
       });

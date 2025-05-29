@@ -11,7 +11,10 @@ const FormHandler_EditRate = (function () {
     // Initialize select2 for EDITING A RATE
     $("#bgSelection-edit-rate").select2({
       ajax: {
-        url: "https://localhost:7081/explore/findboardgame",
+        url: "https://localhost:7081/users/findboardgame",
+        xhrFields: {
+          withCredentials: true,
+        },
         data: (params) => ({ boardGameName: params.term }),
         processResults: (data, params) => {
           return {
@@ -34,7 +37,7 @@ const FormHandler_EditRate = (function () {
       placeholder: "Type at least 3 characters to search",
     });
 
-    $("#bgSelection-edit-rate").on("select2:select", function () {});
+    $("#bgSelection-edit-rate").select2("open");
   }
 
   function checkFormFilling() {
@@ -53,6 +56,32 @@ const FormHandler_EditRate = (function () {
       "disabled",
       !(isBGSelected && areFieldsFilled)
     );
+  }
+
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 
   function forceClearForm() {
@@ -78,6 +107,8 @@ const FormHandler_EditRate = (function () {
 
         $("#newRate").removeClass("current-data").addClass("new-data");
 
+        $("#newRate").trigger("focus");
+
         $.ajax({
           url: `https://localhost:7081/users/getrate?boardgameid=${boardGameId}`,
           type: "GET",
@@ -94,7 +125,7 @@ const FormHandler_EditRate = (function () {
             console.error("Error fetching rating:", error);
             console.log("Status:", status);
             console.log("Response:", xhr.responseText);
-            alert("Failed to fetch rating. Try again later.");
+            sweetAlertError("Failed to fetch rating.");
           },
         });
       });
@@ -128,7 +159,7 @@ const FormHandler_EditRate = (function () {
         contentType: "application/json",
         xhrFields: { withCredentials: true },
         success: function (response) {
-          alert(response.message);
+          sweetAlertSuccess("Rating updated!", response.message);
 
           // Reset form
           forceClearForm();
@@ -137,7 +168,7 @@ const FormHandler_EditRate = (function () {
           console.error("Error editing rate:", error);
           console.log("Status:", status);
           console.log("Response:", xhr.responseText);
-          alert("Failed to edit rate. Please try again.");
+          sweetAlertError("Failed to edit rate.");
         },
         complete: () => {
           // Re-enable button

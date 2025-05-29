@@ -14,6 +14,7 @@ const Flipper = (function () {
 
   return {
     init: function () {
+      $("body").loadpage("charge");
       this.setupAnimation();
 
       this.onContentChanged("user-details-template");
@@ -31,6 +32,7 @@ const Flipper = (function () {
 
     // Set up the CSS transition for the flip animation
     setupAnimation: function () {
+      $("body").loadpage("demolish");
       $(".flip-card-inner").css("transition", "transform 0.6s linear");
     },
 
@@ -320,8 +322,8 @@ function loadTemplate(templateId) {
                 <div class="comboBox">
                   <select
                     name="BoardGameId"
-                    class="form-control form-select bg-select text-center"
                     id="bgSelection-editSession"
+                    class="form-control form-select bg-select text-center"
                   ></select>
                 </div>
               </div>

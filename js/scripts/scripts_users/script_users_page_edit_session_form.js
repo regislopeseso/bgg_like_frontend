@@ -41,6 +41,8 @@ const FormHandler_EditSession = (function () {
       width: "100%",
       placeholder: "Type at least 3 characters to search",
     });
+
+    $("#bgSelection-editSession").select2("open");
   }
 
   function loadSessionDetails() {
@@ -84,6 +86,32 @@ const FormHandler_EditSession = (function () {
       "disabled",
       !(isBGSelected && isSessionSelected && areFieldsFilled)
     );
+  }
+
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 
   function forceClearForm() {
@@ -137,6 +165,8 @@ const FormHandler_EditSession = (function () {
 
         $("#sessionSelection-edit").removeClass("current-data");
         loadSessionDetails();
+
+        $("#sessionSelection-edit").select2("open");
 
         // Fetch sessions based on selected boardGameId
         $.ajax({
@@ -198,6 +228,8 @@ const FormHandler_EditSession = (function () {
                   return $("<strong>").text(data.text);
                 },
               });
+
+              $("#sessionSelection-edit").select2("open");
             } else {
               // Add empty option with "No sessions found" text
               $("#sessionSelection-edit")
@@ -223,7 +255,7 @@ const FormHandler_EditSession = (function () {
             console.error("Error fetching sessions:", error);
             console.log("Status:", status);
             console.log("Response:", xhr.responseText);
-            alert("Failed to fetch sessions. Try again later.");
+            sweetAlertError("Failed to fetch sessions.");
           },
         });
       });
@@ -261,6 +293,8 @@ const FormHandler_EditSession = (function () {
           $("#currentSessionDate").val(formatDateToDDMMYYYY(date));
           $("#currentPlayersCount").val(playersCount);
           $("#currentSessionDuration").val(duration + " minutes");
+
+          $("#newSessionDate").trigger("focus");
         } else {
           console.warn("Session not found in sessionsDB:", sessionId);
         }
@@ -302,7 +336,8 @@ const FormHandler_EditSession = (function () {
           contentType: "application/json",
           xhrFields: { withCredentials: true },
           success: function (resp) {
-            alert(resp.message);
+            sweetAlertSuccess("Session updated!", resp.message);
+
             // Clear form fields after successful update
             forceClearForm();
           },
@@ -310,7 +345,7 @@ const FormHandler_EditSession = (function () {
             console.error("Error updating session:", error);
             console.log("Status:", status);
             console.log("Response:", xhr.responseText);
-            alert("Failed to edit session. Please try again.");
+            sweetAlertError("Failed to edit session.");
           },
           complete: () => {
             // Re-enable button
@@ -320,6 +355,8 @@ const FormHandler_EditSession = (function () {
             if (window.Flipper) {
               Flipper.setSubmitting(false);
             }
+
+            $("#bgSelection-editSession").select2("open");
           },
         });
       });
@@ -338,6 +375,7 @@ const FormHandler_EditSession = (function () {
     // React to clicking on the clear button:
     $("#reset-editSession").on("click", () => {
       forceClearForm();
+      $("#bgSelection-editSession").select2("open");
     });
   }
 

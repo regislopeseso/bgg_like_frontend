@@ -34,17 +34,13 @@ const FormHandler_UserDetails = (function () {
   }
 
   function loadUserDetails() {
-    $("body").loadpage("charge");
-
     $.ajax({
       url: "https://localhost:7081/users/getprofiledetails",
       type: "GET",
       xhrFields: { withCredentials: true },
       success: function (response) {
         const userDB = response.content;
-
         if (userDB != null) {
-          $("body").loadpage("demolish");
           $("#userName").html(userDB.treatmentTitle + userDB.name);
           $("#signupDate").html(userDB.signUpDate);
           $("#ratedBgCount").html(userDB.ratedBgCount);

@@ -31,6 +31,8 @@ const FormHandler_LogSession = (function () {
       width: "100%",
       placeholder: "Type at least 3 characters to search",
     });
+
+    $("#bgSelection-logSession").select2("open");
   }
 
   function checkFormFilling() {
@@ -38,12 +40,6 @@ const FormHandler_LogSession = (function () {
       $("#bgSelection-logSession").val() !== null &&
       $("#bgSelection-logSession").val() !== "";
     let areFieldsFilled = true;
-
-    if (isBGSelected === true) {
-      $("#log-session-form .required:visible:enabled").each(function () {
-        $(this).removeClass("current-data").addClass("new-data");
-      });
-    }
 
     $("#log-session-form .required:visible:enabled").each(function () {
       if ($(this).val().trim() === "") {
@@ -70,8 +66,47 @@ const FormHandler_LogSession = (function () {
     $("#bgSelection-logSession").html("").trigger("change");
   }
 
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  function sweetAlertError(text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: text,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
   // Set up handlers for the log session form
   function setupLogSessionForm() {
+    // Set up board game selection change handler
+    $(document)
+      .off("select2:select", "#bgSelection-logSession")
+      .on("select2:select", "#bgSelection-logSession", function () {
+        // Get selected boardGameId
+        const boardGameId = $(this).val();
+
+        $("#log-session-form .required:visible:enabled").each(function () {
+          $(this).removeClass("current-data").addClass("new-data");
+        });
+
+        $("#sessionDate").trigger("focus");
+      });
+
     $(document)
       .off("submit", "#log-session-form")
       .on("submit", "#log-session-form", function (e) {
@@ -95,12 +130,12 @@ const FormHandler_LogSession = (function () {
             withCredentials: true,
           },
           success: (resp) => {
-            alert(resp.message);
+            sweetAlertSuccess("Sesssion logged!", resp.message);
 
             forceClearForm();
           },
           error: (err) => {
-            alert(err);
+            sweetAlertError(err);
           },
           complete: () => {
             // Re-enable button
@@ -110,6 +145,8 @@ const FormHandler_LogSession = (function () {
             if (window.Flipper) {
               Flipper.setSubmitting(false);
             }
+
+            $("#bgSelection-logSession").select2("open");
           },
         });
       });
@@ -125,6 +162,7 @@ const FormHandler_LogSession = (function () {
     // React to clicking on the clear button:
     $("#reset-logNewSession").on("click", () => {
       forceClearForm();
+      $("#bgSelection-logSession").select2("open");
     });
   }
 
