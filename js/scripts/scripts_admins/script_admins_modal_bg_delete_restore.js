@@ -49,8 +49,6 @@ function modal_BG_Delete_Restore() {
       text: message_text || "",
       showConfirmButton: false,
       timer: 1500,
-    }).then((result) => {
-      redirectToUsersPage();
     });
   }
   function sweetAlertError(title_text, message_text) {
