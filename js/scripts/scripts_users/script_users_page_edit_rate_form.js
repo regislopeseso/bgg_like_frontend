@@ -1,6 +1,6 @@
 const FormHandler_EditRate = (function () {
   // Private variables
-  let boardGameDB = {};
+  let ratedboardgames = [];
   // Initialize Select2 dropdown for board games
   function loadBgDetails() {
     // First destroy any existing select2 instance to prevent duplicates
@@ -8,54 +8,84 @@ const FormHandler_EditRate = (function () {
       $("#bgSelection-edit-rate").select2("destroy");
     }
 
-    // Initialize select2 for EDITING A RATE
-    $("#bgSelection-edit-rate").select2({
-      ajax: {
-        url: "https://localhost:7081/users/findboardgame",
-        xhrFields: {
-          withCredentials: true,
-        },
-        data: (params) => ({ boardGameName: params.term }),
-        processResults: (data, params) => {
-          return {
-            results: data.content.map((item) => ({
-              id: item.boardGameId,
-              text: item.boardGameName,
-            })),
-          };
-        },
+    $.ajax({
+      url: `https://localhost:7081/users/listratedboardgames`,
+      type: "GET",
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        ratedboardgames = [];
+        // Clear current options
+        $("#bgSelection-edit-rate").empty();
+
+        // Check if any board games are returned
+        if (response.content != null) {
+          ratedboardgames = response.content;
+
+          $("#edit-rating-label").empty();
+
+          $("#edit-rating-label").append(
+            `<span>S</span>elect one of your <span>rated</span> Board Games <span>(${ratedboardgames.length})</span>`
+          );
+
+          // Add options dynamically
+          let counter = 1;
+          ratedboardgames.forEach((boardgame) => {
+            counter++;
+
+            // Create option with formatted date (if available) or fall back to session ID
+            const optionText = `${boardgame.boardGameName} - your rating: ${boardgame.rate}`;
+            const optionValue = boardgame.ratingId;
+
+            $("#bgSelection-edit-rate").append(
+              new Option(optionText, optionValue)
+            );
+          });
+
+          // Add an empty default option with the placeholder text
+          $("#bgSelection-edit-rate").append(
+            new Option("Select a board game", "", true, true)
+          );
+
+          // Refresh select2 without triggering change event to avoid auto-selection
+          if (
+            $("#bgSelection-edit-rate").hasClass("select2-hidden-accessible")
+          ) {
+            $("#bgSelection-edit-rate").select2("destroy");
+          }
+          $("#bgSelection-edit-rate").select2({
+            theme: "classic",
+            width: "100%",
+            allowClear: true,
+            placeholder: "Pick a board game",
+            templateSelection: (data) => {
+              if (!data.id) return data.text;
+              return $("<strong>").text(data.text);
+            },
+          });
+
+          $("#bgSelection-edit-rate").select2("open");
+        } else {
+          $("edit-rate-template-title").append(
+            `<p><span style="color: var(--yellowish)">No rated board games found</span></p>`
+          );
+          // Add empty option with "No sessions found" text
+          $("#bgSelection-edit-rate").empty().addClass("current-data");
+
+          // Refresh select2
+          if (
+            $("#bgSelection-edit-rate").hasClass("select2-hidden-accessible")
+          ) {
+            $("#bgSelection-edit-rate").select2("destroy");
+          }
+        }
       },
-      templateResult: (data) => data.text,
-      templateSelection: (data) => {
-        if (!data.id) return data.text;
-        return $("<strong>").text(data.text);
+      error: function (xhr, status, error) {
+        console.error("Error fetching sessions:", error);
+        console.log("Status:", status);
+        console.log("Response:", xhr.responseText);
+        sweetAlertError("Failed to fetch rated boardgames.");
       },
-      minimumInputLength: 3,
-      allowClear: true,
-      theme: "classic",
-      width: "100%",
-      placeholder: "Type at least 3 characters to search",
     });
-
-    $("#bgSelection-edit-rate").select2("open");
-  }
-
-  function checkFormFilling() {
-    const isBGSelected =
-      $("#bgSelection-edit-rate").val() !== null &&
-      $("#bgSelection-edit-rate").val() !== "";
-    let areFieldsFilled = true;
-
-    $("#edit-rate-form .required:visible:enabled").each(function () {
-      if ($(this).val().trim() === "") {
-        areFieldsFilled = false;
-      }
-    });
-
-    $("#confirm-newRateBG").prop(
-      "disabled",
-      !(isBGSelected && areFieldsFilled)
-    );
   }
 
   function sweetAlertSuccess(title_text, message_text) {
@@ -70,20 +100,63 @@ const FormHandler_EditRate = (function () {
       timer: 1500,
     });
   }
-
   function sweetAlertError(title_text, message_text) {
     Swal.fire({
       position: "center",
       confirmButtonText: "OK!",
       icon: "error",
       theme: "bulma",
-      title: text,
+      title: title_text || "",
       text: message_text || "",
       showConfirmButton: false,
       timer: 1500,
     });
   }
 
+  function checkFormFilling() {
+    const isBGSelected =
+      $("#bgSelection-edit-rate").val() !== null &&
+      $("#bgSelection-edit-rate").val() !== "";
+
+    if (isBGSelected === true) {
+      $("#new-rating")
+        .removeClass("current-data")
+        .addClass("new-data")
+        .trigger("focus");
+
+      $("#delete-rating").prop("disabled", false);
+    } else {
+      $("#new-rating")
+        .removeClass("new-data")
+        .addClass("current-data")
+        .val(null);
+
+      $("#delete-rating").on("disabled", true);
+    }
+
+    let areFieldsFilled = true;
+
+    $("#edit-rate-form .required:visible:enabled").each(function () {
+      if ($(this).val().trim() === "") {
+        areFieldsFilled = false;
+      }
+    });
+
+    $("#confirm-newRateBG").prop(
+      "disabled",
+      !(isBGSelected && areFieldsFilled)
+    );
+  }
+  function monitorFormFilling() {
+    // React to board game selection
+    $("#bgSelection-edit-rate").on("select2:select", checkFormFilling);
+    $("#bgSelection-edit-rate").on("select2:clear", () => {
+      checkFormFilling();
+      forceClearForm();
+    });
+    // React to typing in any input
+    $("#edit-rate-form input").on("input", checkFormFilling);
+  }
   function forceClearForm() {
     // Clear form
     $("#newRate").val(null).addClass("current-data");
@@ -94,102 +167,98 @@ const FormHandler_EditRate = (function () {
 
     // Clear board game selection
     $("#bgSelection-edit-rate").val(null).trigger("change");
+    loadBgDetails();
   }
 
-  // Set up handlers for EDITING A RATE form
+  // Set up handlers for EDITING A RATING form
   function setupEditRateForm() {
-    // Set up board game selection change handler
+    // Set up form submission handler
     $(document)
-      .off("select2:select", "#bgSelection-edit-rate")
-      .on("select2:select", "#bgSelection-edit-rate", function () {
-        // Get selected boardGameId
-        const boardGameId = $(this).val();
+      .off("submit", "#edit-rate-form")
+      .on("submit", "#edit-rate-form", function (e) {
+        e.preventDefault();
 
-        $("#newRate").removeClass("current-data").addClass("new-data");
+        // Tell the Flipper module that we're submitting a form
+        if (window.Flipper) {
+          Flipper.setSubmitting(true);
+        }
 
-        $("#newRate").trigger("focus");
+        // Disable submit button to prevent double submissions
+        const submitBtn = $(this).find("button[type='submit']");
+        const originalBtnText = submitBtn.text();
+        submitBtn.attr("disabled", true).text("Submitting...");
+
+        const buttons = $(this).find("button[type='button']");
+
+        const rateID = $("#bgSelection-edit-rate").val();
+        const updatedRate = $("#new-rating").val();
 
         $.ajax({
-          url: `https://localhost:7081/users/getrate?boardgameid=${boardGameId}`,
-          type: "GET",
+          url: "https://localhost:7081/users/editrating",
+          type: "PUT",
+          data: JSON.stringify({
+            ratingId: rateID,
+            rate: updatedRate,
+          }),
+          contentType: "application/json",
           xhrFields: { withCredentials: true },
-          success: function (response) {
-            $("#newRate").empty();
-            // Fetch the old rating
-            const oldRate = response.content.rate;
+          success: function (resp) {
+            sweetAlertSuccess("Rating updated!", resp.message);
 
-            // Pre-fill form fields with session data
-            $("#currentRate").val(oldRate);
+            // Clear form fields after successful update
+            forceClearForm();
           },
           error: function (xhr, status, error) {
-            console.error("Error fetching rating:", error);
+            console.error("Error updating rating:", error);
             console.log("Status:", status);
             console.log("Response:", xhr.responseText);
-            sweetAlertError("Failed to fetch rating.");
+            sweetAlertError("Failed to edit rating.");
+          },
+          complete: () => {
+            // Re-enable button
+            submitBtn.attr("disabled", true).text(originalBtnText);
+
+            //loadBgDetails();
+            // Tell the Flipper module that we're done submitting
+            if (window.Flipper) {
+              Flipper.setSubmitting(false);
+            }
           },
         });
       });
 
-    // Set up form submission handler
-    $(document);
-    $("#edit-rate-form").on("submit", function (e) {
-      e.preventDefault();
+    monitorFormFilling();
+  }
+  // Set up handlers for the >DELETE RATING< form
+  function setUpDeleteSession() {
+    $(document)
+      .off("select2:select", "#bgSelection-edit-rate")
+      .on("select2:select", "#bgSelection-edit-rate", function () {
+        let rateId = ratedboardgames.find(
+          (a) => a.ratingId == $("#bgSelection-edit-rate").val()
+        );
 
-      // Tell the Flipper module that we're submitting a form
-      if (window.Flipper) {
-        Flipper.setSubmitting(true);
-      }
+        $.ajax({
+          url: `https://localhost:7081/users/deleterating?RateId=${rateId}`,
+          type: "DELETE",
+          xhrFields: { withCredentials: true },
+          success: function (resp) {
+            sweetAlertSuccess(resp.message);
 
-      // Disable submit button to prevent double submissions
-      const submitBtn = $(this).find("button[type='submit']");
-      const originalBtnText = submitBtn.text();
-      submitBtn.attr("disabled", true).text("Submitting...");
-
-      // Get form values
-      const selectedBoardGameId = $("#bgSelection-edit-rate").val();
-      const updatedRate = $("#newRate").val();
-
-      $.ajax({
-        url: "https://localhost:7081/users/editrating",
-        type: "PUT",
-        data: JSON.stringify({
-          boardGameId: selectedBoardGameId,
-          rate: updatedRate,
-        }),
-        contentType: "application/json",
-        xhrFields: { withCredentials: true },
-        success: function (response) {
-          sweetAlertSuccess("Rating updated!", response.message);
-
-          // Reset form
-          forceClearForm();
-        },
-        error: function (xhr, status, error) {
-          console.error("Error editing rate:", error);
-          console.log("Status:", status);
-          console.log("Response:", xhr.responseText);
-          sweetAlertError("Failed to edit rate.");
-        },
-        complete: () => {
-          // Re-enable button
-          submitBtn.attr("disabled", true).text(originalBtnText);
-
-          // Tell the Flipper module that we're done submitting
-          if (window.Flipper) {
-            Flipper.setSubmitting(false);
-          }
-        },
+            //Clear form
+            forceClearForm();
+          },
+          error: function (err) {
+            sweetAlertError(err);
+          },
+          complete: () => {
+            // Tell the Flipper module that we're done submitting
+            if (window.Flipper) {
+              Flipper.setSubmitting(false);
+            }
+          },
+        });
       });
-    });
-
-    // React to board game selection
-    $("#bgSelection-edit-rate").on("select2:select", checkFormFilling);
-    $("#bgSelection-edit-rate").on("select2:clear", () => {
-      checkFormFilling();
-      forceClearForm();
-    });
-    // React to typing in any input
-    $("#edit-rate-form input").on("input", checkFormFilling);
   }
 
   // Public API
@@ -224,6 +293,7 @@ const FormHandler_EditRate = (function () {
     // Set up all form handlers
     setupAllForms: function () {
       setupEditRateForm();
+      setUpDeleteSession();
     },
   };
 })();

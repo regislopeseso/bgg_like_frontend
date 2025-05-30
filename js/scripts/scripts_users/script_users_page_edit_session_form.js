@@ -28,8 +28,6 @@ const FormHandler_EditSession = (function () {
         // Clear current options
         $("#bgSelection-editSession").empty();
 
-        console.log("ATTENTION CONTENT IS:", response.content);
-
         // Check if any board games are returned
         if (response.content != null) {
           playedboardgames = response.content;

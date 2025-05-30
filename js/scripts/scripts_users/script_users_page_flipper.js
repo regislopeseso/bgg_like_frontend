@@ -512,8 +512,8 @@ function loadTemplate(templateId) {
                 <div class="comboBox">
                   <select
                     name="BoardGameId"
-                    class="form-control form-select bg-select"
                     id="bgSelection-rate"
+                    class="form-control form-select bg-select"
                   ></select>
                 </div>
               </div>
@@ -556,7 +556,9 @@ function loadTemplate(templateId) {
     case "edit-rate-template":
       return `
         <div id="edit-rate-template">
-          <h3 class="pb-0"><span>E</span>dit Rate</h3>
+          <div id="edit-rate-template-title">
+            <h3 class="pb-0"><span>E</span>dit Rate</h3>
+          </div>
 
           <hr/>
 
@@ -565,15 +567,15 @@ function loadTemplate(templateId) {
             class="d-flex flex-column align-items-center"
           >
             <div class="text-start w-80">
-              <label class="bgList-lbl" for="bgSelection-edit-rate"
+              <label id="edit-rating-label" class="bgList-lbl" for="bgSelection-edit-rate"
                 ><span>S</span>elect a <span>B</span>oard Game <span>R</span>ating</label
               >
               <div class="comboBox-wrapper">
                 <div class="comboBox">
                   <select
-                    name="BoardGameId"
-                    class="form-control form-select bg-select"
+                    name="RateId"
                     id="bgSelection-edit-rate"
+                    class="form-control form-select bg-select"
                   ></select>
                 </div>
               </div>
@@ -581,31 +583,14 @@ function loadTemplate(templateId) {
 
             <hr/>
 
-            <div class="d-flex flex-row align-items-end gap-1">
-              <div class="text-center w-50">
-                <label for="currentRate" class="form-label"
-                  ><span>C</span>urrent Rate</label
-                >
-                <input
-                  name="oldRate"
-                  id="currentRate"
-                  type="number"
-                  class="current-data form-control text-center"
-                  disabled
-                />
-              </div>
-
-              <div class="update-arrow-right">
-                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"></img>
-              </div>
-
+                                
               <div class="text-center w-50">
                 <label class="form-label"
                   ><span>N</span>ew Rate</label
                 >
                 <input
                   name="Rate"
-                  id="newRate"
+                  id="new-rating"
                   class="current-data form-control text-center required"
                   type="number"
                   min="0"
@@ -620,17 +605,17 @@ function loadTemplate(templateId) {
                       {this.value}
                 />
               </div>
-            </div>
+            
 
             <hr/>
             <div class="d-flex flex-row w-100 justify-content-between mt-2 gap-3">
               <button
                 type="button"
                 id="delete-rating"
-                class="btn btn-sm btn-outline-danger"
+                class="btn btn-lg btn-outline-danger mt-2"
                 disabled
               >
-                Delete
+                Delete Rating
               </button> 
 
               <button
@@ -639,7 +624,7 @@ function loadTemplate(templateId) {
                 class="btn btn-lg btn-outline-info mt-2"
                 disabled
               >
-                Confirm new Rating
+                Update Rating
               </button>            
             </div>
           </form>
