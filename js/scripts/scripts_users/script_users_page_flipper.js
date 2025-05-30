@@ -303,7 +303,9 @@ function loadTemplate(templateId) {
     case "edit-session-template":
       return `
         <div id="edit-session-template">
-          <h3 class="pb-0"><span>E</span>dit Session</h3>
+          <div id="edit-sessions-template-title">
+            <h3 class="pb-0"><span>E</span>dit Session</h3>
+          </div>
 
           <hr/>
 
@@ -312,7 +314,10 @@ function loadTemplate(templateId) {
             class="d-flex flex-column align-items-center"         
           >
             <div class="text-center w-80">
-              <label class="bgList-lbl" for="bgSelection-editSession"
+              <label 
+                id="list-played-bg-label" 
+                class="bgList-lbl" 
+                for="bgSelection-editSession"
                 ><span>S</span>elect a Board Game</label
               >
               <div class="comboBox-wrapper">
