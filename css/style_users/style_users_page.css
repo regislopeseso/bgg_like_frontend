@@ -73,10 +73,6 @@ main {
   max-width: 600px;
   width: 60vw;
   min-width: 300px;
-  height: 100px;
-  border: 1px solid var(--bg-color);
-  border-radius: 2rem;
-  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   perspective: 10000px;
 }
 
@@ -96,7 +92,7 @@ main {
   border-radius: 2rem;
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
-  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.2);
   padding: 2rem;
 }
 

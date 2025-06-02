@@ -42,7 +42,11 @@ $(function () {
       success: function (response) {
         const userDB = response.content;
 
-        $("#user-name").val(`${userDB.name}`);
+        $("#user-name")
+          .val(`${userDB.name}`)
+          .trigger("focus")
+          .trigger("select");
+
         $("#user-email").val(`${userDB.email}`);
         $("#user-birthdate").val(`${userDB.birthDate}`);
       },

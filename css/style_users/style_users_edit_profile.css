@@ -4,8 +4,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
+  background-color: var(--second-bg-color);
+  z-index: 1;
 }
 #edit-profile {
   position: absolute;
@@ -13,12 +13,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 25rem;
-  height: 35rem;
+  height: 28rem;
   padding: 2rem;
   border-radius: 2rem;
-  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 10px 2px var(--greenish);
   background-color: var(--second-bg-color);
-  z-index: 2000;
 }
 
 #change-password a {

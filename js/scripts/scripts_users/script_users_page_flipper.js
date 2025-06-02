@@ -186,7 +186,7 @@ function loadTemplate(templateId) {
       return `<p>Template "${templateId}" not yet implemented.</p>`;
     case "user-details-template":
       return `
-        <div id="user-details-template">
+        <div id="user-details-template" class="vanished">
           <h3 class="text-center pb-5">Welcome <span id="userName"></span></h3>
           <h5 class="text-start">Member since: <span id="signupDate"></span></h5>
           <h5 class="text-start">Board Games Rated: <span id="ratedBgCount"></span></h5>
