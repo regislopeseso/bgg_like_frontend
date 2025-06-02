@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SET UP LIFE COUNTER</title>
+    <link rel="stylesheet" href="/css/addons.css" />
+    <link
+      rel="stylesheet"
+      href="/css/style_users/lifecounter/users_lifecounter_new.css"
+    />
+  </head>
+  <body>
+    <main id="lifecounter-setup">
+      <section class="lifecounter-setup-header">
+        <div
+          class="d-flex flex-row justify-content-between align-items-center p-4"
+        >
+          <div>
+            <h1 class="p-0 m-0">
+              <span>L</span>ife <span>C</span>ounter - <span>SET UP</span>
+            </h1>
+          </div>
+          <button
+            type="button"
+            id="close-lifecounter-setup"
+            class="btn btn-outline-danger btn-lg"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </section>
+      <section>
+        <div class="d-flex flex-column gap-4 p-4">
+          <button id="lifecounter-new" class="btn btn-outline-info btn-lg p-4">
+            NEW
+          </button>
+          <button
+            id="lifecounter-finish"
+            class="btn btn-outline-info btn-lg p-4"
+          >
+            LOAD
+          </button>
+          <button
+            id="lifecounter-show-stats"
+            class="btn btn-outline-info btn-lg p-4"
+          >
+            SHOW STATISTICS
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/node_modules/select2/dist/js/select2.min.js"></script>
+    <script src="/js/plugins/page_loader.js"></script>
+    <script src="/js/plugins/content_loader.js"></script>
+    <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+    <!-- <script src="/js/components/header.js"></script> -->
+    <script src="/js/scripts/scripts_users/lifcounter/users_lifecounter_new.js"></script>
+  </body>
+</html>

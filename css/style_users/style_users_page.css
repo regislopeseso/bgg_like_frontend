@@ -142,7 +142,7 @@ main {
 @media screen and (max-width: 1000px) {
   .users-options {
     display: grid !important;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(2, 1fr);
     justify-items: center;
     padding-top: 80px;
@@ -162,17 +162,14 @@ main {
     grid-column-start: 2;
     grid-column-end: 2;
   }
-  #userOption-deleteSession {
+
+  #userOption-rateBg {
     grid-column-start: 3;
     grid-column-end: 3;
   }
-  #userOption-rateBg {
+  #userOption-editRate {
     grid-column-start: 4;
     grid-column-end: 4;
-  }
-  #userOption-editRate {
-    grid-column-start: 5;
-    grid-column-end: 5;
   }
   #userOption-logSession,
   #userOption-editSession,
@@ -184,8 +181,8 @@ main {
   }
 
   #userOption-playGame {
-    grid-column-start: 2;
-    grid-column-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 3;
   }
   #userOption-newLifeCounter {
     grid-column-start: 3;
@@ -214,7 +211,7 @@ main {
   }
   .users-options {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
     justify-items: center !important;
     padding-top: 60px;
@@ -233,36 +230,33 @@ main {
     grid-column-start: 2;
     grid-column-end: 2;
   }
-  #userOption-deleteSession {
-    grid-column-start: 3;
-    grid-column-end: 3;
-  }
   #userOption-logSession,
-  #userOption-editSession,
-  #userOption-deleteSession {
+  #userOption-editSession {
     grid-row-start: 1;
     grid-row-end: 1;
   }
+
   #userOption-rateBg {
     grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column-end: 1;
   }
   #userOption-editRate {
     grid-column-start: 2;
-    grid-column-end: 4;
+    grid-column-end: 2;
   }
   #userOption-rateBg,
   #userOption-editRate {
     grid-row-start: 2;
     grid-row-end: 2;
   }
+
   #userOption-playGame {
     grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column-end: 1;
   }
   #userOption-newLifeCounter {
     grid-column-start: 2;
-    grid-column-end: 4;
+    grid-column-end: 2;
   }
   #userOption-playGame,
   #userOption-newLifeCounter {
