@@ -136,7 +136,7 @@ function modal_Mechanic_DataBase() {
         self.TableResult.empty();
 
         $.each(response.content, function (index, item) {
-          let tr = `
+          let tr = $(`
         <tr class="align-middle">
           <td class="text-start align-middle">${item.name}</td>         
           
@@ -157,14 +157,16 @@ function modal_Mechanic_DataBase() {
             </div>
           </td>
         </tr>
-      `;
+      `);
           self.TableResult.append(tr);
 
           if (item.isDeleted === false) {
+            tr.find("td").css("color", "var(--text-color)");
             $(`#mechanic-delete-button-${index}`).show();
             $(`#mechanic-restore-button-${index}`).hide();
           }
           if (item.isDeleted === true) {
+            tr.find("td").css("color", "var(--reddish)");
             $(`#mechanic-delete-button-${index}`).hide();
             $(`#mechanic-restore-button-${index}`).show();
           }

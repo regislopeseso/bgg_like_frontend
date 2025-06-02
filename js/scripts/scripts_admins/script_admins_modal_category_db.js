@@ -135,7 +135,7 @@ function modal_Category_DataBase() {
         self.TableResult.empty();
 
         $.each(response.content, function (index, item) {
-          let tr = `
+          let tr = $(`
         <tr class="align-middle">
           <td class="text-start align-middle">${item.name}</td>         
           
@@ -156,14 +156,16 @@ function modal_Category_DataBase() {
             </div>
           </td>
         </tr>
-      `;
+      `);
           self.TableResult.append(tr);
 
           if (item.isDeleted === false) {
+            tr.find("td").css("color", "var(--text-color)");
             $(`#category-delete-button-${index}`).show();
             $(`#category-restore-button-${index}`).hide();
           }
           if (item.isDeleted === true) {
+            tr.find("td").css("color", "var(--reddish)");
             $(`#category-delete-button-${index}`).hide();
             $(`#category-restore-button-${index}`).show();
           }

@@ -147,21 +147,21 @@ function modal_BG_DataBase() {
 
         $.each(response.content, function (index, item) {
           let mechanics = item.mechanics.join(", ");
-          let tr = `
-        <tr class="align-middle">
-          <td class="text-start align-middle">${item.name}</td>
-          <td class="text-start align-middle" style="max-width: 200px;">
-            <div class="d-block text-truncate description-preview">
-              ${item.description}
-            </div>
 
-            <button
-              id="bg-description-button"
-              class="d-flex w-100 align-items-center justify-content-center m-0 p-0"
-              style="border: none; background-color: var(--bg-color); color: var(--text-color);" 
-              data-bg-id="${item.boardGameId}">            
-                <i class="expand-details-icon bi bi-arrows-angle-expand"></i>
-            </button>
+          let td = $("tr td");
+
+          let tr = $(`
+        <tr class="align-middle" style="color: ${rowColor};">
+          <td class="text-start align-middle">${item.name}</td>
+          <td 
+            class="text-start align-middle" 
+            style="max-width: 200px;"
+            data-bs-toggle="tooltip" 
+            data-bs-placement="top" 
+            data-bs-title="${item.description}">
+              <div class="d-block text-truncate description-preview">
+                ${item.description}
+              </div>
           </td>
           <td class="text-center align-middle">${item.playersCount}</td>
           <td class="text-center align-middle">${item.minAge}</td>
@@ -184,18 +184,29 @@ function modal_BG_DataBase() {
             </div>
           </td>
         </tr>
-      `;
+      `);
           self.TableResult.append(tr);
 
           if (item.isDeleted === false) {
+            tr.find("td").css("color", "var(--text-color)");
             $(`#bg-delete-button-${index}`).show();
             $(`#bg-restore-button-${index}`).hide();
           }
           if (item.isDeleted === true) {
+            tr.find("td").css("color", "var(--reddish)");
             $(`#bg-delete-button-${index}`).hide();
             $(`#bg-restore-button-${index}`).show();
           }
         });
+
+        // Initialize tooltips after the table is fully populated
+        const tooltipTriggerList = document.querySelectorAll(
+          '[data-bs-toggle="tooltip"]'
+        );
+        const tooltipList = [...tooltipTriggerList].map(
+          (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+        );
+
         self.RemoveContentLoader();
       },
       error: function (xhr, status, error) {

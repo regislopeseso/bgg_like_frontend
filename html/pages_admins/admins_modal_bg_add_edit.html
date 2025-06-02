@@ -127,14 +127,13 @@
         </form>
       </div>
 
-      <div class="modal-footer">
+      <div class="modal-footer w-100 justify-content-between">
         <button
-          id="bg-submit-button"
-          class="btn btn-outline-info"
-          type="submit"
-          disabled
+          type="button"
+          class="btn btn-outline-danger"
+          data-bs-dismiss="modal"
         >
-          Confirm
+          Close
         </button>
 
         <button
@@ -146,11 +145,12 @@
         </button>
 
         <button
-          type="button"
-          class="btn btn-outline-danger"
-          data-bs-dismiss="modal"
+          id="bg-submit-button"
+          class="btn btn-outline-info"
+          type="submit"
+          disabled
         >
-          Close
+          Confirm
         </button>
       </div>
     </div>
