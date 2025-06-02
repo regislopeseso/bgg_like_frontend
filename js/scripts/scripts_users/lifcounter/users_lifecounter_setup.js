@@ -1,87 +1,74 @@
-const { createApp } = Vue;
+function life_counter_setup() {
+  let self = this;
 
-createApp({
-  data() {
-    return {
-      loading: false,
-      error: null,
-    };
-  },
-  methods: {
-    createNewCounter() {
-      this.loading = true;
-      fetch("/api/lifecounter/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((response) => {
-          if (!response.ok) throw new Error("Failed to create counter");
-          return response.json();
-        })
-        .then((data) => {
-          console.log("New life counter created:", data);
-          // Redirect or update UI
-        })
-        .catch((err) => {
-          this.error = err.message;
-          console.error(err);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    loadCounter() {
-      // Example placeholder logic
-      console.log("Load existing life counter...");
-      // You can fetch saved counters and display them in a list.
-    },
-    showStats() {
-      console.log("Showing statistics...");
-      // Show statistics page or modal here
-    },
-    closeSetup() {
-      // Hide this setup screen if it's modal-like
-    },
-  },
-}).mount("#lifecounter-setup");
+  self.LoadReferences = () => {
+    self.DOM = $("#lifecounter-setup");
 
-/* JQUERY */
-// function life_counter_setup() {
-//   let self = this;
+    self.Buttons = [];
+    self.Buttons[self.Buttons.length] = self.Buttons.CloseSetUp = self.DOM.find(
+      "#close-lifecounter-setup"
+    );
 
-//   self.LoadReferences = () => {
-//     self.DOM = $("#lifecounter-setup");
+    self.Buttons[self.Buttons.length] = self.Buttons.NewLifeCounter =
+      self.DOM.find("#lifecounter-new");
+    self.Buttons[self.Buttons.length] = self.Buttons.StartLifeCounter =
+      self.DOM.find("#lifecounter-start");
+    self.Buttons[self.Buttons.length] = self.Buttons.LoadLifeCounter =
+      self.DOM.find("#lifecounter-load");
+    self.Buttons[self.Buttons.length] = self.Buttons.ShowLifeCounterStats =
+      self.DOM.find("#show-stats");
 
-//     self.Buttons = [];
-//     self.Buttons[self.Buttons.length] = self.Buttons.CloseSetUp = self.DOM.find(
-//       "#close-lifecounter-setup"
-//     );
+    self.Locations = [];
+    self.Locations[self.Locations.length] = self.Locations.UsersPage =
+      "/html/pages_users/users_page.html";
+    self.Locations[self.Locations.length] = self.Locations.NewLifeCounterPage =
+      "/html/pages_users/lifecounter/users_lifecounter_new.html";
+    self.Locations[self.Locations.length] =
+      self.Locations.StartLifeCounterPage =
+        "/html/pages_users/lifecounter/users_lifecounter_start.html";
+    self.Locations[self.Locations.length] = self.Locations.LoadLifeCounterPage =
+      "/html/pages_users/lifecounter/users_lifecounter_load.html";
+    self.Locations[self.Locations.length] =
+      self.Locations.ShowLifeCounterStatsPage =
+        "/html/pages_users/lifecounter/users_lifecounter_showstats.html";
+  };
 
-//     self.Locations = [];
-//     self.Locations[self.Locations.length] = self.Locations.UsersPage =
-//       "/html/pages_users/users_page.html";
-//   };
+  self.RedirectToUsersPage = () => {
+    window.location.href = self.Locations.UsersPage;
+  };
 
-//   self.RedirectToUsersPage = () => {
-//     window.location.href = self.Locations.UsersPage;
-//   };
+  self.RedirectToNewLifeCounterPage = () => {
+    window.location.href = self.Locations.NewLifeCounterPage;
+  };
+  self.RedirectToStartLifeCounterPage = () => {
+    window.location.href = self.Locations.StartLifeCounterPage;
+  };
 
-//   self.LoadEvents = () => {
-//     self.Buttons.CloseSetUp.on("click", function (e) {
-//       e.preventDefault();
+  self.LoadEvents = () => {
+    self.Buttons.CloseSetUp.on("click", function (e) {
+      e.preventDefault();
+      self.RedirectToUsersPage();
+    });
 
-//       self.RedirectToUsersPage();
-//     });
-//   };
+    self.Buttons.NewLifeCounter.on("click", (e) => {
+      e.preventDefault();
+      self.RedirectToNewLifeCounterPage();
+    });
 
-//   self.Build = () => {
-//     self.LoadReferences();
-//     self.LoadEvents();
-//   };
+    self.Buttons.StartLifeCounter.on("click", (e) => {
+      e.preventDefault();
+      self.RedirectToStartLifeCounterPage();
+    });
+  };
 
-//   self.Build();
-// }
+  self.Build = () => {
+    self.LoadReferences();
+    self.LoadEvents();
+  };
 
-// $(function () {
-//   new life_counter_setup();
-// });
+  self.Build();
+}
+
+$(function () {
+  new life_counter_setup();
+});

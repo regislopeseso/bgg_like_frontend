@@ -241,7 +241,6 @@ function modal_BG_Add_Edit() {
       redirectToUsersPage();
     });
   }
-
   function sweetAlertError(title_text, message_text) {
     Swal.fire({
       position: "center",

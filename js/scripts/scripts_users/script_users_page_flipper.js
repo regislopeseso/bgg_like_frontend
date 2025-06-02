@@ -364,7 +364,7 @@ function loadTemplate(templateId) {
                 />
               </div>
               <div class="update-arrow-right">
-                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"></img>
+                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"/>
               </div>
               <div class="text-center w-50">
                 <label class="form-label"
@@ -398,7 +398,7 @@ function loadTemplate(templateId) {
               </div>
 
               <div class="update-arrow-right">
-                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"></img>
+                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"/>
               </div>
 
               <div class="text-center w-50">
@@ -441,7 +441,7 @@ function loadTemplate(templateId) {
               </div>
 
               <div class="update-arrow-right">
-                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"></img>
+                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow"/>
               </div>
 
               <div class="text-center w-50">

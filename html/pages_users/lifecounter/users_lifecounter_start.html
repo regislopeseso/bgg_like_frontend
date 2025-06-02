@@ -3,27 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NEW LIFE COUNTER</title>
+    <title>START LIFE COUNTER</title>
     <link rel="stylesheet" href="/css/addons.css" />
     <link
       rel="stylesheet"
-      href="/css/style_users/lifecounter/users_lifecounter_new.css"
+      href="/css/style_users/lifecounter/users_lifecounter_start.css"
     />
   </head>
   <body>
-    <main id="lifecounter-new">
-      <section class="header-lifecounter-new">
+    <main id="lifecounter-start">
+      <section class="header-lifecounter-start">
         <div
           class="d-flex flex-row justify-content-between align-items-center p-4"
         >
           <div>
             <h1 class="p-0 m-0">
-              <span>L</span>ife <span>C</span>ounter - <span>NEW</span>
+              <span>L</span>ife <span>C</span>ounter - <span>START</span>
             </h1>
           </div>
           <button
             type="button"
-            id="close-lifecounter-new"
+            id="close-lifecounter-start"
             class="btn btn-outline-danger btn-lg"
           >
             <i class="fa-solid fa-xmark"></i>
@@ -32,19 +32,36 @@
       </section>
 
       <section>
-        <div class="d-flex flex-column p-4">
+        <div class="d-flex flex-column gap-4 p-4">
           <form
-            id="form-lifecounter-new"
+            id="form-lifecounter-start"
             class="d-flex flex-column align-items-center"
           >
+            <div class="text-center w-80">
+              <label id="label-lifecounter-start-gamelist"
+                ><span>S</span>elect a Game</label
+              >
+              <div class="comboBox-wrapper">
+                <div class="comboBox">
+                  <select
+                    name="GameId"
+                    id="select-game-lifecounter-start"
+                    class="form-control form-select bg-select text-center"
+                  ></select>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
             <div class="text-center w-50">
-              <label class="form-label"><span>N</span>ame</label>
+              <label class="form-label"><span>P</span>layers Count</label>
               <input
-                name="GameName"
-                id="name-lifecounter-new"
-                class="new-data form-control text-center required"
-                type="text"
-                autofocus
+                name="PlayersCount"
+                id="players-count-lifecounter-start"
+                class="new-data form-control text-center"
+                type="number"
+                min="1"
               />
             </div>
 
@@ -52,44 +69,14 @@
 
             <div class="text-center w-50">
               <label class="form-label"
-                ><span>P</span>layers Starting Life</label
+                ><span>P</span>layers Starting Lives</label
               >
               <input
-                name="PlayersStartingLife"
-                id="players-starting-life-lifecounter-new"
+                name="PlayersStartingLives"
+                id="players-starting-lives-lifecounter-start"
                 class="new-data form-control text-center required"
                 type="number"
               />
-            </div>
-
-            <hr />
-
-            <div class="form-check form-switch">
-              <input
-                id="fixed-max-life-lifecounter-new"
-                class="new-data form-check-input"
-                type="checkbox"
-                role="switch"
-                checked
-              />
-              <label class="form-check-label"
-                ><span>F</span>ixed Max Life mode</label
-              >
-            </div>
-
-            <hr />
-
-            <div class="form-check form-switch">
-              <input
-                id="auto-end-match-lifecounter-new"
-                class="new-data form-check-input"
-                type="checkbox"
-                role="switch"
-                checked
-              />
-              <label class="form-check-label"
-                ><span>A</span>uto end Match mode</label
-              >
             </div>
 
             <hr />
@@ -99,7 +86,7 @@
             >
               <button
                 type="button"
-                id="back-lifecounter-new"
+                id="back-lives-lifecounter-start"
                 class="btn btn-sm btn-outline-danger"
               >
                 Back
@@ -107,7 +94,7 @@
 
               <button
                 type="button"
-                id="clear-lifecounter-new"
+                id="reset-lives-lifecounter-start"
                 class="btn-refresh btn btn-sm btn-outline-warning"
               >
                 Clear
@@ -115,10 +102,10 @@
 
               <button
                 type="submit"
-                id="create-lifecounter-new"
+                id="start-lives-lifecounter-start"
                 class="btn btn-lg btn-outline-info"
               >
-                Create
+                Start
               </button>
             </div>
           </form>
@@ -136,6 +123,6 @@
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
     <!-- <script src="/js/components/header.js"></script> -->
-    <script src="/js/scripts/scripts_users/lifcounter/users_lifecounter_new.js"></script>
+    <script src="/js/scripts/scripts_users/lifcounter/users_lifecounter_start.js"></script>
   </body>
 </html>

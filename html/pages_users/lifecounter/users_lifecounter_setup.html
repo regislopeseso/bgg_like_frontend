@@ -12,7 +12,7 @@
   </head>
   <body>
     <main id="lifecounter-setup">
-      <section class="lifecounter-setup-header">
+      <section class="header-lifecounter-setup">
         <div
           class="d-flex flex-row justify-content-between align-items-center p-4"
         >
@@ -23,7 +23,7 @@
           </div>
           <button
             type="button"
-            @click="close-lifecounter-setup"
+            id="close-lifecounter-setup"
             class="btn btn-outline-danger btn-lg"
           >
             <i class="fa-solid fa-xmark"></i>
@@ -32,20 +32,19 @@
       </section>
       <section>
         <div class="d-flex flex-column gap-4 p-4">
-          <button
-            @click="lifecounter-new"
+          <button id="lifecounter-new" class="btn btn-outline-info btn-lg p-4">
+            NEW</button
+          ><button
+            id="lifecounter-start"
             class="btn btn-outline-info btn-lg p-4"
           >
-            NEW
+            START
           </button>
-          <button
-            @click="lifecounter-finish"
-            class="btn btn-outline-info btn-lg p-4"
-          >
+          <button id="lifecounter-load" class="btn btn-outline-info btn-lg p-4">
             LOAD
           </button>
           <button
-            @click="lifecounter-show-stats"
+            id="lifecounter-show-stats"
             class="btn btn-outline-info btn-lg p-4"
           >
             SHOW STATISTICS
