@@ -96,6 +96,7 @@ main {
   border-radius: 2rem;
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   padding: 2rem;
 }
 

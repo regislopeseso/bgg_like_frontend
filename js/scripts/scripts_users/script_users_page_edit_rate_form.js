@@ -1,6 +1,7 @@
 const FormHandler_EditRate = (function () {
   // Private variables
   let ratedboardgames = [];
+  let ratingId = null;
   // Initialize Select2 dropdown for board games
   function loadBgDetails() {
     // First destroy any existing select2 instance to prevent duplicates
@@ -234,29 +235,31 @@ const FormHandler_EditRate = (function () {
     $(document)
       .off("select2:select", "#bgSelection-edit-rate")
       .on("select2:select", "#bgSelection-edit-rate", function () {
-        let rateId = ratedboardgames.find(
-          (a) => a.ratingId == $("#bgSelection-edit-rate").val()
-        );
+        let rateId = $("#bgSelection-edit-rate").val();
 
-        $.ajax({
-          url: `https://localhost:7081/users/deleterating?RateId=${rateId}`,
-          type: "DELETE",
-          xhrFields: { withCredentials: true },
-          success: function (resp) {
-            sweetAlertSuccess(resp.message);
+        $("#delete-rating").on("click", function (e) {
+          e.preventDefault();
 
-            //Clear form
-            forceClearForm();
-          },
-          error: function (err) {
-            sweetAlertError(err);
-          },
-          complete: () => {
-            // Tell the Flipper module that we're done submitting
-            if (window.Flipper) {
-              Flipper.setSubmitting(false);
-            }
-          },
+          $.ajax({
+            url: `https://localhost:7081/users/deleterating?RateId=${rateId}`,
+            type: "DELETE",
+            xhrFields: { withCredentials: true },
+            success: function (resp) {
+              sweetAlertSuccess(resp.message);
+
+              //Clear form
+              forceClearForm();
+            },
+            error: function (err) {
+              sweetAlertError(err);
+            },
+            complete: () => {
+              // Tell the Flipper module that we're done submitting
+              if (window.Flipper) {
+                Flipper.setSubmitting(false);
+              }
+            },
+          });
         });
       });
   }
