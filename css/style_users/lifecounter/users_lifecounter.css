@@ -1,0 +1,45 @@
+main {
+  height: 100vh;
+}
+#lifecounters-field {
+  width: 100vw;
+}
+.player-block {
+  border-radius: 2rem;
+  border: 1rem solid var(--text-color);
+  overflow: hidden;
+}
+
+.player-index {
+  font-size: 5rem;
+}
+
+.lifecounter-wrapper {
+  position: relative;
+  background-color: var(--second-bg-color);
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
+}
+
+.lifepoints {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18rem;
+  font-weight: bold;
+  color: var(--text-color); /* Transparent background feel */
+  z-index: 1;
+  pointer-events: none; /* Allows buttons to be clickable through it */
+}
+
+.increase-life-points,
+.decrease-life-points {
+  position: relative;
+  background: transparent;
+  color: var(--text-color);
+  z-index: 0; /* Ensures buttons are above the background number */
+}
+.increase-life-points i,
+.decrease-life-points i {
+  font-size: 5rem;
+}

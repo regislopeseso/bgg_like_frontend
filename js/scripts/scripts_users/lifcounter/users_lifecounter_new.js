@@ -4,6 +4,8 @@ function life_counter_new() {
   self.LoadReferences = () => {
     self.DOM = $("#lifecounter-new");
 
+    self.Form = self.DOM.find("#form-lifecounter-new");
+
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.CloseNew = self.DOM.find(
       "#close-lifecounter-new"
@@ -13,6 +15,8 @@ function life_counter_new() {
     self.Buttons[self.Buttons.length] = self.Buttons.ClearForm = self.DOM.find(
       "#clear-lifecounter-new"
     );
+    self.Buttons[self.Buttons.length] = self.Buttons.CreateAndStartLifeCounter =
+      self.DOM.find("#create-and-start-lifecounter-new");
     self.Buttons[self.Buttons.length] = self.Buttons.CreateLifeCounter =
       self.DOM.find("#create-lifecounter-new");
 
@@ -25,12 +29,11 @@ function life_counter_new() {
       "/html/pages_users/lifecounter/users_lifecounter.html";
 
     self.Inputs = [];
-    self.Inputs[self.Inputs.length] = self.Inputs.GameName = self.DOM.find(
+    self.Inputs[self.Inputs.length] = self.Inputs.Name = self.DOM.find(
       "#name-lifecounter-new"
     );
-    self.Inputs[self.Inputs.length] = self.Inputs.StartingLife = self.DOM.find(
-      "#players-starting-life-lifecounter-new"
-    );
+    self.Inputs[self.Inputs.length] = self.Inputs.StartingLifePoints =
+      self.DOM.find("#players-starting-life-lifecounter-new");
     self.Inputs[self.Inputs.length] = self.Inputs.FixedMaxLife = self.DOM.find(
       "#fixed-max-life-lifecounter-new"
     );
@@ -54,7 +57,7 @@ function life_counter_new() {
       input.val("");
     });
 
-    self.Inputs.GameName.trigger("focus");
+    self.Inputs.Name.trigger("focus");
   };
 
   function sweetAlertSuccess(title_text, message_text) {
@@ -67,54 +70,31 @@ function life_counter_new() {
       text: message_text || "",
       showConfirmButton: false,
       timer: 1500,
-    }).then((result) => {
-      redirectToUsersPage();
     });
   }
   function sweetAlertError(title_text, message_text) {
     Swal.fire({
       position: "center",
-      confirmButtonText: "OK!",
+      cancelButtonText: "close",
       icon: "error",
       theme: "bulma",
       title: title_text,
       text: message_text || "",
       showConfirmButton: false,
-      timer: 1500,
-    }).then((result) => {
-      redirectToUsersPage();
+      showCancelButton: true,
+      didOpen: () => {
+        // Attach keydown listener
+        document.addEventListener("keydown", closeOnAnyKey);
+      },
+      willClose: () => {
+        // Clean up listener when modal closes
+        document.removeEventListener("keydown", closeOnAnyKey);
+      },
     });
   }
-
-  self.CreateLifeCounter = () => {
-    //Disable submit button to prevent double submissions
-    const submitBtn = self.Buttons.Submit;
-    const originalBtnText = submitBtn.text();
-    submitBtn.attr("disabled", true).text("Submitting...");
-
-    $.ajax({
-      type: "POST",
-      url: "https://localhost:7136/admins/creategame",
-      data: self.Form.serialize(),
-
-      xhrFields: {
-        withCredentials: true,
-      },
-      success: (resp) => {
-        self.forceClearForm();
-
-        sweetAlertSuccess(resp.message);
-      },
-      error: (err) => {
-        sweetAlertError(err);
-      },
-      complete: () => {
-        // Re-enable button
-        submitBtn.attr("disabled", true).text(originalBtnText);
-        self.ClearForm();
-      },
-    });
-  };
+  function closeOnAnyKey() {
+    Swal.close();
+  }
 
   self.LoadEvents = () => {
     self.Buttons.CloseNew.on("click", function (e) {
@@ -133,15 +113,67 @@ function life_counter_new() {
       self.ClearForm();
     });
 
-    self.Buttons.CreateLifeCounter.on("click", (e) => {
+    self.Buttons.CreateAndStartLifeCounter.on("click", (e) => {
       e.preventDefault();
-      self.RedirectToLifeCounter();
+
+      self.CreateLifeCounter(true);
+    });
+
+    closeOnAnyKey();
+  };
+
+  self.SetUpLifeCounter = () => {
+    $(document)
+      .off("submit", self.Form)
+      .on("submit", self.Form, function (e) {
+        e.preventDefault();
+
+        self.CreateLifeCounter(false);
+      });
+  };
+  self.CreateLifeCounter = (isPlayMode) => {
+    //Disable submit button to prevent double submissions
+    const submitBtn = self.Buttons.CreateLifeCounter;
+    const originalBtnText = submitBtn.text();
+    submitBtn.attr("disabled", true).text("Submitting...");
+
+    const formData = new FormData();
+    formData.append("Name", self.Inputs.Name.val());
+    formData.append("StartingLifePoints", self.Inputs.StartingLifePoints.val());
+    formData.append("FixedMaxLife", self.Inputs.FixedMaxLife.is(":checked"));
+    formData.append("AutoEndMatch", self.Inputs.AutoEndMatch.is(":checked"));
+
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/newlifecounter",
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        if (resp.content === null) {
+          sweetAlertError(resp.message);
+        } else {
+          sweetAlertSuccess(resp.message);
+        }
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+      complete: () => {
+        submitBtn.attr("disabled", false).text(originalBtnText);
+        self.ClearForm();
+        if (isPlayMode === true) self.RedirectToLifeCounter();
+      },
     });
   };
 
   self.Build = () => {
     self.LoadReferences();
     self.LoadEvents();
+    self.SetUpLifeCounter();
   };
 
   self.Build();

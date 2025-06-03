@@ -54,8 +54,6 @@ function modal_BG_DataBase() {
       self.DOM.on("click", ".bg-delete-button", function () {
         const bgId = $(this).attr("data-bg-id");
 
-        console.log(bgId);
-
         __global.BgDeleteRestoreModalController.OpenDeleteRestoreModal(
           bgId,
           self.LoadAllGames,
@@ -147,6 +145,8 @@ function modal_BG_DataBase() {
 
         $.each(response.content, function (index, item) {
           let mechanics = item.mechanics.join(", ");
+          let rowColor =
+            item.isDeleted === true ? `var(--redish)` : `var(--text-color)`;
 
           let td = $("tr td");
 

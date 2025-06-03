@@ -59,6 +59,20 @@ hr {
   box-shadow: 0 0 15px 1px var(--text-color);
 }
 
+.btn-outline-success {
+  --bs-btn-active-color: var(--text-color);
+  --bs-btn-active-bg: var(--greenish);
+  --bs-btn-active-border-color: var(--greenish);
+
+  --bs-btn-color: var(--greenish);
+  --bs-btn-disabled-color: var(--bg-color);
+
+  --bs-btn-border-color: var(--greenish);
+  --bs-btn-disabled-border-color: var(--bg-color);
+
+  --bs-btn-hover-bg: var(--greenish);
+  --bs-btn-hover-border-color: var(--greenish);
+}
 .btn-outline-warning {
   --bs-btn-active-color: var(--text-color);
   --bs-btn-active-bg: var(--yellowish);
