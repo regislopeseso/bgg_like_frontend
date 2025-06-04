@@ -37,6 +37,12 @@ function life_counter_new() {
     self.Inputs[self.Inputs.length] = self.Inputs.FixedMaxLife = self.DOM.find(
       "#fixed-max-life-lifecounter-new"
     );
+    self.Inputs[self.Inputs.length] = self.Inputs.MaxLifeWrapper =
+      self.DOM.find("#max-life-wrapper");
+    self.Inputs[self.Inputs.length] = self.Inputs.MaxLifePoints = self.DOM.find(
+      "#max-life-points-lifecounter-new"
+    );
+
     self.Inputs[self.Inputs.length] = self.Inputs.AutoEndMatch = self.DOM.find(
       "#auto-end-match-lifecounter-new"
     );
@@ -48,8 +54,10 @@ function life_counter_new() {
   self.RedirectToSetUpLifeCounterPage = () => {
     window.location.href = self.Locations.SetUpLifeCounter;
   };
-  self.RedirectToLifeCounter = () => {
-    window.location.href = self.Locations.LifeCounter;
+  self.RedirectToLifeCounter = (lifeCounterId) => {
+    window.location.href = `${
+      self.Locations.LifeCounter
+    }?id=${encodeURIComponent(lifeCounterId)}`;
   };
 
   self.ClearForm = () => {
@@ -102,6 +110,16 @@ function life_counter_new() {
       self.RedirectToUsersPage();
     });
 
+    self.Inputs.FixedMaxLife.on("change", function (e) {
+      if ($(this).is(":checked")) {
+        // Checkbox is checked
+        self.Inputs.MaxLifeWrapper.removeClass("d-none");
+      } else {
+        // Checkbox is unchecked
+        self.Inputs.MaxLifeWrapper.addClass("d-none");
+      }
+    });
+
     self.Buttons.BackToSetup.on("click", function (e) {
       e.preventDefault();
       self.RedirectToSetUpLifeCounterPage();
@@ -141,7 +159,10 @@ function life_counter_new() {
     formData.append("Name", self.Inputs.Name.val());
     formData.append("StartingLifePoints", self.Inputs.StartingLifePoints.val());
     formData.append("FixedMaxLife", self.Inputs.FixedMaxLife.is(":checked"));
+    formData.append("MaxLifePoints", self.Inputs.MaxLifePoints.val());
     formData.append("AutoEndMatch", self.Inputs.AutoEndMatch.is(":checked"));
+
+    let lifeCounterId = null;
 
     $.ajax({
       type: "POST",
@@ -156,7 +177,13 @@ function life_counter_new() {
         if (resp.content === null) {
           sweetAlertError(resp.message);
         } else {
-          sweetAlertSuccess(resp.message);
+          if (isPlayMode === true) {
+            lifeCounterId = resp.content.lifeCounterId;
+            console.log("lifecounter id SUCCESS:", lifeCounterId);
+            $("body").loadpage("charge");
+          } else {
+            sweetAlertSuccess(resp.message);
+          }
         }
       },
       error: (err) => {
@@ -165,7 +192,14 @@ function life_counter_new() {
       complete: () => {
         submitBtn.attr("disabled", false).text(originalBtnText);
         self.ClearForm();
-        if (isPlayMode === true) self.RedirectToLifeCounter();
+
+        if (isPlayMode === true) {
+          // setTimeout(() => {
+          //   $("body").loadpage("demolish");
+          // }, 1000);
+
+          self.RedirectToLifeCounter(lifeCounterId);
+        }
       },
     });
   };

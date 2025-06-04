@@ -26,15 +26,13 @@
           </button>
 
           <div class="d-flex flex-row text-center align-items-center gap-3">
-            <h1 class="p-0 m-0">
-              <span>M</span>agic <span>T</span>he <span>G</span>athering
-            </h1>
+            <h1 id="lifecounter-manager-name" class="p-0 m-0">loading...</h1>
             <button
-              id="lifecounter-add-btn"
-              class="btn btn-outline-success btn-lg"
+              id="lifecounter-config-btn"
+              class="btn btn-outline-info btn-lg"
               type="button"
             >
-              <i class="bi bi-plus-lg"></i>
+              <i class="bi bi-wrench"></i>
             </button>
           </div>
 
@@ -52,33 +50,34 @@
 
       <section
         id="lifecounters-field"
-        class="flex-fill d-flex flex-wrap justify-content-center gap-3"
+        class="container-fluid flex-fill d-flex flex-wrap justify-content-center gap-3"
       >
-        <!-- <div
-          class="player-block d-flex flex-column align-items-center m-3 w-100"
+        <div
+          class="player-block col d-flex flex-column align-items-center m-3 w-100"
         >
-          <div class="player-index d-flex text-center p-1">Player 1</div>
-
           <div
-            class="lifecounter-wrapper d-flex flex-column align-items-center justify-content-center w-100 h-100"
+            class="lifecounter-wrapper d-flex flex-row align-items-center justify-content-center w-100 h-100"
           >
             <button
-              class="increase-life-points d-flex flex-fill align-items-start justify-content-center w-100"
-              type="button"
+              class="decrease-life-points d-flex flex-fill align-items-center justify-content-start w-100 h-100 ps-5"
             >
-              <i class="bi bi-chevron-compact-up"></i>
+              <i class="bi bi-dash-lg"></i>
             </button>
 
-            <div class="lifepoints">20</div>
+            <div class="playerstats">
+              <div class="d-flex flex-column p-5">
+                <div class="player-title text-center">loading...</div>
+                <div class="player-lifepoints text-center">loading...</div>
+              </div>
+            </div>
 
             <button
-              class="decrease-life-points d-flex flex-fill align-items-end justify-content-center w-100"
-              type="button"
+              class="increase-life-points d-flex flex-fill align-items-center justify-content-end w-100 h-100 pe-5"
             >
-              <i class="bi bi-chevron-compact-down"></i>
+              <i class="bi bi-plus-lg"></i>
             </button>
           </div>
-        </div> -->
+        </div>
       </section>
     </main>
 

@@ -1,6 +1,38 @@
 function life_counter() {
   let self = this;
 
+  self.LifeCounterId = null;
+  self.LifeCounterManagerName = "";
+  self.StartingLife = "";
+  self.MaxLifePoints = "";
+
+  self.GetLifeCounterId = () => {
+    self.LifeCounterId = new URLSearchParams(window.location.search).get("id");
+    console.log(self.LifeCounterId);
+  };
+
+  self.GetLifeCounterDetails = () => {
+    if (!self.LifeCounterId) {
+      console.log(self.LifeCounterId);
+    } else {
+      // Fetch Life Counter Details based on provided LifeCounterId
+      $.ajax({
+        url: `https://localhost:7081/users/getlifecounterdetails?LifeCounterId=${self.LifeCounterId}`,
+        type: "GET",
+        xhrFields: { withCredentials: true },
+        success: function (response) {
+          self.LifeCounterManagerName = response.content.name;
+          self.StartingLife = response.content.startingLifePoints;
+          self.MaxLifePoints = response.content.maxLifePoints;
+          self.BuildLifeCounter();
+        },
+        error: function (xhr, status, error) {
+          alert("Could not load life counter");
+        },
+      });
+    }
+  };
+
   self.LoadReferences = () => {
     self.DOM = $("#lifecounter-new");
 
@@ -12,12 +44,21 @@ function life_counter() {
     self.Buttons[self.Buttons.length] = self.Buttons.AddLifeCounter =
       self.DOM.find("#lifecounter-add-btn");
     self.Buttons[self.Buttons.length] = self.Buttons.Close = self.DOM.find(
-      "#lifecounters-close-btn"
+      "#lifecounter-close-btn"
     );
     self.Buttons[self.Buttons.length] = self.Buttons.IncreaseLifePoints =
       self.DOM.find(".increase-life-points");
     self.Buttons[self.Buttons.length] = self.Buttons.DecreaseLifePoints =
       self.DOM.find(".decrease-life-points");
+
+    self.Fields = [];
+    self.Fields[self.Fields.length] = self.Fields.LifeCounterManagerName =
+      self.DOM.find("#lifecounter-manager-name");
+    self.Fields[self.Fields.length] = self.Fields.PlayerName =
+      self.DOM.find(".player-title");
+
+    self.Fields[self.Fields.length] = self.Fields.PlayerStartingLifePoints =
+      self.DOM.find(".player-lifepoints");
 
     self.Locations = [];
     self.Locations[self.Locations.length] = self.Locations.UsersPage =
@@ -25,7 +66,29 @@ function life_counter() {
     self.Locations[self.Locations.length] = self.Locations.SetUpLifeCounter =
       "/html/pages_users/lifecounter/users_lifecounter_setup.html";
   };
+  self.RedirectToUsersPage = () => {
+    window.location.href = self.Locations.UsersPage;
+  };
 
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      cancelButtonText: "close",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: true,
+      didOpen: () => {
+        // Attach keydown listener
+        document.addEventListener("keydown", closeOnAnyKey);
+      },
+      willClose: () => {
+        // Clean up listener when modal closes
+        document.removeEventListener("keydown", closeOnAnyKey);
+      },
+    });
+  }
   function sweetAlertError(title_text, message_text) {
     Swal.fire({
       position: "center",
@@ -56,66 +119,47 @@ function life_counter() {
       self.RedirectToUsersPage();
     });
 
-    self.Buttons.AddLifeCounter.on("click", function (e) {
-      e.preventDefault();
-      self.AddLifeCounter();
-    });
-
     closeOnAnyKey();
   };
 
   self.BuildLifeCounter = () => {
-    return `
-      <div class="player-block d-flex flex-column align-items-center m-3 w-100">
-        <div class="d-flex flex-row justify-content-center align-items-center w-100 gap-5">
-          <button
-              id="lifecounter-instance-refresh-btn"
-              class="btn btn-outline-warning p-3 h-50"
-              type="button"
-            >
-            <i class="bi bi-arrow-clockwise"></i>
-          </button>
+    const formData = new FormData();
+    formData.append("LifeCounterId", self.LifeCounterId);
+    formData.append("PlayersCount", 1);
+    formData.append("StartingLifePoints", self.StartingLife);
 
-          <div class="player-index d-flex text-center p-1">
-            Player 1
-          </div>
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/startlifecountermanager",
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        sweetAlertSuccess(resp.message);
 
-          <button
-            id="lifecounter-instance-close-btn"
-            class="btn btn-outline-danger p-3 h-50"
-            type="button"
-          >
-            <i class="fa-solid fa-xmark"></i>
-          </button>        
-        </div>
-        
+        self.Fields.LifeCounterManagerName.html(
+          `<span>${self.LifeCounterManagerName}</span>`
+        );
 
-        <div class="lifecounter-wrapper d-flex flex-column align-items-center justify-content-center w-100 h-100">
-          <button class="increase-life-points d-flex flex-fill align-items-start justify-content-center w-100">
-            <i class="bi bi-chevron-compact-up"></i>
-          </button>
+        self.Fields.PlayerName.html(`Player Test`);
 
-          <div class="lifepoints">
-            20
-          </div>
-
-          <button class="decrease-life-points d-flex flex-fill align-items-end justify-content-center w-100">
-            <i class="bi bi-chevron-compact-down"></i>
-          </button>
-        </div>
-      </div>
-      `;
-  };
-
-  self.AddLifeCounter = () => {
-    const newCounter = self.BuildLifeCounter(); // Should return the HTML
-    self.LifeCountersField.append(newCounter);
+        self.Fields.PlayerStartingLifePoints.html(`${self.StartingLife}`);
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+      complete: () => {},
+    });
   };
 
   self.Build = () => {
+    self.GetLifeCounterId();
     self.LoadReferences();
     self.LoadEvents();
-    self.AddLifeCounter();
+    self.GetLifeCounterDetails();
   };
 
   self.Build();
