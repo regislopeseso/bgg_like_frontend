@@ -42,9 +42,25 @@
               <input
                 name="GameName"
                 id="name-lifecounter-new"
-                class="new-data form-control text-center"
+                class="new-data form-control text-center required"
                 type="text"
                 autofocus
+                required
+              />
+            </div>
+
+            <hr />
+
+            <div class="text-start w-100">
+              <label class="form-label"><span>P</span>layers Count</label>
+              <input
+                name="PlayersStartingLife"
+                id="players-count-lifecounter-new"
+                class="new-data form-control text-center required"
+                type="number"
+                min="1"
+                max="6"
+                value="1"
                 required
               />
             </div>
@@ -58,8 +74,9 @@
               <input
                 name="PlayersStartingLife"
                 id="players-starting-life-lifecounter-new"
-                class="new-data form-control text-center"
+                class="new-data form-control text-center required"
                 type="number"
+                value="10"
                 required
               />
             </div>
@@ -127,7 +144,7 @@
                 class="new-data custom-checkbox form-check-input p-0 m-0"
                 type="checkbox"
                 role="switch"
-                checked
+                unchecked
               />
             </div>
 
@@ -183,6 +200,6 @@
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
     <!-- <script src="/js/components/header.js"></script> -->
-    <script src="/js/scripts/scripts_users/lifcounter/users_lifecounter_new.js"></script>
+    <script src="/js/scripts/scripts_users/lifecounter/users_lifecounter_new.js"></script>
   </body>
 </html>

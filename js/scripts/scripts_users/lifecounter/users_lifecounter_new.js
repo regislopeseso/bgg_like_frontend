@@ -32,6 +32,8 @@ function life_counter_new() {
     self.Inputs[self.Inputs.length] = self.Inputs.Name = self.DOM.find(
       "#name-lifecounter-new"
     );
+    self.Inputs[self.Inputs.length] = self.Inputs.DefaultPlayersCount =
+      self.DOM.find("#players-count-lifecounter-new");
     self.Inputs[self.Inputs.length] = self.Inputs.StartingLifePoints =
       self.DOM.find("#players-starting-life-lifecounter-new");
     self.Inputs[self.Inputs.length] = self.Inputs.FixedMaxLife = self.DOM.find(
@@ -60,6 +62,59 @@ function life_counter_new() {
     }?id=${encodeURIComponent(lifeCounterId)}`;
   };
 
+  self.PreFillLifeCounterName = () => {
+    let lifeCounterName = "";
+
+    $.ajax({
+      type: "GET",
+      url: "https://localhost:7081/users/countlifecounters",
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        if (resp.content === null) {
+          sweetAlertError(resp.message);
+        } else {
+          console.log("Life Counter: ", resp.content.lifeCountersCount);
+
+          self.Inputs.Name.val(
+            `Life Counter #${resp.content.lifeCountersCount}`
+          )
+            .trigger("focus")
+            .trigger("select");
+        }
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+    });
+  };
+  self.CheckFormFilling = () => {
+    let areFieldsFilled = true;
+
+    $("#form-lifecounter-new .required:visible:enabled").each(function () {
+      if ($(this).val().trim() === "") {
+        areFieldsFilled = false;
+      }
+    });
+
+    // Set disabled state
+    self.Buttons.CreateAndStartLifeCounter.prop("disabled", !areFieldsFilled);
+
+    // Tooltip logic
+    const tooltipMessage = "All fields must be filled";
+
+    if (!areFieldsFilled) {
+      self.Buttons.CreateAndStartLifeCounter.parent().attr(
+        "title",
+        tooltipMessage
+      );
+      self.Buttons.CreateLifeCounter.parent().attr("title", tooltipMessage);
+    } else {
+      self.Buttons.CreateAndStartLifeCounter.parent().removeAttr("title");
+      self.Buttons.CreateLifeCounter.parent().removeAttr("title");
+    }
+  };
   self.ClearForm = () => {
     $.each(self.Inputs, function (i, input) {
       input.val("");
@@ -129,6 +184,8 @@ function life_counter_new() {
       e.preventDefault();
 
       self.ClearForm();
+
+      self.CheckFormFilling();
     });
 
     self.Buttons.CreateAndStartLifeCounter.on("click", (e) => {
@@ -137,10 +194,15 @@ function life_counter_new() {
       self.CreateLifeCounter(true);
     });
 
+    // Hook input and change events for form inputs
+    self.Form.find(".required:visible:enabled").on("input change", function () {
+      self.CheckFormFilling();
+    });
+
     closeOnAnyKey();
   };
 
-  self.SetUpLifeCounter = () => {
+  self.SetUpLifeCounterForm = () => {
     $(document)
       .off("submit", self.Form)
       .on("submit", self.Form, function (e) {
@@ -157,6 +219,10 @@ function life_counter_new() {
 
     const formData = new FormData();
     formData.append("Name", self.Inputs.Name.val());
+    formData.append(
+      "DefaultPlayersCount",
+      self.Inputs.DefaultPlayersCount.val()
+    );
     formData.append("StartingLifePoints", self.Inputs.StartingLifePoints.val());
     formData.append("FixedMaxLife", self.Inputs.FixedMaxLife.is(":checked"));
     formData.append("MaxLifePoints", self.Inputs.MaxLifePoints.val());
@@ -207,7 +273,8 @@ function life_counter_new() {
   self.Build = () => {
     self.LoadReferences();
     self.LoadEvents();
-    self.SetUpLifeCounter();
+    self.PreFillLifeCounterName();
+    self.SetUpLifeCounterForm();
   };
 
   self.Build();

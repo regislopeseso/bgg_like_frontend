@@ -3,12 +3,12 @@ function life_counter() {
 
   self.LifeCounterId = null;
   self.LifeCounterManagerName = "";
+  self.DefaultPlayersCount = "";
   self.StartingLife = "";
   self.MaxLifePoints = "";
 
   self.GetLifeCounterId = () => {
     self.LifeCounterId = new URLSearchParams(window.location.search).get("id");
-    console.log(self.LifeCounterId);
   };
 
   self.GetLifeCounterDetails = () => {
@@ -22,9 +22,12 @@ function life_counter() {
         xhrFields: { withCredentials: true },
         success: function (response) {
           self.LifeCounterManagerName = response.content.name;
+          self.DefaultPlayersCount = response.content.defaultPlayersCount;
           self.StartingLife = response.content.startingLifePoints;
           self.MaxLifePoints = response.content.maxLifePoints;
           self.BuildLifeCounter();
+          console.log("Players count: ", self.DefaultPlayersCount);
+          self.OrganizeLifeCounters(self.DefaultPlayersCount);
         },
         error: function (xhr, status, error) {
           alert("Could not load life counter");
@@ -56,9 +59,22 @@ function life_counter() {
       self.DOM.find("#lifecounter-manager-name");
     self.Fields[self.Fields.length] = self.Fields.PlayerName =
       self.DOM.find(".player-title");
-
     self.Fields[self.Fields.length] = self.Fields.PlayerStartingLifePoints =
       self.DOM.find(".player-lifepoints");
+
+    self.LifeCounterInstances = [];
+    self.LifeCounterInstances[self.LifeCounterInstances.length] =
+      self.LifeCounterPlayer1 = self.DOM.find("#lifecounter1");
+    self.LifeCounterInstances[self.LifeCounterInstances.length] =
+      self.LifeCounterPlayer2 = self.DOM.find("#lifecounter2");
+    self.LifeCounterInstances[self.LifeCounterInstances.length] =
+      self.LifeCounterPlayer3 = self.DOM.find("#lifecounter3");
+    self.LifeCounterInstances[self.LifeCounterInstances.length] =
+      self.LifeCounterPlayer4 = self.DOM.find("#lifecounter4");
+    self.LifeCounterInstances[self.LifeCounterInstances.length] =
+      self.LifeCounterPlayer5 = self.DOM.find("#lifecounter5");
+    self.LifeCounterInstances[self.LifeCounterInstances.length] =
+      self.LifeCounterPlayer6 = self.DOM.find("#lifecounter6");
 
     self.Locations = [];
     self.Locations[self.Locations.length] = self.Locations.UsersPage =
@@ -120,6 +136,86 @@ function life_counter() {
     });
 
     closeOnAnyKey();
+  };
+
+  self.OrganizeLifeCounters = (lifeCountersCount) => {
+    function ShowOneLifeCounter() {
+      if (self.LifeCounterInstances[0].hasClass("d-none")) {
+        self.LifeCounterInstances[0].removeClass("d-none");
+      }
+      for (let i = 1; i < self.LifeCounterInstances.length; i++) {
+        self.LifeCounterInstances[i].addClass("d-none");
+      }
+    }
+
+    function ShowTwoLifeCounters() {
+      for (let i = 0; i < 2; i++) {
+        if (self.LifeCounterInstances[i].hasClass("d-none")) {
+          self.LifeCounterInstances[i].removeClass("d-none");
+        }
+      }
+      for (let i = 2; i < self.LifeCounterInstances.length; i++) {
+        self.LifeCounterInstances[i].addClass("d-none");
+      }
+    }
+
+    function ShowThreeLifeCounters() {
+      for (let i = 0; i < 3; i++) {
+        if (self.LifeCounterInstances[i].hasClass("d-none")) {
+          self.LifeCounterInstances[i].removeClass("d-none");
+        }
+      }
+      for (let i = 3; i < self.LifeCounterInstances.length; i++) {
+        self.LifeCounterInstances[i].addClass("d-none");
+      }
+    }
+
+    function ShowFourLifeCounters() {
+      for (let i = 0; i < 4; i++) {
+        if (self.LifeCounterInstances[i].hasClass("d-none")) {
+          self.LifeCounterInstances[i].removeClass("d-none");
+        }
+      }
+      for (let i = 4; i < self.LifeCounterInstances.length; i++) {
+        self.LifeCounterInstances[i].addClass("d-none");
+      }
+    }
+
+    function ShowFiveLifeCounters() {
+      for (let i = 0; i < 5; i++) {
+        if (self.LifeCounterInstances[i].hasClass("d-none")) {
+          self.LifeCounterInstances[i].removeClass("d-none");
+        }
+      }
+      for (let i = 5; i < self.LifeCounterInstances.length; i++) {
+        self.LifeCounterInstances[i].addClass("d-none");
+      }
+    }
+
+    function ShowSixLifeCounters() {
+      for (let i = 0; i < self.LifeCounterInstances.length; i++) {
+        if (self.LifeCounterInstances[i].hasClass("d-none")) {
+          self.LifeCounterInstances[i].removeClass("d-none");
+        }
+      }
+    }
+
+    switch (lifeCountersCount) {
+      case 1:
+        return ShowOneLifeCounter();
+      case 2:
+        return ShowTwoLifeCounters();
+      case 3:
+        return ShowThreeLifeCounters();
+      case 4:
+        return ShowFourLifeCounters();
+      case 5:
+        return ShowFiveLifeCounters();
+      case 6:
+        return ShowSixLifeCounters();
+      default:
+        return ShowOneLifeCounter();
+    }
   };
 
   self.BuildLifeCounter = () => {
