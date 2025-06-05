@@ -41,6 +41,15 @@ function life_counter() {
 
     self.LifeCountersField = self.DOM.find("#lifecounters-field");
 
+    self.LifeCountersOrganizer = self.DOM.find("#lifecounters-organizer");
+
+    self.FirstPlayerBlock = self.DOM.find(".player-block").eq(0);
+    self.SecondPlayerBlock = self.DOM.find(".player-block").eq(1);
+    self.ThirdPlayerBlock = self.DOM.find(".player-block").eq(2);
+    self.FourthPlayerBlock = self.DOM.find(".player-block").eq(3);
+    self.FifthPlayerBlock = self.DOM.find(".player-block").eq(4);
+    self.SixthPlayerBlock = self.DOM.find(".player-block").eq(5);
+
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.RefreshLifeCounters =
       self.DOM.find("#lifecounter-refresh-btn");
@@ -146,6 +155,19 @@ function life_counter() {
       for (let i = 1; i < self.LifeCounterInstances.length; i++) {
         self.LifeCounterInstances[i].addClass("d-none");
       }
+
+      self.LifeCountersOrganizer.css({
+        "grid-template-columns": "repeat(1, 1fr)",
+        "grid-template-rows": "repeat(1, 1fr)",
+      });
+
+      self.FirstPlayerBlock.css({
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
     }
 
     function ShowTwoLifeCounters() {
@@ -157,6 +179,29 @@ function life_counter() {
       for (let i = 2; i < self.LifeCounterInstances.length; i++) {
         self.LifeCounterInstances[i].addClass("d-none");
       }
+
+      self.LifeCountersOrganizer.css({
+        "grid-template-columns": "repeat(1, 1fr)",
+        "grid-template-rows": "repeat(2, 1fr)",
+      });
+
+      self.FirstPlayerBlock.css({
+        "transform": "rotate(180deg)",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
+
+      self.SecondPlayerBlock.css({
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
     }
 
     function ShowThreeLifeCounters() {
@@ -168,6 +213,52 @@ function life_counter() {
       for (let i = 3; i < self.LifeCounterInstances.length; i++) {
         self.LifeCounterInstances[i].addClass("d-none");
       }
+
+      self.LifeCountersOrganizer.css({
+        "grid-template-columns": "repeat(2, 1fr)",
+        "grid-template-rows": "repeat(2, 1fr)",
+      });
+
+      self.FirstPlayerBlock.css({
+        "transform": "rotate(180deg)",
+
+        "grid-column-start": "1",
+        "grid-column-end": "3",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
+
+      self.SecondPlayerBlock.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
+      self.SecondPlayerBlock.find("button .bi-dash-lg").addClass("rotate-i");
+      self.SecondPlayerBlock.find(".playerstats").addClass(
+        "rotate-text-clockWise"
+      );
+
+      self.ThirdPlayerBlock.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "2",
+        "grid-column-end": "3",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
+      self.ThirdPlayerBlock.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.ThirdPlayerBlock.find(".playerstats").addClass(
+        "rotate-text-antiClockWise"
+      );
     }
 
     function ShowFourLifeCounters() {
@@ -179,6 +270,51 @@ function life_counter() {
       for (let i = 4; i < self.LifeCounterInstances.length; i++) {
         self.LifeCounterInstances[i].addClass("d-none");
       }
+
+      self.LifeCountersOrganizer.css({
+        "grid-template-columns": "repeat(2, 1fr)",
+        "grid-template-rows": "repeat(2, 1fr)",
+      });
+
+      self.FirstPlayerBlock.css({
+        "transform": "rotate(90deg)",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
+
+      self.SecondPlayerBlock.css({
+        "transform": "rotate(90deg)",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
+
+      self.ThirdPlayerBlock.css({
+        "transform": "rotate(-90deg)",
+
+        "grid-column-start": "2",
+        "grid-column-end": "3",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
+
+      self.FourthPlayerBlock.css({
+        "transform": "rotate(-90deg)",
+
+        "grid-column-start": "2",
+        "grid-column-end": "3",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
     }
 
     function ShowFiveLifeCounters() {

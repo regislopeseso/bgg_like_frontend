@@ -1,45 +1,77 @@
-main {
+body {
   height: 100vh;
 }
-#lifecounters-field {
-  width: 100vw;
-}
-.player-block {
-  border-radius: 2rem;
-  border: 2px solid var(--text-color);
-  overflow: hidden;
+
+#lifecounters-organizer {
+  padding: 1rem;
+  display: grid;
+
+  width: 95vw;
+  height: 85vh;
+
+  gap: 2rem;
+
+  align-self: center;
+  align-content: center;
+  align-items: center;
+
+  justify-self: center;
+  justify-content: center;
+  justify-items: center;
 }
 
-.lifecounter-wrapper {
+.player-block {
   position: relative;
-  background-color: var(--second-bg-color);
+  display: flex;
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: 2rem;
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+.player-block button {
+  width: 100%;
+  height: 100%;
 }
 
 .playerstats {
   position: absolute;
+
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 10rem;
   font-weight: bold;
   color: var(--text-color); /* Transparent background feel */
   background-color: transparent;
-  box-shadow: 0 0 10px 10px var(--text-color);
+  /* box-shadow: 0 0 10px 1px var(--text-color); */
   border-radius: 2rem;
   z-index: 1;
   pointer-events: none; /* Allows buttons to be clickable through it */
+}
+.rotate-text-clockWise {
+  writing-mode: sideways-rl !important;
+}
+.rotate-text-antiClockWise {
+  writing-mode: sideways-lr !important;
 }
 
 .increase-life-points,
 .decrease-life-points {
   position: relative;
+  display: flex;
   background: transparent;
   color: var(--text-color);
   z-index: 0; /* Ensures buttons are above the background number */
 }
 .increase-life-points i,
 .decrease-life-points i {
-  font-size: 5rem;
+  font-size: clamp(16px, 2vw, 50vw);
+}
+
+.rotate-i::before {
+  transform: rotate(90deg);
 }
 
 .increase-life-points:active,

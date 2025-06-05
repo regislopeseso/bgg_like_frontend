@@ -11,11 +11,11 @@
     />
   </head>
   <body>
-    <main id="lifecounter-new" class="d-flex flex-column">
-      <section class="d-flex pt-2">
+    <main id="lifecounter-new" class="d-flex flex-column h-100">
+      <section>
         <div
           id="lifecounter-header"
-          class="d-flex justify-content-between align-items-center w-100"
+          class="d-flex justify-content-between align-items-center w-100 pt-3"
         >
           <button
             id="lifecounter-refresh-btn"
@@ -50,177 +50,113 @@
 
       <section
         id="lifecounters-field"
-        class="container-fluid flex-fill d-flex flex-wrap justify-content-center gap-3"
+        class="flex-fill d-flex justify-content-center align-items-center"
       >
-        <!-- #1 LIFE COUNTER - PLAYER 1 -->
-        <div
-          id="lifecounter1"
-          class="player-block d-flex flex-column align-items-center m-3 w-100"
-        >
-          <div
-            class="lifecounter-wrapper d-flex flex-row align-items-center justify-content-center w-100 h-100"
-          >
-            <button
-              class="decrease-life-points d-flex flex-fill align-items-center justify-content-start w-100 h-100 ps-5"
-            >
+        <div id="lifecounters-organizer">
+          <!-- #1 LIFE COUNTER - PLAYER 1 -->
+          <div id="lifecounter1" class="player-block">
+            <button class="decrease-life-points">
               <i class="bi bi-dash-lg"></i>
             </button>
 
             <div class="playerstats">
-              <div class="d-flex flex-column p-5">
+              <div class="d-flex flex-column">
                 <div class="player-title text-center">loading...</div>
                 <div class="player-lifepoints text-center">loading...</div>
               </div>
             </div>
 
-            <button
-              class="increase-life-points d-flex flex-fill align-items-center justify-content-end w-100 h-100 pe-5"
-            >
+            <button class="increase-life-points">
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
-        </div>
 
-        <!-- #2 LIFE COUNTER - PLAYER 2 -->
-        <div
-          id="lifecounter2"
-          class="player-block col d-flex flex-column align-items-center m-3 w-100 d-none"
-        >
-          <div
-            class="lifecounter-wrapper d-flex flex-row align-items-center justify-content-center w-100 h-100"
-          >
-            <button
-              class="decrease-life-points d-flex flex-fill align-items-center justify-content-start w-100 h-100 ps-5"
-            >
+          <!-- #2 LIFE COUNTER - PLAYER 2 -->
+          <div id="lifecounter2" class="player-block d-none">
+            <button class="decrease-life-points">
               <i class="bi bi-dash-lg"></i>
             </button>
 
             <div class="playerstats">
-              <div class="d-flex flex-column p-5">
+              <div class="d-flex flex-column">
                 <div class="player-title text-center">loading...</div>
                 <div class="player-lifepoints text-center">loading...</div>
               </div>
             </div>
 
-            <button
-              class="increase-life-points d-flex flex-fill align-items-center justify-content-end w-100 h-100 pe-5"
-            >
+            <button class="increase-life-points">
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
-        </div>
 
-        <!-- #3 LIFE COUNTER - PLAYER 2 -->
-        <div
-          id="lifecounter3"
-          class="player-block col d-flex flex-column align-items-center m-3 w-100 d-none"
-        >
-          <div
-            class="lifecounter-wrapper d-flex flex-row align-items-center justify-content-center w-100 h-100"
-          >
-            <button
-              class="decrease-life-points d-flex flex-fill align-items-center justify-content-start w-100 h-100 ps-5"
-            >
+          <!-- #3 LIFE COUNTER - PLAYER 3 -->
+          <div id="lifecounter3" class="player-block d-none">
+            <button class="decrease-life-points">
               <i class="bi bi-dash-lg"></i>
             </button>
 
             <div class="playerstats">
-              <div class="d-flex flex-column p-5">
+              <div class="d-flex flex-column">
                 <div class="player-title text-center">loading...</div>
                 <div class="player-lifepoints text-center">loading...</div>
               </div>
             </div>
 
-            <button
-              class="increase-life-points d-flex flex-fill align-items-center justify-content-end w-100 h-100 pe-5"
-            >
+            <button class="increase-life-points">
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
-        </div>
 
-        <!-- #4 LIFE COUNTER - PLAYER 2 -->
-        <div
-          id="lifecounter4"
-          class="player-block col d-flex flex-column align-items-center m-3 w-100 d-none"
-        >
-          <div
-            class="lifecounter-wrapper d-flex flex-row align-items-center justify-content-center w-100 h-100"
-          >
-            <button
-              class="decrease-life-points d-flex flex-fill align-items-center justify-content-start w-100 h-100 ps-5"
-            >
+          <!-- #4 LIFE COUNTER - PLAYER 4 -->
+          <div id="lifecounter4" class="player-block d-none">
+            <button class="decrease-life-points">
               <i class="bi bi-dash-lg"></i>
             </button>
 
             <div class="playerstats">
-              <div class="d-flex flex-column p-5">
+              <div class="d-flex flex-column">
                 <div class="player-title text-center">loading...</div>
                 <div class="player-lifepoints text-center">loading...</div>
               </div>
             </div>
 
-            <button
-              class="increase-life-points d-flex flex-fill align-items-center justify-content-end w-100 h-100 pe-5"
-            >
+            <button class="increase-life-points">
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
-        </div>
 
-        <!-- #5 LIFE COUNTER - PLAYER 2 -->
-        <div
-          id="lifecounter5"
-          class="player-block col d-flex flex-column align-items-center m-3 w-100 d-none"
-        >
-          <div
-            class="lifecounter-wrapper d-flex flex-row align-items-center justify-content-center w-100 h-100"
-          >
-            <button
-              class="decrease-life-points d-flex flex-fill align-items-center justify-content-start w-100 h-100 ps-5"
-            >
+          <!-- #5 LIFE COUNTER - PLAYER 5 -->
+          <div id="lifecounter5" class="player-block d-none">
+            <button class="decrease-life-points">
               <i class="bi bi-dash-lg"></i>
             </button>
 
             <div class="playerstats">
-              <div class="d-flex flex-column p-5">
+              <div class="d-flex flex-column">
                 <div class="player-title text-center">loading...</div>
                 <div class="player-lifepoints text-center">loading...</div>
               </div>
             </div>
 
-            <button
-              class="increase-life-points d-flex flex-fill align-items-center justify-content-end w-100 h-100 pe-5"
-            >
+            <button class="increase-life-points">
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
-        </div>
 
-        <!-- #6 LIFE COUNTER - PLAYER 6 -->
-        <div
-          id="lifecounter6"
-          class="player-block col d-flex flex-column align-items-center m-3 w-100 d-none"
-        >
-          <div
-            class="lifecounter-wrapper d-flex flex-row align-items-center justify-content-center w-100 h-100"
-          >
-            <button
-              class="decrease-life-points d-flex flex-fill align-items-center justify-content-start w-100 h-100 ps-5"
-            >
+          <!-- #6 LIFE COUNTER - PLAYER 6 -->
+          <div id="lifecounter6" class="player-block d-none">
+            <button class="decrease-life-points">
               <i class="bi bi-dash-lg"></i>
             </button>
 
             <div class="playerstats">
-              <div class="d-flex flex-column p-5">
+              <div class="d-flex flex-column">
                 <div class="player-title text-center">loading...</div>
                 <div class="player-lifepoints text-center">loading...</div>
               </div>
             </div>
 
-            <button
-              class="increase-life-points d-flex flex-fill align-items-center justify-content-end w-100 h-100 pe-5"
-            >
+            <button class="increase-life-points">
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
