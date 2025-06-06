@@ -9,11 +9,31 @@ function life_counter() {
 
   self.GetLifeCounterId = () => {
     self.LifeCounterId = new URLSearchParams(window.location.search).get("id");
+
+    if (!self.LifeCounterId) {
+      $.ajax({
+        url: `https://localhost:7081/users/getlastlifecountermanager`,
+        type: "GET",
+        xhrFields: { withCredentials: true },
+        success: function (response) {
+          self.LifeCounterId = response.content.lifeCounterId;
+          console.log("ultimo id:", response.content.lifeCounterId);
+          self.GetLifeCounterDetails();
+        },
+        error: function (response) {
+          sweetAlertError(
+            response.message,
+            "Could not load th last life counter"
+          );
+        },
+      });
+    }
   };
 
   self.GetLifeCounterDetails = () => {
+    console.log("id antes de puxar detalhes: ", self.LifeCounterId);
     if (!self.LifeCounterId) {
-      console.log(self.LifeCounterId);
+      sweetAlertError("Failed to fetch id", "self.LifeCounterId");
     } else {
       // Fetch Life Counter Details based on provided LifeCounterId
       $.ajax({
@@ -43,12 +63,19 @@ function life_counter() {
 
     self.LifeCountersOrganizer = self.DOM.find("#lifecounters-organizer");
 
-    self.FirstPlayerBlock = self.DOM.find(".player-block").eq(0);
-    self.SecondPlayerBlock = self.DOM.find(".player-block").eq(1);
-    self.ThirdPlayerBlock = self.DOM.find(".player-block").eq(2);
-    self.FourthPlayerBlock = self.DOM.find(".player-block").eq(3);
-    self.FifthPlayerBlock = self.DOM.find(".player-block").eq(4);
-    self.SixthPlayerBlock = self.DOM.find(".player-block").eq(5);
+    self.PlayerBlocks = [];
+    self.PlayerBlocks[self.PlayerBlocks.length] = self.PlayerBlocks.First =
+      self.DOM.find(".player-block").eq(0);
+    self.PlayerBlocks[self.PlayerBlocks.length] = self.PlayerBlocks.Second =
+      self.DOM.find(".player-block").eq(1);
+    self.PlayerBlocks[self.PlayerBlocks.length] = self.PlayerBlocks.Third =
+      self.DOM.find(".player-block").eq(2);
+    self.PlayerBlocks[self.PlayerBlocks.length] = self.PlayerBlocks.Fourth =
+      self.DOM.find(".player-block").eq(3);
+    self.PlayerBlocks[self.PlayerBlocks.length] = self.PlayerBlocks.Fifth =
+      self.DOM.find(".player-block").eq(4);
+    self.PlayerBlocks[self.PlayerBlocks.length] = self.PlayerBlocks.Sixth =
+      self.DOM.find(".player-block").eq(5);
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.RefreshLifeCounters =
@@ -73,17 +100,17 @@ function life_counter() {
 
     self.LifeCounterInstances = [];
     self.LifeCounterInstances[self.LifeCounterInstances.length] =
-      self.LifeCounterPlayer1 = self.DOM.find("#lifecounter1");
+      self.LifeCounterInstances.Player1 = self.DOM.find("#lifecounter1");
     self.LifeCounterInstances[self.LifeCounterInstances.length] =
-      self.LifeCounterPlayer2 = self.DOM.find("#lifecounter2");
+      self.LifeCounterInstances.Player2 = self.DOM.find("#lifecounter2");
     self.LifeCounterInstances[self.LifeCounterInstances.length] =
-      self.LifeCounterPlayer3 = self.DOM.find("#lifecounter3");
+      self.LifeCounterInstances.Player3 = self.DOM.find("#lifecounter3");
     self.LifeCounterInstances[self.LifeCounterInstances.length] =
-      self.LifeCounterPlayer4 = self.DOM.find("#lifecounter4");
+      self.LifeCounterInstances.Player4 = self.DOM.find("#lifecounter4");
     self.LifeCounterInstances[self.LifeCounterInstances.length] =
-      self.LifeCounterPlayer5 = self.DOM.find("#lifecounter5");
+      self.LifeCounterInstances.Player5 = self.DOM.find("#lifecounter5");
     self.LifeCounterInstances[self.LifeCounterInstances.length] =
-      self.LifeCounterPlayer6 = self.DOM.find("#lifecounter6");
+      self.LifeCounterInstances.Player6 = self.DOM.find("#lifecounter6");
 
     self.Locations = [];
     self.Locations[self.Locations.length] = self.Locations.UsersPage =
@@ -161,13 +188,20 @@ function life_counter() {
         "grid-template-rows": "repeat(1, 1fr)",
       });
 
-      self.FirstPlayerBlock.css({
+      self.PlayerBlocks.First.css({
         "grid-column-start": "1",
         "grid-column-end": "2",
 
         "grid-row-start": "1",
         "grid-row-end": "2",
       });
+
+      self.PlayerBlocks.First.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexRow"
+      );
+      self.PlayerBlocks.First.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexRow"
+      );
     }
 
     function ShowTwoLifeCounters() {
@@ -185,7 +219,21 @@ function life_counter() {
         "grid-template-rows": "repeat(2, 1fr)",
       });
 
-      self.FirstPlayerBlock.css({
+      self.PlayerBlocks.First.css({
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
+      self.PlayerBlocks.First.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexRow"
+      );
+      self.PlayerBlocks.First.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexRow"
+      );
+
+      self.PlayerBlocks.Second.css({
         "transform": "rotate(180deg)",
 
         "grid-column-start": "1",
@@ -194,14 +242,12 @@ function life_counter() {
         "grid-row-start": "1",
         "grid-row-end": "2",
       });
-
-      self.SecondPlayerBlock.css({
-        "grid-column-start": "1",
-        "grid-column-end": "2",
-
-        "grid-row-start": "2",
-        "grid-row-end": "3",
-      });
+      self.PlayerBlocks.Second.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexRow"
+      );
+      self.PlayerBlocks.Second.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexRow"
+      );
     }
 
     function ShowThreeLifeCounters() {
@@ -219,44 +265,61 @@ function life_counter() {
         "grid-template-rows": "repeat(2, 1fr)",
       });
 
-      self.FirstPlayerBlock.css({
-        "transform": "rotate(180deg)",
-
+      self.PlayerBlocks.First.css({
         "grid-column-start": "1",
         "grid-column-end": "3",
 
-        "grid-row-start": "1",
-        "grid-row-end": "2",
+        "grid-row-start": "2",
+        "grid-row-end": "3",
       });
+      self.PlayerBlocks.First.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexRow"
+      );
+      self.PlayerBlocks.First.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexRow"
+      );
 
-      self.SecondPlayerBlock.css({
+      self.PlayerBlocks.Second.css({
         "display": "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
         "grid-column-end": "2",
 
-        "grid-row-start": "2",
-        "grid-row-end": "3",
+        "grid-row-start": "1",
+        "grid-row-end": "2",
       });
-      self.SecondPlayerBlock.find("button .bi-dash-lg").addClass("rotate-i");
-      self.SecondPlayerBlock.find(".playerstats").addClass(
+      self.PlayerBlocks.Second.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Second.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Second.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Second.find(".playerstats").addClass(
         "rotate-text-clockWise"
       );
 
-      self.ThirdPlayerBlock.css({
+      self.PlayerBlocks.Third.css({
         "display": "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
         "grid-column-end": "3",
 
-        "grid-row-start": "2",
-        "grid-row-end": "3",
+        "grid-row-start": "1",
+        "grid-row-end": "2",
       });
-      self.ThirdPlayerBlock.find("button .bi-dash-lg").addClass("rotate-i");
+      self.PlayerBlocks.Third.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Third.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Third.find("button .bi-dash-lg").addClass("rotate-i");
 
-      self.ThirdPlayerBlock.find(".playerstats").addClass(
+      self.PlayerBlocks.Third.find(".playerstats").addClass(
         "rotate-text-antiClockWise"
       );
     }
@@ -276,18 +339,9 @@ function life_counter() {
         "grid-template-rows": "repeat(2, 1fr)",
       });
 
-      self.FirstPlayerBlock.css({
-        "transform": "rotate(90deg)",
-
-        "grid-column-start": "1",
-        "grid-column-end": "2",
-
-        "grid-row-start": "1",
-        "grid-row-end": "2",
-      });
-
-      self.SecondPlayerBlock.css({
-        "transform": "rotate(90deg)",
+      self.PlayerBlocks.First.css({
+        "display": "flex",
+        "flex-direction": "column",
 
         "grid-column-start": "1",
         "grid-column-end": "2",
@@ -295,9 +349,43 @@ function life_counter() {
         "grid-row-start": "2",
         "grid-row-end": "3",
       });
+      self.PlayerBlocks.First.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.First.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.First.find("button .bi-dash-lg").addClass("rotate-i");
 
-      self.ThirdPlayerBlock.css({
-        "transform": "rotate(-90deg)",
+      self.PlayerBlocks.First.find(".playerstats").addClass(
+        "rotate-text-clockWise"
+      );
+
+      self.PlayerBlocks.Second.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
+      self.PlayerBlocks.Second.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Second.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Second.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Second.find(".playerstats").addClass(
+        "rotate-text-clockWise"
+      );
+
+      self.PlayerBlocks.Third.css({
+        "display": "flex",
+        "flex-direction": "column",
 
         "grid-column-start": "2",
         "grid-column-end": "3",
@@ -305,9 +393,21 @@ function life_counter() {
         "grid-row-start": "1",
         "grid-row-end": "2",
       });
+      self.PlayerBlocks.Third.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Third.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Third.find("button .bi-dash-lg").addClass("rotate-i");
 
-      self.FourthPlayerBlock.css({
-        "transform": "rotate(-90deg)",
+      self.PlayerBlocks.Third.find(".playerstats").addClass(
+        "rotate-text-antiClockWise"
+      );
+
+      self.PlayerBlocks.Fourth.css({
+        "display": "flex",
+        "flex-direction": "column",
 
         "grid-column-start": "2",
         "grid-column-end": "3",
@@ -315,6 +415,17 @@ function life_counter() {
         "grid-row-start": "2",
         "grid-row-end": "3",
       });
+      self.PlayerBlocks.Fourth.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fourth.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fourth.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Fourth.find(".playerstats").addClass(
+        "rotate-text-antiClockWise"
+      );
     }
 
     function ShowFiveLifeCounters() {
@@ -326,6 +437,113 @@ function life_counter() {
       for (let i = 5; i < self.LifeCounterInstances.length; i++) {
         self.LifeCounterInstances[i].addClass("d-none");
       }
+
+      self.LifeCountersOrganizer.css({
+        "grid-template-columns": "repeat(2, 1fr)",
+        "grid-template-rows": "repeat(3, 1fr)",
+      });
+
+      self.PlayerBlocks.First.css({
+        "grid-column-start": "1",
+        "grid-column-end": "3",
+
+        "grid-row-start": "3",
+        "grid-row-end": "4",
+      });
+      self.PlayerBlocks.First.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexRow"
+      );
+      self.PlayerBlocks.First.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexRow"
+      );
+
+      self.PlayerBlocks.Second.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
+      self.PlayerBlocks.Second.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Second.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Second.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Second.find(".playerstats").addClass(
+        "rotate-text-clockWise"
+      );
+
+      self.PlayerBlocks.Third.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
+      self.PlayerBlocks.Third.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Third.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Third.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Third.find(".playerstats").addClass(
+        "rotate-text-clockWise"
+      );
+
+      self.PlayerBlocks.Fourth.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "2",
+        "grid-column-end": "3",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
+      self.PlayerBlocks.Fourth.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fourth.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fourth.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Fourth.find(".playerstats").addClass(
+        "rotate-text-antiClockWise"
+      );
+
+      self.PlayerBlocks.Fifth.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "2",
+        "grid-column-end": "3",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
+      self.PlayerBlocks.Fifth.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fifth.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fifth.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Fifth.find(".playerstats").addClass(
+        "rotate-text-antiClockWise"
+      );
     }
 
     function ShowSixLifeCounters() {
@@ -334,6 +552,141 @@ function life_counter() {
           self.LifeCounterInstances[i].removeClass("d-none");
         }
       }
+
+      self.LifeCountersOrganizer.css({
+        "grid-template-columns": "repeat(2, 1fr)",
+        "grid-template-rows": "repeat(3, 1fr)",
+      });
+
+      self.PlayerBlocks.First.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "3",
+        "grid-row-end": "4",
+      });
+      self.PlayerBlocks.First.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.First.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.First.find("button .bi-dash-lg").addClass("rotate-i");
+      self.PlayerBlocks.First.find(".playerstats").addClass(
+        "rotate-text-clockWise"
+      );
+
+      self.PlayerBlocks.Second.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
+      self.PlayerBlocks.Second.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Second.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Second.find("button .bi-dash-lg").addClass("rotate-i");
+      self.PlayerBlocks.Second.find(".playerstats").addClass(
+        "rotate-text-clockWise"
+      );
+
+      self.PlayerBlocks.Third.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "1",
+        "grid-column-end": "2",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
+      self.PlayerBlocks.Third.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Third.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Third.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Third.find(".playerstats").addClass(
+        "rotate-text-clockWise"
+      );
+
+      self.PlayerBlocks.Fourth.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "2",
+        "grid-column-end": "3",
+
+        "grid-row-start": "1",
+        "grid-row-end": "2",
+      });
+      self.PlayerBlocks.Fourth.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fourth.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fourth.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Fourth.find(".playerstats").addClass(
+        "rotate-text-antiClockWise"
+      );
+
+      self.PlayerBlocks.Fifth.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "2",
+        "grid-column-end": "3",
+
+        "grid-row-start": "2",
+        "grid-row-end": "3",
+      });
+      self.PlayerBlocks.Fifth.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fifth.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Fifth.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Fifth.find(".playerstats").addClass(
+        "rotate-text-antiClockWise"
+      );
+
+      self.PlayerBlocks.Sixth.css({
+        "display": "flex",
+        "flex-direction": "column",
+
+        "grid-column-start": "2",
+        "grid-column-end": "3",
+
+        "grid-row-start": "3",
+        "grid-row-end": "4",
+      });
+      self.PlayerBlocks.Sixth.find(self.Buttons.IncreaseLifePoints).addClass(
+        "increasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Sixth.find(self.Buttons.DecreaseLifePoints).addClass(
+        "decreasePointsFlexColumn"
+      );
+      self.PlayerBlocks.Sixth.find("button .bi-dash-lg").addClass("rotate-i");
+
+      self.PlayerBlocks.Sixth.find(".playerstats").addClass(
+        "rotate-text-antiClockWise"
+      );
     }
 
     switch (lifeCountersCount) {
@@ -357,7 +710,7 @@ function life_counter() {
   self.BuildLifeCounter = () => {
     const formData = new FormData();
     formData.append("LifeCounterId", self.LifeCounterId);
-    formData.append("PlayersCount", 1);
+    formData.append("PlayersCount", self.DefaultPlayersCount);
     formData.append("StartingLifePoints", self.StartingLife);
 
     $.ajax({
@@ -376,7 +729,12 @@ function life_counter() {
           `<span>${self.LifeCounterManagerName}</span>`
         );
 
-        self.Fields.PlayerName.html(`Player Test`);
+        let players = resp.content.lifeCounterPlayers;
+        for (let i = 0; i < resp.content.playersCount; i++) {
+          self.LifeCounterInstances[i]
+            .find(self.Fields.PlayerName)
+            .html(players[i].playerName);
+        }
 
         self.Fields.PlayerStartingLifePoints.html(`${self.StartingLife}`);
       },
