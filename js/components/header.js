@@ -43,7 +43,7 @@ function loadHeader(userData, roleData) {
       <nav class="navbar">
         <div class="navOptions d-flex flex-row align-items-center justify-content-between"> 
         
-          <a href="/html/pages_users/lifecounter/users_lifecounter_setup2.html"
+          <a href="/html/pages_users/lifecounter/users_lifecounter_menu.html"
             >LIFE COUNTER</
           >
 

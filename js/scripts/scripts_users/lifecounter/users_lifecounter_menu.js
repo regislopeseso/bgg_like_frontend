@@ -1,4 +1,4 @@
-function life_counter_setup() {
+function life_counter_menu() {
   let self = this;
 
   self.LoadReferences = () => {
@@ -70,5 +70,5 @@ function life_counter_setup() {
 }
 
 $(function () {
-  new life_counter_setup();
+  new life_counter_menu();
 });

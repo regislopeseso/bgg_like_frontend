@@ -1,4 +1,4 @@
-function life_counter_new() {
+function life_counter_setup() {
   let self = this;
   self.defaultPlayersCount = null;
 
@@ -25,7 +25,7 @@ function life_counter_new() {
     self.Locations[self.Locations.length] = self.Locations.UsersPage =
       "/html/pages_users/users_page.html";
     self.Locations[self.Locations.length] = self.Locations.SetUpLifeCounter =
-      "/html/pages_users/lifecounter/users_lifecounter_setup2.html";
+      "/html/pages_users/lifecounter/users_lifecounter_menu.html";
     self.Locations[self.Locations.length] = self.Locations.LifeCounter =
       "/html/pages_users/lifecounter/users_lifecounter.html";
 
@@ -241,8 +241,6 @@ function life_counter_new() {
     const originalBtnText = submitBtn.text();
     submitBtn.attr("disabled", true).text("Submitting...");
 
-    console.log("Selected ball is: ", self.defaultPlayersCount);
-
     const formData = new FormData();
     formData.append("Name", self.Inputs.Name.val());
     formData.append("DefaultPlayersCount", self.defaultPlayersCount);
@@ -304,5 +302,5 @@ function life_counter_new() {
 }
 
 $(function () {
-  new life_counter_new();
+  new life_counter_setup();
 });
