@@ -151,3 +151,8 @@ body {
   justify-content: end;
   padding-bottom: 2rem;
 }
+
+.markAsWinner {
+  color: var(--main-color);
+  text-decoration: underline;
+}

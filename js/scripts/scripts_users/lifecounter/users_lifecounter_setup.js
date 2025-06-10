@@ -35,7 +35,7 @@ function life_counter_setup() {
     );
     self.Inputs[self.Inputs.length] = self.Inputs.DefaultPlayersCount =
       self.DOM.find(".players-count-options");
-    self.Inputs[self.Inputs.length] = self.Inputs.StartingLifePoints =
+    self.Inputs[self.Inputs.length] = self.Inputs.PlayersStartingLifePoints =
       self.DOM.find("#players-starting-life-lifecounter-new");
     self.Inputs[self.Inputs.length] = self.Inputs.FixedMaxLife = self.DOM.find(
       "#fixed-max-life-lifecounter-new"
@@ -201,8 +201,6 @@ function life_counter_setup() {
     });
 
     self.Buttons.CreateAndStartLifeCounter.on("click", (e) => {
-      e.preventDefault();
-
       self.CreateLifeCounter(true);
     });
 
@@ -244,7 +242,10 @@ function life_counter_setup() {
     const formData = new FormData();
     formData.append("Name", self.Inputs.Name.val());
     formData.append("DefaultPlayersCount", self.defaultPlayersCount);
-    formData.append("StartingLifePoints", self.Inputs.StartingLifePoints.val());
+    formData.append(
+      "PlayersStartingLifePoints",
+      self.Inputs.PlayersStartingLifePoints.val()
+    );
     formData.append("FixedMaxLife", self.Inputs.FixedMaxLife.is(":checked"));
     formData.append("MaxLifePoints", self.Inputs.MaxLifePoints.val());
     formData.append("AutoEndMatch", self.Inputs.AutoEndMatch.is(":checked"));
@@ -281,10 +282,6 @@ function life_counter_setup() {
         self.ClearForm();
 
         if (isPlayMode === true) {
-          // setTimeout(() => {
-          //   $("body").loadpage("demolish");
-          // }, 1000);
-
           self.RedirectToLifeCounter(lifeCounterId);
         }
       },

@@ -4,8 +4,9 @@ function life_counter() {
   self.LifeCounterId = null;
   self.LifeCounterManagerName = "";
   self.DefaultPlayersCount = "";
-  self.StartingLife = "";
+  self.PlayersStartingLifePoints = "";
   self.MaxLifePoints = "";
+  self.AutoEndMode = false;
 
   self.increasingPointsCounter = 0;
   self.decreasingPointsCounter = 0;
@@ -48,35 +49,23 @@ function life_counter() {
         success: function (response) {
           self.LifeCounterManagerName = response.content.name;
           self.DefaultPlayersCount = response.content.defaultPlayersCount;
-          self.StartingLife = response.content.startingLifePoints;
+          self.PlayersStartingLifePoints =
+            response.content.playersStartingLifePoints;
           self.MaxLifePoints = response.content.maxLifePoints;
+          self.AutoEndMode = response.content.autoEndMode;
 
           self.BuildLifeCounter();
 
           self.OrganizeLifeCounters(self.DefaultPlayersCount);
         },
         error: function (xhr, status, error) {
-          alert("Could not load life counter");
+          sweetAlertError("Could not load life counter");
         },
       });
     }
   };
 
   self.GetLifeCounterPlayersDetails = () => {
-    // Fetch Life Counter Details based on provided LifeCounterId
-    $.ajax({
-      url: `https://localhost:7081/users/getlifecounterplayersdetails?LifeCounterManagerId=${self.LifeCounterManagerId}`,
-      type: "GET",
-      xhrFields: { withCredentials: true },
-      success: function (response) {
-        self.Players = response.content.lifeCounterPlayers;
-      },
-      error: function (xhr, status, error) {
-        alert("Could not load life counter");
-      },
-    });
-  };
-  self.GetLifeCounterPlayersDetails2 = () => {
     // Fetch Life Counter Details based on provided LifeCounterId
     $.ajax({
       url: `https://localhost:7081/users/getlifecounterplayersdetails?LifeCounterManagerId=${self.LifeCounterManagerId}`,
@@ -130,7 +119,7 @@ function life_counter() {
       self.DOM.find("#lifecounter-manager-name");
     self.Fields[self.Fields.length] = self.Fields.PlayerName =
       self.DOM.find(".player-title");
-    self.Fields[self.Fields.length] = self.Fields.PlayerStartingLifePoints =
+    self.Fields[self.Fields.length] = self.Fields.PlayerCurrentLifePoints =
       self.DOM.find(".player-lifepoints");
 
     self.LifeCounterInstances = [];
@@ -322,6 +311,11 @@ function life_counter() {
           self.DecreaseLifePoints(playerIndex, amount);
         } else {
           markAsDefeated();
+
+          if (self.AutoEndMode === true) {
+            self.GetLifeCounterPlayersDetails();
+            self.CheckForLifeCounterManagerEnd();
+          }
         }
       };
 
@@ -888,7 +882,10 @@ function life_counter() {
     const formData = new FormData();
     formData.append("LifeCounterId", self.LifeCounterId);
     formData.append("PlayersCount", self.DefaultPlayersCount);
-    formData.append("StartingLifePoints", self.StartingLife);
+    formData.append(
+      "PlayersStartingLifePoints",
+      self.PlayersStartingLifePoints
+    );
 
     $.ajax({
       type: "POST",
@@ -913,7 +910,9 @@ function life_counter() {
             .html(players[i].playerName);
         }
 
-        self.Fields.PlayerStartingLifePoints.html(`${self.StartingLife}`);
+        self.Fields.PlayerCurrentLifePoints.html(
+          `${self.PlayersStartingLifePoints}`
+        );
 
         self.LifeCounterManagerId = resp.content.lifeCounterManagerId;
       },
@@ -966,7 +965,7 @@ function life_counter() {
           sweetAlertError(resp.message);
         } else {
           self.PlayerBlocks[playerIndex]
-            .find(self.Fields.PlayerStartingLifePoints)
+            .find(self.Fields.PlayerCurrentLifePoints)
             .text(resp.content.updatedLifePoints);
 
           showIncreasingAmount(amountToIncrease);
@@ -1021,7 +1020,7 @@ function life_counter() {
           sweetAlertError(resp.message);
         } else {
           self.PlayerBlocks[playerIndex]
-            .find(self.Fields.PlayerStartingLifePoints)
+            .find(self.Fields.PlayerCurrentLifePoints)
             .html(resp.content.updatedLifePoints);
 
           showDecreasingAmount(amountToDecrease);
@@ -1033,6 +1032,70 @@ function life_counter() {
       complete: () => {
         //Re-enable all buttons
         self.Buttons.forEach((btn) => btn.prop("disabled", false));
+      },
+    });
+  };
+  self.CheckForLifeCounterManagerEnd = () => {
+    let winnerIndex = "";
+    let name = "";
+    let duration = "";
+    // Fetch Life Counter Details based on provided LifeCounterId
+    $.ajax({
+      url: `https://localhost:7081/users/checkforlifecountermanagerend?LifeCounterManagerId=${self.LifeCounterManagerId}`,
+      type: "GET",
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        if (response.content.isEnded === true) {
+          let getIndex = self.Players.findIndex(
+            (player) => player.isDefeated == false
+          );
+
+          winnerIndex = getIndex != -1 ? getIndex : 0;
+
+          const playerName = self.PlayerBlocks[winnerIndex].find(
+            self.Fields.PlayerName
+          );
+          const playerCurrentLife =
+            self.PlayerBlocks[winnerIndex].find(".player-lifepoints");
+
+          const markAsWinner = () => {
+            playerName.css({
+              "color": "var(--greenish)",
+            });
+
+            playerCurrentLife.html(`(WINNER)`).css({
+              "color": "var(--greenish)",
+            });
+          };
+          if (winnerIndex != null) {
+            name = `You lost!`;
+
+            if (response.content.duration_minutes == 0) {
+              duration = "";
+            } else if (response.content.duration_minutes == 1) {
+              duration = `, Game duration: ${response.content.duration_minutes} minute`;
+            } else {
+              duration = `, Game duration: ${response.content.duration_minutes} minutes`;
+            }
+
+            if (getIndex != -1) {
+              name = `Game winner: ${playerName.text()}!`;
+              markAsWinner();
+            }
+
+            // Disable all buttons
+            self.Buttons.IncreaseLifePoints.prop("disabled", true);
+            self.Buttons.DecreaseLifePoints.prop("disabled", true);
+          }
+        }
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError("Could not load life counter");
+      },
+      complete: function () {
+        if (name) {
+          sweetAlertSuccess("Game Over!", `${name}  ${duration}`);
+        }
       },
     });
   };
