@@ -7,6 +7,9 @@ function life_counter() {
   self.StartingLife = "";
   self.MaxLifePoints = "";
 
+  self.increasingPointsCounter = 0;
+  self.decreasingPointsCounter = 0;
+
   self.LifeCounterManagerId = null;
   self.Players = [];
 
@@ -212,30 +215,52 @@ function life_counter() {
       const playerIndex = $(".player-block:visible").index(playerBlock);
 
       const player = self.Players[playerIndex];
-      // Optional: Get player name or current life from DOM if needed
-      const playerName = playerBlock.find(".player-title").text().trim();
-      const currentLife = playerBlock.find(".player-lifepoints").text().trim();
+
+      // Optional: Get player current life from DOM if needed
+      const playerNameElement = playerBlock.find(".player-title");
+      const playerName = playerNameElement.text().trim();
+
+      const playerCurrentLifeElement = playerBlock.find(".player-lifepoints");
+      const currentLife = parseInt(playerCurrentLifeElement.text().trim(), 10);
+
+      const dynamicLifePoints = playerBlock.find(".dynamic-behavior");
 
       let holdTimer;
       let intervalId;
       let isHeld = false;
 
+      let isMaxLifePointsReached =
+        player.isMaxLifePointsFixed &&
+        currentLife >= player.playerMaxLifePoints;
+
       const increaseLife = (amount) => {
-        if (
-          player.isMaxLifePointsFixed &&
-          player.playerCurrentLifePoints >= player.playerMaxLifePoints
-        ) {
-          sweetAlertError("Max life reached", "Player is already at max life.");
-          return;
+        if (isMaxLifePointsReached == false) {
+          self.IncreaseLifePoints(playerIndex, amount);
         }
-        self.IncreaseLifePoints(playerIndex, amount);
+      };
+
+      const showIncreasingAmount = (rate) => {
+        self.increasingPointsCounter += rate;
+        dynamicLifePoints.text(`(+ ${self.increasingPointsCounter})`);
+
+        clearTimeout(self.clearDeltaTimeout);
+        self.clearDeltaTimeout = setTimeout(() => {
+          dynamicLifePoints.text("");
+          self.increasingPointsCounter = 0;
+        }, 1200);
       };
 
       // Start a timer: if held > 500ms, start continuous +10
       holdTimer = setTimeout(() => {
         isHeld = true;
         increaseLife(10); // first +10
-        intervalId = setInterval(() => increaseLife(10), 1000); // then every 1s
+
+        //showIncreasingAmount(10);
+
+        intervalId = setInterval(() => {
+          increaseLife(10);
+          //showIncreasingAmount(10);
+        }, 1000); // then every 1s
       }, 500);
 
       const stopIncreasing = () => {
@@ -245,6 +270,8 @@ function life_counter() {
         if (!isHeld) {
           // Short press, so just +1
           increaseLife(1);
+
+          //showIncreasingAmount(1);
         }
 
         isHeld = false;
@@ -252,6 +279,73 @@ function life_counter() {
       };
 
       $(document).on("mouseup touchend", stopIncreasing);
+    });
+
+    self.Buttons.DecreaseLifePoints.on("mousedown touchstart", function (e) {
+      e.preventDefault();
+
+      // Get the parent .player-block div
+      const playerBlock = $(this).closest(".player-block");
+      // Optional: Get the block's index among visible players (e.g., 0 to 5)
+      const playerIndex = $(".player-block:visible").index(playerBlock);
+
+      const player = self.Players[playerIndex];
+      // Optional: Get player name or current life from DOM if needed
+      const playerNameElement = playerBlock.find(".player-title");
+      const playerName = playerNameElement.text().trim();
+      const playerCurrentLifeElement = playerBlock.find(".player-lifepoints");
+      const currentLife = parseInt(playerCurrentLifeElement.text().trim(), 10);
+
+      let holdTimer;
+      let intervalId;
+      let isHeld = false;
+
+      const markAsDefeated = () => {
+        playerNameElement.css({
+          "color": "var(--reddish)",
+          "font-weight": "100",
+          "text-decoration": "line-through",
+        });
+
+        playerCurrentLifeElement.html(`(Defeated)`).css({
+          "color": "var(--reddish)",
+          "font-weight": "100",
+        });
+
+        playerBlock.find("button").prop("disabled", true);
+      };
+
+      let isDefeated = currentLife <= 0;
+
+      const decreaseLife = (amount) => {
+        if (isDefeated == false) {
+          self.DecreaseLifePoints(playerIndex, amount);
+        } else {
+          markAsDefeated();
+        }
+      };
+
+      // Start a timer: if held > 500ms, start continuous -10
+      holdTimer = setTimeout(() => {
+        isHeld = true;
+        decreaseLife(10); // first -10
+        intervalId = setInterval(() => decreaseLife(10), 1000); // then every 1s
+      }, 500);
+
+      const stopDecreasing = () => {
+        clearTimeout(holdTimer);
+        clearInterval(intervalId);
+
+        if (!isHeld) {
+          // Short press, so just +1
+          decreaseLife(1);
+        }
+
+        isHeld = false;
+        $(document).off("mouseup touchend", stopDecreasing);
+      };
+
+      $(document).on("mouseup touchend", stopDecreasing);
     });
 
     closeOnAnyKey();
@@ -833,6 +927,25 @@ function life_counter() {
   };
 
   self.IncreaseLifePoints = (playerIndex, amountToIncrease) => {
+    const dynamicLifePoints =
+      self.PlayerBlocks[playerIndex].find(".dynamic-behavior");
+
+    const showIncreasingAmount = (rate) => {
+      self.increasingPointsCounter += rate;
+      dynamicLifePoints.html(
+        `&nbsp;&nbsp; <span>(+ ${self.increasingPointsCounter})</span>`
+      );
+
+      clearTimeout(self.clearDeltaTimeout);
+      self.clearDeltaTimeout = setTimeout(() => {
+        dynamicLifePoints.text("");
+        self.increasingPointsCounter = 0;
+      }, 3000);
+    };
+
+    // Disable all buttons
+    self.Buttons.forEach((btn) => btn.prop("disabled", true));
+
     const player = self.Players[playerIndex];
 
     const formData = new FormData();
@@ -854,13 +967,73 @@ function life_counter() {
         } else {
           self.PlayerBlocks[playerIndex]
             .find(self.Fields.PlayerStartingLifePoints)
-            .html(resp.content.updatedLifePoints);
+            .text(resp.content.updatedLifePoints);
+
+          showIncreasingAmount(amountToIncrease);
         }
       },
       error: (err) => {
         sweetAlertError(err);
       },
-      complete: () => {},
+      complete: () => {
+        //Re-enable all buttons
+        self.Buttons.forEach((btn) => btn.prop("disabled", false));
+      },
+    });
+  };
+  self.DecreaseLifePoints = (playerIndex, amountToDecrease) => {
+    // Disable all buttons
+    self.Buttons.forEach((btn) => btn.prop("disabled", true));
+
+    const dynamicLifePoints =
+      self.PlayerBlocks[playerIndex].find(".dynamic-behavior");
+
+    const showDecreasingAmount = (rate) => {
+      self.decreasingPointsCounter -= rate;
+      dynamicLifePoints.html(
+        `&nbsp;&nbsp; <span style="color: var(--reddish);">(${self.decreasingPointsCounter})</span>`
+      );
+
+      clearTimeout(self.clearDeltaTimeout);
+      self.clearDeltaTimeout = setTimeout(() => {
+        dynamicLifePoints.text("");
+        self.decreasingPointsCounter = 0;
+      }, 3000);
+    };
+
+    const player = self.Players[playerIndex];
+
+    const formData = new FormData();
+    formData.append("LifeCounterPlayerId", player.playerId);
+    formData.append("LifePointsToDecrease", amountToDecrease);
+
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/decreaselifepoints",
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        if (resp.content === null) {
+          sweetAlertError(resp.message);
+        } else {
+          self.PlayerBlocks[playerIndex]
+            .find(self.Fields.PlayerStartingLifePoints)
+            .html(resp.content.updatedLifePoints);
+
+          showDecreasingAmount(amountToDecrease);
+        }
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+      complete: () => {
+        //Re-enable all buttons
+        self.Buttons.forEach((btn) => btn.prop("disabled", false));
+      },
     });
   };
 

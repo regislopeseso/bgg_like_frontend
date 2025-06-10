@@ -92,6 +92,14 @@ body {
   font-size: 3.5rem;
   color: var(---main-color);
 }
+.increase-life-points:disabled {
+  box-shadow: none;
+}
+.increase-life-points:disabled i {
+  background-color: var(--second-bg-color);
+  box-shadow: none;
+  color: var(--bg-color);
+}
 
 .decrease-life-points:active {
   box-shadow: inset 0 0 1rem 0 var(--main-color);
@@ -104,6 +112,14 @@ body {
   font-weight: bolder;
   font-size: 3.5rem;
   color: var(--main-color);
+}
+.decrease-life-points:disabled {
+  box-shadow: none;
+}
+.decrease-life-points:disabled i {
+  background-color: var(--second-bg-color);
+  box-shadow: none;
+  color: var(--bg-color);
 }
 
 .increasePointsFlexRow {
