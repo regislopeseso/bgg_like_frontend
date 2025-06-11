@@ -13,6 +13,7 @@ function life_counter() {
 
   self.LifeCounterManagerId = null;
   self.Players = [];
+  self.previousPlayerIndexes = [];
 
   self.GetLifeCounterId = () => {
     self.LifeCounterId = new URLSearchParams(window.location.search).get("id");
@@ -121,6 +122,8 @@ function life_counter() {
       self.DOM.find(".player-title");
     self.Fields[self.Fields.length] = self.Fields.PlayerCurrentLifePoints =
       self.DOM.find(".player-lifepoints");
+    self.Fields[self.Fields.length] = self.Fields.LifePointsDynamicBehavior =
+      self.DOM.find(".dynamic-behavior");
 
     self.LifeCounterInstances = [];
     self.LifeCounterInstances[self.LifeCounterInstances.length] =
@@ -190,6 +193,13 @@ function life_counter() {
   }
 
   self.LoadEvents = () => {
+    self.Buttons.RefreshLifeCounters.on("click", function (e) {
+      e.preventDefault();
+
+      for (let i = 0; (i = self.playersCount); i++) {
+        self.Players[i]; //...continuar a implementar aqui
+      }
+    });
     self.Buttons.Close.on("click", function (e) {
       e.preventDefault();
       self.RedirectToUsersPage();
@@ -228,27 +238,13 @@ function life_counter() {
         }
       };
 
-      const showIncreasingAmount = (rate) => {
-        self.increasingPointsCounter += rate;
-        dynamicLifePoints.text(`(+ ${self.increasingPointsCounter})`);
-
-        clearTimeout(self.clearDeltaTimeout);
-        self.clearDeltaTimeout = setTimeout(() => {
-          dynamicLifePoints.text("");
-          self.increasingPointsCounter = 0;
-        }, 1200);
-      };
-
       // Start a timer: if held > 500ms, start continuous +10
       holdTimer = setTimeout(() => {
         isHeld = true;
         increaseLife(10); // first +10
 
-        //showIncreasingAmount(10);
-
         intervalId = setInterval(() => {
           increaseLife(10);
-          //showIncreasingAmount(10);
         }, 1000); // then every 1s
       }, 500);
 
@@ -259,8 +255,6 @@ function life_counter() {
         if (!isHeld) {
           // Short press, so just +1
           increaseLife(1);
-
-          //showIncreasingAmount(1);
         }
 
         isHeld = false;
@@ -289,33 +283,9 @@ function life_counter() {
       let intervalId;
       let isHeld = false;
 
-      const markAsDefeated = () => {
-        playerNameElement.css({
-          "color": "var(--reddish)",
-          "font-weight": "100",
-          "text-decoration": "line-through",
-        });
-
-        playerCurrentLifeElement.html(`(Defeated)`).css({
-          "color": "var(--reddish)",
-          "font-weight": "100",
-        });
-
-        playerBlock.find("button").prop("disabled", true);
-      };
-
-      let isDefeated = currentLife <= 0;
-
       const decreaseLife = (amount) => {
-        if (isDefeated == false) {
+        if (currentLife > 0) {
           self.DecreaseLifePoints(playerIndex, amount);
-        } else {
-          markAsDefeated();
-
-          if (self.AutoEndMode === true) {
-            self.GetLifeCounterPlayersDetails();
-            self.CheckForLifeCounterManagerEnd();
-          }
         }
       };
 
@@ -926,24 +896,54 @@ function life_counter() {
   };
 
   self.IncreaseLifePoints = (playerIndex, amountToIncrease) => {
-    const dynamicLifePoints =
-      self.PlayerBlocks[playerIndex].find(".dynamic-behavior");
+    // Disable all buttons
+    self.Buttons.forEach((btn) => btn.prop("disabled", true));
+
+    self.previousPlayerIndexes.push(playerIndex);
+    let arrayLength = self.previousPlayerIndexes.length;
+    if (self.previousPlayerIndexes[arrayLength - 2] != playerIndex) {
+      self.increasingPointsCounter = 0;
+    }
+
+    const dynamicLifePoints = self.PlayerBlocks[playerIndex].find(
+      self.Fields.LifePointsDynamicBehavior
+    );
+
+    const dynamicText = self.PlayerBlocks[playerIndex]
+      .find(".dynamic-behavior")
+      .text()
+      .trim();
+
+    if (dynamicText) {
+      // Remove any non-numeric characters like parentheses
+      const cleanText = dynamicText.replace(/[^\d-]/g, "");
+      self.increasingPointsCounter = parseInt(cleanText, 10);
+      console.log("self.increasingPointsCounter", self.increasingPointsCounter);
+    }
 
     const showIncreasingAmount = (rate) => {
       self.increasingPointsCounter += rate;
-      dynamicLifePoints.html(
-        `&nbsp;&nbsp; <span>(+ ${self.increasingPointsCounter})</span>`
-      );
+
+      if (self.increasingPointsCounter < 0) {
+        dynamicLifePoints.html(
+          `&nbsp;&nbsp; <span style="color: var(--reddish);">(${self.increasingPointsCounter})</span>`
+        );
+      } else if (self.increasingPointsCounter === 0) {
+        dynamicLifePoints.html(
+          `&nbsp;&nbsp; (${self.increasingPointsCounter})`
+        );
+      } else {
+        dynamicLifePoints.html(
+          `&nbsp;&nbsp; <span>(+ ${self.increasingPointsCounter})</span>`
+        );
+      }
 
       clearTimeout(self.clearDeltaTimeout);
       self.clearDeltaTimeout = setTimeout(() => {
-        dynamicLifePoints.text("");
+        self.Fields.LifePointsDynamicBehavior.text("");
         self.increasingPointsCounter = 0;
       }, 3000);
     };
-
-    // Disable all buttons
-    self.Buttons.forEach((btn) => btn.prop("disabled", true));
 
     const player = self.Players[playerIndex];
 
@@ -984,23 +984,54 @@ function life_counter() {
     // Disable all buttons
     self.Buttons.forEach((btn) => btn.prop("disabled", true));
 
-    const dynamicLifePoints =
-      self.PlayerBlocks[playerIndex].find(".dynamic-behavior");
+    self.previousPlayerIndexes.push(playerIndex);
+    let arrayLength = self.previousPlayerIndexes.length;
+    if (self.previousPlayerIndexes[arrayLength - 2] != playerIndex) {
+      self.decreasingPointsCounter = 0;
+    }
+
+    const dynamicLifePoints = self.PlayerBlocks[playerIndex].find(
+      self.Fields.LifePointsDynamicBehavior
+    );
+
+    const dynamicText = self.PlayerBlocks[playerIndex]
+      .find(".dynamic-behavior")
+      .text()
+      .trim();
+
+    if (dynamicText) {
+      // Remove any non-numeric characters like parentheses
+      const cleanText = dynamicText.replace(/[^\d-]/g, "");
+      self.decreasingPointsCounter = parseInt(cleanText, 10);
+    }
 
     const showDecreasingAmount = (rate) => {
       self.decreasingPointsCounter -= rate;
-      dynamicLifePoints.html(
-        `&nbsp;&nbsp; <span style="color: var(--reddish);">(${self.decreasingPointsCounter})</span>`
-      );
+
+      if (self.decreasingPointsCounter > 0) {
+        dynamicLifePoints.html(
+          `&nbsp;&nbsp; <span>(+ ${self.decreasingPointsCounter})</span>`
+        );
+      } else if (self.decreasingPointsCounter == 0) {
+        dynamicLifePoints.html(
+          `&nbsp;&nbsp; (${self.decreasingPointsCounter})`
+        );
+      } else {
+        dynamicLifePoints.html(
+          `&nbsp;&nbsp; <span style="color: var(--reddish);">(${self.decreasingPointsCounter})</span>`
+        );
+      }
 
       clearTimeout(self.clearDeltaTimeout);
       self.clearDeltaTimeout = setTimeout(() => {
-        dynamicLifePoints.text("");
+        self.Fields.LifePointsDynamicBehavior.text("");
         self.decreasingPointsCounter = 0;
       }, 3000);
     };
 
     const player = self.Players[playerIndex];
+
+    let updatedLifePoints = null;
 
     const formData = new FormData();
     formData.append("LifeCounterPlayerId", player.playerId);
@@ -1019,9 +1050,11 @@ function life_counter() {
         if (resp.content === null) {
           sweetAlertError(resp.message);
         } else {
+          updatedLifePoints = resp.content.updatedLifePoints;
+
           self.PlayerBlocks[playerIndex]
             .find(self.Fields.PlayerCurrentLifePoints)
-            .html(resp.content.updatedLifePoints);
+            .html(updatedLifePoints);
 
           showDecreasingAmount(amountToDecrease);
         }
@@ -1030,10 +1063,40 @@ function life_counter() {
         sweetAlertError(err);
       },
       complete: () => {
+        self.CheckForPlayerDefeated(playerIndex, updatedLifePoints);
         //Re-enable all buttons
         self.Buttons.forEach((btn) => btn.prop("disabled", false));
       },
     });
+  };
+  self.CheckForPlayerDefeated = (playerIndex, currentLifePoints) => {
+    const playerBlock = self.PlayerBlocks[playerIndex];
+    // Optional: Get player name or current life from DOM if needed
+    const playerNameElement = playerBlock.find(".player-title");
+    const playerCurrentLifeElement = playerBlock.find(".player-lifepoints");
+
+    const markAsDefeated = () => {
+      playerNameElement.css({
+        "color": "var(--reddish)",
+        "font-weight": "100",
+        "text-decoration": "line-through",
+      });
+
+      playerCurrentLifeElement.html(`(Defeated)`).css({
+        "color": "var(--reddish)",
+        "font-weight": "100",
+      });
+
+      playerBlock.find("button").prop("disabled", true);
+    };
+
+    if (currentLifePoints == 0) {
+      markAsDefeated();
+      if (self.AutoEndMode === true) {
+        self.GetLifeCounterPlayersDetails();
+        self.CheckForLifeCounterManagerEnd();
+      }
+    }
   };
   self.CheckForLifeCounterManagerEnd = () => {
     let winnerIndex = "";
@@ -1049,6 +1112,8 @@ function life_counter() {
           let getIndex = self.Players.findIndex(
             (player) => player.isDefeated == false
           );
+
+          console.log("getIndex is: ", getIndex);
 
           winnerIndex = getIndex != -1 ? getIndex : 0;
 
