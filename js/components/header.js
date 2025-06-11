@@ -47,7 +47,7 @@ function loadHeader(userData, roleData) {
             >LIFE COUNTER</
           >
 
-          <a href="/html/pages_users/lifecounter/users_lifecounter.html"
+          <a href="/html/pages_users/lifecounter/lifecounter_manager.html"
             >LIFE COUNTER - quick start</
           >
                 

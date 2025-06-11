@@ -5,16 +5,16 @@
         case "charge-contentloader":
           let divToAppend_content = document.createElement("div");
 
-          divToAppend_content.id = "content-loader";
+          divToAppend_content.className = "content-loader";
 
           $(divToAppend_content).css({
-            position: "fixed",
+            position: "absolute",
             top: 0,
             left: 0,
             "text-align": "center",
             height: "100%",
             width: "100%",
-            "z-index": 100,
+            "z-index": 1000,
             "background-color": "rgba(0, 0, 0, 0.5)",
           });
 
@@ -35,7 +35,7 @@
 
           break;
         case "demolish-contentloader":
-          $("#content-loader").fadeOut(400, function () {
+          $(".content-loader").fadeOut(400, function () {
             $(this).remove();
           });
 
