@@ -1,6 +1,80 @@
 function life_counter_manager_setup() {
   let self = this;
-  self.defaultPlayersCount = null;
+
+  // LIFE COUNTER MANAGER DB
+  self.LifeCounterManagerId = null;
+  self.LifeCounterManagerName = null;
+  self.PlayersCount = null;
+  self.Players = [];
+  self.FixedMaxLifePointsMode = null;
+  self.PlayersMaxLifePoints = null;
+  self.AutoEndMode = null;
+
+  self.GetLifeCounterManagerId = () => {
+    self.LifeCounterManagerId = new URLSearchParams(window.location.search).get(
+      "id"
+    );
+  };
+  self.GetLifeCounterManager = () => {
+    if (!self.LifeCounterManagerId) {
+      $.ajax({
+        type: "GET",
+        url: `https://localhost:7081/users/getlifecountermanagerdetails?LifeCounterManagerId=${self.LifeCounterManagerId}`,
+        xhrFields: { withCredentials: true },
+        success: function (response) {
+          let lifeCounterManagerDB = response.content;
+
+          self.LifeCounterManagerName =
+            lifeCounterManagerDB.lifeCounterManagerName;
+          self.PlayersCount = lifeCounterManagerDB.playersCount;
+          self.Players = lifeCounterManagerDB.lifeCounterManagerPlayers;
+          self.FixedMaxLifePointsMode =
+            lifeCounterManagerDB.fixedMaxLifePointsMode;
+          self.PlayersMaxLifePoints = lifeCounterManagerDB.playersMaxLifePoints;
+          self.AutoEndMode = lifeCounterManagerDB.autoEndMode;
+
+          self.BuildLifeCounter();
+
+          self.OrganizeLifeCounters(self.PlayersCount);
+        },
+        error: function (response) {
+          sweetAlertError(
+            response.message,
+            "Could not load the requested life counter"
+          );
+        },
+      });
+    } else {
+      self.GetLastLifeCounterManager();
+    }
+  };
+  self.GetLastLifeCounterManager = () => {
+    $.ajax({
+      url: `https://localhost:7081/users/getlastlifecountermanagerdetails`,
+      type: "GET",
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        let lifeCounterManagerDB = response.content;
+
+        self.LifeCounterManagerId = lifeCounterManagerDB.id;
+        self.LifeCounterManagerName =
+          lifeCounterManagerDB.lifeCounterManagerName;
+        self.PlayersCount = lifeCounterManagerDB.playersCount;
+        self.Players = lifeCounterManagerDB.lifeCounterManagerPlayers;
+        self.FixedMaxLifePointsMode =
+          lifeCounterManagerDB.fixedMaxLifePointsMode;
+        self.PlayersMaxLifePoints = lifeCounterManagerDB.playersMaxLifePoints;
+        self.AutoEndMode = lifeCounterManagerDB.autoEndMode;
+
+        self.BuildLifeCounter();
+
+        self.OrganizeLifeCounters(self.PlayersCount);
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError("Could not load the last life counter manager");
+      },
+    });
+  };
 
   self.LoadReferences = () => {
     self.DOM = $("#main-lifeCounter-manager-setUp");
@@ -42,9 +116,8 @@ function life_counter_manager_setup() {
       self.DOM.find("#input-fixedMaxLifePointsMode-lifeCounter-manager-setup");
     self.Inputs[self.Inputs.length] = self.Inputs.MaxLifePointsInputWrapper =
       self.DOM.find("#div-MaxLifePoints-input-wrapper");
-    self.Inputs[self.Inputs.length] = self.Inputs.MaxLifePoints = self.DOM.find(
-      "#input-MaxLifePoints-lifeCounter-manager-setup"
-    );
+    self.Inputs[self.Inputs.length] = self.Inputs.PlayersMaxLifePoints =
+      self.DOM.find("#input-playersMaxLifePoints-lifeCounter-manager-setup");
 
     self.Inputs[self.Inputs.length] = self.Inputs.AutoEndMode = self.DOM.find(
       "#input-autoEndMode-lifeCounter-manager-setup"
@@ -82,7 +155,7 @@ function life_counter_manager_setup() {
 
           self.Inputs.PlayersCount.eq(0).addClass("clickedState");
 
-          self.defaultPlayersCount = parseInt(
+          self.PlayersCount = parseInt(
             self.Inputs.PlayersCount.filter(".clickedState").text()
           );
         }
@@ -221,8 +294,8 @@ function life_counter_manager_setup() {
       // Remove the class from all
       self.Inputs.PlayersCount.removeClass("clickedState");
 
-      self.defaultPlayersCount = parseInt($(this).text());
-      console.log("Choosing for: >", self.defaultPlayersCount, "< players..");
+      self.PlayersCount = parseInt($(this).text());
+      console.log("Choosing for: >", self.PlayersCount, "< players..");
 
       // Add the class to the one that was clicked
       $(this).addClass("clickedState");
@@ -247,20 +320,22 @@ function life_counter_manager_setup() {
     submitBtn.attr("disabled", true).text("Submitting...");
 
     const formData = new FormData();
-    formData.append("Name", self.Inputs.GameName.val());
-    formData.append("DefaultPlayersCount", self.defaultPlayersCount);
+    formData.append("LifeCounterManagerId", self.LifeCounterManagerId);
+    formData.append("NewLifeCounterManagerName", self.Inputs.GameName.val());
+    formData.append("NewPlayersCount", self.PlayersCount);
     formData.append(
-      "PlayersStartingLifePoints",
+      "NewPlayersStartingLifePoints",
       self.Inputs.PlayersStartingLifePoints.val()
     );
     formData.append(
-      "FixedMaxLife",
+      "FixedMaxLifePointsMode",
       self.Inputs.FixedMaxLifePointsMode.is(":checked")
     );
-    formData.append("MaxLifePoints", self.Inputs.MaxLifePoints.val());
-    formData.append("AutoEndMatch", self.Inputs.AutoEndMode.is(":checked"));
-
-    let lifeCounterId = null;
+    formData.append(
+      "NewPlayersMaxLifePoints",
+      self.Inputs.PlayersMaxLifePoints.val()
+    );
+    formData.append("AutoEndMode", self.Inputs.AutoEndMode.is(":checked"));
 
     $.ajax({
       type: "POST",

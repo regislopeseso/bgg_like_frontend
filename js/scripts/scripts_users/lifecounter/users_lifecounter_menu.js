@@ -10,7 +10,7 @@ function life_counter_menu() {
     );
 
     self.Buttons[self.Buttons.length] = self.Buttons.NewLifeCounter =
-      self.DOM.find("#lifecounter-new");
+      self.DOM.find("#main-lifeCounter-newTemplate");
     self.Buttons[self.Buttons.length] = self.Buttons.StartLifeCounter =
       self.DOM.find("#lifecounter-start");
     self.Buttons[self.Buttons.length] = self.Buttons.LoadLifeCounter =

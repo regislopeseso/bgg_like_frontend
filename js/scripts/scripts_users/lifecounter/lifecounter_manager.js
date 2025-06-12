@@ -83,7 +83,7 @@ function life_counter() {
   };
 
   self.LoadReferences = () => {
-    self.DOM = $("#lifecounter-new");
+    self.DOM = $("#main-lifeCounter-newTemplate");
 
     self.LifeCountersField = self.DOM.find("#lifecounters-field");
 

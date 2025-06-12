@@ -1,31 +1,32 @@
-// Life Counter Manager Set Up
+<!-- LIFE COUNTER NEW TEMPLATE -->
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SET UP LIFE COUNTER</title>
+    <title>NEW LIFE COUNTER TEMPLATE</title>
     <link rel="stylesheet" href="/css/addons.css" />
     <link
       rel="stylesheet"
-      href="/css/style_users/lifecounter/users_lifecounter_setup.css"
+      href="/css/style_users/lifecounter/lifecounter_newtemplate.css"
     />
   </head>
   <body>
-    <main id="lifecounter-new">
-      <section class="header-lifecounter-new">
+    <main id="main-lifeCounter-newTemplate">
+      <section class="header-lifeCounter-newTemplate">
         <div
           class="d-flex flex-row justify-content-between align-items-center p-4"
         >
           <div>
             <h1 class="p-0 m-0">
-              <span>L</span>ife <span>C</span>ounter - <span>SET UP</span>
+              <span>L</span>ife <span>C</span>ounter -
+              <span>NEW TEMPLATEP</span>
             </h1>
           </div>
           <button
             type="button"
-            id="close-lifecounter-new"
+            id="button-close-lifeCounter-newTemplate"
             class="btn btn-outline-danger btn-lg"
           >
             <i class="fa-solid fa-xmark"></i>
@@ -36,14 +37,14 @@
       <section>
         <div class="d-flex flex-column p-4">
           <form
-            id="form-lifecounter-new"
+            id="form-lifeCounter-newTemplate"
             class="d-flex flex-column justify-content-start align-items-start gap-3"
           >
             <div class="text-start w-100">
               <label class="form-label"><span>N</span>ame</label>
               <input
-                name="GameName"
-                id="name-lifecounter-new"
+                name="Name"
+                id="input-name-lifeCounter-newTemplate"
                 class="new-data form-control text-center required"
                 type="text"
                 autofocus
@@ -59,7 +60,7 @@
               >
               <input
                 name="PlayersStartingLifePoints"
-                id="players-starting-life-lifecounter-new"
+                id="input-playersStartingLifePoints-lifeCounter-newTemplate"
                 class="new-data form-control text-center required"
                 type="number"
                 value="10"
@@ -91,14 +92,12 @@
               <div
                 class="d-flex flex-row align-items-center justify-content-start"
               >
-                <label
-                  class="form-check-label pe-2"
-                  for="fixed-max-life-lifecounter-new"
+                <label class="form-check-label pe-2"
                   ><span>F</span>ixed Max Life mode</label
                 >
                 <input
-                  name="FixedMaxLife"
-                  id="fixed-max-life-lifecounter-new"
+                  name="FixedMaxLifePointsMode"
+                  id="input-fixedMaxLifePointsMode-lifeCounter-newTemplate"
                   class="new-data custom-checkbox form-check-input p-0 m-0"
                   type="checkbox"
                   role="switch"
@@ -107,7 +106,7 @@
               </div>
 
               <div
-                id="max-life-wrapper"
+                id="div-PlayersMaxLifePoints-input-wrapper"
                 class="d-flex flex-row justify-content-center align-items-center d-none"
               >
                 <div>
@@ -121,8 +120,8 @@
 
                 <div class="text-center">
                   <input
-                    name="MaxLifePoints"
-                    id="max-life-points-lifecounter-new"
+                    name="PlayersMaxLifePoints"
+                    id="input-playersMaxLifePoints-lifeCounter-newTemplate"
                     class="new-data form-control text-center"
                     type="number"
                     min="1"
@@ -141,8 +140,8 @@
                 ><span>A</span>uto end Match mode</label
               >
               <input
-                name="AutoEndMatch"
-                id="auto-end-match-lifecounter-new"
+                name="AutoEndMode"
+                id="input-autoEndMode-lifeCounter-newTemplate"
                 class="new-data custom-checkbox form-check-input p-0 m-0"
                 type="checkbox"
                 role="switch"
@@ -157,7 +156,7 @@
             >
               <button
                 type="button"
-                id="back-lifecounter-new"
+                id="button-back-lifeCounter-newTemplate"
                 class="btn btn-sm btn-outline-danger"
               >
                 Back
@@ -165,7 +164,7 @@
 
               <button
                 type="button"
-                id="clear-lifecounter-new"
+                id="button-clear-lifeCounter-newTemplate"
                 class="btn-refresh btn btn-sm btn-outline-warning"
               >
                 Clear
@@ -173,7 +172,7 @@
 
               <button
                 type="button"
-                id="create-and-start-lifecounter-new"
+                id="button-createAndStart-lifeCounter-newTemplate"
                 class="btn btn-lg btn-outline-success"
               >
                 Save and Start
@@ -181,7 +180,7 @@
 
               <button
                 type="submit"
-                id="create-lifecounter-new"
+                id="button-create-lifeCounter-newTemplate"
                 class="btn btn-lg btn-outline-info"
               >
                 Start
@@ -202,6 +201,6 @@
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
     <!-- <script src="/js/components/header.js"></script> -->
-    <script src="/js/scripts/scripts_users/lifecounter/users_lifecounter_setup.js"></script>
+    <script src="/js/scripts/scripts_users/lifecounter/lifecounter_newtemplate.js"></script>
   </body>
 </html>
