@@ -1,6 +1,6 @@
 function life_counter_newtemplate() {
   let self = this;
-  self.defaultPlayersCount = null;
+  self.PlayersCount = null;
 
   self.LoadReferences = () => {
     self.DOM = $("#main-lifeCounter-newTemplate");
@@ -25,14 +25,13 @@ function life_counter_newtemplate() {
     self.Locations[self.Locations.length] = self.Locations.UsersPage =
       "/html/pages_users/users_page.html";
     self.Locations[self.Locations.length] = self.Locations.SetUpLifeCounter =
-      "/html/pages_users/lifecounter/users_lifecounter_menu.html";
+      "/html/pages_users/lifecounter/lifecounter_menu.html";
     self.Locations[self.Locations.length] = self.Locations.LifeCounter =
       "/html/pages_users/lifecounter/lifecounter_manager.html";
 
     self.Inputs = [];
-    self.Inputs[self.Inputs.length] = self.Inputs.Name = self.DOM.find(
-      "#input-name-lifeCounter-newTemplate"
-    );
+    self.Inputs[self.Inputs.length] = self.Inputs.LifeCounterTemplateName =
+      self.DOM.find("#input-name-lifeCounter-newTemplate");
     self.Inputs[self.Inputs.length] = self.Inputs.PlayersCount = self.DOM.find(
       ".players-count-options"
     );
@@ -72,7 +71,7 @@ function life_counter_newtemplate() {
         if (resp.content === null) {
           sweetAlertError(resp.message);
         } else {
-          self.Inputs.Name.val(
+          self.Inputs.LifeCounterTemplateName.val(
             `Life Counter #${resp.content.lifeCountersCount}`
           )
             .trigger("focus")
@@ -80,7 +79,7 @@ function life_counter_newtemplate() {
 
           self.Inputs.PlayersCount.eq(0).addClass("clickedState");
 
-          self.defaultPlayersCount = parseInt(
+          self.PlayersCount = parseInt(
             self.Inputs.PlayersCount.filter(".clickedState").text()
           );
         }
@@ -131,7 +130,7 @@ function life_counter_newtemplate() {
       input.val("");
     });
 
-    self.Inputs.Name.trigger("focus");
+    self.Inputs.LifeCounterTemplateName.trigger("focus");
     self.Inputs.PlayersCount.removeClass("clickedState");
   };
 
@@ -214,7 +213,7 @@ function life_counter_newtemplate() {
       // Remove the class from all
       self.Inputs.PlayersCount.removeClass("clickedState");
 
-      self.defaultPlayersCount = parseInt($(this).text());
+      self.PlayersCount = parseInt($(this).text());
 
       // Add the class to the one that was clicked
       $(this).addClass("clickedState");
@@ -239,8 +238,11 @@ function life_counter_newtemplate() {
     submitBtn.attr("disabled", true).text("Submitting...");
 
     const formData = new FormData();
-    formData.append("Name", self.Inputs.Name.val());
-    formData.append("PlayersCount", self.defaultPlayersCount);
+    formData.append(
+      "LifeCounterTemplateName",
+      self.Inputs.LifeCounterTemplateName.val()
+    );
+    formData.append("PlayersCount", self.PlayersCount);
     formData.append(
       "PlayersStartingLifePoints",
       self.Inputs.PlayersStartingLifePoints.val()

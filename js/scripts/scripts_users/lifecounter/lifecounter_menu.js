@@ -25,7 +25,7 @@ function life_counter_menu() {
       "/html/pages_users/lifecounter/users_lifecounter_setup.html";
     self.Locations[self.Locations.length] =
       self.Locations.StartLifeCounterPage =
-        "/html/pages_users/lifecounter/users_lifecounter_start.html";
+        "/html/pages_users/lifecounter/lifecounter_start.html";
     self.Locations[self.Locations.length] = self.Locations.LoadLifeCounterPage =
       "/html/pages_users/lifecounter/users_lifecounter_load.html";
     self.Locations[self.Locations.length] =
