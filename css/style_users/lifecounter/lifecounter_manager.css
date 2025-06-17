@@ -150,6 +150,10 @@ body {
 }
 
 .markAsWinner {
-  color: var(--main-color);
-  text-decoration: underline;
+  color: var(--greenish);
+}
+.markAsLooser {
+  color: var(--reddish);
+  font-weight: font-weight;
+  text-decoration: line-through;
 }
