@@ -41,7 +41,9 @@
             class="d-flex flex-column justify-content-start align-items-start gap-3"
           >
             <div class="text-start w-100">
-              <label class="form-label"><span>N</span>ame</label>
+              <label class="form-label"
+                ><span>L</span>ife Counter Manager Name</label
+              >
               <input
                 name="Name"
                 id="input-gameName-lifeCounter-manager-setup"
@@ -56,7 +58,7 @@
 
             <div class="text-start w-100">
               <label class="form-label"
-                ><span>P</span>layers Starting Life</label
+                ><span>P</span>layers Starting Life Points</label
               >
               <input
                 name="PlayersStartingLifePoints"
@@ -75,12 +77,11 @@
               <div
                 class="playersCountOptions-container d-flex flex-row gap-5 justify-content-center align-items-center"
               >
-                <button type="button" class="players-count-options">1</button>
-                <button type="button" class="players-count-options">2</button>
-                <button type="button" class="players-count-options">3</button>
-                <button type="button" class="players-count-options">4</button>
-                <button type="button" class="players-count-options">5</button>
-                <button type="button" class="players-count-options">6</button>
+                <button type="button" class="players-count-options">+1</button>
+                <button type="button" class="players-count-options">+2</button>
+                <button type="button" class="players-count-options">+3</button>
+                <button type="button" class="players-count-options">+4</button>
+                <button type="button" class="players-count-options">+5</button>
               </div>
             </div>
 
@@ -137,7 +138,25 @@
               class="form-check form-switch d-flex flex-row align-items-center justify-content-start w-100 p-0"
             >
               <label class="form-check-label pe-2"
-                ><span>A</span>uto end Match mode</label
+                ><span>A</span>uto Defeat Mode</label
+              >
+              <input
+                name="AutoDefeatMode"
+                id="input-autoDefeatMode-lifeCounter-manager-setup"
+                class="new-data custom-checkbox form-check-input p-0 m-0"
+                type="checkbox"
+                role="switch"
+                unchecked
+              />
+            </div>
+
+            <hr />
+
+            <div
+              class="form-check form-switch d-flex flex-row align-items-center justify-content-start w-100 p-0"
+            >
+              <label class="form-check-label pe-2"
+                ><span>A</span>uto End Match Mode</label
               >
               <input
                 name="AutoEndMode"
@@ -156,14 +175,6 @@
             >
               <button
                 type="button"
-                id="button-back-lifeCounter-manager-setup"
-                class="btn btn-sm btn-outline-danger"
-              >
-                Back
-              </button>
-
-              <button
-                type="button"
                 id="button-clear-lifeCounter-manager-setup"
                 class="btn-refresh btn btn-sm btn-outline-warning"
               >
@@ -171,7 +182,7 @@
               </button>
 
               <button
-                type="submit"
+                type="button"
                 id="button-confirm-lifeCounter-manager-setup"
                 class="btn btn-lg btn-outline-info"
               >
