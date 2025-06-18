@@ -157,3 +157,8 @@ body {
   font-weight: font-weight;
   text-decoration: line-through;
 }
+
+button.disablid {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -197,7 +197,7 @@ function life_counter_manager_setup() {
 
     self.Inputs.AutoDefeatMode.prop("checked", false);
 
-    self.Inputs.AutoEndMode.prop("checked", false);
+    self.Inputs.AutoEndMode.prop("checked", false).prop("disabled", true);
 
     self.Inputs.GameName.trigger("focus");
     self.Inputs.PlayersCount.removeClass("clickedState");
@@ -272,6 +272,15 @@ function life_counter_manager_setup() {
       self.CheckFormFilling();
     });
 
+    self.Inputs.AutoDefeatMode.on("change", (e) => {
+      if (!self.Inputs.AutoDefeatMode.is(":checked")) {
+        self.Inputs.AutoEndMode.prop("checked", false) // <-- Correct way to uncheck
+          .prop("disabled", true); // <-- Properly disables the checkbox
+      } else {
+        self.Inputs.AutoEndMode.prop("disabled", false); // Re-enable if needed
+      }
+    });
+
     self.Inputs.PlayersCount.on("click", function (e) {
       e.preventDefault();
 
@@ -289,17 +298,6 @@ function life_counter_manager_setup() {
     });
 
     closeOnAnyKey();
-  };
-
-  //TALVEZ APAGAR O MÉTODO ABAIXO
-  self.SetUpLifeCounterForm = () => {
-    $(document)
-      .off("submit", self.Form)
-      .on("submit", self.Form, function (e) {
-        e.preventDefault();
-
-        self.ConfirmLifeCounterManagerSetUp(false);
-      });
   };
 
   self.ConfirmLifeCounterManagerSetUp = () => {
