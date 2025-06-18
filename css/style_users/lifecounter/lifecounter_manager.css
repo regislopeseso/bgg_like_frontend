@@ -44,7 +44,19 @@ body {
   background-color: transparent;
   border-radius: 2rem;
   z-index: 1;
-  pointer-events: none; /* Allows buttons to be clickable through it */
+  pointer-events: none;
+}
+.playerstats .btn {
+  color: var(--text-color) !important;
+  border: 1px solid var(--text-color) !important;
+}
+.playerstats .btn:hover {
+  background-color: transparent;
+}
+.player-title {
+  padding-bottom: 5px;
+  z-index: 999 !important;
+  pointer-events: visible !important;
 }
 .rotate-text-clockWise {
   writing-mode: sideways-rl !important;

@@ -134,6 +134,8 @@ function life_counter_manager() {
       self.DOM.find("#button-setUp-lifeCounter-manager");
     self.Buttons[self.Buttons.length] = self.Buttons.CloseLifeCounterManager =
       self.DOM.find("#button-close-lifeCounter-manager");
+    self.Buttons[self.Buttons.length] = self.Buttons.PlayerSetUp =
+      self.DOM.find(".player-setup");
     self.Buttons[self.Buttons.length] = self.Buttons.IncreaseLifePoints =
       self.DOM.find(".increase-life-points");
     self.Buttons[self.Buttons.length] = self.Buttons.DecreaseLifePoints =
@@ -166,16 +168,25 @@ function life_counter_manager() {
     self.Locations = [];
     self.Locations[self.Locations.length] = self.Locations.UsersPage =
       "/html/pages_users/users_page.html";
-    self.Locations[self.Locations.length] = self.Locations.SetUpLifeCounter =
-      "/html/pages_users/lifecounter/lifecounter_manager_setup.html";
+    self.Locations[self.Locations.length] =
+      self.Locations.SetUpLifeCounterManager =
+        "/html/pages_users/lifecounter/lifecounter_manager_setup.html";
+    self.Locations[self.Locations.length] =
+      self.Locations.SetUpLifeCounterPlayer =
+        "/html/pages_users/lifecounter/lifecounter_player_setup.html";
   };
   self.RedirectToUsersPage = () => {
     window.location.href = self.Locations.UsersPage;
   };
-  self.RedirectLifeCounterManagerSetUp = (lifeCounterId) => {
+  self.RedirectToLifeCounterManagerSetUp = (lifeCounterId) => {
     window.location.href = `${
-      self.Locations.SetUpLifeCounter
+      self.Locations.SetUpLifeCounterManager
     }?id=${encodeURIComponent(lifeCounterId)}`;
+  };
+  self.RedirectToLifeCounterPlayerSetUp = (lifeCounterId) => {
+    window.location.href = `${
+      self.Locations.SetUpLifeCounterPlayer
+    }?PlayerId=${encodeURIComponent(lifeCounterId)}`;
   };
 
   function sweetAlertSuccess(title_text, message_text) {
@@ -243,12 +254,29 @@ function life_counter_manager() {
     self.Buttons.SetUpLifeCounterManager.on("click", function (e) {
       e.preventDefault();
 
-      self.RedirectLifeCounterManagerSetUp(self.LifeCounterManagerId);
+      self.RedirectToLifeCounterManagerSetUp(self.LifeCounterManagerId);
     });
 
     self.Buttons.CloseLifeCounterManager.on("click", function (e) {
       e.preventDefault();
       self.RedirectToUsersPage();
+    });
+
+    self.Buttons.PlayerSetUp.on("click", function (e) {
+      e.preventDefault();
+      // Get the parent .player-block div
+      const playerBlock = $(this).closest(".player-block");
+      // Optional: Get the block's index among visible players (e.g., 0 to 5)
+      const playerIndex = $(".player-block:visible").index(playerBlock);
+
+      const player = self.LifeCounterPlayers[playerIndex];
+
+      // Optional: Get player current life from DOM if needed
+      const playerId = player.playerId;
+
+      console.log("playerId: ", playerId);
+
+      self.RedirectToLifeCounterPlayerSetUp(playerId);
     });
 
     self.Buttons.IncreaseLifePoints.on("mousedown touchstart", function (e) {
