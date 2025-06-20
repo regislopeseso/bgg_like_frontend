@@ -1,5 +1,22 @@
-body {
+.lifecounter-header-setup {
   background-color: var(--second-bg-color);
+}
+
+.enclosing-lines {
+  border-top: 5px solid var(--second-bg-color) !important;
+}
+
+#toggle-createTemplate-lifeCounter-menu,
+#toggle-selectTemplate-lifeCounter-menu,
+#toggle-reloadLifeCounterManager-lifeCounter-menu,
+#toggle-showStatistics-lifeCounter-menu {
+  display: none;
+}
+
+.chosenMenuOption {
+  background-color: var(--main-color);
+  box-shadow: 0 0 15px 1px var(--text-color);
+  color: var(--text-color);
 }
 
 /* Hide the default checkbox */
@@ -65,9 +82,4 @@ body {
   box-shadow: 0 0 10px 1px var(--text-color);
   background-color: var(--second-bg-color);
   font-weight: 900;
-}
-
-#a-menu-lifeCounter-manager-setup {
-  color: var(--text-color);
-  font-style: none;
 }

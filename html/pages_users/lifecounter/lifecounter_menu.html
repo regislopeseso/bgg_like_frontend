@@ -1,3 +1,5 @@
+<!-- LIFE COUNTER MENU -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,12 +9,12 @@
     <link rel="stylesheet" href="/css/addons.css" />
     <link
       rel="stylesheet"
-      href="/css/style_users/lifecounter/users_lifecounter_menu.css"
+      href="/css/style_users/lifecounter/lifecounter_menu.css"
     />
   </head>
   <body>
-    <main id="lifecounter-setup">
-      <section class="header-lifecounter-setup">
+    <main id="main-lifeCounter-menu">
+      <section class="header-lifeCounter-menu">
         <div
           class="d-flex flex-row justify-content-between align-items-center p-4"
         >
@@ -23,7 +25,7 @@
           </div>
           <button
             type="button"
-            id="close-lifecounter-setup"
+            id="button-close-lifeCounter-menu"
             class="btn btn-outline-danger btn-lg"
           >
             <i class="fa-solid fa-xmark"></i>
@@ -32,23 +34,284 @@
       </section>
       <section>
         <div class="d-flex flex-column gap-4 p-4">
-          <button id="lifecounter-new" class="btn btn-outline-info btn-lg p-4">
-            NEW</button
-          ><button
-            id="lifecounter-start"
+          <button
+            id="button-createTemplate-lifeCounter-menu"
             class="btn btn-outline-info btn-lg p-4"
           >
-            START
+            CREATE
           </button>
-          <button id="lifecounter-load" class="btn btn-outline-info btn-lg p-4">
-            LOAD
-          </button>
+
+          <div id="toggle-createTemplate-lifeCounter-menu">
+            <hr class="enclosing-lines" />
+            <div class="d-flex flex-column p-4">
+              <form
+                id="form-lifeCounter-menu"
+                class="d-flex flex-column justify-content-start align-items-start gap-3"
+              >
+                <div class="text-start w-100">
+                  <label class="form-label"><span>T</span>emplate Name</label>
+                  <input
+                    name="TemplateName"
+                    id="input-templateName-lifeCounter-menu"
+                    class="new-data form-control text-center"
+                    type="text"
+                  />
+                </div>
+
+                <hr />
+
+                <div class="text-start w-100">
+                  <label class="form-label"
+                    ><span>P</span>layers Starting Life</label
+                  >
+                  <input
+                    name="PlayersStartingLifePoints"
+                    id="input-playersStartingLifePoints-lifeCounter-menu"
+                    class="new-data form-control text-center required"
+                    type="number"
+                    value="10"
+                    required
+                  />
+                </div>
+
+                <hr />
+
+                <div class="d-flex flex-column gap-2">
+                  <div><span>P</span>layers Count</div>
+                  <div
+                    class="playersCountOptions-container d-flex flex-row gap-5 justify-content-center align-items-center"
+                  >
+                    <button
+                      type="button"
+                      class="clickedState players-count-options"
+                    >
+                      1
+                    </button>
+                    <button type="button" class="players-count-options">
+                      2
+                    </button>
+                    <button type="button" class="players-count-options">
+                      3
+                    </button>
+                    <button type="button" class="players-count-options">
+                      4
+                    </button>
+                    <button type="button" class="players-count-options">
+                      5
+                    </button>
+                    <button type="button" class="players-count-options">
+                      6
+                    </button>
+                  </div>
+                </div>
+
+                <hr />
+
+                <div
+                  class="form-check form-switch d-flex flex-row align-items-center justify-content-start w-100 p-0"
+                >
+                  <div
+                    class="d-flex flex-row align-items-center justify-content-start"
+                  >
+                    <label class="form-check-label pe-2"
+                      ><span>F</span>ixed Max Life Mode</label
+                    >
+                    <input
+                      name="FixedMaxLifePointsMode"
+                      id="input-fixedMaxLifePointsMode-lifeCounter-menu"
+                      class="new-data custom-checkbox form-check-input p-0 m-0"
+                      type="checkbox"
+                      role="switch"
+                      unchecked
+                    />
+                  </div>
+
+                  <div
+                    id="div-PlayersMaxLifePoints-input-wrapper"
+                    class="d-flex flex-row justify-content-center align-items-center d-none"
+                  >
+                    <div>
+                      <div class="maxlifepoints-arrow-right p-0 m-0 pe-2">
+                        <img
+                          src="/images/icons/io_arrow_right.svg"
+                          class="bi bi-arrow"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <input
+                        name="PlayersMaxLifePoints"
+                        id="input-playersMaxLifePoints-lifeCounter-menu"
+                        class="new-data form-control text-center"
+                        type="number"
+                        min="1"
+                        placeholder="Max Life Points"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <hr />
+
+                <div
+                  class="form-check form-switch d-flex flex-row align-items-center justify-content-start w-100 p-0"
+                >
+                  <label class="form-check-label pe-2"
+                    ><span>A</span>uto Defeat Mode</label
+                  >
+                  <input
+                    name="AutoDefeatMode"
+                    id="input-autoDefeatMode-lifeCounter-menu"
+                    class="new-data custom-checkbox form-check-input p-0 m-0"
+                    type="checkbox"
+                    role="switch"
+                    unchecked
+                  />
+                </div>
+
+                <hr />
+
+                <div
+                  class="form-check form-switch d-flex flex-row align-items-center justify-content-start w-100 p-0"
+                >
+                  <label class="form-check-label pe-2"
+                    ><span>A</span>uto End Match Mode</label
+                  >
+                  <input
+                    name="AutoEndMode"
+                    id="input-autoEndMode-lifeCounter-menu"
+                    class="new-data custom-checkbox form-check-input p-0 m-0"
+                    type="checkbox"
+                    role="switch"
+                    unchecked
+                  />
+                </div>
+
+                <hr />
+
+                <div
+                  class="d-flex flex-row w-100 justify-content-between mt-2 gap-3"
+                >
+                  <button
+                    type="button"
+                    id="button-back-lifeCounter-newTemplate"
+                    class="btn btn-sm btn-outline-danger"
+                  >
+                    Back
+                  </button>
+
+                  <button
+                    type="button"
+                    id="button-clear-lifeCounter-newTemplate"
+                    class="btn-refresh btn btn-sm btn-outline-warning"
+                  >
+                    Clear
+                  </button>
+
+                  <button
+                    type="button"
+                    id="button-createAndStart-lifeCounter-newTemplate"
+                    class="btn btn-lg btn-outline-success"
+                  >
+                    Save and Start
+                  </button>
+
+                  <button
+                    type="submit"
+                    id="button-create-lifeCounter-newTemplate"
+                    class="btn btn-lg btn-outline-info"
+                  >
+                    Start
+                  </button>
+                </div>
+              </form>
+            </div>
+            <hr class="enclosing-lines" />
+          </div>
+
           <button
-            id="lifecounter-show-stats"
+            id="button-selectTemplate-lifeCounter-menu"
+            class="btn btn-outline-info btn-lg p-4"
+          >
+            SELECT
+          </button>
+
+          <div id="toggle-selectTemplate-lifeCounter-menu">
+            <hr class="enclosing-lines" />
+            <div class="text-center w-80">
+              <div class="comboBox-wrapper">
+                <div class="comboBox">
+                  <select
+                    name="LifeCounterTemplateId"
+                    id="select-lifeCounterTemplate-lifeCounter-menu"
+                    class="form-control form-select bg-select"
+                  >
+                    <option value="" disabled selected>
+                      Pick one of your Life Counter Templates
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr class="enclosing-lines" />
+          </div>
+
+          <button
+            id="button-reloadLifeCounterManager-lifeCounter-menu"
+            class="btn btn-outline-info btn-lg p-4"
+          >
+            RELOAD LIFE COUNTER MANAGER
+          </button>
+
+          <div id="toggle-reloadLifeCounterManager-lifeCounter-menu">
+            <hr class="enclosing-lines" />
+            <div class="text-center w-80">
+              <div class="comboBox-wrapper">
+                <div class="comboBox">
+                  <select
+                    name="LifeCounterManagerId"
+                    id="reload-lifeCounterTemplate-lifeCounter-menu"
+                    class="form-control form-select bg-select"
+                  >
+                    <option value="" disabled selected>
+                      Reload a unfinished Life Counter Manager
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr class="enclosing-lines" />
+          </div>
+
+          <button
+            id="button-showStatistics-lifeCounter-menu"
             class="btn btn-outline-info btn-lg p-4"
           >
             SHOW STATISTICS
           </button>
+
+          <div id="toggle-showStatistics-lifeCounter-menu">
+            <hr class="enclosing-lines" />
+            <ul class="list-group">
+              <li class="list-group-item">
+                Most Used Life Counter: <span>Magic the Gathering</span>
+              </li>
+              <li class="list-group-item">
+                Life Counter Templates Created: <span>13</span>
+              </li>
+              <li class="list-group-item">
+                Life Counter Managers Used: <span>68</span>
+              </li>
+              <li class="list-group-item">
+                Life Counter Managers unfinished: <span>5</span>
+              </li>
+              <li class="list-group-item">
+                Avarege Life Counters Players Count: <span>2</span>
+              </li>
+            </ul>
+            <hr class="enclosing-lines" />
+          </div>
         </div>
       </section>
     </main>

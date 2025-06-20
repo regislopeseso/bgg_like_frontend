@@ -14,7 +14,7 @@ function life_counter_manager_setup() {
 
   self.GetLifeCounterManagerId = () => {
     self.LifeCounterManagerId = new URLSearchParams(window.location.search).get(
-      "id"
+      "LifeCounterManagerId"
     );
   };
 
@@ -73,7 +73,6 @@ function life_counter_manager_setup() {
     self.Buttons[self.Buttons.length] = self.Buttons.Close = self.DOM.find(
       "#button-close-lifeCounter-manager-setUp"
     );
-
     self.Buttons[self.Buttons.length] = self.Buttons.ClearForm = self.DOM.find(
       "#button-clear-lifeCounter-manager-setup"
     );
@@ -81,12 +80,7 @@ function life_counter_manager_setup() {
       "#button-confirm-lifeCounter-manager-setup"
     );
 
-    self.Locations = [];
-    self.Locations[self.Locations.length] = self.Locations.UsersPage =
-      "/html/pages_users/users_page.html";
-
-    self.Locations[self.Locations.length] = self.Locations.LifeCounterManager =
-      "/html/pages_users/lifecounter/lifecounter_manager.html";
+    self.LifeCounterMenu = self.DOM.find("#a-menu-lifeCounter-manager-setup");
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.GameName = self.DOM.find(
@@ -105,13 +99,19 @@ function life_counter_manager_setup() {
       self.DOM.find("#div-PlayersMaxLifePoints-input-wrapper");
     self.Inputs[self.Inputs.length] = self.Inputs.PlayersMaxLifePoints =
       self.DOM.find("#input-playersMaxLifePoints-lifeCounter-manager-setup");
-
     self.Inputs[self.Inputs.length] = self.Inputs.AutoDefeatMode =
       self.DOM.find("#input-autoDefeatMode-lifeCounter-manager-setup");
-
     self.Inputs[self.Inputs.length] = self.Inputs.AutoEndMode = self.DOM.find(
       "#input-autoEndMode-lifeCounter-manager-setup"
     );
+
+    self.Locations = [];
+    self.Locations[self.Locations.length] = self.Locations.UsersPage =
+      "/html/pages_users/users_page.html";
+    self.Locations[self.Locations.length] = self.Locations.LifeCounterManager =
+      "/html/pages_users/lifecounter/lifecounter_manager.html";
+    self.Locations[self.Locations.length] = self.Locations.LifeCounterMenu =
+      "/html/pages_users/lifecounter/lifecounter_menu.html";
   };
 
   self.RedirectToUsersPage = () => {
@@ -123,7 +123,12 @@ function life_counter_manager_setup() {
   self.RedirectToLifeCounterManager = (lifeCounterManagerId) => {
     window.location.href = `${
       self.Locations.LifeCounterManager
-    }?id=${encodeURIComponent(lifeCounterManagerId)}`;
+    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterManagerId)}`;
+  };
+  self.RedirectToLifeCounterMenu = (lifeCounterManagerId) => {
+    window.location.href = `${
+      self.Locations.LifeCounterMenu
+    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterManagerId)}`;
   };
 
   self.PreFillForm = () => {
@@ -295,6 +300,12 @@ function life_counter_manager_setup() {
 
       // Update the player count
       self.PlayersCount += increment;
+    });
+
+    self.LifeCounterMenu.on("click", function (e) {
+      e.preventDefault();
+
+      self.RedirectToLifeCounterMenu(self.LifeCounterManagerId);
     });
 
     closeOnAnyKey();

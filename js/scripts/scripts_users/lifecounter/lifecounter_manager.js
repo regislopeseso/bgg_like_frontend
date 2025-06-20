@@ -23,7 +23,7 @@ function life_counter_manager() {
 
   self.GetLifeCounterManagerId = () => {
     self.LifeCounterManagerId = new URLSearchParams(window.location.search).get(
-      "id"
+      "LifeCounterManagerId"
     );
   };
 
@@ -181,7 +181,7 @@ function life_counter_manager() {
   self.RedirectToLifeCounterManagerSetUp = (lifeCounterId) => {
     window.location.href = `${
       self.Locations.SetUpLifeCounterManager
-    }?id=${encodeURIComponent(lifeCounterId)}`;
+    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterId)}`;
   };
   self.RedirectToLifeCounterPlayerSetUp = (lifeCounterId) => {
     window.location.href = `${
@@ -305,36 +305,38 @@ function life_counter_manager() {
       let isMaxLifePointsReached =
         self.FixedMaxLifePointsMode && currentLife >= self.PlayersMaxLifePoints;
 
-      const increaseLife = (amount) => {
-        if (isMaxLifePointsReached == false) {
+      if (isMaxLifePointsReached == true) {
+        return;
+      } else {
+        const increaseLife = (amount) => {
           self.IncreaseLifePoints(playerIndex, amount);
-        }
-      };
+        };
 
-      // Start a timer: if held > 500ms, start continuous +10
-      holdTimer = setTimeout(() => {
-        isHeld = true;
-        increaseLife(10); // first +10
+        // Start a timer: if held > 500ms, start continuous +10
+        holdTimer = setTimeout(() => {
+          isHeld = true;
+          increaseLife(10); // first +10
 
-        intervalId = setInterval(() => {
-          increaseLife(10);
-        }, 1000); // then every 1s
-      }, 500);
+          intervalId = setInterval(() => {
+            increaseLife(10);
+          }, 1000); // then every 1s
+        }, 500);
 
-      const stopIncreasing = () => {
-        clearTimeout(holdTimer);
-        clearInterval(intervalId);
+        const stopIncreasing = () => {
+          clearTimeout(holdTimer);
+          clearInterval(intervalId);
 
-        if (!isHeld) {
-          // Short press, so just +1
-          increaseLife(1);
-        }
+          if (!isHeld) {
+            // Short press, so just +1
+            increaseLife(1);
+          }
 
-        isHeld = false;
-        $(document).off("mouseup touchend", stopIncreasing);
-      };
+          isHeld = false;
+          $(document).off("mouseup touchend", stopIncreasing);
+        };
 
-      $(document).on("mouseup touchend", stopIncreasing);
+        $(document).on("mouseup touchend", stopIncreasing);
+      }
     });
 
     self.Buttons.DecreaseLifePoints.on("mousedown touchstart", function (e) {
@@ -1023,6 +1025,9 @@ function life_counter_manager() {
             .find(self.Fields.PlayerCurrentLifePoints)
             .text(resp.content.updatedLifePoints);
 
+          console.log("self.PlayersMaxLifePoints", self.PlayersMaxLifePoints);
+          if (resp.content.updatedLifePoints == self.PlayersMaxLifePoints)
+            return;
           showIncreasingAmount(amountToIncrease);
         }
       },

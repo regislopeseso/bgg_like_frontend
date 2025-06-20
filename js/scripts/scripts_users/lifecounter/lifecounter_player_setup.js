@@ -47,6 +47,28 @@ function life_counter_player_setup() {
 
         self.LifeCounterManagerId = lifeCounterPlayerDB.lifeCounterManagerId;
 
+        self.GetPlayersCount();
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError("Could not load life counter");
+      },
+    });
+  };
+
+  self.GetPlayersCount = () => {
+    // Fetch Players based on provided LifeCounterManagerId
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/getplayerscount?LifeCounterManagerId=${self.LifeCounterManagerId}`,
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        if (!response.content) {
+          sweetAlertError(response.message_text);
+          return;
+        }
+
+        self.PlayersCount = response.content.playersCount;
+
         self.PreFillForm();
       },
       error: function (xhr, status, error) {
@@ -64,15 +86,11 @@ function life_counter_player_setup() {
     self.Buttons[self.Buttons.length] = self.Buttons.Close = self.DOM.find(
       "#button-close-lifeCounter-player-setUp"
     );
-    self.Buttons[self.Buttons.length] = self.Buttons.RemovePlayer =
-      self.DOM.find("#button-removePlayer-lifeCounter-player-setup");
-    self.Buttons[self.Buttons.length] = self.Buttons.Confirm = self.DOM.find(
-      "#button-confirm-lifeCounter-player-setup"
+    self.Buttons[self.Buttons.length] = self.Buttons.DeletePlayer =
+      self.DOM.find("#button-deletePlayer-lifeCounter-player-setup");
+    self.Buttons[self.Buttons.length] = self.Buttons.ChangeName = self.DOM.find(
+      "#button-changePlayerName-lifeCounter-player-setup"
     );
-
-    self.Locations = [];
-    self.Locations[self.Locations.length] = self.Locations.LifeCounterManager =
-      "/html/pages_users/lifecounter/lifecounter_manager.html";
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.LifeCounterPlayerName =
@@ -81,25 +99,38 @@ function life_counter_player_setup() {
     self.Fields = [];
     self.Fields[self.Fields.length] = self.Fields.PlayerStartingLifePoints =
       self.DOM.find("#div-playerStartingLifePoints-lifeCounter-player-setup");
-
     self.Fields[self.Fields.length] = self.Fields.PlayerCurrentLifePoints =
       self.DOM.find("#div-playerCurrentLifePoints-lifeCounter-player-setup");
-
     self.Fields[self.Fields.length] = self.Fields.FixedMaxLifePointsMode =
       self.DOM.find("#div-fixedMaxLifePointsMode-lifeCounter-player-setup");
+    self.Fields[self.Fields.length] = self.Fields.FixedMaxLifePointsModeOn =
+      self.DOM.find("#span-fixedMaxLifePointsMode-on-lifeCounter-player-setup");
+    self.Fields[self.Fields.length] = self.Fields.FixedMaxLifePointsModeOff =
+      self.DOM.find(
+        "#span-fixedMaxLifePointsMode-off-lifeCounter-player-setup"
+      );
     self.Fields[self.Fields.length] = self.Fields.MaxLifePointsInputWrapper =
       self.DOM.find("#div-playerMaxLifePoints-input-wrapper");
     self.Fields[self.Fields.length] = self.Fields.PlayerMaxLifePoints =
-      self.DOM.find("#div-playerMaxLifePointsMode-lifeCounter-player-setup");
-
+      self.DOM.find(
+        "#div-playerMaxLifePointsMode-lifeCounter-player-setup span"
+      );
     self.Fields[self.Inputs.length] = self.Fields.AutoDefeatMode =
       self.DOM.find("#div-autoDefeatMode-lifeCounter-player-setup");
+    self.Fields[self.Fields.length] = self.Fields.AutoDefeatModeOn =
+      self.DOM.find("#span-autoDefeatMode-on-lifeCounter-player-setup");
+    self.Fields[self.Fields.length] = self.Fields.AutoDefeatModeOff =
+      self.DOM.find("#span-autoDefeatMode-off-lifeCounter-player-setup");
+
+    self.Locations = [];
+    self.Locations[self.Locations.length] = self.Locations.LifeCounterManager =
+      "/html/pages_users/lifecounter/lifecounter_manager.html";
   };
 
   self.RedirectToLifeCounterManager = (lifeCounterManagerId) => {
     window.location.href = `${
       self.Locations.LifeCounterManager
-    }?id=${encodeURIComponent(lifeCounterManagerId)}`;
+    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterManagerId)}`;
   };
 
   self.PreFillForm = () => {
@@ -109,9 +140,40 @@ function life_counter_player_setup() {
 
     self.Fields.PlayerStartingLifePoints.html(self.StartingLifePoints);
     self.Fields.PlayerCurrentLifePoints.html(self.CurrentLifePoints);
-    self.Fields.FixedMaxLifePointsMode.html(self.FixedMaxLifeMode);
-    self.Fields.PlayerMaxLifePoints.html(self.MaxLifePoints);
-    self.Fields.AutoDefeatMode.html(self.AutoDefeatMode);
+
+    if (self.FixedMaxLifeMode == true) {
+      self.Fields.FixedMaxLifePointsModeOff.addClass("d-none");
+      self.Fields.FixedMaxLifePointsModeOn.removeClass("d-none");
+    }
+
+    if (self.FixedMaxLifeMode == true) {
+      self.Fields.FixedMaxLifePointsModeOff.addClass("d-none");
+      self.Fields.FixedMaxLifePointsModeOn.removeClass("d-none");
+
+      self.Fields.MaxLifePointsInputWrapper.removeClass("d-none");
+      self.Fields.PlayerMaxLifePoints.html(self.MaxLifePoints);
+    } else {
+      self.Fields.PlayerMaxLifePoints.html("-");
+      self.Fields.MaxLifePointsInputWrapper.addClass("d-none");
+      self.Fields.FixedMaxLifePointsModeOn.addClass("d-none");
+
+      self.Fields.FixedMaxLifePointsModeOff.removeClass("d-none");
+    }
+
+    if (self.AutoDefeatMode == true) {
+      self.Fields.AutoDefeatModeOff.addClass("d-none");
+      self.Fields.AutoDefeatModeOn.removeClass("d-none");
+    } else {
+      self.Fields.AutoDefeatModeOn.addClass("d-none");
+      self.Fields.AutoDefeatModeOff.removeClass("d-none");
+    }
+
+    if (self.PlayersCount <= 1) {
+      self.Buttons.DeletePlayer.attr("disabled", true).css(
+        "pointer-events",
+        "none"
+      );
+    }
 
     sweetAlertSuccess(self.LifeCounterPlayerName);
   };
@@ -182,88 +244,45 @@ function life_counter_player_setup() {
   self.LoadEvents = () => {
     self.Buttons.Close.on("click", function (e) {
       e.preventDefault();
+
       self.RedirectToLifeCounterManager(self.LifeCounterManagerId);
     });
 
-    self.Inputs.FixedMaxLifePointsMode.on("change", function (e) {
-      if ($(this).is(":checked")) {
-        // Checkbox is checked
-        self.Inputs.MaxLifePointsInputWrapper.removeClass("d-none");
-      } else {
-        // Checkbox is unchecked
-        self.Inputs.MaxLifePointsInputWrapper.addClass("d-none");
-      }
-    });
-
-    self.Buttons.ClearForm.on("click", (e) => {
+    self.Buttons.ChangeName.on("click", function (e) {
       e.preventDefault();
 
-      self.ClearForm();
-
-      self.CheckFormFilling();
+      self.ChangeName();
     });
 
-    self.Buttons.Confirm.on("click", (e) => {
-      self.ConfirmLifeCounterManagerSetUp();
-    });
-
-    // Hook input and change events for form inputs
-    self.Form.find(".required:visible:enabled").on("input change", function () {
-      self.CheckFormFilling();
-    });
-
-    self.Inputs.AutoDefeatMode.on("change", (e) => {
-      if (!self.Inputs.AutoDefeatMode.is(":checked")) {
-        self.Inputs.AutoEndMode.prop("checked", false) // <-- Correct way to uncheck
-          .prop("disabled", true); // <-- Properly disables the checkbox
-      } else {
-        self.Inputs.AutoEndMode.prop("disabled", false); // Re-enable if needed
-      }
-    });
-
-    self.Inputs.PlayersCount.on("click", function (e) {
+    self.Buttons.DeletePlayer.on("click", (e) => {
       e.preventDefault();
 
-      // Remove the class from all
-      self.Inputs.PlayersCount.removeClass("clickedState");
+      if (self.PlayersCount <= 1) return;
 
-      // Parse increment value from the button
-      const increment = parseInt($(this).text().replace("+", ""), 10);
-
-      // Add class to selected
-      $(this).addClass("clickedState");
-
-      // Update the player count
-      self.PlayersCount += increment;
+      self.DeletePlayer();
     });
 
     closeOnAnyKey();
   };
 
-  self.ConfirmLifeCounterManagerSetUp = () => {
+  self.ChangeName = () => {
     //Disable submit button to prevent double submissions
-    const confirmBtn = self.Buttons.Confirm;
+    const confirmBtn = self.Buttons.ChangeName;
     const originalBtnText = confirmBtn.text();
     confirmBtn.attr("disabled", true).text("Submitting...");
 
+    const formData = new FormData();
+    formData.append("LifeCounterPlayerId", self.LifeCounterPlayerId);
+    formData.append("PlayerNewName", self.Inputs.LifeCounterPlayerName.val());
+
     $.ajax({
-      type: "PUT",
-      url: "https://localhost:7081/users/editlifecountermanager",
-      data: JSON.stringify({
-        LifeCounterManagerId: self.LifeCounterManagerId,
-        NewLifeCounterManagerName: self.Inputs.GameName.val(),
-        NewPlayersCount: self.PlayersCount,
-        NewPlayersStartingLifePoints:
-          self.Inputs.PlayersStartingLifePoints.val(),
-        FixedMaxLifePointsMode:
-          self.Inputs.FixedMaxLifePointsMode.is(":checked"),
-        NewPlayersMaxLifePoints: self.Inputs.PlayersMaxLifePoints.val(),
-        AutoDefeatMode: self.Inputs.AutoDefeatMode.is(":checked"),
-        AutoEndMode: self.Inputs.AutoEndMode.is(":checked"),
-      }),
-      contentType: "application/json",
+      type: "POST",
+      url: "https://localhost:7081/users/changeplayername",
+      data: formData,
+      processData: false,
+      contentType: false,
       xhrFields: {
-        withCredentials: true,
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
       },
       success: (resp) => {
         if (resp.content === null) {
@@ -277,8 +296,33 @@ function life_counter_player_setup() {
       },
       complete: () => {
         confirmBtn.attr("disabled", false).text(originalBtnText);
-        self.ClearForm();
       },
+    });
+  };
+  self.DeletePlayer = () => {
+    const formData = new FormData();
+    formData.append("LifeCounterPlayerId", self.LifeCounterPlayerId);
+
+    $.ajax({
+      type: "DELETE",
+      url: `https://localhost:7081/users/DeleteLifeCounterPlayer?LifeCounterPlayerId=${self.LifeCounterPlayerId}`,
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        if (resp.content === null) {
+          sweetAlertError(resp.message);
+          return;
+        }
+        self.RedirectToLifeCounterManager(self.LifeCounterManagerId);
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+      complete: () => {},
     });
   };
 
@@ -286,7 +330,7 @@ function life_counter_player_setup() {
     self.LoadReferences();
     self.GetLifeCounterPlayerId();
     self.GetLifeCounterPlayerDetails();
-    //self.LoadEvents();
+    self.LoadEvents();
   };
 
   self.Build();

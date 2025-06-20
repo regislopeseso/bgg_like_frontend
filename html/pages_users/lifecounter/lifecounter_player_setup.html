@@ -86,10 +86,15 @@
               >
                 <span>F</span>ixed Max Life Points Mode:
                 <div id="div-fixedMaxLifePointsMode-lifeCounter-player-setup">
-                  <span class="ps-3">enabled</span>
                   <span
+                    id="span-fixedMaxLifePointsMode-on-lifeCounter-player-setup"
+                    class="ps-2 d-none"
+                    >enabled</span
+                  >
+                  <span
+                    id="span-fixedMaxLifePointsMode-off-lifeCounter-player-setup"
+                    class="ps-2 d-none"
                     style="color: var(--reddish) !important"
-                    class="ps-3 d-none"
                     >disabled</span
                   >
                 </div>
@@ -97,7 +102,7 @@
 
               <div
                 id="div-playerMaxLifePoints-input-wrapper"
-                class="d-flex flex-row justify-content-center align-items-center"
+                class="d-flex flex-row justify-content-center align-items-center d-none"
               >
                 <div>
                   <div class="maxlifepoints-arrow-right p-0 m-0 pe-2">
@@ -121,13 +126,18 @@
 
             <hr />
 
-            <div class="text-start">
+            <div class="text-start d-flex flex-row">
               <span>A</span>uto Defeat Mode:
               <div id="div-autoDefeatMode-lifeCounter-player-setup">
-                <span class="ps-3">enabled</span>
                 <span
+                  id="span-autoDefeatMode-on-lifeCounter-player-setup"
+                  class="ps-2 d-none"
+                  >enabled</span
+                >
+                <span
+                  id="span-autoDefeatMode-off-lifeCounter-player-setup"
+                  class="ps-2 d-none"
                   style="color: var(--reddish) !important"
-                  class="ps-3 d-none"
                   >disabled</span
                 >
               </div>
@@ -140,18 +150,18 @@
             >
               <button
                 type="button"
-                id="button-removePlayer-lifeCounter-player-setup"
+                id="button-deletePlayer-lifeCounter-player-setup"
                 class="btn btn-lg btn-outline-danger"
               >
-                Remove Player
+                Delete Player
               </button>
 
               <button
-                type="button"
-                id="button-confirm-lifeCounter-player-setup"
+                type="submit"
+                id="button-changePlayerName-lifeCounter-player-setup"
                 class="btn btn-lg btn-outline-info"
               >
-                Confirm
+                Change Player Name
               </button>
             </div>
           </form>
