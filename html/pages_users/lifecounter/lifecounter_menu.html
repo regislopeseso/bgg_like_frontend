@@ -32,7 +32,7 @@
           </button>
         </div>
       </section>
-      <section>
+      <section id="content-lifeCounter-menu">
         <div class="d-flex flex-column gap-4 p-4">
           <button
             id="button-createTemplate-lifeCounter-menu"
@@ -210,19 +210,21 @@
                   </button>
 
                   <button
-                    type="button"
-                    id="button-createAndStart-lifeCounter-newTemplate"
-                    class="btn btn-lg btn-outline-success"
-                  >
-                    Save and Start
-                  </button>
-
-                  <button
                     type="submit"
                     id="button-create-lifeCounter-newTemplate"
                     class="btn btn-lg btn-outline-info"
+                    disabled
                   >
-                    Start
+                    Create
+                  </button>
+
+                  <button
+                    type="button"
+                    id="button-createAndStart-lifeCounter-newTemplate"
+                    class="btn btn-lg btn-outline-success"
+                    disabled
+                  >
+                    Create and Start
                   </button>
                 </div>
               </form>

@@ -65,10 +65,10 @@ hr {
   --bs-btn-active-border-color: var(--greenish);
 
   --bs-btn-color: var(--greenish);
-  --bs-btn-disabled-color: var(--second-bg-color);
+  --bs-btn-disabled-color: var(--bg-color);
 
   --bs-btn-border-color: var(--greenish);
-  --bs-btn-disabled-border-color: var(--second-bg-color);
+  --bs-btn-disabled-border-color: var(--bg-color);
 
   --bs-btn-hover-bg: var(--greenish);
   --bs-btn-hover-border-color: var(--greenish);

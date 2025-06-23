@@ -941,10 +941,6 @@ function life_counter_manager() {
           self.LifeCounterPlayers[i].currentLifePoints
         );
       }
-
-      // if (self.AutoEndMode == false && self.IsFinished == true) {
-      //   self.RefreshLifeCounterManager();
-      // }
     }
 
     self.OrganizeLifeCounters(self.PlayersCount);
