@@ -3,7 +3,7 @@ body {
 }
 
 .enclosing-lines {
-  border-top: 5px solid var(--second-bg-color) !important;
+  border-top: 5px solid var(--text-color) !important;
 }
 
 #toggle-createTemplate-lifeCounter-menu,
@@ -60,7 +60,8 @@ body {
   background-color: transparent;
 }
 
-.players-count-options {
+.players-count-options,
+.edit-players-count-options {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,7 +73,8 @@ body {
   background-color: var(--text-color);
   color: var(--second-bg-color);
 }
-.players-count-options:hover {
+.players-count-options:hover,
+.edit-players-count-options:hover {
   font-weight: 900;
   color: var(--bg-color);
   box-shadow: 0 0 10px 5px var(--text-color);

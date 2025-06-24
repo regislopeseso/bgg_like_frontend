@@ -28,12 +28,34 @@ function life_counter_menu() {
       self.DOM.find("#button-showStatistics-lifeCounter-menu");
 
     self.Buttons = [];
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.ClearCreateFormLifeCounterTemplate = self.DOM.find(
+        "#button-clearCreateForm-lifeCounter-newTemplate"
+      );
     self.Buttons[self.Buttons.length] = self.Buttons.CreateLifeCounterTemplate =
       self.DOM.find("#button-create-lifeCounter-newTemplate");
     self.Buttons[self.Buttons.length] =
       self.Buttons.CreateAndStartLifeCounterTemplate = self.DOM.find(
         "#button-createAndStart-lifeCounter-newTemplate"
       );
+
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.EditSelectedLifeCounterTemplate = self.DOM.find(
+        "#button-edit-selected-lifeCounter-menu"
+      );
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.StartSelectedLifeCounterTemplate = self.DOM.find(
+        "#button-start-selected-lifeCounter-menu"
+      );
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.ClearEditFormLifeCounterTemplate = self.DOM.find(
+        "#button-clearEditForm-lifeCounter-menu"
+      );
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.SaveModificationsLifeCounterTemplate = self.DOM.find(
+        "#button-confirmModifications-lifeCounter-menu"
+      );
+
     self.Togglers = [];
     self.Togglers[self.Togglers.length] =
       self.Togglers.ToggleCreateLifeCounterTemplate = self.DOM.find(
@@ -51,6 +73,8 @@ function life_counter_menu() {
       self.Togglers.ShowLifeCounterStatistics = self.DOM.find(
         "#toggle-showStatistics-lifeCounter-menu"
       );
+
+    self.EditLifeCounterTermplateForm = self.DOM.find("#editForm-wrapper");
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.CreateTemplate_Name =
@@ -82,8 +106,38 @@ function life_counter_menu() {
         "#input-autoEndMode-lifeCounter-menu"
       );
 
+    self.Inputs[self.Inputs.length] = self.Inputs.EditTemplate_Name =
+      self.DOM.find("#input-edit-templateName-lifeCounter-menu");
+    self.Inputs[self.Inputs.length] =
+      self.Inputs.EditTemplate_PlayersStartingLifePoints = self.DOM.find(
+        "#input-edit-playersStartingLifePoints-lifeCounter-menu"
+      );
+    self.Inputs[self.Inputs.length] = self.Inputs.EditTemplate_PlayersCount =
+      self.DOM.find(".edit-players-count-options");
+    self.Inputs[self.Inputs.length] =
+      self.Inputs.EditTemplate_FixedMaxLifePointsMode = self.DOM.find(
+        "#input-edit-fixedMaxLifePointsMode-lifeCounter-menu"
+      );
+    self.Inputs[self.Inputs.length] =
+      self.Inputs.EditTemplate_MaxLifePointsInputWrapper = self.DOM.find(
+        "#div-edit-PlayersMaxLifePoints-input-wrapper"
+      );
+    self.Inputs[self.Inputs.length] =
+      self.Inputs.EditTemplate_PlayersMaxLifePoints = self.DOM.find(
+        "#input-edit-playersMaxLifePoints-lifeCounter-menu"
+      );
+    self.Inputs[self.Inputs.length] = self.Inputs.EditTemplate_AutoDefeatMode =
+      self.DOM.find("#input-edit-autoDefeatMode-lifeCounter-menu");
+    self.Inputs[self.Inputs.length] =
+      self.Inputs.EditTemplate_AutoEndMatchMode = self.DOM.find(
+        "#input-edit-autoEndMode-lifeCounter-menu"
+      );
+
     self.SelectLifeCounterTemplate = self.DOM.find(
       "#select-lifeCounterTemplate-lifeCounter-menu"
+    );
+    self.ReloadLifeCounterManager = self.DOM.find(
+      "#reload-lifeCounterManager-lifeCounter-menu"
     );
 
     self.Locations = [];
@@ -137,36 +191,137 @@ function life_counter_menu() {
     Swal.close();
   }
 
-  self.CheckFormFilling = () => {
-    if (
-      self.Inputs.CreateTemplate_Name.val().trim() === "" ||
-      self.Inputs.CreateTemplate_PlayersStartingLifePoints.val().trim() === ""
-    ) {
-      self.Buttons.CreateLifeCounterTemplate.attr("disabled", true);
-      self.Buttons.CreateAndStartLifeCounterTemplate.attr("disabled", true);
+  self.PreFillForm = () => {
+    $.ajax({
+      url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${self.LifeCounterTemplateId}`,
+      method: "GET",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: function (response) {
+        if (!response.content) {
+          sweetAlertError(response.message);
+
+          return;
+        }
+
+        let lifeCounterTemplate = response.content;
+        console.log("lifeCounterTemplate: ", lifeCounterTemplate);
+
+        self.Inputs.EditTemplate_Name.val(
+          lifeCounterTemplate.lifeCounterTemplateName
+        )
+          .trigger("focus")
+          .trigger("select");
+
+        self.Inputs.EditTemplate_PlayersStartingLifePoints.val(
+          lifeCounterTemplate.playersStartingLifePoints
+        );
+        console.log(
+          "lifeCounterTemplate.PlayersStartingLifePoints: ",
+          lifeCounterTemplate.playersStartingLifePoints
+        );
+
+        self.PlayersCount = lifeCounterTemplate.playersCount;
+        self.Inputs.EditTemplate_PlayersCount.eq(
+          self.PlayersCount - 1
+        ).addClass("clickedState");
+
+        self.Inputs.EditTemplate_FixedMaxLifePointsMode.prop(
+          "checked",
+          lifeCounterTemplate.fixedMaxLifePointsMode
+        );
+
+        if (lifeCounterTemplate.fixedMaxLifePointsMode == true) {
+          self.Inputs.EditTemplate_MaxLifePointsInputWrapper.removeClass(
+            "d-none"
+          );
+          self.Inputs.EditTemplate_PlayersMaxLifePoints.val(
+            lifeCounterTemplate.playersMaxLifePoints
+          );
+        }
+
+        self.Inputs.EditTemplate_AutoDefeatMode.prop(
+          "checked",
+          lifeCounterTemplate.autoDefeatMode
+        );
+
+        self.Inputs.EditTemplate_AutoEndMatchMode.prop(
+          "checked",
+          lifeCounterTemplate.autoEndMode
+        );
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching board game details:", error);
+      },
+    });
+  };
+  self.CheckFormFilling = (isCreateForm) => {
+    if (isCreateForm === true) {
+      if (
+        self.Inputs.CreateTemplate_Name.val().trim() === "" ||
+        self.Inputs.CreateTemplate_PlayersStartingLifePoints.val().trim() === ""
+      ) {
+        self.Buttons.CreateLifeCounterTemplate.attr("disabled", true);
+        self.Buttons.CreateAndStartLifeCounterTemplate.attr("disabled", true);
+
+        return;
+      }
+
+      self.Buttons.CreateLifeCounterTemplate.attr("disabled", false);
+      self.Buttons.CreateAndStartLifeCounterTemplate.attr("disabled", false);
 
       return;
     }
 
-    self.Buttons.CreateLifeCounterTemplate.attr("disabled", false);
-    self.Buttons.CreateAndStartLifeCounterTemplate.attr("disabled", false);
+    if (
+      self.Inputs.EditTemplate_Name.val().trim() === "" ||
+      self.Inputs.EditTemplate_PlayersStartingLifePoints.val().trim() === ""
+    ) {
+      self.Buttons.SaveModificationsLifeCounterTemplate.attr("disabled", true);
+
+      return;
+    }
+
+    self.Buttons.SaveModificationsLifeCounterTemplate.attr("disabled", false);
   };
-  self.ForceClearForm = () => {
-    // Block form submission button
-    self.Buttons.CreateAndStartLifeCounterTemplate.prop("disabled", true);
-    self.Buttons.CreateLifeCounterTemplate.prop("disabled", true);
+  self.ForceClearForm = (isCreateForm) => {
+    if (isCreateForm === true) {
+      // Block create and start buttons & clear create form
+      self.Buttons.CreateAndStartLifeCounterTemplate.prop("disabled", true);
+      self.Buttons.CreateLifeCounterTemplate.prop("disabled", true);
 
-    //Clear form
-    self.Inputs.CreateTemplate_Name.val(null).trigger("focus");
+      self.Inputs.CreateTemplate_Name.val(null).trigger("focus");
+      self.Inputs.CreateTemplate_PlayersStartingLifePoints.val("1");
+      self.Inputs.CreateTemplate_PlayersCount.eq(
+        self.PlayersCount - 1
+      ).removeClass("clickedState");
+      self.Inputs.CreateTemplate_PlayersCount.eq(0).addClass("clickedState");
+      self.PlayersCount = 1;
+      self.Inputs.CreateTemplate_MaxLifePointsInputWrapper.addClass("d-none");
+      self.Inputs.CreateTemplate_FixedMaxLifePointsMode.prop("checked", false);
+      self.Inputs.CreateTemplate_AutoDefeatMode.prop("checked", false);
+      self.Inputs.CreateTemplate_AutoEndMatchMode.prop("checked", false);
 
-    self.Inputs.CreateTemplate_PlayersCount.eq(0).addClass("clickedState");
-    self.Inputs.CreateTemplate_PlayersMaxLifePoints.val(null);
-    self.Inputs.CreateTemplate_MaxLifePointsInputWrapper.addClass("d-none");
-    self.Inputs.CreateTemplate_FixedMaxLifeMode.prop("checked", false);
-    self.Inputs.CreateTemplate_AutoEndDefeatMode.prop("checked", false);
-    self.Inputs.CreateTemplate_AutoEndMatchMode.prop("checked", false);
+      self.LifeCounterTemplateId = null;
 
-    self.PlayersCount = null;
+      return;
+    }
+
+    // Block confirm modifications button & clear edit form
+    self.Buttons.SaveModificationsLifeCounterTemplate.prop("disabled", true);
+    self.Inputs.EditTemplate_Name.val(null).trigger("focus");
+    self.Inputs.EditTemplate_PlayersStartingLifePoints.val("1");
+    self.Inputs.EditTemplate_PlayersCount.eq(self.PlayersCount - 1).removeClass(
+      "clickedState"
+    );
+    self.Inputs.EditTemplate_PlayersCount.eq(0).addClass("clickedState");
+    self.PlayersCount = 1;
+    self.Inputs.EditTemplate_MaxLifePointsInputWrapper.addClass("d-none");
+    self.Inputs.EditTemplate_FixedMaxLifePointsMode.prop("checked", false);
+    self.Inputs.EditTemplate_AutoDefeatMode.prop("checked", false);
+    self.Inputs.EditTemplate_AutoEndMatchMode.prop("checked", false);
+
     self.LifeCounterTemplateId = null;
   };
 
@@ -183,6 +338,15 @@ function life_counter_menu() {
   };
 
   self.ResetMenuOptions = () => {
+    const hrElements =
+      self.Togglers.ToggleSelectLifeCounterTemplate.find("hr.enclosing-lines");
+
+    // Only remove the last <hr> if there are exactly 3 of them
+    if (hrElements.length >= 3) {
+      hrElements.last().remove();
+    }
+
+    self.EditLifeCounterTermplateForm.addClass("d-none");
     self.Togglers.forEach((toggler) => {
       toggler.css("display", "none");
     });
@@ -192,7 +356,9 @@ function life_counter_menu() {
     });
   };
 
-  self.CreateLifeCounterTemplate = () => {
+  self.CreateLifeCounterTemplate = (startmode) => {
+    self.DOM.loadcontent("charge-contentloader");
+
     //Disable submit button to prevent double submissions
     const createBtn = self.Buttons.CreateLifeCounterTemplate;
     const createAndStartBtn = self.Buttons.CreateAndStartLifeCounterTemplate;
@@ -233,16 +399,26 @@ function life_counter_menu() {
         }
 
         self.LifeCounterTemplateId = resp.content.lifeCounterTemplateId;
+
+        sweetAlertSuccess(resp.message);
+
+        if (startmode == true) {
+          self.StartLifeCounterManager();
+          return;
+        }
+
+        self.ForceClearForm(true);
       },
       error: (err) => {
         sweetAlertError(err);
       },
       complete: () => {
-        //self.ForceClearForm();
         createBtn.attr("disabled", true).text(originalBtnText_create);
         createAndStartBtn
           .attr("disabled", true)
           .text(originalBtnText_createAndStart);
+
+        self.DOM.loadcontent("demolish-contentloader");
       },
     });
   };
@@ -334,11 +510,17 @@ function life_counter_menu() {
         // Get selected boardGameId
         self.LifeCounterTemplateId = $(this).val();
 
-        self.StartLifeCounterManager();
+        if (self.LifeCounterManagerId != null) {
+          self.Buttons.EditSelectedLifeCounterTemplate.attr("disabled", false);
+          self.Buttons.StartSelectedLifeCounterTemplate.attr("disabled", false);
+        }
+
+        //self.StartLifeCounterManager();
       });
   };
 
   self.StartLifeCounterManager = () => {
+    self.DOM.loadcontent("charge-contentloader");
     $.ajax({
       type: "POST",
       url: `https://localhost:7081/users/startlifecountermanager?LifeCounterTemplateId=${self.LifeCounterTemplateID}`,
@@ -357,6 +539,7 @@ function life_counter_menu() {
 
           if (self.LifeCounterManagerId != null) {
             self.RedirectToLifeCounterManager(self.LifeCounterManagerId);
+            self.DOM.loadcontent("demolish-contentloader");
           }
         } else {
           sweetAlertError(response.message);
@@ -366,6 +549,86 @@ function life_counter_menu() {
         sweetAlertError(
           "Failed to fetch requested LIFE COUNTER MANAGER DETAILS."
         );
+      },
+    });
+  };
+
+  self.LoadUnfinishedLifeCounterManagers = () => {
+    // First destroy any existing select2 instance to prevent duplicates
+    if (self.SelectLifeCounterTemplate.hasClass("select2-hidden-accessible")) {
+      self.SelectLifeCounterTemplate.select2("destroy");
+    }
+
+    let unfinishedLifeCounterManagers = [];
+
+    $.ajax({
+      url: `https://localhost:7081/users/listunfinishedlifecountermanagers`,
+      type: "GET",
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        // Clear current options
+        self.ReloadLifeCounterManager.empty();
+
+        // Check if any board games are returned
+        if (response.content != null) {
+          unfinishedLifeCounterManagers = response.content;
+
+          // Add options dynamically
+          let counter = 1;
+          lifeCounterTemplates.forEach((template) => {
+            counter++;
+
+            // Create option with formatted date (if available) or fall back to session ID
+            const optionText = template.lifeCounterManagerName;
+            const optionValue = template.lifeCounterManagerId;
+
+            self.ReloadLifeCounterManager.append(
+              new Option(optionText, optionValue)
+            );
+          });
+
+          // Add an empty default option with the placeholder text
+          self.ReloadLifeCounterManager.append(new Option("", "", true, true));
+
+          // Refresh select2 without triggering change event to avoid auto-selection
+          if (
+            self.ReloadLifeCounterManager.hasClass("select2-hidden-accessible")
+          ) {
+            self.ReloadLifeCounterManager.select2("destroy");
+          }
+          self.ReloadLifeCounterManager.select2({
+            theme: "classic",
+            width: "100%",
+            placeholder: "Reload a unfinished Life Counter Manager",
+            templateSelection: (data) => {
+              if (!data.id) return data.text;
+              return $("<strong>").text(data.text);
+            },
+          });
+
+          self.ReloadLifeCounterManager.select2("open");
+
+          self.GetSelectedLifeCounterTemplate();
+        } else {
+          self.ReloadLifeCounterManager.append(
+            `<p><span style="color: var(--yellowish)">No Life Counter Templates found</span></p>`
+          );
+          // Add empty option with "No sessions found" text
+          self.ReloadLifeCounterManager.empty().addClass("current-data");
+
+          // Refresh select2
+          if (
+            self.ReloadLifeCounterManager.hasClass("select2-hidden-accessible")
+          ) {
+            self.ReloadLifeCounterManager.select2("destroy");
+          }
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching sessions:", error);
+        console.log("Status:", status);
+        console.log("Response:", xhr.responseText);
+        sweetAlertError("Failed to fetch life counter templates.");
       },
     });
   };
@@ -395,10 +658,10 @@ function life_counter_menu() {
 
       self.PlayersCount = 1;
     });
-    self.Inputs.CreateTemplate_Name.on("input", self.CheckFormFilling);
+    self.Inputs.CreateTemplate_Name.on("input", self.CheckFormFilling(true));
     self.Inputs.CreateTemplate_PlayersStartingLifePoints.on(
       "input",
-      self.CheckFormFilling
+      self.CheckFormFilling(true)
     );
     self.Inputs.CreateTemplate_PlayersCount.on("click", function (e) {
       e.preventDefault();
@@ -412,7 +675,7 @@ function life_counter_menu() {
       // Update the player count
       self.PlayersCount = parseInt($(this).text(), 10);
 
-      self.CheckFormFilling();
+      self.CheckFormFilling(true);
     });
     self.Inputs.CreateTemplate_FixedMaxLifePointsMode.on(
       "change",
@@ -438,6 +701,11 @@ function life_counter_menu() {
         self.Inputs.CreateTemplate_AutoEndMatchMode.prop("disabled", false); // Re-enable if needed
       }
     });
+    self.Buttons.ClearCreateFormLifeCounterTemplate.on("click", function (e) {
+      e.preventDefault();
+
+      self.ForceClearForm(true);
+    });
     self.Buttons.CreateLifeCounterTemplate.on("click", function (e) {
       e.preventDefault();
 
@@ -456,8 +724,7 @@ function life_counter_menu() {
     self.Buttons.CreateAndStartLifeCounterTemplate.on("click", function (e) {
       e.preventDefault();
 
-      self.CreateLifeCounterTemplate();
-      self.StartLifeCounterManager();
+      self.CreateLifeCounterTemplate(true);
     });
 
     self.Options.SelectLifeCounterTemplate.on("click", function (e) {
@@ -485,6 +752,35 @@ function life_counter_menu() {
           self.LoadLifeCounterTemplates();
         });
       });
+    });
+    self.Buttons.EditSelectedLifeCounterTemplate.on("click", function (e) {
+      e.preventDefault();
+
+      self.EditLifeCounterTermplateForm.removeClass("d-none");
+
+      self.Togglers.ToggleSelectLifeCounterTemplate.append(
+        `<hr class="enclosing-lines" />`
+      );
+
+      self.PreFillForm();
+    });
+    self.Buttons.StartSelectedLifeCounterTemplate.on("click", function (e) {
+      e.preventDefault();
+
+      self.StartLifeCounterManager();
+    });
+    self.Inputs.EditTemplate_AutoDefeatMode.on("change", (e) => {
+      if (!self.Inputs.EditTemplate_AutoDefeatMode.is(":checked")) {
+        self.Inputs.EditTemplate_AutoEndMatchMode.prop("checked", false) // <-- Correct way to uncheck
+          .prop("disabled", true); // <-- Properly disables the checkbox
+      } else {
+        self.Inputs.EditTemplate_AutoEndMatchMode.prop("disabled", false); // Re-enable if needed
+      }
+    });
+    self.Buttons.ClearEditFormLifeCounterTemplate.on("click", function (e) {
+      e.preventDefault();
+
+      self.ForceClearForm(false);
     });
 
     self.Options.ReloadLifeCounter.on("click", function (e) {
@@ -517,8 +813,8 @@ function life_counter_menu() {
   };
 
   self.Build = () => {
-    self.GetLifeCounterManagerId();
     self.LoadReferences();
+    self.GetLifeCounterManagerId();
     self.LoadEvents();
   };
 
