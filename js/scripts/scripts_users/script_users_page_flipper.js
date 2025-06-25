@@ -43,11 +43,10 @@ const Flipper = (function () {
         { id: "#userOption-playGame", template: "play-template" },
         { id: "#userOption-logSession", template: "log-session-template" },
         { id: "#userOption-editSession", template: "edit-session-template" },
-
         { id: "#userOption-rateBg", template: "rate-bg-template" },
         { id: "#userOption-editRate", template: "edit-rate-template" },
         {
-          id: "#userOption-newLifeCounter",
+          id: "#userOption-LifeCounter",
           template: "new-life-counter-template",
         },
       ];
@@ -61,6 +60,14 @@ const Flipper = (function () {
           .addClass("user-menu-button")
           .on("click", (e) => {
             e.preventDefault();
+
+            if (button.id === "#userOption-LifeCounter") {
+              e.preventDefault();
+
+              return (window.location.href =
+                "/html/pages_users/lifecounter/lifecounter_manager.html");
+            }
+
             this.rotateTo(button.template, $menuButtons); // Pass the button elements
           });
       });

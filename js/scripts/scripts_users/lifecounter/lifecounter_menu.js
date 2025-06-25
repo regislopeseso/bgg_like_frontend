@@ -158,6 +158,17 @@ function life_counter_menu() {
       "/html/pages_users/lifecounter/lifecounter_manager.html";
   };
 
+  self.RedirectToLifeCounterManagerSetUp = (lifeCounterManagerId) => {
+    window.location.href = `${
+      self.Locations.LifeCounterManagerSetUp
+    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterManagerId)}`;
+  };
+  self.RedirectToLifeCounterManager = (lifeCounterManagerId) => {
+    window.location.href = `${
+      self.Locations.LifeCounterManager
+    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterManagerId)}`;
+  };
+
   function sweetAlertSuccess(title_text, message_text) {
     Swal.fire({
       position: "center",
@@ -331,18 +342,6 @@ function life_counter_menu() {
     self.Inputs.EditTemplate_AutoEndMode.prop("checked", false);
 
     self.LifeCounterTemplateId = null;
-  };
-
-  self.RedirectToLifeCounterManagerSetUp = (lifeCounterManagerId) => {
-    window.location.href = `${
-      self.Locations.LifeCounterManagerSetUp
-    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterManagerId)}`;
-  };
-
-  self.RedirectToLifeCounterManager = (lifeCounterManagerId) => {
-    window.location.href = `${
-      self.Locations.LifeCounterManager
-    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterManagerId)}`;
   };
 
   self.ResetMenuOptions = () => {

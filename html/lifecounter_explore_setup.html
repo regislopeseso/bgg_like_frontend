@@ -1,32 +1,29 @@
-<!-- Life Counter Manager Set Up -->
+<!-- Life Counter Explore Set Up -->
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SET UP LIFE COUNTER MANAGER</title>
+    <title>SET UP LIFE COUNTER</title>
     <link rel="stylesheet" href="/css/addons.css" />
-    <link
-      rel="stylesheet"
-      href="/css/style_users/lifecounter/lifecounter_manager_setup.css"
-    />
+    <link rel="stylesheet" href="/css/lifecounter_explore_setup.css" />
   </head>
   <body>
-    <main id="main-lifeCounter-manager-setUp">
-      <section class="header-lifeCounter-manager-setUp">
+    <main id="main-lifeCounter-explore-setUp">
+      <section class="header-lifeCounter-explore-setUp">
         <div
           class="d-flex flex-row justify-content-between align-items-center p-4"
         >
           <div>
             <h1 class="p-0 m-0">
-              <span>L</span>ife <span>C</span>ounter <span>M</span>anager -
+              <span>L</span>ife <span>C</span>ounter -
               <span>SET UP</span>
             </h1>
           </div>
           <button
             type="button"
-            id="button-close-lifeCounter-manager-setUp"
+            id="button-close-lifeCounter-explore-setUp"
             class="btn btn-outline-danger btn-lg"
           >
             <i class="fa-solid fa-xmark"></i>
@@ -39,16 +36,14 @@
       <section>
         <div class="d-flex flex-column p-4">
           <form
-            id="form-lifeCounter-manager-setUp"
+            id="form-lifeCounter-explore-setUp"
             class="d-flex flex-column justify-content-start align-items-start gap-3"
           >
             <div class="text-start w-100">
-              <label class="form-label"
-                ><span>L</span>ife Counter Manager Name</label
-              >
+              <label class="form-label"><span>L</span>ife Counter Name</label>
               <input
                 name="Name"
-                id="input-gameName-lifeCounter-manager-setup"
+                id="input-gameName-lifeCounter-explore-setup"
                 class="new-data form-control text-center required"
                 type="text"
                 autofocus
@@ -64,7 +59,7 @@
               >
               <input
                 name="PlayersStartingLifePoints"
-                id="input-PlayersStartingLifePoints-lifeCounter-manager-setup"
+                id="input-PlayersStartingLifePoints-lifeCounter-explore-setup"
                 class="new-data form-control text-center required"
                 type="number"
                 value="1"
@@ -101,7 +96,7 @@
                 >
                 <input
                   name="FixedMaxLifePointsMode"
-                  id="input-fixedMaxLifePointsMode-lifeCounter-manager-setup"
+                  id="input-fixedMaxLifePointsMode-lifeCounter-explore-setup"
                   class="new-data custom-checkbox form-check-input p-0 m-0 ms-3"
                   type="checkbox"
                   role="switch"
@@ -125,7 +120,7 @@
                 <div class="text-center">
                   <input
                     name="PlayersMaxLifePoints"
-                    id="input-playersMaxLifePoints-lifeCounter-manager-setup"
+                    id="input-playersMaxLifePoints-lifeCounter-explore-setup"
                     class="new-data form-control text-center"
                     type="number"
                     min="1"
@@ -145,7 +140,7 @@
               >
               <input
                 name="AutoDefeatMode"
-                id="input-autoDefeatMode-lifeCounter-manager-setup"
+                id="input-autoDefeatMode-lifeCounter-explore-setup"
                 class="new-data custom-checkbox form-check-input p-0 m-0 ms-3"
                 type="checkbox"
                 role="switch"
@@ -163,7 +158,7 @@
               >
               <input
                 name="AutoEndMode"
-                id="input-autoEndMode-lifeCounter-manager-setup"
+                id="input-autoEndMode-lifeCounter-explore-setup"
                 class="new-data custom-checkbox form-check-input p-0 m-0 ms-3"
                 type="checkbox"
                 role="switch"
@@ -173,26 +168,12 @@
 
             <hr />
 
-            <a id="a-menu-lifeCounter-manager-setup" href="" class="">
-              <span>L</span>ife Counter Menu
-            </a>
-
-            <hr />
-
             <div
               class="d-flex flex-row w-100 justify-content-between mt-2 gap-3"
             >
               <button
                 type="button"
-                id="button-finish-lifeCounter-manager-setup"
-                class="btn btn-sm btn-outline-danger"
-              >
-                Finish Life Counter manager
-              </button>
-
-              <button
-                type="button"
-                id="button-clear-lifeCounter-manager-setup"
+                id="button-clear-lifeCounter-explore-setup"
                 class="btn-refresh btn btn-sm btn-outline-warning"
               >
                 Clear
@@ -200,7 +181,7 @@
 
               <button
                 type="button"
-                id="button-confirm-lifeCounter-manager-setup"
+                id="button-confirm-lifeCounter-explore-setup"
                 class="btn btn-lg btn-outline-info"
               >
                 Confirm
@@ -220,7 +201,6 @@
     <script src="/js/plugins/content_loader.js"></script>
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
-    <!-- <script src="/js/components/header.js"></script> -->
-    <script src="/js/scripts/scripts_users/lifecounter/lifecounter_manager_setup.js"></script>
+    <script src="/js/scripts/lifecounter_explore_setup.js"></script>
   </body>
 </html>
