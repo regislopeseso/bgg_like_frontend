@@ -88,3 +88,7 @@ body {
   background-color: var(--second-bg-color);
   font-weight: 900;
 }
+
+/* .white-icon {
+  filter: brightness(0) invert(1);
+} */

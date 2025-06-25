@@ -214,6 +214,17 @@ textarea.new-data {
   .select2-selection__clear {
   margin-right: 10px !important;
 }
+
+/* Set default (non-hovered) state to neutral arrow */
+.select2-results__option .white-icon {
+  filter: none;
+  transition: filter 0.2s ease;
+}
+
+/* When hovered or keyboard-focused (highlighted) */
+.select2-results__option--highlighted .white-icon {
+  filter: brightness(0) invert(1); /* White arrow */
+}
 /*? !!!!!!!!!!!!!!!!! */
 
 /*! !!!!!!!!!!!!!!!!! */

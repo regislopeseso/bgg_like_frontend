@@ -137,6 +137,19 @@ function life_counter_menu() {
       "#reload-lifeCounterManager-lifeCounter-menu"
     );
 
+    self.Statistics = self.DOM.find("#ul-lifeCounter-menu");
+    self.StatisticsItems = [];
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.First = self.DOM.find(".list-group-item").eq(0);
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.Second = self.DOM.find(".list-group-item").eq(1);
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.Third = self.DOM.find(".list-group-item").eq(2);
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.Fourth = self.DOM.find(".list-group-item").eq(3);
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.Fifth = self.DOM.find(".list-group-item").eq(4);
+
     self.Locations = [];
     self.Locations[self.Locations.length] =
       self.Locations.LifeCounterManagerSetUp =
@@ -476,7 +489,7 @@ function life_counter_menu() {
         }
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching sessions:", error);
+        console.error("Error fetching life counter templates:", error);
         console.log("Status:", status);
         console.log("Response:", xhr.responseText);
         sweetAlertError("Failed to fetch life counter templates.");
@@ -500,7 +513,6 @@ function life_counter_menu() {
         }
       });
   };
-
   self.StartLifeCounterManager = () => {
     self.DOM.loadcontent("charge-contentloader");
     $.ajax({
@@ -584,15 +596,15 @@ function life_counter_menu() {
 
   self.LoadUnfinishedLifeCounterManagers = () => {
     // First destroy any existing select2 instance to prevent duplicates
-    if (self.SelectLifeCounterTemplate.hasClass("select2-hidden-accessible")) {
-      self.SelectLifeCounterTemplate.select2("destroy");
+    if (self.ReloadLifeCounterManager.hasClass("select2-hidden-accessible")) {
+      self.ReloadLifeCounterManager.select2("destroy");
     }
 
     let unfinishedLifeCounterManagers = [];
 
     $.ajax({
-      url: `https://localhost:7081/users/listunfinishedlifecountermanagers`,
       type: "GET",
+      url: `https://localhost:7081/users/listunfinishedlifecountermanagers`,
       xhrFields: { withCredentials: true },
       success: function (response) {
         // Clear current options
@@ -604,43 +616,48 @@ function life_counter_menu() {
 
           // Add options dynamically
           let counter = 1;
-          lifeCounterTemplates.forEach((template) => {
-            counter++;
-
-            // Create option with formatted date (if available) or fall back to session ID
-            const optionText = template.lifeCounterManagerName;
-            const optionValue = template.lifeCounterManagerId;
-
-            self.ReloadLifeCounterManager.append(
-              new Option(optionText, optionValue)
+          unfinishedLifeCounterManagers.forEach((manager) => {
+            const text = `${manager.startingDate} - ${manager.lifeCounterManagerName}`;
+            const option = new Option(
+              text,
+              manager.lifeCounterManagerId,
+              false,
+              false
             );
+            self.ReloadLifeCounterManager.append(option);
           });
 
-          // Add an empty default option with the placeholder text
-          self.ReloadLifeCounterManager.append(new Option("", "", true, true));
-
-          // Refresh select2 without triggering change event to avoid auto-selection
+          // Destroy and reinitialize Select2 with custom templates
           if (
             self.ReloadLifeCounterManager.hasClass("select2-hidden-accessible")
           ) {
             self.ReloadLifeCounterManager.select2("destroy");
           }
+
           self.ReloadLifeCounterManager.select2({
             theme: "classic",
             width: "100%",
-            placeholder: "Reload a unfinished Life Counter Manager",
-            templateSelection: (data) => {
+            placeholder: "Pick a Life Counter Manager",
+            templateResult: function (data) {
               if (!data.id) return data.text;
-              return $("<strong>").text(data.text);
+              const [date, ...rest] = data.text.split(" - ");
+              return $(`
+            <div class="d-flex justify-content-start align-items-center">
+              <strong>${date}</strong>
+              <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow white-icon" />
+              <strong>${rest.join(" - ")}</strong>
+            </div>
+          `);
+            },
+            templateSelection: function (data) {
+              return data.text || "Pick a Life Counter Manager";
             },
           });
 
           self.ReloadLifeCounterManager.select2("open");
-
-          self.GetSelectedLifeCounterTemplateId();
         } else {
           self.ReloadLifeCounterManager.append(
-            `<p><span style="color: var(--yellowish)">No Life Counter Templates found</span></p>`
+            `<p><span style="color: var(--yellowish)">No unfinished Life Counter Managers found</span></p>`
           );
           // Add empty option with "No sessions found" text
           self.ReloadLifeCounterManager.empty().addClass("current-data");
@@ -654,10 +671,73 @@ function life_counter_menu() {
         }
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching sessions:", error);
+        console.error(
+          "Error fetching unfinished life counter managers:",
+          error
+        );
         console.log("Status:", status);
         console.log("Response:", xhr.responseText);
         sweetAlertError("Failed to fetch life counter templates.");
+      },
+    });
+  };
+  self.ReloadSelectedUnfinishedLifeCounterManager = () => {
+    //self.DOM.loadcontent("charge-contentloader");
+    // Set up board game selection change handler
+    self.DOM.find(self.ReloadLifeCounterManager)
+      .off("select2:select", self.ReloadLifeCounterManager)
+      .on("select2:select", self.ReloadLifeCounterManager, function () {
+        // Get selected Life Counter Manager Id
+        self.LifeCounterManagerId = $(this).val();
+
+        if (self.LifeCounterManagerId === null) {
+          sweetAlertError("Error: missing life counter manager id");
+
+          return;
+        }
+
+        self.RedirectToLifeCounterManager(self.LifeCounterManagerId);
+        //self.DOM.loadcontent("demolish-contentloader");
+      });
+  };
+
+  self.GetLifeCounterStatistics = () => {
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/getlifecounterstatistics`,
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        // Clear current statistics items
+        self.StatisticsItems.forEach((item) => {
+          item.find("span").text("loading...");
+        });
+
+        // Check if any data are returned
+        if (response.content == null) {
+          sweetAlertError(response.message);
+          return;
+        }
+
+        let statsData = response.content;
+
+        self.StatisticsItems.First.find("span").text(
+          statsData.MostUsedLifeCounter
+        );
+        self.StatisticsItems.Second.find("span").text(
+          statsData.LifeCountersCreated
+        );
+        self.StatisticsItems.Third.find("span").text(
+          statsData.LifeCountersStarted
+        );
+        self.StatisticsItems.Fourth.find("span").text(
+          statsData.UnfinishedLifeCounters
+        );
+        self.StatisticsItems.Fifth.find("span").text(
+          statsData.FavoritePlayersCount
+        );
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError("Failed to fetch life counter statistics.");
       },
     });
   };
@@ -960,8 +1040,13 @@ function life_counter_menu() {
 
       self.Options.ReloadLifeCounter.addClass("chosenMenuOption");
 
-      self.Togglers.ToggleReloadLifeCounterManager.slideToggle();
+      self.Togglers.ToggleReloadLifeCounterManager.slideToggle(() => {
+        self.ReloadLifeCounterManager.fadeIn(800, () => {
+          self.LoadUnfinishedLifeCounterManagers();
+        });
+      });
     });
+    self.ReloadSelectedUnfinishedLifeCounterManager();
 
     self.Options.ShowLifeCounterStatistics.on("click", function (e) {
       if ($(this).hasClass("chosenMenuOption")) {
