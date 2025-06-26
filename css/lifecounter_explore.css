@@ -163,7 +163,7 @@ body {
 }
 
 .markAsWinner {
-  color: var(--greenish);
+  color: var(--greenish) !important;
 }
 .markAsLooser {
   color: var(--reddish);

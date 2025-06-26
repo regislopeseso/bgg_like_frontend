@@ -50,7 +50,6 @@ function life_explore_counter_player_setup() {
     }
 
     let lifeCounterPlayer = players[self.LifeCounterPlayerId];
-    console.log("lifeCounterPlayer: ", lifeCounterPlayer);
 
     self.LifeCounterPlayerName = lifeCounterPlayer.PlayerName;
     self.CurrentLifePoints = lifeCounterPlayer.CurrentLifePoints;
@@ -242,6 +241,19 @@ function life_explore_counter_player_setup() {
         return;
       }
 
+      const newName = self.LifeCounterPlayerName.toLowerCase();
+
+      const nameAlreadyExists = players.some(
+        (player) => player.PlayerName.toLowerCase().trim() === newName
+      );
+
+      if (nameAlreadyExists) {
+        sweetAlertError(
+          "The chosen name is already in use, pick another please."
+        );
+        return;
+      }
+
       self.ChangeName();
     });
 
@@ -262,39 +274,29 @@ function life_explore_counter_player_setup() {
     const originalBtnText = confirmBtn.text();
     confirmBtn.attr("disabled", true).text("Submitting...");
 
+    players[self.LifeCounterPlayerId].PlayerName = self.LifeCounterPlayerName;
+
     localStorage.setItem("LifeCounterPlayers", JSON.stringify(players));
 
     self.RedirectToLifeCounter(self.LifeCounterId);
+
+    confirmBtn.text("originalBtnText");
   };
   self.DeletePlayer = () => {
-    const formData = new FormData();
-    formData.append("LifeCounterPlayerId", self.LifeCounterPlayerId);
+    players.splice(self.LifeCounterPlayerId, 1);
 
-    $.ajax({
-      type: "DELETE",
-      url: `https://localhost:7081/users/DeleteLifeCounterPlayer?LifeCounterPlayerId=${self.LifeCounterPlayerId}`,
-      data: formData,
-      processData: false,
-      contentType: false,
-      xhrFields: {
-        withCredentials: true, // Only if you're using cookies; otherwise can be removed
-      },
-      success: (resp) => {
-        if (resp.content === null) {
-          sweetAlertError(resp.message);
-          return;
-        }
-        self.RedirectToLifeCounter(self.LifeCounterId);
-      },
-      error: (err) => {
-        sweetAlertError(err);
-      },
-      complete: () => {},
-    });
+    localStorage.setItem("LifeCounterPlayers", JSON.stringify(players));
+
+    lifeCounter.PlayersCount--;
+
+    localStorage.setItem("LifeCounter", JSON.stringify(lifeCounter));
+
+    self.RedirectToLifeCounter(self.LifeCounterId);
   };
 
   self.Build = () => {
     self.FetchLifeCounterLocalStorageData();
+
     self.LoadReferences();
     self.GetLifeCounterDetails();
     self.GetLifeCounterPlayerId();
