@@ -1,5 +1,6 @@
 function life_counter_explore() {
   let self = this;
+  self.IsBuilt = false;
 
   self.LifeCounter = [];
   self.DefaultLifeCounterPlayers = [
@@ -69,7 +70,6 @@ function life_counter_explore() {
     self.GetLifeCounter();
   } else {
     self.LifeCounter = {
-      LifeCounterId: 999,
       LifeCounterName: "Life Counter",
       PlayersCount: 2,
       PlayersStartingLifePoints: 10,
@@ -183,9 +183,7 @@ function life_counter_explore() {
       ${self.Locations.HomePage}`;
   };
   self.RedirectToLifeCounterSetUp = (lifeCounterId) => {
-    window.location.href = `${
-      self.Locations.SetUpLifeCounter
-    }?LifeCounterId=${encodeURIComponent(lifeCounterId)}`;
+    window.location.href = `${self.Locations.SetUpLifeCounter}`;
   };
   self.RedirectToLifeCounterPlayerSetUp = (lifeCounterId) => {
     window.location.href = `${
@@ -240,19 +238,7 @@ function life_counter_explore() {
     self.Buttons.RefreshLifeCounter.on("click", function (e) {
       e.preventDefault();
 
-      self.RefreshLifeCounter(() => {
-        for (let i = 0; i < self.LifeCounterPlayers.length; i++) {
-          let playerLifepoints =
-            self.LifeCounterPlayers[i].playerCurrentLifePoints;
-
-          // Make sure the player block exists before trying to update it
-          if (self.PlayerBlocks[i]) {
-            self.PlayerBlocks[i]
-              .find(".player-lifepoints")
-              .text(playerLifepoints);
-          }
-        }
-      });
+      self.RefreshLifeCounter();
     });
 
     self.Buttons.SetUpLifeCounter.on("click", function (e) {
@@ -1219,10 +1205,14 @@ function life_counter_explore() {
     }
   };
 
-  self.RefreshLifeCounter = (callback) => {
+  self.RefreshLifeCounter = () => {
     self.PlayerBlocks.forEach((player) => {
       player.loadcontent("charge-contentloader");
     });
+
+    self.previousPlayerIndexes = [];
+    self.increasingPointsCounter = 0;
+    self.decreasingPointsCounter = 0;
 
     for (let i = 0; i < self.LifeCounter.PlayersCount; i++) {
       self.PlayerBlocks[i]
@@ -1236,11 +1226,6 @@ function life_counter_explore() {
         .html("")
         .addClass("d-none");
 
-      console.log(
-        "self.LifeCounter.PlayersStartingLifePoints: ",
-        self.LifeCounter.PlayersStartingLifePoints
-      );
-
       self.LifeCounterPlayers[i].CurrentLifePoints =
         self.LifeCounter.PlayersStartingLifePoints;
 
@@ -1248,12 +1233,14 @@ function life_counter_explore() {
         .find(self.Fields.PlayerCurrentLifePoints)
         .val(self.LifeCounter.PlayersStartingLifePoints)
         .removeClass("markAsWinner markAsLooser");
+
+      self.PlayerBlocks[i].find(self.Fields.LifePointsDynamicBehavior).html("");
     }
     self.SetLifeCounterPlayers();
 
     self.DOM.find("button").attr("disabled", false);
 
-    self.Build();
+    self.BuildLifeCounter();
 
     self.PlayerBlocks.forEach((player) => {
       player.loadcontent("demolish-contentloader");
@@ -1261,9 +1248,13 @@ function life_counter_explore() {
   };
 
   self.Build = () => {
-    self.LoadReferences();
+    if (self.IsBuilt == false) {
+      self.LoadReferences();
 
-    self.LoadEvents();
+      self.LoadEvents();
+
+      self.IsBuilt = true;
+    }
 
     self.BuildLifeCounter();
   };
