@@ -88,6 +88,45 @@ function life_counter_explore() {
 
   if (localStorage.getItem("LifeCounterPlayers") != null) {
     self.GetLifeCounterPlayers();
+
+    let currentPlayersCount = self.LifeCounterPlayers.length;
+
+    if (self.LifeCounter.PlayersCount > currentPlayersCount) {
+      let existingIds = [];
+      self.LifeCounterPlayers.forEach((player) => {
+        existingIds.push(player.PlayerId);
+      });
+      console.log("existingIds: ", existingIds);
+
+      let defaultIds = [0, 1, 2, 3, 4, 5];
+
+      let n = self.LifeCounter.PlayersCount - currentPlayersCount;
+      let idsToBeAdded = defaultIds
+        .filter((id) => !existingIds.includes(id))
+        .slice(0, n);
+
+      for (let i = idsToBeAdded.length; i > n; i--) {
+        idsToBeAdded.pop();
+      }
+      console.log("idsToBeAdded: ", idsToBeAdded);
+
+      for (let j = 0; j < n; j++) {
+        let arrayPosition = idsToBeAdded[j];
+
+        self.LifeCounterPlayers.splice(
+          arrayPosition,
+          0,
+          self.DefaultLifeCounterPlayers[arrayPosition]
+        );
+      }
+
+      localStorage.setItem(
+        "LifeCounterPlayers",
+        JSON.stringify(self.LifeCounterPlayers)
+      );
+
+      self.GetLifeCounterPlayers();
+    }
   } else {
     for (let i = 0; i < self.LifeCounter.PlayersCount; i++) {
       self.LifeCounterPlayers.push(self.DefaultLifeCounterPlayers[i]);
@@ -100,10 +139,6 @@ function life_counter_explore() {
 
     localStorage.setItem("LifeCounter", JSON.stringify(self.LifeCounter));
   }
-
-  self.GetLifeCounterDetails = () => {
-    self.BuildLifeCounter();
-  };
 
   self.LoadReferences = () => {
     self.DOM = $("#main-lifeCounter-explore");

@@ -80,40 +80,9 @@ function life_counter_explore_setup() {
     window.location.href = `${self.Locations.LifeCounter}`;
   };
 
-  self.FetchMaxCurrentLifePoints = () => {
-    self.GetLifeCounterPlayers();
-
-    let playersCurrentLifePoints = [];
-
-    self.LifeCounterPlayers.forEach((player) => {
-      playersCurrentLifePoints.push(player.CurrentLifePoints);
-    });
-
-    let maxCurrentLifePoints = Math.max(...playersCurrentLifePoints);
-
-    return maxCurrentLifePoints;
-  };
-
   self.PreFillForm = () => {
     self.GetLifeCounter();
     self.GetLifeCounterPlayers();
-
-    self.OldName = self.LifeCounter.LifeCounterName;
-    self.OldPlayersStartingLifePoints =
-      self.LifeCounter.PlayersStartingLifePoints;
-
-    let maxCurrentLifePoints = self.FetchMaxCurrentLifePoints();
-
-    self.OldPlayersMaxLifePoints = self.LifeCounter.MaxLifePoints;
-    if (
-      self.OldPlayersMaxLifePoints === "" ||
-      self.OldPlayersMaxLifePoints === null ||
-      self.OldPlayersMaxLifePoints === undefined ||
-      self.OldPlayersMaxLifePoints > maxCurrentLifePoints
-    ) {
-      self.OldPlayersMaxLifePoints = maxCurrentLifePoints;
-      self.Inputs.MaxLifePoints = maxCurrentLifePoints;
-    }
 
     self.Inputs.LifeCounterName.val(self.LifeCounter.LifeCounterName)
       .trigger("focus")
@@ -138,8 +107,10 @@ function life_counter_explore_setup() {
       "checked",
       self.LifeCounter.FixedMaxLifePointsMode == true
     );
+
     if (self.LifeCounter.FixedMaxLifePointsMode == true) {
       self.Inputs.MaxLifePointsInputWrapper.removeClass("d-none");
+      self.Inputs.PlayersMaxLifePoints.prop("disabled", false);
 
       self.Inputs.PlayersMaxLifePoints.val(
         self.LifeCounter.PlayersMaxLifePoints
@@ -156,52 +127,7 @@ function life_counter_explore_setup() {
       self.LifeCounter.AutoEndMode == true
     );
   };
-  self.CheckForValidMaxLifePoints = () => {
-    let maxCurrentLifePoints = self.FetchMaxCurrentLifePoints();
 
-    if (self.Inputs.PlayersMaxLifePoints < maxCurrentLifePoints) {
-      sweetAlertError(
-        "Max Life Points can only be equal or less than:",
-        maxCurrentLifePoints
-      );
-      return;
-    }
-  };
-  self.CheckFormFilling = () => {
-    let nameInput = self.Inputs.LifeCounterName.val().trim();
-
-    console.log("nameInput: ", nameInput);
-
-    if (nameInput.length === 0) {
-      self.LifeCounter.LifeCounterName = self.OldName;
-
-      self.SetLifeCounter();
-    }
-
-    let startingLifePoints = self.Inputs.PlayersStartingLifePoints.val().trim();
-    if (
-      startingLifePoints === "" ||
-      !Number.isInteger(Number(startingLifePoints))
-    ) {
-      self.LifeCounter.PlayersStartingLifePoints =
-        self.OldPlayersStartingLifePoints;
-
-      self.SetLifeCounter();
-    }
-
-    if (self.Inputs.FixedMaxLifePointsMode.is(":checked") == true) {
-      let maxLifePoints = self.Inputs.PlayersMaxLifePoints.val().trim();
-
-      if (
-        maxLifePoints.length === "" ||
-        !Number.isInteger(Number(maxLifePoints)) ||
-        maxLifePoints == undefined
-      ) {
-        self.LifeCounter.PlayersMaxLifePoints = self.OldPlayersMaxLifePoints;
-      }
-      self.SetLifeCounter();
-    }
-  };
   self.ClearForm = () => {
     $.each(self.Inputs, function (i, input) {
       input.val("");
@@ -217,44 +143,8 @@ function life_counter_explore_setup() {
     self.Inputs.PlayersCount.removeClass("clickedState");
   };
 
-  function sweetAlertSuccess(title_text, message_text) {
-    Swal.fire({
-      position: "center",
-      confirmButtonText: "OK!",
-      icon: "success",
-      theme: "bulma",
-      title: title_text,
-      text: message_text || "",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  }
-  function sweetAlertError(title_text, message_text) {
-    Swal.fire({
-      position: "center",
-      cancelButtonText: "close",
-      icon: "error",
-      theme: "bulma",
-      title: title_text,
-      text: message_text || "",
-      showConfirmButton: false,
-      showCancelButton: true,
-      didOpen: () => {
-        // Attach keydown listener
-        document.addEventListener("keydown", closeOnAnyKey);
-      },
-      willClose: () => {
-        // Clean up listener when modal closes
-        document.removeEventListener("keydown", closeOnAnyKey);
-      },
-    });
-  }
-  function closeOnAnyKey() {
-    Swal.close();
-  }
-
   self.ConfirmLifeCounterManagerSetUp = () => {
-    self.LifeCounter.LifeCounterName = self.Inputs.LifeCounterName.val().trim();
+    self.LifeCounter.LifeCounterName = self.Inputs.LifeCounterName.val();
 
     self.LifeCounter.PlayesStartingLifePoints =
       self.Inputs.PlayersStartingLifePoints.val().trim();
@@ -263,13 +153,26 @@ function life_counter_explore_setup() {
       self.LifeCounter.PlayersCount = self.newPlayersCount;
     }
 
-    self.LifeCounter.FixedMaxLifeMode =
+    self.LifeCounter.FixedMaxLifePointsMode =
       self.Inputs.FixedMaxLifePointsMode.is(":checked");
 
     if (self.Inputs.FixedMaxLifePointsMode.is(":checked") === true) {
-      self.LifeCounter.MaxLifePoints = self.Inputs.PlayersMaxLifePoints.val();
+      let maxLifePointsInput = self.Inputs.PlayersMaxLifePoints.val();
+
+      const playersCurrentLifePoints = [];
+      self.LifeCounterPlayers.forEach((player) => {
+        playersCurrentLifePoints.push(player.CurrentLifePoints);
+      });
+
+      let playersMaxCurrentLifePoints = Math.max(...playersCurrentLifePoints);
+
+      if (playersMaxCurrentLifePoints > maxLifePointsInput) {
+        maxLifePointsInput = playersMaxCurrentLifePoints;
+      }
+
+      self.LifeCounter.PlayersMaxLifePoints = maxLifePointsInput;
     } else {
-      self.LifeCounter.MaxLifePoints = null;
+      self.LifeCounter.PlayersMaxLifePoints = null;
     }
 
     self.LifeCounter.AutoDefeatMode = self.Inputs.AutoDefeatMode.is(":checked");
@@ -297,24 +200,14 @@ function life_counter_explore_setup() {
       if ($(this).is(":checked")) {
         // Checkbox is checked
         self.Inputs.MaxLifePointsInputWrapper.removeClass("d-none");
+        self.Inputs.PlayersMaxLifePoints.prop("disabled", false).trigger(
+          "focus"
+        );
       } else {
         // Checkbox is unchecked
+        self.Inputs.PlayersMaxLifePoints.prop("disabled", true);
         self.Inputs.MaxLifePointsInputWrapper.addClass("d-none");
       }
-    });
-
-    self.Buttons.ClearForm.on("click", (e) => {
-      e.preventDefault();
-
-      self.ClearForm();
-    });
-
-    self.Buttons.Confirm.on("click", (e) => {
-      self.CheckFormFilling();
-
-      self.CheckForValidMaxLifePoints();
-
-      self.ConfirmLifeCounterManagerSetUp();
     });
 
     self.Inputs.AutoDefeatMode.on("change", (e) => {
@@ -342,7 +235,17 @@ function life_counter_explore_setup() {
       self.newPlayersCount = self.LifeCounter.PlayersCount + increment;
     });
 
-    closeOnAnyKey();
+    self.Buttons.ClearForm.on("click", (e) => {
+      e.preventDefault();
+
+      self.ClearForm();
+    });
+
+    self.Form.on("submit", (e) => {
+      e.preventDefault();
+
+      self.ConfirmLifeCounterManagerSetUp();
+    });
   };
 
   self.Build = () => {
