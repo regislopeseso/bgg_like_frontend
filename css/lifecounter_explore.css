@@ -171,7 +171,18 @@ body {
   text-decoration: line-through;
 }
 
-button.disablid {
+button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.restore-player {
+  z-index: 999 !important;
+  pointer-events: visible !important;
+}
+
+.show-lifeCounter-timeSpan {
+  border: 1px solid var(--main-color);
+  padding: 5px;
+  border-radius: 1rem;
 }

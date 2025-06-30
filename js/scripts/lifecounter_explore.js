@@ -176,10 +176,17 @@ function life_counter_explore() {
       self.DOM.find(".increase-life-points");
     self.Buttons[self.Buttons.length] = self.Buttons.DecreaseLifePoints =
       self.DOM.find(".decrease-life-points");
+    self.Buttons[self.Buttons.length] = self.Buttons.RestorePlayer =
+      self.DOM.find(".restore-player");
 
     self.Fields = [];
     self.Fields[self.Fields.length] = self.Fields.LifeCounterName =
       self.DOM.find("#name-lifeCounter-explore");
+    self.Fields[self.Fields.length] = self.Fields.ShowDurationWrapper =
+      self.DOM.find("#div-show-duration-lifeCounter-explore");
+    self.Fields[self.Fields.length] = self.Fields.ShowDuration = self.DOM.find(
+      "#span-show-duration-lifeCounter-explore"
+    );
     self.Fields[self.Fields.length] = self.Fields.PlayerName =
       self.DOM.find(".player-title");
     self.Fields[self.Fields.length] = self.Fields.AlternativeName =
@@ -407,6 +414,17 @@ function life_counter_explore() {
       };
 
       $(document).on("mouseup touchend", stopDecreasing);
+    });
+
+    self.Buttons.RestorePlayer.on("click", function (e) {
+      e.preventDefault();
+
+      // Get the parent .player-block div
+      const playerBlock = $(this).closest(".player-block");
+      // Optional: Get the block's index among visible players (e.g., 0 to 5)
+      const playerIndex = $(".player-block:visible").index(playerBlock);
+
+      self.RestorePlayer(playerIndex);
     });
 
     closeOnAnyKey();
@@ -950,6 +968,12 @@ function life_counter_explore() {
       `<span>${self.LifeCounter.LifeCounterName}</span>`
     );
 
+    self.Fields.ShowDuration.html("");
+
+    self.Fields.ShowDurationWrapper.addClass("d-none");
+
+    self.Buttons.SetUpLifeCounter.removeClass("d-none");
+
     for (let i = 0; i < self.LifeCounter.PlayersCount; i++) {
       self.LifeCounterInstances[i]
         .find(self.Fields.PlayerName)
@@ -1147,6 +1171,16 @@ function life_counter_explore() {
       currentLifePointsField.text().trim()
     );
 
+    const increaseLifePointsBtn = playerBlock.find(
+      self.Buttons.IncreaseLifePoints
+    );
+
+    const decreaseLifePointsBtn = playerBlock.find(
+      self.Buttons.DecreaseLifePoints
+    );
+
+    const restorePlayerBtn = playerBlock.find(self.Buttons.RestorePlayer);
+
     const markAsDefeated = () => {
       playerNameField.addClass("d-none");
 
@@ -1158,6 +1192,11 @@ function life_counter_explore() {
       currentLifePointsField.addClass("markAsLooser");
 
       currentLifePointsField.val(0);
+
+      increaseLifePointsBtn.attr("disabled", true);
+      decreaseLifePointsBtn.attr("disabled", true);
+
+      restorePlayerBtn.attr("disabled", false).removeClass("d-none");
     };
 
     if (playerCurrentLifePoints <= 0) {
@@ -1188,17 +1227,35 @@ function life_counter_explore() {
       (player) => player.IsDefeated == true
     ).length;
 
+    let lifeCounterLength = "";
+
     if (defeatedPlayersCount == 0 || playersCount - defeatedPlayersCount > 1) {
       return;
     }
 
+    self.LifeCounter.IsFinished = true;
+    self.LifeCounter.EndingTimeMark = Date.now();
+    self.LifeCounter.Duration_minutes =
+      (self.LifeCounter.EndingTimeMark - self.LifeCounter.StartingTimeMark) /
+      60000;
+
+    lifeCounterLength =
+      self.LifeCounter.Duration_minutes.toFixed(1).replace(".", ",") +
+      " minutes";
+
     if (playersCount == 1 && self.LifeCounterPlayers[0].IsDefeated == true) {
-      sweetAlertError("Game Over - You Lost!");
+      sweetAlertError(
+        "Game Over - You Lost!",
+        "Duration: " + lifeCounterLength
+      );
     }
 
     if (playersCount > 1) {
       if (defeatedPlayersCount == playersCount) {
-        sweetAlertError("Game Over - You All Lost");
+        sweetAlertError(
+          "Game Over - You All Lost",
+          "Duration: " + lifeCounterLength
+        );
       }
 
       const winnerArrayIndex = self.LifeCounterPlayers.findIndex(
@@ -1232,20 +1289,66 @@ function life_counter_explore() {
         block.find("button").attr("disabled", true);
       });
 
-      sweetAlertSuccess("Winner is:", winnerName);
+      sweetAlertSuccess(
+        "Winner is: " + winnerName,
+        "Duration: " + lifeCounterLength
+      );
     }
-
-    self.LifeCounter.IsFinished = true;
-    self.LifeCounter.EndingTimeMark = Date.now();
-    self.Duration_minutes =
-      (self.LifeCounter.EndingTimeMark - self.LifeCounter.StartingTimeMark) /
-      60000;
-    console.log(`Life Counter finished in ${self.Duration_minutes} minutes`);
 
     self.SetLifeCounter();
     self.SetLifeCounterPlayers();
+
+    self.Buttons.SetUpLifeCounter.addClass("d-none");
+    self.Fields.ShowDurationWrapper.removeClass("d-none");
+    self.Fields.ShowDuration.html(lifeCounterLength);
+
+    self.Buttons.RestorePlayer.attr("disabled", true).addClass("d-none");
   };
 
+  self.RestorePlayer = (playerIndex) => {
+    self.GetLifeCounterPlayers();
+
+    const arrayIndex = self.LifeCounterPlayers.findIndex(
+      (player) => player.PlayerId == playerIndex
+    );
+
+    const playerName = self.LifeCounterPlayers[arrayIndex].PlayerName;
+    const playerBlock = self.PlayerBlocks[playerIndex];
+    const playerNameField = playerBlock.find(self.Fields.PlayerName);
+    const playerAlternativeNameField = playerBlock.find(
+      self.Fields.AlternativeName
+    );
+    const currentLifePointsField = playerBlock.find(
+      self.Fields.PlayerCurrentLifePoints
+    );
+
+    self.LifeCounterPlayers[arrayIndex].IsDefeated = false;
+    self.LifeCounterPlayers[arrayIndex].CurrentLifePoints = 1;
+
+    playerAlternativeNameField
+      .html(playerName + "")
+      .removeClass("markAsLooser")
+      .addClass("d-none");
+
+    playerNameField.removeClass("d-none");
+    currentLifePointsField.removeClass("markAsLooser");
+    currentLifePointsField.html(1);
+
+    const increaseLifePointsBtn = playerBlock.find(
+      self.Buttons.IncreaseLifePoints
+    );
+
+    const decreaseLifePointsBtn = playerBlock.find(
+      self.Buttons.DecreaseLifePoints
+    );
+
+    self.Buttons.RestorePlayer.attr("disabled", true).addClass("d-none");
+
+    increaseLifePointsBtn.attr("disabled", false);
+    decreaseLifePointsBtn.attr("disabled", false);
+
+    self.SetLifeCounterPlayers();
+  };
   self.RefreshLifeCounter = () => {
     self.PlayerBlocks.forEach((player) => {
       player.loadcontent("charge-contentloader");
@@ -1288,6 +1391,8 @@ function life_counter_explore() {
     self.SetLifeCounter();
 
     self.DOM.find("button").attr("disabled", false);
+
+    self.Buttons.RestorePlayer.attr("disabled", true).addClass("d-none");
 
     self.BuildLifeCounter();
 
