@@ -77,8 +77,8 @@ function life_counter_explore() {
       PlayersMaxLifePoints: 100,
       AutoDefeatMode: true,
       AutoEndMode: true,
-      StartingTimeMark: 0,
-      EndingTimeMark: 0,
+      StartingTimeMark: Date.now(),
+      EndingTimeMark: null,
       Duration_minutes: 0,
       IsFinished: 0,
     };
@@ -472,7 +472,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Second.css({
-        "transform": "rotate(180deg)",
+        transform: "rotate(180deg)",
 
         "grid-column-start": "1",
         "grid-column-end": "2",
@@ -518,7 +518,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Second.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -540,7 +540,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Third.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -578,7 +578,7 @@ function life_counter_explore() {
       });
 
       self.PlayerBlocks.First.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -600,7 +600,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Second.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -622,7 +622,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Third.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -644,7 +644,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Fourth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -696,7 +696,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Second.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -718,7 +718,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Third.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -740,7 +740,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Fourth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -762,7 +762,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Fifth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -797,7 +797,7 @@ function life_counter_explore() {
       });
 
       self.PlayerBlocks.First.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -818,7 +818,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Second.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -839,7 +839,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Third.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -861,7 +861,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Fourth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -883,7 +883,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Fifth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -905,7 +905,7 @@ function life_counter_explore() {
       );
 
       self.PlayerBlocks.Sixth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -1124,6 +1124,8 @@ function life_counter_explore() {
   };
 
   self.CheckForPlayerDefeated = (playerIndex, currentLifePoints) => {
+    self.GetLifeCounterPlayers();
+
     const arrayIndex = self.LifeCounterPlayers.findIndex(
       (player) => player.PlayerId == playerIndex
     );
@@ -1170,6 +1172,13 @@ function life_counter_explore() {
       }
     }
   };
+  self.CheckForDefeatedPlayers = (playerIndex, currentLifePoints) => {
+    self.GetLifeCounterPlayers();
+
+    self.LifeCounterPlayers.forEach((player) => {
+      self.CheckForPlayerDefeated(player.PlayerId, player.CurrentLifePoints);
+    });
+  };
   self.CheckForLifeCounterEnd = () => {
     self.GetLifeCounter();
     self.GetLifeCounterPlayers();
@@ -1184,25 +1193,12 @@ function life_counter_explore() {
     }
 
     if (playersCount == 1 && self.LifeCounterPlayers[0].IsDefeated == true) {
-      self.LifeCounter.IsFinished == true;
-
-      self.LifeCounter.EndingTimeMark == 10;
-
-      self.LifeCounter.Duration_minutes ==
-        self.LifeCounter.EndingTimeMark - self.LifeCounter.StartingTimeMark;
-
-      self.LifeCounter.IsFinished == true;
-
-      self.SetLifeCounter();
-
       sweetAlertError("Game Over - You Lost!");
-      return;
     }
 
     if (playersCount > 1) {
       if (defeatedPlayersCount == playersCount) {
         sweetAlertError("Game Over - You All Lost");
-        return;
       }
 
       const winnerArrayIndex = self.LifeCounterPlayers.findIndex(
@@ -1238,6 +1234,16 @@ function life_counter_explore() {
 
       sweetAlertSuccess("Winner is:", winnerName);
     }
+
+    self.LifeCounter.IsFinished = true;
+    self.LifeCounter.EndingTimeMark = Date.now();
+    self.Duration_minutes =
+      (self.LifeCounter.EndingTimeMark - self.LifeCounter.StartingTimeMark) /
+      60000;
+    console.log(`Life Counter finished in ${self.Duration_minutes} minutes`);
+
+    self.SetLifeCounter();
+    self.SetLifeCounterPlayers();
   };
 
   self.RefreshLifeCounter = () => {
@@ -1270,8 +1276,16 @@ function life_counter_explore() {
         .removeClass("markAsWinner markAsLooser");
 
       self.PlayerBlocks[i].find(self.Fields.LifePointsDynamicBehavior).html("");
+
+      self.LifeCounterPlayers[i].IsDefeated = false;
     }
+    self.LifeCounter.IsFinished = false;
+    self.LifeCounter.StartingTimeMark = Date.now();
+    self.LifeCounter.EndingTimeMark = null;
+    self.Duration_minutes = 0;
+
     self.SetLifeCounterPlayers();
+    self.SetLifeCounter();
 
     self.DOM.find("button").attr("disabled", false);
 
@@ -1292,6 +1306,7 @@ function life_counter_explore() {
     }
 
     self.BuildLifeCounter();
+    self.CheckForDefeatedPlayers();
   };
 
   self.Build();
