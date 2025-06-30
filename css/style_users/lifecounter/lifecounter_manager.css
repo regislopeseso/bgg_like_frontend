@@ -175,3 +175,8 @@ button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.restore-player {
+  z-index: 999 !important;
+  pointer-events: visible !important;
+}

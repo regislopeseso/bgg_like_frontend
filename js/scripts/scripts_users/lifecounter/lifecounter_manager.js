@@ -140,6 +140,8 @@ function life_counter_manager() {
       self.DOM.find(".increase-life-points");
     self.Buttons[self.Buttons.length] = self.Buttons.DecreaseLifePoints =
       self.DOM.find(".decrease-life-points");
+    self.Buttons[self.Buttons.length] = self.Buttons.RestorePlayer =
+      self.DOM.find(".restore-player");
 
     self.Fields = [];
     self.Fields[self.Fields.length] = self.Fields.LifeCounterManagerName =
@@ -385,6 +387,17 @@ function life_counter_manager() {
       $(document).on("mouseup touchend", stopDecreasing);
     });
 
+    // self.Buttons.RestorePlayer.on("click", function (e) {
+    //   e.preventDefault();
+
+    //   // Get the parent .player-block div
+    //   const playerBlock = $(this).closest(".player-block");
+    //   // Optional: Get the block's index among visible players (e.g., 0 to 5)
+    //   const playerIndex = $(".player-block:visible").index(playerBlock);
+
+    //   self.RestorePlayer(playerIndex);
+    // });
+
     closeOnAnyKey();
   };
 
@@ -448,7 +461,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Second.css({
-        "transform": "rotate(180deg)",
+        transform: "rotate(180deg)",
 
         "grid-column-start": "1",
         "grid-column-end": "2",
@@ -494,7 +507,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Second.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -516,7 +529,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Third.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -554,7 +567,7 @@ function life_counter_manager() {
       });
 
       self.PlayerBlocks.First.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -576,7 +589,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Second.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -598,7 +611,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Third.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -620,7 +633,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Fourth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -672,7 +685,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Second.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -694,7 +707,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Third.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -716,7 +729,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Fourth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -738,7 +751,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Fifth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -773,7 +786,7 @@ function life_counter_manager() {
       });
 
       self.PlayerBlocks.First.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -794,7 +807,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Second.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -815,7 +828,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Third.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "1",
@@ -837,7 +850,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Fourth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -859,7 +872,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Fifth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -881,7 +894,7 @@ function life_counter_manager() {
       );
 
       self.PlayerBlocks.Sixth.css({
-        "display": "flex",
+        display: "flex",
         "flex-direction": "column",
 
         "grid-column-start": "2",
@@ -1155,6 +1168,11 @@ function life_counter_manager() {
       playerCurrentLife.html(`(Defeated)`);
 
       playerBlock.find("button").prop("disabled", true);
+
+      playerBlock
+        .find(self.Buttons.RestorePlayer)
+        .removeClass("d-none")
+        .attr("disabled", false);
     };
 
     if (currentLifePoints <= 0) {
@@ -1232,6 +1250,33 @@ function life_counter_manager() {
       },
     });
   };
+
+  // self.RestorePlayer = (playerIndex) => {
+  //   // Disable all buttons
+  //   self.Buttons.forEach((btn) => btn.prop("disabled", true));
+
+  //   const player = self.LifeCounterPlayers[playerIndex];
+
+  //   console.log("Restoring player: ", player);
+  //   player.isDefeated = false;
+  //   player.CurrentLifePoints = 1;
+
+  //   let playerBlock = self.PlayerBlocks[playerIndex];
+
+  //   playerBlock
+  //     .find(self.Fields.PlayerName)
+  //     .playerCurrentLifePoints.removeClass("markAsLooser");
+
+  //   playerBlock
+  //     .find(self.Fields.PlayerCurrentLifePoints)
+  //     .playerCurrentLifePoints.removeClass("markAsLooser")
+  //     .text(player.currentLifePoints);
+
+  //   playerBlock
+  //     .find(self.Buttons.RestorePlayer)
+  //     .attr("disabled", true)
+  //     .addClass("d-none");
+  // };
   self.RefreshLifeCounterManager = (callback) => {
     const formData = new FormData();
 
@@ -1257,16 +1302,22 @@ function life_counter_manager() {
           return;
         }
         // Enable all buttons
-        self.Buttons.IncreaseLifePoints.prop("disabled", false);
-        self.Buttons.DecreaseLifePoints.prop("disabled", false);
 
         self.PlayerBlocks.forEach((playerBlock) => {
           playerBlock
             .find(self.Fields.PlayerName)
             .removeClass("markAsWinner markAsLooser");
+
           playerBlock
             .find(self.Fields.PlayerCurrentLifePoints)
             .removeClass("markAsWinner markAsLooser");
+
+          playerBlock.find("button").attr("disabled", false);
+
+          playerBlock
+            .find(self.Buttons.RestorePlayer)
+            .attr("disabled", true)
+            .addClass("d-none");
         });
 
         self.Build();

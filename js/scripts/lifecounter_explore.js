@@ -396,7 +396,9 @@ function life_counter_explore() {
       // Start a timer: if held > 500ms, start continuous -10
       holdTimer = setTimeout(() => {
         isHeld = true;
+
         decreaseLife(10); // first -10
+
         intervalId = setInterval(() => decreaseLife(10), 1000); // then every 1s
       }, 500);
 
@@ -1142,6 +1144,10 @@ function life_counter_explore() {
     self.SetLifeCounterPlayers();
 
     if (updatedLifePoints <= 0 && self.LifeCounter.AutoDefeatMode == true) {
+      self.Fields.LifePointsDynamicBehavior.text("");
+      self.increasingPointsCounter = 0;
+      self.decreasingPointsCounter = 0;
+
       self.CheckForPlayerDefeated(playerIndex, updatedLifePoints);
       return;
     }
@@ -1189,9 +1195,7 @@ function life_counter_explore() {
         .html(playerName + " (Defeated)")
         .addClass("markAsLooser");
 
-      currentLifePointsField.addClass("markAsLooser");
-
-      currentLifePointsField.val(0);
+      currentLifePointsField.addClass("d-none");
 
       increaseLifePointsBtn.attr("disabled", true);
       decreaseLifePointsBtn.attr("disabled", true);
@@ -1331,7 +1335,7 @@ function life_counter_explore() {
       .addClass("d-none");
 
     playerNameField.removeClass("d-none");
-    currentLifePointsField.removeClass("markAsLooser");
+    currentLifePointsField.removeClass("d-none");
     currentLifePointsField.html(1);
 
     const increaseLifePointsBtn = playerBlock.find(
@@ -1369,6 +1373,10 @@ function life_counter_explore() {
         .removeClass("markAsWinner markAsLooser")
         .html("")
         .addClass("d-none");
+
+      self.PlayerBlocks[i]
+        .find(self.Fields.PlayerCurrentLifePoints)
+        .removeClass("d-none");
 
       self.LifeCounterPlayers[i].CurrentLifePoints =
         self.LifeCounter.PlayersStartingLifePoints;
