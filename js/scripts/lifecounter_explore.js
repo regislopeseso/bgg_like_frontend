@@ -71,12 +71,12 @@ function life_counter_explore() {
   } else {
     self.LifeCounter = {
       LifeCounterName: "Life Counter",
-      PlayersCount: 2,
+      PlayersCount: 1,
       PlayersStartingLifePoints: 10,
-      FixedMaxLifePointsMode: true,
+      FixedMaxLifePointsMode: false,
       PlayersMaxLifePoints: 100,
-      AutoDefeatMode: true,
-      AutoEndMode: true,
+      AutoDefeatMode: false,
+      AutoEndMode: false,
       StartingTimeMark: Date.now(),
       EndingTimeMark: null,
       Duration_minutes: 0,
@@ -1312,11 +1312,32 @@ function life_counter_explore() {
   self.RestorePlayer = (playerIndex) => {
     self.GetLifeCounterPlayers();
 
-    const arrayIndex = self.LifeCounterPlayers.findIndex(
-      (player) => player.PlayerId == playerIndex
+    const dynamicLifePoints = self.PlayerBlocks[playerIndex].find(
+      self.Fields.LifePointsDynamicBehavior
     );
 
-    const playerName = self.LifeCounterPlayers[arrayIndex].PlayerName;
+    const dynamicText = self.PlayerBlocks[playerIndex]
+      .find(".dynamic-behavior")
+      .text()
+      .trim();
+
+    if (dynamicText) {
+      // Remove any non-numeric characters like parentheses
+      dynamicText.replace(/[^\d-]/g, "");
+    }
+
+    const showIncreasingAmount = () => {
+      dynamicLifePoints.html(
+        `&nbsp;&nbsp; <span style="color: var(--greenish);">(+ 1)</span>`
+      );
+
+      clearTimeout(self.clearDeltaTimeout);
+      self.clearDeltaTimeout = setTimeout(() => {
+        self.Fields.LifePointsDynamicBehavior.text("");
+      }, 3000);
+    };
+
+    const playerName = self.LifeCounterPlayers[playerIndex].PlayerName;
     const playerBlock = self.PlayerBlocks[playerIndex];
     const playerNameField = playerBlock.find(self.Fields.PlayerName);
     const playerAlternativeNameField = playerBlock.find(
@@ -1326,8 +1347,8 @@ function life_counter_explore() {
       self.Fields.PlayerCurrentLifePoints
     );
 
-    self.LifeCounterPlayers[arrayIndex].IsDefeated = false;
-    self.LifeCounterPlayers[arrayIndex].CurrentLifePoints = 1;
+    self.LifeCounterPlayers[playerIndex].IsDefeated = false;
+    self.LifeCounterPlayers[playerIndex].CurrentLifePoints = 1;
 
     playerAlternativeNameField
       .html(playerName + "")
@@ -1352,6 +1373,8 @@ function life_counter_explore() {
     decreaseLifePointsBtn.attr("disabled", false);
 
     self.SetLifeCounterPlayers();
+
+    showIncreasingAmount();
   };
   self.RefreshLifeCounter = () => {
     self.PlayerBlocks.forEach((player) => {

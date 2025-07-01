@@ -43,12 +43,11 @@ function loadHeader(userData, roleData) {
       <nav class="navbar">
         <div class="navOptions d-flex flex-row align-items-center justify-content-between">        
          
-          <a href="/html/lifecounter_explore.html"
-            >LIFE COUNTER</
-          >
+         
                 
           <a href="/index.html">HOME</a>
           <a href="/html/explore.html">EXPLORE</a>
+          <a href="/html/lifecounter_explore.html">LIFE COUNTER</a>
           <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
           <a href="/html/pages_users/users_page.html" class="loggedIn-clearance d-none">USER</a>
           <a href="/html/pages_admins/admins_page.html" class="admins-clearance d-none">ADMIN</a>
@@ -86,13 +85,7 @@ function loadHeader(userData, roleData) {
               <div class="collapse navbar-collapse text-end" id="toggle-hamburguer-menu">                 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    href="/html/pages_users/lifecounter/users_lifecounter_setup.html"
-                    >LIFE COUNTER</a
-                  >
-                </li>
+               
 
                 <li class="nav-item">
                     <a class="nav-link" href="/index.html">HOME</a>
@@ -103,6 +96,13 @@ function loadHeader(userData, roleData) {
                   <li class="nav-item">
                     <a class="nav-link" href="/html/explore.html">EXPLORE</a>
                   </li>
+                   <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    href="/html/pages_users/lifecounter/users_lifecounter_setup.html"
+                    >LIFE COUNTER</a
+                  >
+                </li>
                   <li class="nav-item">
                     <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance nav-link d-none">SIGN UP/IN</a>
                   </li>
