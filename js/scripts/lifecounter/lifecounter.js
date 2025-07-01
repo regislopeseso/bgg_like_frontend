@@ -1,6 +1,9 @@
 function life_counter() {
   let self = this;
   self.IsBuilt = false;
+  self.IsUserLoggedIn = false;
+
+  self.LifeCounterTemplates = [];
 
   self.LifeCounter = [];
   self.DefaultLifeCounterPlayers = [
@@ -280,6 +283,28 @@ function life_counter() {
     Swal.close();
   }
 
+  self.CheckAuthenticationStatus = () => {
+    $.ajax({
+      type: "GET",
+      url: "https://localhost:7081/users/validatestatus",
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        if (response.content == null) {
+          sweetAlertError("Error", "User details not found.");
+          return;
+        }
+
+        const content = response.content;
+
+        self.IsUserLoggedIn = content.isUserLoggedIn;
+        console.log("aqui deu certo, Is User logged in: ", self.IsUserLoggedIn);
+      },
+      error: function (xhr, status, error) {
+        alert("Failed to fetch user details. Try again later.");
+      },
+    });
+  };
+
   self.LoadEvents = () => {
     self.Buttons.RefreshLifeCounter.on("click", function (e) {
       e.preventDefault();
@@ -291,6 +316,16 @@ function life_counter() {
       e.preventDefault();
 
       self.LoadLifeCounterTemplates();
+    });
+
+    $(document).on("click", ".lf-template", function (e) {
+      e.preventDefault();
+
+      let selectedId = $(this).data("template-id");
+      console.log("Selected template ID: ", selectedId);
+
+      self.CheckAuthenticationStatus();
+      console.log("Is User logged in: ", self.IsUserLoggedIn);
     });
 
     self.Buttons.SetUpLifeCounter.on("click", function (e) {
@@ -454,13 +489,15 @@ function life_counter() {
           sweetAlertError(response.message);
           return;
         }
+        self.LifeCounterTemplatesDropDown.empty();
 
         lifeCounterTemplates = response.content;
 
         lifeCounterTemplates.forEach((lifeCounterTemplate) => {
           let li = `
           <li class="li-change-lifeCounterTemplate">  
-            <a class="lf-template dropdown-item">${lifeCounterTemplate.lifeCounterTemplateName}</a>
+            <a class="lf-template dropdown-item" 
+            data-template-id="${lifeCounterTemplate.lifeCounterTemplateId}">${lifeCounterTemplate.lifeCounterTemplateName}</a>
           </li>
           `;
           self.LifeCounterTemplatesDropDown.append(li);
