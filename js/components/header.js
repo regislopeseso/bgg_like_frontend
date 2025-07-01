@@ -47,7 +47,8 @@ function loadHeader(userData, roleData) {
                 
           <a href="/index.html">HOME</a>
           <a href="/html/explore.html">EXPLORE</a>
-          <a href="/html/lifecounter_explore.html">LIFE COUNTER</a>
+          <a href="/html/lifecounter_explore.html">LIFE COUNTER</a> 
+          <a href="/html/lifecounter/lifecounter.html"">LIFE COUNTER final</a> 
           <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
           <a href="/html/pages_users/users_page.html" class="loggedIn-clearance d-none">USER</a>
           <a href="/html/pages_admins/admins_page.html" class="admins-clearance d-none">ADMIN</a>
@@ -57,12 +58,12 @@ function loadHeader(userData, roleData) {
             <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person-gear"></i>
             </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item m-0 " href="/html/pages_users/users_edit_profile.html">Edit Profile</a></li>
-              <li><a class="dropdown-item m-0 " href="/html/pages_users/users_change_password.html">Change Password</a></li>
-              <li><a class="dropdown-item m-0" href="/html/pages_users/users_delete_profile.html">Delete Profile</a></li>
+            <ul id="ul-profile-configurations" class="dropdown-menu">
+              <li><a id="li-edit-profile" class="config-item dropdown-item m-0" href="/html/pages_users/users_edit_profile.html">Edit Profile</a></li>
+              <li><a id="li-change-password" class="config-item dropdown-item m-0 " href="/html/pages_users/users_change_password.html">Change Password</a></li>
+              <li><a id="li-delete-profile" class="config-item dropdown-item m-0" href="/html/pages_users/users_delete_profile.html">Delete Profile</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="logOut dropdown-item m-0" href="/index.html">Sign Out</a></li>
+              <li><a id="li-sign-out" class="config-item logOut dropdown-item m-0" href="/index.html">Sign Out</a></li>
             </ul>
           </div>
           
@@ -96,13 +97,20 @@ function loadHeader(userData, roleData) {
                   <li class="nav-item">
                     <a class="nav-link" href="/html/explore.html">EXPLORE</a>
                   </li>
-                   <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    href="/html/pages_users/lifecounter/users_lifecounter_setup.html"
-                    >LIFE COUNTER</a
-                  >
-                </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="/html/lifecounter/lifecounter.html"
+                      >LIFE COUNTER FINAL</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="/html/pages_users/lifecounter/users_lifecounter_setup.html"
+                      >LIFE COUNTER</a
+                    >
+                  </li>
                   <li class="nav-item">
                     <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance nav-link d-none">SIGN UP/IN</a>
                   </li>

@@ -1,0 +1,329 @@
+<!-- LIFE COUNTER -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LIFE COUNTER</title>
+    <link rel="stylesheet" href="/css/addons.css" />
+    <link rel="stylesheet" href="/css/lifecounter/lifecounter.css" />
+  </head>
+  <body>
+    <main id="main-lifeCounter" class="d-flex flex-column h-100">
+      <section id="one">
+        <div
+          id="header-lifeCounter-explore"
+          class="d-flex justify-content-between align-items-center w-100 pt-3"
+        >
+          <div class="d-flex flex-row align-items-center gap-2">
+            <button
+              id="button-refresh-lifeCounter"
+              class="btn btn-outline-warning btn-lg ms-3 p-3"
+              type="button"
+            >
+              <i class="bi bi-arrow-clockwise"></i>
+            </button>
+
+            <div class="dropdown me-1">
+              <button
+                type="button"
+                id="button-change-lifeCounterTemplate"
+                class="btn btn-outline-info dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                data-bs-offset="10,20"
+              >
+                Change Template
+              </button>
+              <ul id="ul-change-lifeCounterTemplate" class="dropdown-menu"></ul>
+            </div>
+
+            <div class="dropdown me-1">
+              <button
+                type="button"
+                class="btn btn-secondary dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                data-bs-offset="10,20"
+              >
+                <span>L</span>oad <span>S</span>ession
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row text-center align-items-center gap-3">
+            <h1 id="name-lifeCounter" class="p-0 m-0">LIFE COUNTER</h1>
+            <button
+              id="button-setUp-lifeCounter"
+              class="btn btn-outline-info btn-lg"
+              type="button"
+            >
+              <i class="bi bi-wrench"></i>
+            </button>
+            <div
+              id="div-show-duration-lifeCounter"
+              class="d-none align-items-end"
+            >
+              <div class="show-lifeCounter-timeSpan d-flex flex-column gap-0">
+                <span>Finished, duration:</span>
+                <span id="span-show-duration-lifeCounter"></span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="button-close-lifeCounter"
+            class="btn btn-outline-danger btn-lg me-3 p-3"
+            type="button"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </section>
+
+      <hr />
+
+      <section
+        id="section-lifeCounter"
+        class="flex-fill d-flex justify-content-center align-items-center"
+      >
+        <div id="organizer-lifeCounter">
+          <!-- #1 LIFE COUNTER - PLAYER 1 -->
+          <div id="lifecounter1" class="player-block">
+            <button class="decrease-life-points">
+              <i class="bi bi-dash-lg"></i>
+            </button>
+
+            <div class="playerstats">
+              <div
+                class="d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <button
+                  class="player-setup player-title text-center btn btn-outline-info"
+                >
+                  loading...
+                </button>
+
+                <div class="alter-title d-none"></div>
+
+                <div class="d-flex flex-row">
+                  <div class="player-lifepoints text-center">loading...</div>
+                  <div class="dynamic-behavior text-center"></div>
+                </div>
+
+                <button
+                  class="restore-player btn btn-sm btn-outline-warning d-none"
+                >
+                  Restore
+                </button>
+              </div>
+            </div>
+
+            <button class="increase-life-points">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+
+          <!-- #2 LIFE COUNTER - PLAYER 2 -->
+          <div id="lifecounter2" class="player-block d-none">
+            <button class="decrease-life-points">
+              <i class="bi bi-dash-lg"></i>
+            </button>
+
+            <div class="playerstats">
+              <div
+                class="d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <button
+                  class="player-setup player-title text-center btn btn-outline-info"
+                >
+                  loading...
+                </button>
+
+                <div class="alter-title d-none"></div>
+
+                <div class="d-flex flex-row">
+                  <div class="player-lifepoints text-center">loading...</div>
+                  <div class="dynamic-behavior text-center"></div>
+                </div>
+
+                <button
+                  class="restore-player btn btn-sm btn-outline-warning d-none"
+                >
+                  Restore
+                </button>
+              </div>
+            </div>
+
+            <button class="increase-life-points">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+
+          <!-- #3 LIFE COUNTER - PLAYER 3 -->
+          <div id="lifecounter3" class="player-block d-none">
+            <button class="decrease-life-points">
+              <i class="bi bi-dash-lg"></i>
+            </button>
+
+            <div class="playerstats">
+              <div
+                class="d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <button
+                  class="player-setup player-title text-center btn btn-outline-info"
+                >
+                  loading...
+                </button>
+
+                <div class="alter-title d-none"></div>
+
+                <div class="d-flex flex-row">
+                  <div class="player-lifepoints text-center">loading...</div>
+                  <div class="dynamic-behavior text-center"></div>
+                </div>
+
+                <button
+                  class="restore-player btn btn-sm btn-outline-warning d-none"
+                >
+                  Restore
+                </button>
+              </div>
+            </div>
+
+            <button class="increase-life-points">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+
+          <!-- #4 LIFE COUNTER - PLAYER 4 -->
+          <div id="lifecounter4" class="player-block d-none">
+            <button class="decrease-life-points">
+              <i class="bi bi-dash-lg"></i>
+            </button>
+
+            <div class="playerstats">
+              <div
+                class="d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <button
+                  class="player-setup player-title text-center btn btn-outline-info"
+                >
+                  loading...
+                </button>
+
+                <div class="alter-title d-none"></div>
+
+                <div class="d-flex flex-row">
+                  <div class="player-lifepoints text-center">loading...</div>
+                  <div class="dynamic-behavior text-center"></div>
+                </div>
+
+                <button
+                  class="restore-player btn btn-sm btn-outline-warning d-none"
+                >
+                  Restore
+                </button>
+              </div>
+            </div>
+
+            <button class="increase-life-points">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+
+          <!-- #5 LIFE COUNTER - PLAYER 5 -->
+          <div id="lifecounter5" class="player-block d-none">
+            <button class="decrease-life-points">
+              <i class="bi bi-dash-lg"></i>
+            </button>
+
+            <div class="playerstats">
+              <div
+                class="d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <button
+                  class="player-setup player-title text-center btn btn-outline-info"
+                >
+                  loading...
+                </button>
+
+                <div class="alter-title d-none"></div>
+
+                <div class="d-flex flex-row">
+                  <div class="player-lifepoints text-center">loading...</div>
+                  <div class="dynamic-behavior text-center"></div>
+                </div>
+
+                <button
+                  class="restore-player btn btn-sm btn-outline-warning d-none"
+                >
+                  Restore
+                </button>
+              </div>
+            </div>
+
+            <button class="increase-life-points">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+
+          <!-- #6 LIFE COUNTER - PLAYER 6 -->
+          <div id="lifecounter6" class="player-block d-none">
+            <button class="decrease-life-points">
+              <i class="bi bi-dash-lg"></i>
+            </button>
+
+            <div class="playerstats">
+              <div
+                class="d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <button
+                  class="player-setup player-title text-center btn btn-outline-info"
+                >
+                  loading...
+                </button>
+
+                <div class="alter-title d-none"></div>
+
+                <div class="d-flex flex-row">
+                  <div class="player-lifepoints text-center">loading...</div>
+                  <div class="dynamic-behavior text-center"></div>
+                </div>
+
+                <button
+                  class="restore-player btn btn-sm btn-outline-warning d-none"
+                >
+                  Restore
+                </button>
+              </div>
+            </div>
+
+            <button class="increase-life-points">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/node_modules/select2/dist/js/select2.min.js"></script>
+    <script src="/js/plugins/page_loader.js"></script>
+    <script src="/js/plugins/content_loader.js"></script>
+    <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+    <script src="/js/scripts/lifecounter/lifecounter.js"></script>
+  </body>
+</html>

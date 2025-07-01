@@ -33,28 +33,28 @@
   color: var(--main-color);
 }
 
-.dropdown-menu {
+#ul-profile-configurations {
   background-color: var(--second-bg-color);
   box-shadow: 0 0 1rem var(--text-color) !important;
 }
-.dropdown-menu .dropdown-item:hover {
+#ul-profile-configurations .config-item:hover {
   background-color: var(--bg-color) !important;
   font-weight: bold;
   box-shadow: 0 0 1rem var(--text-color) !important;
 }
-.dropdown-menu li:first-child > .dropdown-item:hover {
+#li-edit-profile:hover {
   color: var(--greenish);
   box-shadow: 0 0 1rem var(--greenish) !important;
 }
-.dropdown-menu li:nth-of-type(2) > .dropdown-item:hover {
+#li-change-password:hover {
   color: var(--yellowish);
   box-shadow: 0 0 1rem var(--yellowish) !important;
 }
-.dropdown-menu li:nth-of-type(3) > .dropdown-item:hover {
+#li-delete-profile:hover {
   color: var(--reddish);
   box-shadow: 0 0 1rem var(--reddish) !important;
 }
-.dropdown-menu li:last-child > .dropdown-item:hover {
+#li-sign-out:hover {
   color: var(--main-color);
   font-weight: bold;
   box-shadow: 0 0 1rem var(--main-color) !important;
