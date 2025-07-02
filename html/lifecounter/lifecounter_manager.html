@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LIFE COUNTER</title>
     <link rel="stylesheet" href="/css/addons.css" />
-    <link rel="stylesheet" href="/css/lifecounter/lifecounter.css" />
+    <link rel="stylesheet" href="/css/lifecounter/lifecounter_manager.css" />
   </head>
   <body>
     <main id="main-lifeCounter" class="d-flex flex-column h-100">
@@ -34,9 +34,17 @@
                 aria-expanded="false"
                 data-bs-offset="10,20"
               >
-                Change Template
+                Dropdown to change Template...
               </button>
               <ul id="ul-change-lifeCounterTemplate" class="dropdown-menu"></ul>
+
+              <button
+                id="button-accessMenu-LifeCounterTemplate"
+                class="btn btn-outline-info btn-md"
+                type="button"
+              >
+                <i class="bi bi-gear-wide-connected"></i>
+              </button>
             </div>
 
             <div class="dropdown me-1">
@@ -324,6 +332,6 @@
     <script src="/js/plugins/content_loader.js"></script>
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
-    <script src="/js/scripts/lifecounter/lifecounter.js"></script>
+    <script src="/js/scripts/lifecounter/lifecounter_manager.js"></script>
   </body>
 </html>

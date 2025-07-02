@@ -48,7 +48,7 @@ function loadHeader(userData, roleData) {
           <a href="/index.html">HOME</a>
           <a href="/html/explore.html">EXPLORE</a>
           <a href="/html/lifecounter_explore.html">LIFE COUNTER</a> 
-          <a href="/html/lifecounter/lifecounter.html"">LIFE COUNTER final</a> 
+          <a href="/html/lifecounter/lifecounter_manager.html"">LIFE COUNTER final</a> 
           <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
           <a href="/html/pages_users/users_page.html" class="loggedIn-clearance d-none">USER</a>
           <a href="/html/pages_admins/admins_page.html" class="admins-clearance d-none">ADMIN</a>
@@ -100,7 +100,7 @@ function loadHeader(userData, roleData) {
                   <li class="nav-item">
                     <a
                       class="nav-link"
-                      href="/html/lifecounter/lifecounter.html"
+                      href="/html/lifecounter/lifecounter_manager.html"
                       >LIFE COUNTER FINAL</a
                     >
                   </li>
