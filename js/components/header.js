@@ -191,6 +191,10 @@ function loadHeader(userData, roleData) {
       }).then((res) => res.json());
 
       if (response.content?.isUserSignOut) {
+        localStorage.clear();
+
+        //localStorage.removeItem("keyName");
+
         // Successfully logged out
         sweetAlertSuccess("Bye Bye!");
       } else {

@@ -1,4 +1,4 @@
-function life_counter_template_create() {
+function life_counter_template_edit() {
   let self = this;
 
   self.IsBuilt = false;
@@ -23,16 +23,12 @@ function life_counter_template_create() {
     });
   };
 
-  self.LifeCounterTemplateId = null;
-  self.LifeCounterTemplate = {};
-  self.LifeCounterManagerId = null;
-  self.PlayersCount = null;
+  self.LifeCounterTemplates = null;
+  self.LifeCounterTemplate = null;
 
   self.LifeCounterTemplates = [];
   self.GetLifeCounterTemplates = () => {
-    self.LifeCounterTemplates = JSON.parse(
-      localStorage.getItem("LifeCounterTemplates")
-    );
+    return JSON.parse(localStorage.getItem("LifeCounterTemplates"));
   };
   self.SetLifeCounterTemplates = () => {
     localStorage.setItem(
@@ -41,60 +37,67 @@ function life_counter_template_create() {
     );
   };
 
+  self.GetLifeCounterTemplate = () => {
+    return JSON.parse(localStorage.getItem("LifeCounterTemplate"));
+  };
+  self.SetLifeCounterTemplate = () => {
+    localStorage.setItem(
+      "LifeCounterTemplate",
+      JSON.stringify(self.LifeCounterTemplate)
+    );
+  };
+
   self.LoadReferences = () => {
-    self.DOM = $("#main-lifeCounterTemplate-create");
+    self.DOM = $("#main-lifeCounterTemplate-edit");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] =
-      self.Buttons.LifeCounterTemplate_CreateForm_Close = self.DOM.find(
-        "#button-close-lifeCounterTemplate-create"
+      self.Buttons.LifeCounterTemplate_EditForm_Close = self.DOM.find(
+        "#button-close-lifeCounterTemplate-edit"
       );
     self.Buttons[self.Buttons.length] =
-      self.Buttons.LifeCounterTemplate_CreateForm_Clear = self.DOM.find(
-        "#button-clearCreateForm-lifeCounterTemplate-create"
+      self.Buttons.LifeCounterTemplate_EditForm_Clear = self.DOM.find(
+        "#button-clearEditForm-lifeCounterTemplate-edit"
       );
     self.Buttons[self.Buttons.length] =
-      self.Buttons.LifeCounterTemplate_CreateForm_ConfirmCreate = self.DOM.find(
-        "#button-confirmCreate-lifeCounterTemplate-create"
+      self.Buttons.LifeCounterTemplate_EditForm_ConfirmCreate = self.DOM.find(
+        "#button-confirmCreate-lifeCounterTemplate-edit"
       );
     self.Buttons[self.Buttons.length] =
-      self.Buttons.LifeCounterTemplate_CreateForm_CreateAndStart =
-        self.DOM.find("#button-createAndStart-lifeCounterTemplate-create");
+      self.Buttons.LifeCounterTemplate_EditForm_CreateAndStart = self.DOM.find(
+        "#button-createAndStart-lifeCounterTemplate-edit"
+      );
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] =
-      self.Inputs.LifeCounterTemplate_CreateForm_Name = self.DOM.find(
-        "#input-name-lifeCounterTemplate-create"
+      self.Inputs.LifeCounterTemplate_EditForm_Name = self.DOM.find(
+        "#input-name-lifeCounterTemplate-edit"
       );
     self.Inputs[self.Inputs.length] =
-      self.Inputs.LifeCounterTemplate_CreateForm_PlayersStartingLifePoints =
+      self.Inputs.LifeCounterTemplate_EditForm_PlayersStartingLifePoints =
         self.DOM.find(
-          "#input-playersStartingLifePoints-lifeCounterTemplate-create"
+          "#input-playersStartingLifePoints-lifeCounterTemplate-edit"
         );
     self.Inputs[self.Inputs.length] =
-      self.Inputs.LifeCounterTemplate_CreateForm_PlayersCount = self.DOM.find(
+      self.Inputs.LifeCounterTemplate_EditForm_PlayersCount = self.DOM.find(
         ".players-count-options"
       );
     self.Inputs[self.Inputs.length] =
-      self.Inputs.LifeCounterTemplate_CreateForm_FixedMaxLifePointsMode =
-        self.DOM.find(
-          "#input-fixedMaxLifePointsMode-lifeCounterTemplate-create"
-        );
+      self.Inputs.LifeCounterTemplate_EditForm_FixedMaxLifePointsMode =
+        self.DOM.find("#input-fixedMaxLifePointsMode-lifeCounterTemplate-edit");
     self.Inputs[self.Inputs.length] =
-      self.Inputs.LifeCounterTemplate_CreateForm_MaxLifePointsInputWrapper =
-        self.DOM.find(
-          "#wrapper-PlayersMaxLifePoints-lifeCounterTemplate-create"
-        );
+      self.Inputs.LifeCounterTemplate_EditForm_MaxLifePointsInputWrapper =
+        self.DOM.find("#wrapper-PlayersMaxLifePoints-lifeCounterTemplate-edit");
     self.Inputs[self.Inputs.length] =
-      self.Inputs.LifeCounterTemplate_CreateForm_PlayersMaxLifePoints =
-        self.DOM.find("#input-playersMaxLifePoints-lifeCounterTemplate-create");
+      self.Inputs.LifeCounterTemplate_EditForm_PlayersMaxLifePoints =
+        self.DOM.find("#input-playersMaxLifePoints-lifeCounterTemplate-edit");
     self.Inputs[self.Inputs.length] =
-      self.Inputs.LifeCounterTemplate_CreateForm_AutoDefeatMode = self.DOM.find(
-        "#input-autoDefeatMode-lifeCounterTemplate-create"
+      self.Inputs.LifeCounterTemplate_EditForm_AutoDefeatMode = self.DOM.find(
+        "#input-autoDefeatMode-lifeCounterTemplate-edit"
       );
     self.Inputs[self.Inputs.length] =
-      self.Inputs.LifeCounterTemplate_CreateForm_AutoEndMode = self.DOM.find(
-        "#input-autoEndMode-lifeCounterTemplate-create"
+      self.Inputs.LifeCounterTemplate_EditForm_AutoEndMode = self.DOM.find(
+        "#input-autoEndMode-lifeCounterTemplate-edit"
       );
 
     self.Locations = [];
@@ -149,55 +152,42 @@ function life_counter_template_create() {
     Swal.close();
   }
 
+  self.PreFillEditForm = () => {
+    self.LifeCounterTemplate = self.GetLifeCounterTemplate();
+
+    let template = self.LifeCounterTemplate;
+
+    self.Inputs.LifeCounterTemplate_EditForm_Name.val(
+      template.LifeCounterTemplateName
+    )
+      .trigger("focus")
+      .trigger("select");
+  };
   self.CheckFormFilling = () => {
     let isNameEmpty =
-      self.Inputs.LifeCounterTemplate_CreateForm_Name.val().trim() === "";
+      self.Inputs.LifeCounterTemplate_EditForm_Name.val().trim() === "";
     let isLifePointsEmpty =
-      self.Inputs.LifeCounterTemplate_CreateForm_PlayersStartingLifePoints.val().trim() ===
+      self.Inputs.LifeCounterTemplate_EditForm_PlayersStartingLifePoints.val().trim() ===
       "";
 
     let isFormValid = !isNameEmpty && !isLifePointsEmpty;
 
-    self.Buttons.LifeCounterTemplate_CreateForm_ConfirmCreate.attr(
+    self.Buttons.LifeCounterTemplate_EditForm_ConfirmCreate.attr(
       "disabled",
       !isFormValid
     );
-    self.Buttons.LifeCounterTemplate_CreateForm_CreateAndStart.attr(
+    self.Buttons.LifeCounterTemplate_EditForm_CreateAndStart.attr(
       "disabled",
       !isFormValid
     );
   };
   self.ForceClearForm = () => {
-    self.Inputs.LifeCounterTemplate_CreateForm_Name.val("").trigger("focus");
+    self.Inputs.LifeCounterTemplate_EditForm_Name.val("").trigger("focus");
 
-    self.Inputs.LifeCounterTemplate_CreateForm_PlayersStartingLifePoints.val(
-      ""
-    );
-    // self.Inputs.EditTemplate_PlayersCount.eq(self.PlayersCount - 1).removeClass(
-    //   "clickedState"
-    // );
-    // self.Inputs.EditTemplate_PlayersCount.eq(0).addClass("clickedState");
-    // self.PlayersCount = 1;
-    // self.Inputs.EditTemplate_MaxLifePointsInputWrapper.addClass("d-none");
-    // self.Inputs.EditTemplate_FixedMaxLifePointsMode.prop("checked", false);
-    // self.Inputs.EditTemplate_AutoDefeatMode.prop("checked", false);
-    // self.Inputs.EditTemplate_AutoEndMode.prop("checked", false);
+    self.Inputs.LifeCounterTemplate_EditForm_PlayersStartingLifePoints.val("");
   };
 
-  self.ResetMenuOptions = () => {
-    self.RemoveExtraLines();
-
-    self.EditLifeCounterTermplateForm.addClass("d-none");
-    self.Togglers.forEach((toggler) => {
-      toggler.css("display", "none");
-    });
-
-    self.Options.forEach((option) => {
-      option.removeClass("chosenMenuOption");
-    });
-  };
-
-  self.CreateLifeCounterTemplate = (startMode) => {
+  self.EditLifeCounterTemplate = () => {
     self.GetLifeCounterTemplates();
 
     self.DOM.loadcontent("charge-contentloader");
@@ -216,7 +206,7 @@ function life_counter_template_create() {
       let virtualId = "lct" + (countTemplates + 1);
 
       let lifeCounterTemplateName =
-        self.Inputs.LifeCounterTemplate_CreateForm_Name.val();
+        self.Inputs.LifeCounterTemplate_EditForm_Name.val();
 
       let doesNameExist = self.LifeCounterTemplates.some(
         (template) =>
@@ -229,28 +219,26 @@ function life_counter_template_create() {
       }
 
       let playersStartingLifePoints =
-        self.Inputs.LifeCounterTemplate_CreateForm_PlayersStartingLifePoints.val();
+        self.Inputs.LifeCounterTemplate_EditForm_PlayersStartingLifePoints.val();
 
       let playersCount = self.PlayersCount != null ? self.PlayersCount : 1;
 
       let fixedMaxLifePointsMode =
-        self.Inputs.LifeCounterTemplate_CreateForm_FixedMaxLifePointsMode.is(
+        self.Inputs.LifeCounterTemplate_EditForm_FixedMaxLifePointsMode.is(
           ":checked"
         );
 
       let playersMaxLifePoints = null;
       if (fixedMaxLifePointsMode === true) {
         playersMaxLifePoints =
-          self.Inputs.LifeCounterTemplate_CreateForm_PlayersMaxLifePoints.val();
+          self.Inputs.LifeCounterTemplate_EditForm_PlayersMaxLifePoints.val();
       }
 
       let autoDefeatMode =
-        self.Inputs.LifeCounterTemplate_CreateForm_AutoDefeatMode.is(
-          ":checked"
-        );
+        self.Inputs.LifeCounterTemplate_EditForm_AutoDefeatMode.is(":checked");
 
       let autoEndMode =
-        self.Inputs.LifeCounterTemplate_CreateForm_AutoEndMode.is(":checked");
+        self.Inputs.LifeCounterTemplate_EditForm_AutoEndMode.is(":checked");
 
       let newLifeCounterTemplate = {
         LifeCounterTemplateId: virtualId,
@@ -275,22 +263,22 @@ function life_counter_template_create() {
     //   url: "https://localhost:7081/users/createlifecountertemplate",
     //   data: {
     //     LifeCounterTemplateName:
-    //       self.Inputs.LifeCounterTemplate_CreateForm_Name.val(),
+    //       self.Inputs.LifeCounterTemplate_EditForm_Name.val(),
     //     PlayersStartingLifePoints:
-    //       self.Inputs.LifeCounterTemplate_CreateForm_PlayersStartingLifePoints.val(),
+    //       self.Inputs.LifeCounterTemplate_EditForm_PlayersStartingLifePoints.val(),
     //     PlayersCount: self.PlayersCount,
     //     FixedMaxLifePointsMode:
-    //       self.Inputs.LifeCounterTemplate_CreateForm_FixedMaxLifePointsMode.is(
+    //       self.Inputs.LifeCounterTemplate_EditForm_FixedMaxLifePointsMode.is(
     //         ":checked"
     //       ),
     //     PlayersMaxLifePoints:
-    //       self.Inputs.LifeCounterTemplate_CreateForm_PlayersMaxLifePoints.val(),
+    //       self.Inputs.LifeCounterTemplate_EditForm_PlayersMaxLifePoints.val(),
     //     AutoDefeatMode:
-    //       self.Inputs.LifeCounterTemplate_CreateForm_AutoDefeatMode.is(
+    //       self.Inputs.LifeCounterTemplate_EditForm_AutoDefeatMode.is(
     //         ":checked"
     //       ),
     //     AutoEndMode:
-    //       self.Inputs.LifeCounterTemplate_CreateForm_AutoEndMode.is(":checked"),
+    //       self.Inputs.LifeCounterTemplate_EditForm_AutoEndMode.is(":checked"),
     //   },
     //   xhrFields: {
     //     withCredentials: true,
@@ -326,65 +314,31 @@ function life_counter_template_create() {
     // });
   };
 
-  self.StartLifeCounterManager = () => {
-    self.DOM.loadcontent("charge-contentloader");
-    $.ajax({
-      type: "POST",
-      url: `https://localhost:7081/users/startlifecountermanager?LifeCounterTemplateId=${self.LifeCounterTemplateID}`,
-      data: {
-        LifeCounterTemplateId: self.LifeCounterTemplateId,
-      },
-      xhrFields: { withCredentials: true },
-      success: function (response) {
-        if (response.content != null) {
-          self.LifeCounterManagerId = response.content.lifeCounterManagerId;
-
-          sweetAlertSuccess(
-            response.message,
-            "Life Counter Manager Id: " + self.LifeCounterManagerId
-          );
-
-          if (self.LifeCounterManagerId != null) {
-            self.RedirectToLifeCounterManager(self.LifeCounterManagerId);
-            self.DOM.loadcontent("demolish-contentloader");
-          }
-        } else {
-          sweetAlertError(response.message);
-        }
-      },
-      error: function (xhr, status, error) {
-        sweetAlertError(
-          "Failed to fetch requested LIFE COUNTER MANAGER DETAILS."
-        );
-      },
-    });
-  };
-
   self.LoadEvents = () => {
-    self.Buttons.LifeCounterTemplate_CreateForm_Close.on("click", function (e) {
+    self.Buttons.LifeCounterTemplate_EditForm_Close.on("click", function (e) {
       e.preventDefault();
 
       self.RedirectToLifeCounterManager();
     });
 
-    self.Inputs.LifeCounterTemplate_CreateForm_Name.on("input", () => {
+    self.Inputs.LifeCounterTemplate_EditForm_Name.on("input", () => {
       self.CheckFormFilling();
     });
 
-    self.Inputs.LifeCounterTemplate_CreateForm_PlayersStartingLifePoints.on(
+    self.Inputs.LifeCounterTemplate_EditForm_PlayersStartingLifePoints.on(
       "input",
       () => {
         self.CheckFormFilling();
       }
     );
 
-    self.Inputs.LifeCounterTemplate_CreateForm_PlayersCount.on(
+    self.Inputs.LifeCounterTemplate_EditForm_PlayersCount.on(
       "click",
       function (e) {
         e.preventDefault();
 
         // Remove the class from all
-        self.Inputs.LifeCounterTemplate_CreateForm_PlayersCount.removeClass(
+        self.Inputs.LifeCounterTemplate_EditForm_PlayersCount.removeClass(
           "clickedState"
         );
 
@@ -398,37 +352,37 @@ function life_counter_template_create() {
       }
     );
 
-    self.Inputs.LifeCounterTemplate_CreateForm_FixedMaxLifePointsMode.on(
+    self.Inputs.LifeCounterTemplate_EditForm_FixedMaxLifePointsMode.on(
       "change",
       function (e) {
         if ($(this).is(":checked")) {
           // Checkbox is checked
-          self.Inputs.LifeCounterTemplate_CreateForm_MaxLifePointsInputWrapper.removeClass(
+          self.Inputs.LifeCounterTemplate_EditForm_MaxLifePointsInputWrapper.removeClass(
             "d-none"
           );
         } else {
           // Checkbox is unchecked
-          self.Inputs.LifeCounterTemplate_CreateForm_MaxLifePointsInputWrapper.addClass(
+          self.Inputs.LifeCounterTemplate_EditForm_MaxLifePointsInputWrapper.addClass(
             "d-none"
           );
         }
       }
     );
-    self.Inputs.LifeCounterTemplate_CreateForm_AutoDefeatMode.on(
+    self.Inputs.LifeCounterTemplate_EditForm_AutoDefeatMode.on(
       "change",
       (e) => {
         if (
-          !self.Inputs.LifeCounterTemplate_CreateForm_AutoDefeatMode.is(
+          !self.Inputs.LifeCounterTemplate_EditForm_AutoDefeatMode.is(
             ":checked"
           )
         ) {
-          self.Inputs.LifeCounterTemplate_CreateForm_AutoEndMode.prop(
+          self.Inputs.LifeCounterTemplate_EditForm_AutoEndMode.prop(
             "checked",
             false
           ) // <-- Correct way to uncheck
             .attr("disabled", true); // <-- Properly disables the checkbox
         } else {
-          self.Inputs.LifeCounterTemplate_CreateForm_AutoEndMode.prop(
+          self.Inputs.LifeCounterTemplate_EditForm_AutoEndMode.prop(
             "disabled",
             false
           ); // Re-enable if needed
@@ -436,19 +390,16 @@ function life_counter_template_create() {
       }
     );
 
-    self.Buttons.LifeCounterTemplate_CreateForm_Clear.on("click", () => {
+    self.Buttons.LifeCounterTemplate_EditForm_Clear.on("click", () => {
       self.ForceClearForm();
     });
 
-    self.Buttons.LifeCounterTemplate_CreateForm_ConfirmCreate.on(
-      "click",
-      () => {
-        let startMode = false;
-        self.CreateLifeCounterTemplate(startMode);
-      }
-    );
+    self.Buttons.LifeCounterTemplate_EditForm_ConfirmCreate.on("click", () => {
+      let startMode = false;
+      self.CreateLifeCounterTemplate(startMode);
+    });
 
-    self.Buttons.LifeCounterTemplate_CreateForm_CreateAndStart.on(
+    self.Buttons.LifeCounterTemplate_EditForm_CreateAndStart.on(
       "click",
       function (e) {
         e.preventDefault();
@@ -461,12 +412,14 @@ function life_counter_template_create() {
   self.Build = () => {
     self.LoadReferences();
 
-    self.LoadEvents();
+    self.PreFillEditForm();
+
+    //self.LoadEvents();
   };
 
   self.Build();
 }
 
 $(function () {
-  new life_counter_template_create();
+  new life_counter_template_edit();
 });
