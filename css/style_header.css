@@ -101,6 +101,12 @@
   background-color: var(--bg-color) !important;
   box-shadow: 0px 0px 10px 5px var(--text-color) !important;
 }
+
+#img-access-lifecounter:hover img {
+  filter: brightness(0) saturate(100%) invert(59%) sepia(85%) saturate(1462%)
+    hue-rotate(146deg) brightness(101%) contrast(105%);
+}
+
 @media screen and (max-width: 1200px) {
   .header {
     padding: 0 5%;

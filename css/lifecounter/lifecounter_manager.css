@@ -7,6 +7,23 @@ body {
   height: 100vh;
 }
 
+.counters {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border-radius: 10px;
+  width: 60px;
+  height: 40px;
+}
+#first-counter {
+  border: 3px solid var(--reddish);
+}
+#second-counter {
+  border: 3px solid var(--yellowish);
+}
+#third-counter {
+  border: 3px solid var(--greenish);
+}
+
 #organizer-lifeCounter {
   padding: 1rem;
   display: grid;
