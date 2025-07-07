@@ -41,6 +41,7 @@ function lifecounter_manager() {
     );
   };
 
+  self.Current_LifeCounter_Template = [];
   self.Current_LifeCounter_Manager = [];
   self.Current_LifeCounter_Players = [];
 
@@ -99,8 +100,9 @@ function lifecounter_manager() {
     const autoEndMode = false;
 
     // Building a Default Life Counter TEMPLATE
+    self.Current_LifeCounter_Template = [];
     const template_virtualId = "lct" + (self.LifeCounterTemplates.length + 1);
-    self.LifeCounterTemplate = {
+    self.Current_LifeCounter_Template = {
       LifeCounterTemplateId: template_virtualId,
       LifeCounterTemplateName: lifeCounterName,
       PlayersStartingLifePoints: playersStartingLifePoints,
@@ -114,15 +116,17 @@ function lifecounter_manager() {
     };
 
     // Updates Life Counter TEMPLATES >LIST<
-    self.LifeCounterTemplates.push(self.LifeCounterTemplate);
+    self.LifeCounterTemplates.push(self.Current_LifeCounter_Template);
 
     // Building a Default Life Counter MANAGER
+    self.Current_LifeCounter_Manager = [];
     // Creating a new LIFE COUNTER MANAGER
     const manager_virtualId =
-      "lcm" + (self.LifeCounterTemplate.LifeCounterManagers.length + 1);
+      "lcm" +
+      (self.Current_LifeCounter_Template.LifeCounterManagers.length + 1);
     self.Current_LifeCounter_Manager = {
-      LifeCounterManagerId: manager_virtualId,
       LifeCounterTemplateId: template_virtualId,
+      LifeCounterManagerId: manager_virtualId,
       LifeCounterManagerName: lifeCounterName,
       PlayersStartingLifePoints: playersStartingLifePoints,
       PlayersCount: playersCount,
@@ -137,14 +141,15 @@ function lifecounter_manager() {
       IsFinished: false,
     };
     // Updates Life Counter TEMPLATE -> Managers
-    self.LifeCounterTemplate.LifeCounterManagers.push(
+    self.Current_LifeCounter_Template.LifeCounterManagers.push(
       self.Current_LifeCounter_Manager
     );
 
     // Updates Life Counter TEMPLATE
-    self.LifeCounterTemplate.LifeCounterManagersCount++;
+    self.Current_LifeCounter_Template.LifeCounterManagersCount++;
 
     // Creating the Life Counter Players
+    self.Current_LifeCounter_Players = [];
     for (let i = 0; i < playersCount; i++) {
       const player_virtualId = "lcp" + (i + 1);
       let newPlayer = {
@@ -163,12 +168,20 @@ function lifecounter_manager() {
 
     // Updates Local Storage: Life Counter TEMPLATES >LIST<
     self.SetLifeCounterTemplates();
+
+    self.BuildLifeCounterManager();
   };
-  if (localStorage.getItem("LifeCounterTemplate") != null) {
-    self.LifeCounterTemplate = self.GetLifeCounterTemplate();
-  } else {
-    self.BuildDefaultLifeCounter();
-  }
+  self.SearchLocalStorageForLifeCounter = () => {
+    if (localStorage.getItem("LifeCounterTemplate") != null) {
+      self.LifeCounterTemplate = self.GetLifeCounterTemplate();
+      self.BuildLifeCounterManager();
+    } else {
+      self.BuildDefaultLifeCounter();
+      if (self.IsUserLoggedIn == true) {
+        self.SyncUserLifeCounterData();
+      }
+    }
+  };
 
   self.LoadReferences = () => {
     self.DOM = $("#main-lifeCounter");
@@ -204,17 +217,31 @@ function lifecounter_manager() {
       self.DOM.find("#button-refresh-lifeCounterManager");
     self.Buttons[self.Buttons.length] = self.Buttons.ChangeLifeCounterTemplate =
       self.DOM.find("#button-change-lifeCounterTemplate");
-    self.Buttons[self.Buttons.length] = self.Buttons.EditLifeCounterTemplate =
-      self.DOM.find("#button-edit-LifeCounterTemplate");
-    self.Buttons[self.Buttons.length] = self.Buttons.SyncLifeCounterData_DB =
-      self.DOM.find("#button-sync-DB-lifeCounter");
-
     self.Buttons[self.Buttons.length] = self.Buttons.CreateLifeCounterTemplate =
       self.DOM.find("#create-lifeCounterTemplate");
+    self.Buttons[self.Buttons.length] = self.Buttons.EditLifeCounterTemplate =
+      self.DOM.find("#button-edit-LifeCounterTemplate");
+
+    self.Buttons[self.Buttons.length] = self.Buttons.SyncLifeCounterData_DB =
+      self.DOM.find("#button-sync-DB-lifeCounter");
+    self.Buttons[self.Buttons.length] = self.Buttons.ShowLifeCountersInfo =
+      self.DOM.find("#button-showInfo-lifeCounter");
     self.Buttons[self.Buttons.length] = self.Buttons.SetUpLifeCounter =
       self.DOM.find("#button-setUp-lifeCounter");
+
+    self.Buttons[self.Buttons.length] = self.Buttons.AccessDiceThrower =
+      self.DOM.find("#button-diceThrower-lifeCounter");
+
+    self.Buttons[self.Buttons.length] = self.Buttons.RedCounter =
+      self.DOM.find("#red-counter");
+    self.Buttons[self.Buttons.length] = self.Buttons.YellowCounter =
+      self.DOM.find("#yellow-counter");
+    self.Buttons[self.Buttons.length] = self.Buttons.GreenCounter =
+      self.DOM.find("#green-counter");
+
     self.Buttons[self.Buttons.length] = self.Buttons.CloseLifeCounter =
       self.DOM.find("#button-close-lifeCounter");
+
     self.Buttons[self.Buttons.length] = self.Buttons.PlayerSetUp =
       self.DOM.find(".player-setup");
     self.Buttons[self.Buttons.length] = self.Buttons.IncreaseLifePoints =
@@ -240,6 +267,8 @@ function lifecounter_manager() {
       self.DOM.find(".player-lifepoints");
     self.Fields[self.Fields.length] = self.Fields.LifePointsDynamicBehavior =
       self.DOM.find(".dynamic-behavior");
+    self.Fields[self.Fields.length] = self.Fields.MaxLifePointsIndicator =
+      self.DOM.find(".max-lifePoints-indicator");
 
     self.LifeCounterInstances = [];
     self.LifeCounterInstances[self.LifeCounterInstances.length] =
@@ -385,6 +414,115 @@ function lifecounter_manager() {
       self.RedirectToLifeCounterManagerSetUp(self.LifeCounterId);
     });
 
+    self.Buttons.SyncLifeCounterData_DB.on("click", () => {});
+
+    self.Buttons.AccessDiceThrower.on("click", () => {});
+
+    self.Buttons.RedCounter.on("mousedown touchstart", () => {
+      let currentValue = parseInt(self.Buttons.RedCounter.text(), 10);
+      let holdTimer;
+      let intervalId;
+      let isHeld = false;
+
+      // Start a timer: if held > 500ms, start continuous +10
+      holdTimer = setTimeout(() => {
+        isHeld = true;
+        currentValue--;
+        self.Buttons.RedCounter.text(currentValue);
+
+        intervalId = setInterval(() => {
+          currentValue--;
+          self.Buttons.RedCounter.text(currentValue);
+        }, 1000);
+      }, 500);
+
+      const stopIncreasing = () => {
+        clearTimeout(holdTimer);
+        clearInterval(intervalId);
+
+        if (!isHeld) {
+          // Short press, so just +1
+          currentValue++;
+          self.Buttons.RedCounter.text(currentValue);
+        }
+
+        isHeld = false;
+        $(document).off("mouseup touchend", stopIncreasing);
+      };
+
+      $(document).on("mouseup touchend", stopIncreasing);
+    });
+
+    self.Buttons.YellowCounter.on("mousedown touchstart", () => {
+      let currentValue = parseInt(self.Buttons.YellowCounter.text(), 10);
+      let holdTimer;
+      let intervalId;
+      let isHeld = false;
+
+      // Start a timer: if held > 500ms, start continuous +10
+      holdTimer = setTimeout(() => {
+        isHeld = true;
+        currentValue--;
+        self.Buttons.YellowCounter.text(currentValue);
+
+        intervalId = setInterval(() => {
+          currentValue--;
+          self.Buttons.YellowCounter.text(currentValue);
+        }, 1000);
+      }, 500);
+
+      const stopIncreasing = () => {
+        clearTimeout(holdTimer);
+        clearInterval(intervalId);
+
+        if (!isHeld) {
+          // Short press, so just +1
+          currentValue++;
+          self.Buttons.YellowCounter.text(currentValue);
+        }
+
+        isHeld = false;
+        $(document).off("mouseup touchend", stopIncreasing);
+      };
+
+      $(document).on("mouseup touchend", stopIncreasing);
+    });
+
+    self.Buttons.GreenCounter.on("mousedown touchstart", () => {
+      let currentValue = parseInt(self.Buttons.GreenCounter.text(), 10);
+      let holdTimer;
+      let intervalId;
+      let isHeld = false;
+
+      // Start a timer: if held > 500ms, start continuous +10
+      holdTimer = setTimeout(() => {
+        isHeld = true;
+        currentValue--;
+        self.Buttons.GreenCounter.text(currentValue);
+
+        intervalId = setInterval(() => {
+          currentValue--;
+          self.Buttons.GreenCounter.text(currentValue);
+        }, 1000);
+      }, 500);
+
+      const stopIncreasing = () => {
+        clearTimeout(holdTimer);
+        clearInterval(intervalId);
+
+        if (!isHeld) {
+          // Short press, so just +1
+          currentValue++;
+          self.Buttons.GreenCounter.text(currentValue);
+        }
+
+        isHeld = false;
+        $(document).off("mouseup touchend", stopIncreasing);
+      };
+
+      $(document).on("mouseup touchend", stopIncreasing);
+    });
+
     self.Buttons.CloseLifeCounter.on("click", function (e) {
       e.preventDefault();
       self.RedirectToHomePage();
@@ -405,40 +543,79 @@ function lifecounter_manager() {
     self.Buttons.IncreaseLifePoints.on("mousedown touchstart", function (e) {
       e.preventDefault();
 
-      // Get the parent .player-block div
       const playerBlock = $(this).closest(".player-block");
-      // Optional: Get the block's index among visible players (e.g., 0 to 5)
       const playerIndex = $(".player-block:visible").index(playerBlock);
-
       const playerCurrentLifeElement = playerBlock.find(".player-lifepoints");
-      const currentLife = parseInt(playerCurrentLifeElement.text().trim(), 10);
-
-      self.LifeCounterManager = self.GetLifeCounterManager();
-
-      let isMaxLifePointsReached =
-        self.LifeCounterManager.FixedMaxLifePointsMode === true &&
-        currentLife >= self.LifeCounterManager.PlayersMaxLifePoints;
-
-      if (isMaxLifePointsReached == true) {
-        return;
-      }
+      const manager = self.Current_LifeCounter_Manager;
 
       let holdTimer;
       let intervalId;
       let isHeld = false;
 
-      const increaseLife = (amount) => {
-        self.IncreaseLifePoints(playerIndex, amount);
+      const fetchCurrentLife = () => {
+        return parseInt(playerCurrentLifeElement.text().trim(), 10);
       };
 
-      // Start a timer: if held > 500ms, start continuous +10
+      const showOrHideMaxIndicator = (currentLife) => {
+        const reached =
+          manager.FixedMaxLifePointsMode &&
+          currentLife >= manager.PlayersMaxLifePoints;
+
+        self.PlayerBlocks[playerIndex]
+          .find(self.Fields.MaxLifePointsIndicator)
+          .toggleClass("d-none", !reached);
+      };
+
+      const increaseLife = (amount) => {
+        let currentLife = fetchCurrentLife();
+
+        if (
+          manager.FixedMaxLifePointsMode &&
+          currentLife >= manager.PlayersMaxLifePoints
+        ) {
+          return; // Don't increase past max
+        }
+
+        self.IncreaseLifePoints(playerIndex, amount);
+
+        // Re-fetch life after increase to update UI
+        currentLife = fetchCurrentLife();
+        showOrHideMaxIndicator(currentLife);
+      };
+
+      // Check once on initial press
+      showOrHideMaxIndicator(fetchCurrentLife());
+
+      // Start long-press logic
+      const evaluateIncreaseAmount = (desiredValue) => {
+        currentLife = fetchCurrentLife();
+        const fixedMaxLifePointsMode = manager.FixedMaxLifePointsMode;
+        const playersMaxLifePoints = manager.PlayersMaxLifePoints;
+
+        if (
+          fixedMaxLifePointsMode &&
+          currentLife + desiredValue >= playersMaxLifePoints
+        ) {
+          return playersMaxLifePoints - currentLife;
+        } else {
+          return desiredValue;
+        }
+      };
       holdTimer = setTimeout(() => {
         isHeld = true;
-        increaseLife(10); // first +10
+        let increaseAmount = evaluateIncreaseAmount(10);
+
+        currentLife = fetchCurrentLife();
+
+        increaseLife(increaseAmount); // first +10
 
         intervalId = setInterval(() => {
-          increaseLife(10);
-        }, 1000); // then every 1s
+          currentLife = fetchCurrentLife();
+
+          increaseAmount = evaluateIncreaseAmount(10);
+
+          increaseLife(increaseAmount);
+        }, 1000);
       }, 500);
 
       const stopIncreasing = () => {
@@ -446,8 +623,7 @@ function lifecounter_manager() {
         clearInterval(intervalId);
 
         if (!isHeld) {
-          // Short press, so just +1
-          increaseLife(1);
+          increaseLife(1); // short press
         }
 
         isHeld = false;
@@ -460,38 +636,71 @@ function lifecounter_manager() {
     self.Buttons.DecreaseLifePoints.on("mousedown touchstart", function (e) {
       e.preventDefault();
 
-      // Get the parent .player-block div
       const playerBlock = $(this).closest(".player-block");
-      // Optional: Get the block's index among visible players (e.g., 0 to 5)
       const playerIndex = $(".player-block:visible").index(playerBlock);
-
       const playerCurrentLifeElement = playerBlock.find(".player-lifepoints");
-      const currentLife = parseInt(playerCurrentLifeElement.text().trim(), 10);
-
-      self.LifeCounterManager = self.GetLifeCounterManager();
-
-      let isMinLifePointsReached =
-        self.LifeCounterManager.AutoDefeatMode == true && currentLife <= 0;
-
-      if (isMinLifePointsReached === true) {
-        return;
-      }
+      const manager = self.Current_LifeCounter_Manager;
 
       let holdTimer;
       let intervalId;
       let isHeld = false;
 
+      const fetchCurrentLife = () => {
+        return parseInt(playerCurrentLifeElement.text().trim(), 10);
+      };
+
+      const evaluateMaxLifePointsIndicator = (currentLife) => {
+        const reached =
+          manager.FixedMaxLifePointsMode &&
+          currentLife < manager.PlayersMaxLifePoints;
+
+        self.PlayerBlocks[playerIndex]
+          .find(self.Fields.MaxLifePointsIndicator)
+          .toggleClass("d-none", !reached);
+      };
+
+      const evaluateDecreasingAmount = (desiredValue) => {
+        currentLife = fetchCurrentLife();
+        const autoDefeatMode = manager.AutoDefeatMode;
+
+        if (autoDefeatMode === true && currentLife - desiredValue <= 0) {
+          return currentLife;
+        } else {
+          return desiredValue;
+        }
+      };
+
       const decreaseLife = (amount) => {
+        let currentLife = fetchCurrentLife();
+
+        if (manager.AutoDefeatMode == true && currentLife <= 0) {
+          return;
+        }
+
         self.DecreaseLifePoints(playerIndex, amount);
+
+        currentLife = fetchCurrentLife();
+        evaluateMaxLifePointsIndicator(currentLife);
       };
 
       // Start a timer: if held > 500ms, start continuous -10
       holdTimer = setTimeout(() => {
         isHeld = true;
+        let desiredValue = 10;
 
-        decreaseLife(10); // first -10
+        let decreasingAmount = evaluateDecreasingAmount(desiredValue);
 
-        intervalId = setInterval(() => decreaseLife(10), 1000); // then every 1s
+        currentLife = fetchCurrentLife();
+
+        decreaseLife(decreasingAmount); // first -10
+
+        intervalId = setInterval(() => {
+          currentLife = fetchCurrentLife();
+
+          decreasingAmount = evaluateDecreasingAmount(desiredValue);
+
+          decreaseLife(decreasingAmount);
+        }, 1000); // then every 1s
       }, 500);
 
       const stopDecreasing = () => {
@@ -587,6 +796,7 @@ function lifecounter_manager() {
     });
   };
 
+  //! METHODS FOR USERS...
   self.GetUserLifeCounterTemplate = (templateId) => {
     $.ajax({
       url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${templateId}`,
@@ -692,94 +902,100 @@ function lifecounter_manager() {
     });
   };
 
-  self.GetUserLastLifeCounterManager = () => {
+  self.QuickStartUserLifeCounter = () => {
     $.ajax({
-      url: `https://localhost:7081/users/getlastunfinishedlifecountermanager`,
-      type: "GET",
+      type: "POST",
+      url: `https://localhost:7081/users/quickstartlifecounter`,
       xhrFields: { withCredentials: true },
       success: function (response) {
-        if (response.content == null) {
+        if (!response.content) {
           sweetAlertError(response.message);
-          self.LifeCounterTemplate = self.GetLifeCounterTemplate();
-          self.BuildLifeCounterManager();
           return;
         }
 
-        const fetchedData = response.content;
+        const lifeCounterManagerId = response.content.lifeCounterManagerId;
+        self.GetLifeCounterManagerDetails(lifeCounterManagerId);
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError(
+          "Failed to fetch requested LIFE COUNTER MANAGER DETAILS."
+        );
+      },
+    });
+  };
+  self.GetLifeCounterManagerDetails = (lifeCounterManagerId) => {
+    // Fetch Life Counter Details based on provided LifeCounterId
+    const id = lifeCounterManagerId;
 
-        // Fetch and Set the Life Counter TEMPLATE that has the last
-        // Life Counter MANAGER not yet finished
-        // (user may reload from where he left...)
-        const template = fetchedData.lifeCounterTemplate;
-        self.LifeCounterTemplate = {
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/getlifecountermanagerdetails?LifeCounterManagerId=${id}`,
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        if (!response.content) {
+          sweetAlertError(response.message_text);
+          return;
+        }
+
+        // Fetching LIFE COUNTER TEMPLATE
+        const template = response.content.lifeCounterTemplate;
+        self.Current_LifeCounter_Template = {
           LifeCounterTemplateId: template.lifeCounterTemplateId,
           LifeCounterTemplateName: template.lifeCounterTemplateName,
-          PlayersStartingLifePoints: template.playersStartingLifePoints,
-          PlayersCount: template.playersCount,
-          FixedMaxLifePointsMode: template.fixedMaxLifePointsMode,
-          PlayersMaxLifePoints: template.playersMaxLifePointsMode,
-          AutoDefeatMode: template.autoDefeatMode,
-          AutoEndMode: template.autoEndMode,
-          LifeCounterManagersCount: template.lifeCounterManagersCount,
-        };
-        self.LifeCounterTemplates.push(self.LifeCounterTemplate);
-        self.SetLifeCounterTemplates();
-
-        // Fetch and Set the Life Counter MANAGER to be RELOADED
-        const currentManager = {
-          LifeCounterManagerId: fetchedData.lifeCounterManagerId,
-          LifeCounterTemplateId: template.lifeCounterTemplateId,
-          LifeCounterManagerName: template.lifeCounterManagerName,
           PlayersStartingLifePoints: template.playersStartingLifePoints,
           PlayersCount: template.playersCount,
           FixedMaxLifePointsMode: template.fixedMaxLifePointsMode,
           PlayersMaxLifePoints: template.playersMaxLifePoints,
           AutoDefeatMode: template.autoDefeatMode,
           AutoEndMode: template.autoEndMode,
-          StartingTimeMark: template.startingTime,
-          EndingTimeMark: null,
-          Duration_minutes: null,
-          IsFinished: false,
+          LifeCounterManagersCount: template.lifeCounterManagersCount,
+          LifeCounterManagers: [],
         };
-        self.LifeCounterManager = currentManager;
-        self.SetLifeCounterManager();
 
-        // Fetch and set the Life Counter PLAYERS taking part on the
-        // RELOADED Life Counter MANAGER...
-        const players = fetchedData.lifeCounterPlayers;
-        self.LifeCounter_CurrentPlayers = [];
+        // Fetching LIFE COUNTER MANAGER
+        const manager = response.content;
+        self.Current_LifeCounter_Manager = {
+          LifeCounterTemplateId: template.lifeCounterTemplateId,
+          LifeCounterManagerId: id,
+          LifeCounterManagerName: manager.lifeCounterManagerName,
+          PlayersStartingLifePoints: manager.playersStartingLifePoints,
+          PlayersCount: manager.playersCount,
+          LifeCounterPlayers: [],
+          FixedMaxLifePointsMode: manager.fixedMaxLifePointsMode,
+          PlayersMaxLifePoints: manager.playersMaxLifePoints,
+          AutoDefeatMode: manager.autoDefeatMode,
+          AutoEndMode: manager.autoEndMode,
+          StartingTimeMark: manager.startingTime,
+          EndingTimeMark: manager.endingTime,
+          Duration_minutes: manager.duration_minutes,
+          IsFinished: manager.isFinished,
+        };
+
+        self.Current_LifeCounter_Template.LifeCounterManagers.push(
+          self.Current_LifeCounter_Manager
+        );
+
+        // Fetching LIFE COUNTER PLAYERS
+        const players = manager.lifeCounterPlayers;
+        self.Current_LifeCounter_Players = [];
         players.forEach((player) => {
-          let currentPlayer = {
-            LifeCounterManagerId: currentManager.LifeCounterManagerId,
-            PlayerId: player.lifeCounterPlayerId,
+          const newPlayer = {
+            LifeCounterManagerId: id,
+            PlayerId: player.playerId,
             PlayerName: player.playerName,
             CurrentLifePoints: player.currentLifePoints,
-            IsDefeated: false,
+            IsDefeated: player.isDefeated,
           };
-          self.LifeCounter_CurrentPlayers.push(currentPlayer);
+          self.Current_LifeCounter_Players.push(newPlayer);
         });
-        self.SetLifeCounter_CurrentPlayers();
 
-        if (self.LifeCounterPlayers.length > 0) {
-          self.LifeCounter_CurrentPlayers.forEach((current_player) => {
-            for (let i = 0; i < self.LifeCounterPlayers.length; i++) {
-              if (
-                current_player.PlayerId == self.LifeCounterPlayers[i].PlayerId
-              ) {
-                self.LifeCounterPlayers[i] = current_player;
-                self.SetLifeCounterPlayers();
-              }
-            }
-          });
-        }
+        self.Current_LifeCounter_Manager.LifeCounterPlayers =
+          self.Current_LifeCounter_Players;
 
         self.BuildLifeCounterManager();
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching life counter templates:", error);
-        console.log("Status:", status);
-        console.log("Response:", xhr.responseText);
-        sweetAlertError("Failed to fetch life counter templates.");
+        sweetAlertError("Could not load life counter");
       },
     });
   };
@@ -813,6 +1029,7 @@ function lifecounter_manager() {
     startUserLifeCounterManager();
   };
 
+  //? GENERIC METHODS...
   self.OrganizeSits = (lifeCountersCount) => {
     function ShowOneLifeCounter() {
       if (self.LifeCounterInstances[0].hasClass("d-none")) {
@@ -1347,14 +1564,12 @@ function lifecounter_manager() {
   };
 
   self.BuildLifeCounterManager = () => {
-    const templates = self.GetLifeCounterTemplates();
-    const current_template = templates[0];
-    const managers = current_template.LifeCounterManagers;
-    const current_manager = managers[0];
-    const players = current_manager.LifeCounterPlayers;
+    const template = self.Current_LifeCounter_Template;
+    const manager = self.Current_LifeCounter_Manager;
+    const players = self.Current_LifeCounter_Players;
 
     self.Fields.LifeCounterManagerName.html(
-      `<span>${current_manager.LifeCounterManagerName}</span>`
+      `<span>${manager.LifeCounterManagerName}</span>`
     );
 
     self.Fields.ShowDuration.html("");
@@ -1363,7 +1578,7 @@ function lifecounter_manager() {
 
     self.Buttons.SetUpLifeCounter.removeClass("d-none");
 
-    for (let i = 0; i < current_manager.PlayersCount; i++) {
+    for (let i = 0; i < manager.PlayersCount; i++) {
       self.LifeCounterInstances[i]
         .find(self.Fields.PlayerName)
         .html(`${players[i].PlayerName}`);
@@ -1373,22 +1588,25 @@ function lifecounter_manager() {
         .html(`${players[i].CurrentLifePoints}`);
     }
 
-    self.OrganizeSits(current_manager.PlayersCount);
+    self.OrganizeSits(manager.PlayersCount);
 
     self.CheckForDefeatedPlayers();
 
     self.Buttons.ChangeLifeCounterTemplate.text(
-      current_template.LifeCounterTemplateName
+      template.LifeCounterTemplateName
     );
     self.Buttons.ChangeLifeCounterTemplate.attr(
       "data-template-id",
-      current_template.LifeCounterTemplateId
+      template.LifeCounterTemplateId
     );
 
     $("body").loadpage("demolish");
   };
 
   self.IncreaseLifePoints = (playerIndex, amountToIncrease) => {
+    const manager = self.Current_LifeCounter_Manager;
+    const players = self.Current_LifeCounter_Players;
+
     self.previousPlayerIndexes.push(playerIndex);
 
     const arrayLength = self.previousPlayerIndexes.length;
@@ -1396,6 +1614,16 @@ function lifecounter_manager() {
     if (self.previousPlayerIndexes[arrayLength - 2] != playerIndex) {
       self.increasingPointsCounter = 0;
     }
+
+    const instantLifePoints = () => {
+      player.CurrentLifePoints = updatedLifePoints;
+
+      self.PlayerBlocks[playerIndex]
+        .find(self.Fields.PlayerCurrentLifePoints)
+        .text(updatedLifePoints);
+
+      showIncreasingAmount(amountToIncrease);
+    };
 
     const dynamicLifePoints = self.PlayerBlocks[playerIndex].find(
       self.Fields.LifePointsDynamicBehavior
@@ -1437,25 +1665,50 @@ function lifecounter_manager() {
       }, 3000);
     };
 
-    self.LifeCounterPlayers = self.GetLifeCounterPlayers();
-    const player = self.LifeCounterPlayers[playerIndex];
+    const player = players[playerIndex];
 
     let updatedLifePoints = player.CurrentLifePoints + amountToIncrease;
 
-    if (updatedLifePoints == self.LifeCounterManager.PlayersMaxLifePoints) {
-      return;
+    player.CurrentLifePoints = updatedLifePoints;
+
+    if (self.IsUserLoggedIn === true) {
+      const formData = new FormData();
+      formData.append("LifeCounterPlayerId", player.PlayerId);
+      formData.append("LifePointsToIncrease", amountToIncrease);
+
+      $.ajax({
+        type: "POST",
+        url: "https://localhost:7081/users/increaselifepoints",
+        data: formData,
+        processData: false,
+        contentType: false,
+        xhrFields: {
+          withCredentials: true, // Only if you're using cookies; otherwise can be removed
+        },
+        success: (resp) => {
+          if (resp.content === null) {
+            sweetAlertError(resp.message);
+          }
+
+          updatedLifePoints = resp.content.updatedLifePoints;
+          player.CurrentLifePoints = updatedLifePoints;
+        },
+        error: (err) => {
+          sweetAlertError(err);
+        },
+        complete: () => {
+          //Re-enable all buttons
+          self.Buttons.forEach((btn) => btn.prop("disabled", false));
+        },
+      });
     }
 
-    player.CurrentLifePoints = updatedLifePoints;
-    self.SetLifeCounterPlayers();
-
-    self.PlayerBlocks[playerIndex]
-      .find(self.Fields.PlayerCurrentLifePoints)
-      .text(updatedLifePoints);
-
-    showIncreasingAmount(amountToIncrease);
+    instantLifePoints();
   };
   self.DecreaseLifePoints = (playerIndex, amountToDecrease) => {
+    const manager = self.Current_LifeCounter_Manager;
+    const players = self.Current_LifeCounter_Players;
+
     self.previousPlayerIndexes.push(playerIndex);
 
     const arrayLength = self.previousPlayerIndexes.length;
@@ -1463,6 +1716,14 @@ function lifecounter_manager() {
     if (self.previousPlayerIndexes[arrayLength - 2] != playerIndex) {
       self.decreasingPointsCounter = 0;
     }
+
+    const instantLifePoints = () => {
+      self.PlayerBlocks[playerIndex]
+        .find(self.Fields.PlayerCurrentLifePoints)
+        .text(updatedLifePoints);
+
+      showDecreasingAmount(amountToDecrease);
+    };
 
     const dynamicLifePoints = self.PlayerBlocks[playerIndex].find(
       self.Fields.LifePointsDynamicBehavior
@@ -1504,58 +1765,61 @@ function lifecounter_manager() {
       }, 3000);
     };
 
-    self.LifeCounterPlayers = self.GetLifeCounterPlayers();
-    const player = self.LifeCounterPlayers[playerIndex];
+    const player = players[playerIndex];
 
     let updatedLifePoints = player.CurrentLifePoints - amountToDecrease;
 
-    self.GetLifeCounterManager();
-    if (
-      updatedLifePoints <= 0 &&
-      self.LifeCounterManager.AutoDefeatMode == true
-    ) {
-      self.Fields.LifePointsDynamicBehavior.text("");
-      self.increasingPointsCounter = 0;
-      self.decreasingPointsCounter = 0;
-
-      self.CheckForPlayerDefeated(playerIndex, updatedLifePoints);
-      return;
-    }
-
-    if (
-      self.LifeCounterManager.AutoDefeatMode == true &&
-      player.IsDefeated == true
-    ) {
-      return;
-    }
-
     player.CurrentLifePoints = updatedLifePoints;
-    self.SetLifeCounterPlayers();
 
-    self.PlayerBlocks[playerIndex]
-      .find(self.Fields.PlayerCurrentLifePoints)
-      .text(updatedLifePoints);
+    if (self.IsUserLoggedIn === true) {
+      const formData = new FormData();
+      formData.append("LifeCounterPlayerId", player.PlayerId);
+      formData.append("LifePointsToDecrease", amountToDecrease);
 
-    showDecreasingAmount(amountToDecrease);
+      $.ajax({
+        type: "POST",
+        url: "https://localhost:7081/users/decreaselifepoints",
+        data: formData,
+        processData: false,
+        contentType: false,
+        xhrFields: {
+          withCredentials: true, // Only if you're using cookies; otherwise can be removed
+        },
+        success: (resp) => {
+          if (resp.content === null) {
+            sweetAlertError(resp.message);
+            return;
+          }
+
+          updatedLifePoints = resp.content.updatedLifePoints;
+        },
+        error: (err) => {
+          sweetAlertError(err);
+        },
+        complete: () => {
+          if (self.AutoDefeatMode == true) {
+            self.CheckForPlayerDefeated(playerIndex, updatedLifePoints);
+          }
+          //Re-enable all buttons
+          self.Buttons.forEach((btn) => btn.prop("disabled", false));
+        },
+      });
+    }
+
+    instantLifePoints();
   };
 
   self.CheckForPlayerDefeated = (playerId) => {
-    const templates = self.GetLifeCounterTemplates();
-    const current_template = templates[0];
-    const managers = current_template.LifeCounterManagers;
-    const current_manager = managers[0];
-    const players = current_manager.LifeCounterPlayers;
+    const template = self.Current_LifeCounter_Template;
+    const manager = self.Current_LifeCounter_Manager;
+    const players = self.Current_LifeCounter_Players;
 
-    let playerIndex = players.findIndex(
-      (player) => player.PlayerId == playerId
-    );
-
-    const player = players[playerIndex];
+    const player = players[playerId];
 
     const playerName = player.PlayerName;
 
     // Get player name or current life from DOM if needed
-    const playerBlock = self.PlayerBlocks[playerIndex];
+    const playerBlock = self.PlayerBlocks[playerId];
     const playerNameField = playerBlock.find(self.Fields.PlayerName);
     const playerAlternativeNameField = playerBlock.find(
       self.Fields.AlternativeName
@@ -1615,22 +1879,17 @@ function lifecounter_manager() {
     // self.LifeCounter_CurrentPlayers = self.GetLifeCounter_CurrentPlayers();
     // const players = self.LifeCounter_CurrentPlayers;
 
-    const templates = self.GetLifeCounterTemplates();
-    const current_template = templates[0];
-    const managers = current_template.LifeCounterManagers;
-    const current_manager = managers[0];
-    const players = current_manager.LifeCounterPlayers;
+    const template = self.Current_LifeCounter_Template;
+    const manager = self.Current_LifeCounter_Manager;
+    const players = self.Current_LifeCounter_Players;
 
     players.forEach((player) => {
       self.CheckForPlayerDefeated(player.PlayerId);
     });
   };
   self.CheckForLifeCounterEnd = () => {
-    self.LifeCounterManager = self.GetLifeCounterManager();
-    self.LifeCounterPlayers = self.GetLifeCounterPlayers();
-
-    let playersCount = self.LifeCounterManager.PlayersCount;
-    let defeatedPlayersCount = self.LifeCounterPlayers.filter(
+    let playersCount = manager.PlayersCount;
+    let defeatedPlayersCount = players.filter(
       (player) => player.IsDefeated == true
     ).length;
 
@@ -1640,18 +1899,15 @@ function lifecounter_manager() {
       return;
     }
 
-    self.LifeCounterManager.IsFinished = true;
-    self.LifeCounterManager.EndingTimeMark = Date.now();
-    self.LifeCounterManager.Duration_minutes =
-      (self.LifeCounterManager.EndingTimeMark -
-        self.LifeCounterManager.StartingTimeMark) /
-      60000;
+    manager.IsFinished = true;
+    manager.EndingTimeMark = Date.now();
+    manager.Duration_minutes =
+      (manager.EndingTimeMark - manager.StartingTimeMark) / 60000;
 
     lifeCounterLength =
-      self.LifeCounterManager.Duration_minutes.toFixed(1).replace(".", ",") +
-      " minutes";
+      manager.Duration_minutes.toFixed(1).replace(".", ",") + " minutes";
 
-    if (playersCount == 1 && self.LifeCounterPlayers[0].IsDefeated == true) {
+    if (playersCount == 1 && players[0].IsDefeated == true) {
       sweetAlertError(
         "Game Over - You Lost!",
         "Duration: " + lifeCounterLength
@@ -1666,13 +1922,13 @@ function lifecounter_manager() {
         );
       }
 
-      const winnerArrayIndex = self.LifeCounterPlayers.findIndex(
+      const winnerArrayIndex = players.findIndex(
         (player) => player.IsDefeated == false
       );
 
-      const winnerId = self.LifeCounterPlayers[winnerArrayIndex].PlayerId;
+      const winnerId = players[winnerArrayIndex].PlayerId;
 
-      const winnerName = self.LifeCounterPlayers[winnerArrayIndex].PlayerName;
+      const winnerName = players[winnerArrayIndex].PlayerName;
 
       const winnerBlock = self.PlayerBlocks[winnerId];
 
@@ -1781,6 +2037,10 @@ function lifecounter_manager() {
     showIncreasingAmount();
   };
   self.RefreshLifeCounter = () => {
+    self.Buttons.RedCounter.text(0);
+    self.Buttons.YellowCounter.text(0);
+    self.Buttons.GreenCounter.text(0);
+
     self.PlayerBlocks.forEach((player) => {
       player.loadcontent("charge-contentloader");
     });
@@ -1847,18 +2107,12 @@ function lifecounter_manager() {
       self.IsBuilt = true;
     }
 
-    self.LifeCounterTemplates = self.GetLifeCounterTemplates();
-
-    if (!self.LifeCounterTemplates) {
-      self.StartLifeCounterManager(null);
-    } else {
-      if (self.IsUserLoggedIn == true) {
-        self.GetUserLastLifeCounterManager();
-        return;
-      }
-
-      self.BuildLifeCounterManager();
+    if (self.IsUserLoggedIn == true) {
+      self.QuickStartUserLifeCounter();
+      return;
     }
+
+    self.SearchLocalStorageForLifeCounter();
   };
 
   self.CheckAuthenticationStatus();

@@ -14,13 +14,13 @@ body {
   width: 60px;
   height: 40px;
 }
-#first-counter {
+#red-counter {
   border: 3px solid var(--reddish);
 }
-#second-counter {
+#yellow-counter {
   border: 3px solid var(--yellowish);
 }
-#third-counter {
+#green-counter {
   border: 3px solid var(--greenish);
 }
 
@@ -222,4 +222,24 @@ button.disabled {
 
 #create-lifeCounterTemplate {
   color: var(--greenish);
+}
+
+#button-diceThrower-lifeCounter {
+  border: none !important;
+  transform: scale(2) !important;
+}
+#button-diceThrower-lifeCounter:hover {
+  color: white;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  transition: all 0.5s ease-in-out;
+  transform: scale(3) !important;
+  rotate: 360deg;
+}
+
+#counter-box {
+  border: 2px solid var(--main-color);
+  padding: 10px;
+  border-radius: 20px;
 }

@@ -78,7 +78,7 @@
               <i class="bi bi-floppy"></i>
             </button>
             <button
-              id="button-sync-DB-lifeCounter"
+              id="button-showInfo-lifeCounter"
               class="btn btn-outline-info btn-md"
               type="button"
             >
@@ -106,20 +106,20 @@
           <div class="col d-flex justify-content-between">
             <div
               id="extra-features-lifeCounter"
-              class="d-flex flex-row gap-5 align-items-center"
+              class="d-flex flex-row gap-4 align-items-center"
             >
               <button
-                id="button-close-lifeCounter"
-                class="btn btn-outline-info btn-md me-3"
+                id="button-diceThrower-lifeCounter"
+                class="btn btn-outline-info btn-md ms-5 me-0"
                 type="button"
               >
                 <i class="bi bi-dice-5"></i>
               </button>
 
-              <div class="d-flex flex-row gap-4">
-                <button id="first-counter" class="counters">0</button>
-                <button id="second-counter" class="counters">0</button>
-                <button id="third-counter" class="counters">0</button>
+              <div id="counter-box" class="d-flex flex-row gap-4">
+                <button id="red-counter" class="counters">0</button>
+                <button id="yellow-counter" class="counters">0</button>
+                <button id="green-counter" class="counters">0</button>
               </div>
             </div>
             <button
@@ -161,6 +161,9 @@
                 <div class="d-flex flex-row">
                   <div class="player-lifepoints text-center">loading...</div>
                   <div class="dynamic-behavior text-center"></div>
+                  <div class="max-lifePoints-indicator d-none">
+                    <span>&nbsp;(max)</span>
+                  </div>
                 </div>
 
                 <button
@@ -197,6 +200,9 @@
                 <div class="d-flex flex-row">
                   <div class="player-lifepoints text-center">loading...</div>
                   <div class="dynamic-behavior text-center"></div>
+                  <div class="max-lifePoints-indicator d-none">
+                    <span> (max.)</span>
+                  </div>
                 </div>
 
                 <button
