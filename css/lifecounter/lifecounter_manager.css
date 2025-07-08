@@ -7,6 +7,65 @@ body {
   height: 100vh;
 }
 
+#ul-change-lifeCounterTemplate {
+  background-color: var(--second-bg-color);
+  z-index: 999 !important;
+}
+.lf-template {
+  color: var(--text-color);
+}
+.lf-template:hover {
+  color: var(--main-color);
+  background-color: var(--bg-color) !important;
+}
+#create-lifeCounterTemplate {
+  color: var(--greenish);
+}
+
+#user-exclusive-features {
+  border: 2px solid var(--main-color);
+  padding: 5px;
+  border-radius: 20px;
+}
+#button-sync-DB-lifeCounter,
+#button-showInfo-lifeCounter {
+  border: none !important;
+  transform: scale(1.5) !important;
+}
+#button-sync-DB-lifeCounter:hover,
+#button-showInfo-lifeCounter:hover {
+  color: white;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.show-lifeCounter-timeSpan {
+  border: 1px solid var(--main-color);
+  padding: 5px;
+  border-radius: 1rem;
+}
+
+#button-diceThrower-lifeCounter {
+  border: none !important;
+  transform: scale(2) !important;
+}
+#button-diceThrower-lifeCounter:hover {
+  color: white;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  transition: all 0.5s ease-in-out;
+  transform: scale(3) !important;
+  rotate: 360deg;
+}
+
+#counter-box {
+  border: 2px solid var(--main-color);
+  padding: 10px;
+  border-radius: 20px;
+}
+
 .counters {
   color: var(--text-color);
   background-color: var(--bg-color);
@@ -22,6 +81,17 @@ body {
 }
 #green-counter {
   border: 3px solid var(--greenish);
+}
+
+#button-close-lifeCounter {
+  border: none !important;
+  transform: scale(2) !important;
+}
+#button-close-lifeCounter:hover {
+  color: white;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 #organizer-lifeCounter {
@@ -199,47 +269,4 @@ button.disabled {
 
 .restore-player {
   z-index: 600 !important;
-}
-
-.show-lifeCounter-timeSpan {
-  border: 1px solid var(--main-color);
-  padding: 5px;
-  border-radius: 1rem;
-}
-
-#ul-change-lifeCounterTemplate {
-  background-color: var(--second-bg-color);
-  z-index: 999 !important;
-}
-
-.lf-template {
-  color: var(--text-color);
-}
-.lf-template:hover {
-  color: var(--main-color);
-  background-color: var(--bg-color) !important;
-}
-
-#create-lifeCounterTemplate {
-  color: var(--greenish);
-}
-
-#button-diceThrower-lifeCounter {
-  border: none !important;
-  transform: scale(2) !important;
-}
-#button-diceThrower-lifeCounter:hover {
-  color: white;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-  transition: all 0.5s ease-in-out;
-  transform: scale(3) !important;
-  rotate: 360deg;
-}
-
-#counter-box {
-  border: 2px solid var(--main-color);
-  padding: 10px;
-  border-radius: 20px;
 }
