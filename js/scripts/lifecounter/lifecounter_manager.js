@@ -455,7 +455,9 @@ function lifecounter_manager() {
       function (e) {
         e.preventDefault();
 
-        let selectedManagerName = $(this).text();
+        let selectedManagerName = $(this)
+          .find(".lifeCounter-ManagerName")
+          .text();
         let selectedManagerId = $(this).data("manager-id");
 
         self.Buttons.ChangeLifeCounterManager.text(selectedManagerName);
@@ -892,11 +894,11 @@ function lifecounter_manager() {
         let li = `
             <li class="li-change-lifeCounterManager"> 
                
-              <a class="lf-manager dropdown-item" 
+              <a class="lf-manager dropdown-item d-flex flex-row align-items-center gap-1" 
               data-manager-id="${lifeCounterManager.LifeCounterManagerId}">
                 ${date}
                 <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow white-icon" />
-                ${lifeCounterManager.LifeCounterManagerName}
+                <div class="lifeCounter-ManagerName">${lifeCounterManager.LifeCounterManagerName}</div>
               </a>
             </li>
             `;
