@@ -102,7 +102,6 @@ function lifecounter_manager() {
   };
   self.BuildDefaultLifeCounter = () => {
     // Setting the commom parameters
-    const lifeCounterName = "Life Counter Zer0";
     const playersStartingLifePoints = 10;
     const playersCount = 3;
     const fixedMaxLifePointsMode = true;
@@ -115,7 +114,7 @@ function lifecounter_manager() {
     const template_virtualId = "lct" + (self.LifeCounterTemplates.length + 1);
     self.Current_LifeCounter_Template = {
       LifeCounterTemplateId: template_virtualId,
-      LifeCounterTemplateName: lifeCounterName,
+      LifeCounterTemplateName: "Life Counter Template Zer0",
       PlayersStartingLifePoints: playersStartingLifePoints,
       PlayersCount: playersCount,
       FixedMaxLifePointsMode: fixedMaxLifePointsMode,
@@ -138,7 +137,7 @@ function lifecounter_manager() {
     self.Current_LifeCounter_Manager = {
       LifeCounterTemplateId: template_virtualId,
       LifeCounterManagerId: manager_virtualId,
-      LifeCounterManagerName: lifeCounterName,
+      LifeCounterManagerName: "Life Counter Manager Zer0",
       PlayersStartingLifePoints: playersStartingLifePoints,
       PlayersCount: playersCount,
       LifeCounterPlayers: [],
@@ -146,8 +145,8 @@ function lifecounter_manager() {
       PlayersMaxLifePoints: playersMaxLifePoints,
       AutoDefeatMode: autoDefeatMode,
       AutoEndMode: autoEndMode,
-      StartingTimeMark: Date.now(),
-      EndingTimeMark: null,
+      StartingTime: Date.now(),
+      EndingTime: null,
       Duration_minutes: null,
       IsFinished: false,
     };
@@ -196,6 +195,14 @@ function lifecounter_manager() {
     self.lifeCounterTemplateDropDownItems_class = ".lf-template";
     self.LifeCounterTemplateDropDownItems = self.DOM.find(
       self.lifeCounterTemplateDropDownItems_class
+    );
+
+    self.LifeCounterManagersDropDown = self.DOM.find(
+      "#ul-change-lifeCounterManager"
+    );
+    self.lifeCounterManagerDropDownItems_class = ".lf-manager";
+    self.LifeCounterManagerDropDownItems = self.DOM.find(
+      self.lifeCounterManagerDropDownItems_class
     );
 
     //*
@@ -431,6 +438,31 @@ function lifecounter_manager() {
     self.Buttons.RefreshLifeCounter.on("click", function () {
       self.RefreshLifeCounter();
     });
+
+    self.Buttons.ChangeLifeCounterManager.on("click", (e) => {
+      self.LoadLifeCounterManagers();
+    });
+
+    //self.Buttons.AcessLifeCounterTemplateMenu
+    self.DOM.on("click", "#create-lifeCounterManager", function (e) {
+      e.preventDefault();
+      self.RedirectToLifeCounter_CreateManager();
+    });
+
+    self.DOM.on(
+      "click",
+      self.lifeCounterManagerDropDownItems_class,
+      function (e) {
+        e.preventDefault();
+
+        let selectedManagerName = $(this).text();
+        let selectedManagerId = $(this).data("manager-id");
+
+        self.Buttons.ChangeLifeCounterManager.text(selectedManagerName);
+
+        // self.BuildLifeCounterManager();
+      }
+    );
 
     self.Buttons.SetUpLifeCounter.on("click", function (e) {
       e.preventDefault();
@@ -837,6 +869,118 @@ function lifecounter_manager() {
       },
     });
   };
+  self.LoadLifeCounterManagers = () => {
+    self.LifeCounterManagersDropDown.html("");
+
+    const buildDropDown = (lifeCounterManagers) => {
+      function formatTimestampToDateString(msSinceEpoch) {
+        const date = new Date(msSinceEpoch);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // month is 0-based
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      }
+
+      lifeCounterManagers.forEach((lifeCounterManager) => {
+        console.log("lfManager: ", lifeCounterManager);
+        let date = lifeCounterManager.StartingDate;
+
+        if (!date) {
+          date = formatTimestampToDateString(lifeCounterManager.StartingTime);
+        }
+
+        let li = `
+            <li class="li-change-lifeCounterManager"> 
+               
+              <a class="lf-manager dropdown-item" 
+              data-manager-id="${lifeCounterManager.LifeCounterManagerId}">
+                ${date}
+                <img src="/images/icons/io_arrow_right.svg" class="bi bi-arrow white-icon" />
+                ${lifeCounterManager.LifeCounterManagerName}
+              </a>
+            </li>
+            `;
+        self.LifeCounterManagersDropDown.append(li);
+      });
+
+      let createManagerBtn = `
+        <li class="li-change-lifeCounterManager">  
+            <hr />
+        </li>
+
+        <li class="li-change-lifeCounterManager">  
+            <btn id="create-lifeCounterManager" class="button dropdown-item">START NEW MANAGER</btn>
+        </li>
+        `;
+      self.LifeCounterManagersDropDown.append(createManagerBtn);
+    };
+
+    if (self.IsUserLoggedIn === false) {
+      const managers = self.Current_LifeCounter_Template.LifeCounterManagers;
+
+      const unfinishedManagers = managers.filter(
+        (manager) => manager.IsFinished == false
+      );
+
+      console.log("unfinishedManagers", unfinishedManagers);
+
+      buildDropDown(unfinishedManagers);
+
+      return;
+    }
+
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/listunfinishedlifecountermanagers`,
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        if (response.content == null) {
+          sweetAlertError(response.message);
+          return;
+        }
+
+        const lifeCounterManagers = [];
+
+        response.content.forEach((lifeCounterManager) => {
+          lifeCounterManagers.push({
+            LifeCounterManagerId: lifeCounterManager.lifeCounterManagerId,
+            LifeCounterManagerName: lifeCounterManager.lifeCounterManagerName,
+            StartingDate: lifeCounterManager.startingDate,
+          });
+        });
+
+        buildDropDown(lifeCounterManagers);
+      },
+      error: function (xhr, status, error) {
+        console.error(
+          "Error fetching unfinished life counter managers:",
+          error
+        );
+        console.log("Status:", status);
+        console.log("Response:", xhr.responseText);
+        sweetAlertError("Failed to fetch life counter managers.");
+      },
+    });
+  };
+  self.ReopenLifeCounterManager = () => {
+    //self.DOM.loadcontent("charge-contentloader");
+    // Set up board game selection change handler
+    self.DOM.find(self.ReloadLifeCounterManager)
+      .off("select2:select", self.ReloadLifeCounterManager)
+      .on("select2:select", self.ReloadLifeCounterManager, function () {
+        // Get selected Life Counter Manager Id
+        self.LifeCounterManagerId = $(this).val();
+
+        if (self.LifeCounterManagerId === null) {
+          sweetAlertError("Error: missing life counter manager id");
+
+          return;
+        }
+
+        self.RedirectToLifeCounterManager(self.LifeCounterManagerId);
+        //self.DOM.loadcontent("demolish-contentloader");
+      });
+  };
 
   //! METHODS FOR USERS...
   self.GetUserLifeCounterTemplate = (templateId) => {
@@ -901,8 +1045,8 @@ function lifecounter_manager() {
           PlayersMaxLifePoints: manager.playersMaxLifePoints,
           AutoDefeatMode: manager.autoDefeatMode,
           AutoEndMode: manager.autoEndMode,
-          StartingTimeMark: Date.now(),
-          EndingTimeMark: null,
+          StartingTime: Date.now(),
+          EndingTime: null,
           Duration_minutes: null,
           IsFinished: false,
         };
@@ -1007,8 +1151,8 @@ function lifecounter_manager() {
           PlayersMaxLifePoints: manager.playersMaxLifePoints,
           AutoDefeatMode: manager.autoDefeatMode,
           AutoEndMode: manager.autoEndMode,
-          StartingTimeMark: manager.startingTime,
-          EndingTimeMark: manager.endingTime,
+          StartingTime: manager.startingTime,
+          EndingTime: manager.endingTime,
           Duration_minutes: manager.duration_minutes,
           IsFinished: manager.isFinished,
         };
@@ -1937,9 +2081,9 @@ function lifecounter_manager() {
     }
 
     manager.IsFinished = true;
-    manager.EndingTimeMark = Date.now();
+    manager.EndingTime = Date.now();
     manager.Duration_minutes =
-      (manager.EndingTimeMark - manager.StartingTimeMark) / 60_000;
+      (manager.EndingTime - manager.StartingTime) / 60_000;
 
     let rawDuration = null;
     let lifeCounterLength = "";
@@ -2157,8 +2301,8 @@ function lifecounter_manager() {
     const manager = self.Current_LifeCounter_Manager;
     const players = self.Current_LifeCounter_Players;
 
-    manager.StartingTimeMark = Date.now();
-    manager.EndingTimeMark = null;
+    manager.StartingTime = Date.now();
+    manager.EndingTime = null;
     manager.Duration_minutes = null;
     manager.IsFinished = false;
 

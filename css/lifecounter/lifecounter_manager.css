@@ -7,18 +7,22 @@ body {
   height: 100vh;
 }
 
-#ul-change-lifeCounterTemplate {
+#ul-change-lifeCounterTemplate,
+#ul-change-lifeCounterManager {
   background-color: var(--second-bg-color);
   z-index: 999 !important;
 }
-.lf-template {
+.lf-template,
+.lf-manager {
   color: var(--text-color);
 }
-.lf-template:hover {
+.lf-template:hover,
+.lf-manager:hover {
   color: var(--main-color);
   background-color: var(--bg-color) !important;
 }
-#create-lifeCounterTemplate {
+#create-lifeCounterTemplate,
+#create-lifeCounterManager {
   color: var(--greenish);
 }
 
@@ -38,6 +42,13 @@ body {
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
+}
+
+.white-icon {
+  filter: brightness(0) invert(1);
+}
+.lf-manager:hover .white-icon {
+  filter: none;
 }
 
 .show-lifeCounter-timeSpan {
