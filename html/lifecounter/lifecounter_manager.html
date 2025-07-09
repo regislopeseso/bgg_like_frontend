@@ -121,15 +121,53 @@
           <div class="col d-flex justify-content-between">
             <div
               id="extra-features-lifeCounter"
-              class="d-flex flex-row gap-4 align-items-center"
+              class="d-flex flex-row align-items-center gap-2"
             >
-              <button
-                id="button-diceThrower-lifeCounter"
-                class="btn btn-outline-info btn-md m-0"
-                type="button"
+              <div
+                id="dice-box"
+                class="d-flex flex-row align-items-center gap-1"
               >
-                <i class="bi bi-dice-5"></i>
-              </button>
+                <button
+                  id="button-diceThrower-lifeCounter"
+                  class="btn btn-outline-info btn-md m-0 p-3"
+                  type="button"
+                >
+                  <i class="bi bi-dice-5"></i>
+                </button>
+
+                <div
+                  id="dice-options"
+                  class="d-flex flex-row align-items-center justify-content-center gap-0 d-none"
+                >
+                  <div id="dice-separator">
+                    <h1 class="d-flex align-items-center p-0 pe-1">|</h1>
+                  </div>
+
+                  <a href="" class="d-flex justify-content-center p-0 m-0">
+                    <img src="/images/icons/four_faced_dice.svg" alt="" />
+                  </a>
+
+                  <a href="" class="d-flex justify-content-center">
+                    <img src="/images/icons/six_faced_dice.svg" alt="" />
+                  </a>
+
+                  <a href="" class="d-flex justify-content-center">
+                    <img src="/images/icons/eight_faced_dice.svg" alt="" />
+                  </a>
+
+                  <a href="" class="d-flex justify-content-center">
+                    <img src="/images/icons/ten_faced_dice.svg" alt="" />
+                  </a>
+
+                  <a href="" class="d-flex justify-content-center">
+                    <img src="/images/icons/twelve_faced_dice.svg" alt="" />
+                  </a>
+
+                  <a href="" class="d-flex justify-content-center">
+                    <img src="/images/icons/twenty_faced_dice.svg" alt="" />
+                  </a>
+                </div>
+              </div>
 
               <div id="counter-box" class="d-flex flex-row gap-4">
                 <button id="red-counter" class="counters">0</button>

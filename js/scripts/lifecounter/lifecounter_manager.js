@@ -474,7 +474,9 @@ function lifecounter_manager() {
 
     self.Buttons.SyncLifeCounterData_DB.on("click", () => {});
 
-    self.Buttons.AccessDiceThrower.on("click", () => {});
+    self.Buttons.AccessDiceThrower.on("click", () => {
+      $("#dice-options").toggleClass("d-none");
+    });
 
     self.Buttons.RedCounter.on("mousedown touchstart", () => {
       let currentValue = parseInt(self.Buttons.RedCounter.text(), 10);

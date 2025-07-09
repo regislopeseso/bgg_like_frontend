@@ -57,6 +57,14 @@ body {
   border-radius: 1rem;
 }
 
+#dice-box {
+  border: 2px solid var(--main-color);
+  padding: 2px;
+  border-radius: 20px;
+}
+#dice-box img {
+  width: 50px;
+}
 #button-diceThrower-lifeCounter {
   border: none !important;
   transform: scale(2) !important;
@@ -67,13 +75,16 @@ body {
   box-shadow: none !important;
   border: none !important;
   transition: all 0.5s ease-in-out;
-  transform: scale(3) !important;
+
   rotate: 360deg;
+}
+#dice-separator {
+  color: var(--second-bg-color);
 }
 
 #counter-box {
   border: 2px solid var(--main-color);
-  padding: 10px;
+  padding: 16px;
   border-radius: 20px;
 }
 
