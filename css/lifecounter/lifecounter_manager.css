@@ -279,5 +279,5 @@ button.disabled {
 }
 
 .restore-player {
-  z-index: 600 !important;
+  pointer-events: visible !important;
 }

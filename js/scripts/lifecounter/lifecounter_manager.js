@@ -911,7 +911,7 @@ function lifecounter_manager() {
         </li>
 
         <li class="li-change-lifeCounterManager">  
-            <btn id="create-lifeCounterManager" class="button dropdown-item">START NEW MANAGER</btn>
+            <btn id="create-lifeCounterManager" class="button dropdown-item">NEW MANAGER</btn>
         </li>
         `;
       self.LifeCounterManagersDropDown.append(createManagerBtn);
@@ -2217,7 +2217,7 @@ function lifecounter_manager() {
   };
 
   self.RestorePlayer = (playerIndex) => {
-    self.LifeCounter_CurrentPlayers = self.GetLifeCounter_CurrentPlayers();
+    const player = self.Current_LifeCounter_Players[playerIndex];
 
     const dynamicLifePoints = self.PlayerBlocks[playerIndex].find(
       self.Fields.LifePointsDynamicBehavior
@@ -2244,7 +2244,7 @@ function lifecounter_manager() {
       }, 3000);
     };
 
-    const playerName = self.LifeCounterPlayers[playerIndex].PlayerName;
+    const playerName = player.PlayerName;
     const playerBlock = self.PlayerBlocks[playerIndex];
     const playerNameField = playerBlock.find(self.Fields.PlayerName);
     const playerAlternativeNameField = playerBlock.find(
@@ -2254,8 +2254,8 @@ function lifecounter_manager() {
       self.Fields.PlayerCurrentLifePoints
     );
 
-    self.LifeCounterPlayers[playerIndex].IsDefeated = false;
-    self.LifeCounterPlayers[playerIndex].CurrentLifePoints = 1;
+    player.CurrentLifePoints = 1;
+    player.IsDefeated = false;
 
     playerAlternativeNameField
       .html(playerName + "")
@@ -2279,7 +2279,39 @@ function lifecounter_manager() {
     increaseLifePointsBtn.attr("disabled", false);
     decreaseLifePointsBtn.attr("disabled", false);
 
-    self.SetLifeCounterPlayers();
+    if (self.IsUserLoggedIn === true) {
+      const formData = new FormData();
+
+      formData.append("LifeCounterPlayerId", player.PlayerId);
+
+      $.ajax({
+        type: "POST",
+        url: "https://localhost:7081/users/restorelifecounterplayer",
+        data: formData,
+        processData: false,
+        contentType: false,
+        xhrFields: {
+          withCredentials: true, // Only if you're using cookies; otherwise can be removed
+        },
+        success: (resp) => {
+          if (resp.content === null) {
+            sweetAlertError(resp.message);
+            return;
+          }
+
+          player.CurrentLifePoints = resp.content.updatedLifePoints;
+        },
+        error: (err) => {
+          sweetAlertError(err);
+        },
+        complete: () => {
+          //Re-enable all buttons
+          self.Buttons.forEach((btn) => btn.prop("disabled", false));
+        },
+      });
+    } else {
+      self.SetLifeCounterTemplates();
+    }
 
     showIncreasingAmount();
   };
