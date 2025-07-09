@@ -247,6 +247,25 @@ function lifecounter_manager() {
     //
     self.Buttons[self.Buttons.length] = self.Buttons.AccessDiceThrower =
       self.DOM.find("#button-diceThrower-lifeCounter");
+    self.DiceOptions = self.DOM.find("#dice-options");
+    self.Buttons[self.Buttons.length] = self.Buttons.FourFacedDice =
+      self.DOM.find("#btn-four-faced-dice");
+    self.ImgFourFacedDice = self.DOM.find("#img-four-faced-dice");
+    self.Buttons[self.Buttons.length] = self.Buttons.SixFacedDice =
+      self.DOM.find("#btn-six-faced-dice");
+    self.ImgSixFacedDice = self.DOM.find("#img-six-faced-dice");
+    self.Buttons[self.Buttons.length] = self.Buttons.EightFacedDice =
+      self.DOM.find("#btn-eight-faced-dice");
+    self.ImgEightFacedDice = self.DOM.find("#img-eight-faced-dice");
+    self.Buttons[self.Buttons.length] = self.Buttons.TenFacedDice =
+      self.DOM.find("#btn-ten-faced-dice");
+    self.ImgTenFacedDice = self.DOM.find("#img-ten-faced-dice");
+    self.Buttons[self.Buttons.length] = self.Buttons.TwelveFacedDice =
+      self.DOM.find("#btn-twelve-faced-dice");
+    self.ImgTwelveFacedDice = self.DOM.find("#img-twelve-faced-dice");
+    self.Buttons[self.Buttons.length] = self.Buttons.TwentyFacedDice =
+      self.DOM.find("#btn-twenty-faced-dice");
+    self.ImgTwentyFacedDice = self.DOM.find("#img-twenty-faced-dice");
     self.Buttons[self.Buttons.length] = self.Buttons.RedCounter =
       self.DOM.find("#red-counter");
     self.Buttons[self.Buttons.length] = self.Buttons.YellowCounter =
@@ -287,6 +306,8 @@ function lifecounter_manager() {
       self.DOM.find(".dynamic-behavior");
     self.Fields[self.Fields.length] = self.Fields.MaxLifePointsIndicator =
       self.DOM.find(".max-lifePoints-indicator");
+    self.Fields[self.Fields.length] = self.Fields.DiceThrowResult =
+      self.DOM.find("#dice-throw-result");
 
     //*
     //*
@@ -386,6 +407,71 @@ function lifecounter_manager() {
   function closeOnAnyKey() {
     Swal.close();
   }
+  function sweetAlertRollDice(diceImgHtml, result) {
+    Swal.fire({
+      position: "top",
+      cancelButtonText: "close",
+      theme: "bulma",
+      background: "var(--bg-color)",
+
+      text: result || "",
+      showConfirmButton: true,
+      html: `
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        ${diceImgHtml}
+        <h2 style="color: white; margin-top: 1rem;">Result: ${result}</h2>
+      </div>
+    `,
+      didOpen: () => {
+        // Attach keydown listener
+        document.addEventListener("keydown", closeOnAnyKey);
+      },
+      willClose: () => {
+        // Clean up listener when modal closes
+        document.removeEventListener("keydown", closeOnAnyKey);
+      },
+    });
+  }
+
+  function rollDice(diceType) {
+    self.Fields.DiceThrowResult.html("").addClass("d-none");
+
+    let faceType = "";
+    switch (diceType) {
+      case 4:
+        faceType = "four";
+        break;
+      case 6:
+        faceType = "six";
+        break;
+      case 8:
+        faceType = "eight";
+        break;
+      case 10:
+        faceType = "ten";
+        break;
+      case 12:
+        faceType = "twelve";
+        break;
+      case 20:
+        faceType = "twenty";
+        break;
+    }
+
+    let img = `<img
+                id="img-four-faced-dice"
+                src="/images/icons/${faceType}_faced_dice.svg"
+                style="width: 80px; height: 80px;"             
+              />`;
+
+    const roll = Math.floor(Math.random() * diceType) + 1;
+
+    self.Fields.DiceThrowResult.removeClass("d-none").html(
+      `D${diceType}: ${roll}`
+    );
+
+    sweetAlertRollDice(img, roll);
+  }
 
   self.LoadEvents = () => {
     self.Buttons.ChangeLifeCounterTemplate.on("click", (e) => {
@@ -474,8 +560,129 @@ function lifecounter_manager() {
 
     self.Buttons.SyncLifeCounterData_DB.on("click", () => {});
 
-    self.Buttons.AccessDiceThrower.on("click", () => {
-      $("#dice-options").toggleClass("d-none");
+    self.Buttons.AccessDiceThrower.on("click", function (e) {
+      e.preventDefault();
+
+      const $btn = self.Buttons.AccessDiceThrower;
+
+      // Remove class if it was previously added (reset)
+      $btn.removeClass("rotate-on-click");
+      self.Fields.DiceThrowResult.html("").addClass("d-none");
+
+      // Trigger reflow to restart animation
+      void $btn[0].offsetWidth;
+
+      // Add class to trigger rotation
+      $btn.addClass("rotate-on-click");
+
+      // Toggle dice options
+      self.DiceOptions.toggleClass("d-none");
+    });
+
+    self.Buttons.FourFacedDice.hover(
+      function () {
+        self.ImgFourFacedDice.attr(
+          "src",
+          "/images/icons/four_faced_dice_hovered.svg"
+        );
+      },
+      function () {
+        self.ImgFourFacedDice.attr("src", "/images/icons/four_faced_dice.svg");
+      }
+    );
+    self.Buttons.FourFacedDice.on("click", function (e) {
+      e.preventDefault;
+
+      rollDice(4);
+    });
+    self.Buttons.SixFacedDice.hover(
+      function () {
+        self.ImgSixFacedDice.attr(
+          "src",
+          "/images/icons/six_faced_dice_hovered.svg"
+        );
+      },
+      function () {
+        self.ImgSixFacedDice.attr("src", "/images/icons/six_faced_dice.svg");
+      }
+    );
+    self.Buttons.SixFacedDice.on("click", function (e) {
+      e.preventDefault;
+
+      rollDice(6);
+    });
+    self.Buttons.EightFacedDice.hover(
+      function () {
+        self.ImgEightFacedDice.attr(
+          "src",
+          "/images/icons/eight_faced_dice_hovered.svg"
+        );
+      },
+      function () {
+        self.ImgEightFacedDice.attr(
+          "src",
+          "/images/icons/eight_faced_dice.svg"
+        );
+      }
+    );
+    self.Buttons.EightFacedDice.on("click", function (e) {
+      e.preventDefault;
+
+      rollDice(8);
+    });
+    self.Buttons.TenFacedDice.hover(
+      function () {
+        self.ImgTenFacedDice.attr(
+          "src",
+          "/images/icons/ten_faced_dice_hovered.svg"
+        );
+      },
+      function () {
+        self.ImgTenFacedDice.attr("src", "/images/icons/ten_faced_dice.svg");
+      }
+    );
+    self.Buttons.TenFacedDice.on("click", function (e) {
+      e.preventDefault;
+
+      rollDice(10);
+    });
+    self.Buttons.TwelveFacedDice.hover(
+      function () {
+        self.ImgTwelveFacedDice.attr(
+          "src",
+          "/images/icons/twelve_faced_dice_hovered.svg"
+        );
+      },
+      function () {
+        self.ImgTwelveFacedDice.attr(
+          "src",
+          "/images/icons/twelve_faced_dice.svg"
+        );
+      }
+    );
+    self.Buttons.TwelveFacedDice.on("click", function (e) {
+      e.preventDefault;
+
+      rollDice(12);
+    });
+    self.Buttons.TwentyFacedDice.hover(
+      function () {
+        self.ImgTwentyFacedDice.attr(
+          "src",
+          "/images/icons/twenty_faced_dice_hovered.svg"
+        );
+      },
+      function () {
+        self.ImgTwentyFacedDice.attr(
+          "src",
+          "/images/icons/twenty_faced_dice.svg"
+        );
+      }
+    );
+    self.Buttons.TwentyFacedDice.on("click", function (e) {
+      e.preventDefault;
+
+      rollDice(20);
     });
 
     self.Buttons.RedCounter.on("mousedown touchstart", () => {
