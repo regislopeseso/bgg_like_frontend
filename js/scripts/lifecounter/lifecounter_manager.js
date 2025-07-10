@@ -90,8 +90,50 @@ function lifecounter_manager() {
   self.decreasingPointsCounter = 0;
 
   self.SearchLocalStorageForLifeCounter = () => {
-    if (localStorage.getItem("LifeCounterTemplate") != null) {
-      self.LifeCounterTemplate = self.GetLifeCounterTemplate();
+    if (localStorage.getItem("LifeCounterTemplates") != null) {
+      self.LifeCounterTemplates = self.GetLifeCounterTemplates();
+
+      const managerId = new URLSearchParams(window.location.search).get(
+        "LifeCounterManagerId"
+      );
+
+      if (managerId) {
+        self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
+          (template) =>
+            template.LifeCounterManagers.find(
+              (manager) => manager.LifeCounterManagerId == managerId
+            )
+        );
+
+        self.Current_LifeCounter_Manager =
+          self.Current_LifeCounter_Template.LifeCounterManagers.find(
+            (manager) => manager.LifeCounterManagerId == managerId
+          );
+
+        self.Current_LifeCounter_Players =
+          self.Current_LifeCounter_Manager.LifeCounterPlayers;
+      } else {
+        const mostRecentManager = self.LifeCounterTemplates.flatMap(
+          (template) => template.LifeCounterManagers
+        ).reduce(
+          (latest, current) =>
+            current.StartingTime > (latest?.StartingTime ?? -Infinity)
+              ? current
+              : latest,
+          null
+        );
+
+        self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
+          (template) =>
+            template.LifeCounterTemplateId ==
+            mostRecentManager.LifeCounterTemplateId
+        );
+
+        self.Current_LifeCounter_Manager = mostRecentManager;
+
+        self.Current_LifeCounter_Players = mostRecentManager.LifeCounterPlayers;
+      }
+
       self.BuildLifeCounterManager();
     } else {
       self.BuildDefaultLifeCounter();
@@ -341,8 +383,8 @@ function lifecounter_manager() {
     self.Locations[self.Locations.length] =
       self.Locations.LifeCounterManagerSetUp = "/html/lifecounter_setup.html";
     self.Locations[self.Locations.length] =
-      self.Locations.SetUpLifeCounterPlayer =
-        "/html/lifecounter_player_setup.html";
+      self.Locations.LifeCounterPlayerSetUp =
+        "/html/lifecounter/lifecounter_player_setup.html";
   };
 
   self.RedirectToHomePage = () => {
@@ -359,10 +401,10 @@ function lifecounter_manager() {
   self.RedirectToLifeCounterManagerSetUp = () => {
     window.location.href = `${self.Locations.LifeCounterManagerSetUp}`;
   };
-  self.RedirectToLifeCounterPlayerSetUp = (lifeCounterId) => {
+  self.RedirectToLifeCounterPlayerSetUp = (playerId) => {
     window.location.href = `${
-      self.Locations.SetUpLifeCounterPlayer
-    }?PlayerId=${encodeURIComponent(lifeCounterId)}`;
+      self.Locations.LifeCounterPlayerSetUp
+    }?PlayerId=${encodeURIComponent(playerId)}`;
   };
 
   function sweetAlertSuccess(title_text, message_text) {
@@ -802,9 +844,11 @@ function lifecounter_manager() {
       // Optional: Get the block's index among visible players (e.g., 0 to 5)
       const playerIndex = $(".player-block:visible").index(playerBlock);
 
-      const player = self.LifeCounterPlayers[playerIndex];
+      const player = self.Current_LifeCounter_Players[playerIndex];
 
-      self.RedirectToLifeCounterPlayerSetUp(playerIndex);
+      const playerId = player.PlayerId;
+
+      self.RedirectToLifeCounterPlayerSetUp(playerId);
     });
 
     self.Buttons.IncreaseLifePoints.on("mousedown touchstart", function (e) {
@@ -2577,15 +2621,52 @@ function lifecounter_manager() {
       self.PlayerBlocks[i].find(self.Fields.LifePointsDynamicBehavior).html("");
     }
 
-    if (self.IsUserLoggedIn === false) {
-      self.SetLifeCounterTemplates();
+    if (self.IsUserLoggedIn === true) {
+      const formData = new FormData();
+
+      formData.append("LifeCounterManagerId", manager.LifeCounterManagerId);
+
+      $.ajax({
+        type: "POST",
+        url: "https://localhost:7081/users/refreshlifecountermanager",
+        data: formData,
+        processData: false,
+        contentType: false,
+        xhrFields: {
+          withCredentials: true,
+        },
+        success: (resp) => {
+          if (resp.content == null) {
+            sweetAlertError(resp.message);
+
+            return;
+          }
+
+          self.Build();
+        },
+        error: (err) => {
+          sweetAlertError(err);
+        },
+        complete: () => {
+          self.DOM.find("button").attr("disabled", false);
+
+          self.Buttons.RestorePlayer.attr("disabled", true).addClass("d-none");
+
+          self.PlayerBlocks.forEach((player) => {
+            player.loadcontent("demolish-contentloader");
+          });
+        },
+      });
+
+      return;
     }
 
-    self.DOM.find("button").attr("disabled", false);
-
-    self.Buttons.RestorePlayer.attr("disabled", true).addClass("d-none");
+    self.SetLifeCounterTemplates();
 
     self.BuildLifeCounterManager();
+
+    self.DOM.find("button").attr("disabled", false);
+    self.Buttons.RestorePlayer.attr("disabled", true).addClass("d-none");
 
     self.PlayerBlocks.forEach((player) => {
       player.loadcontent("demolish-contentloader");
