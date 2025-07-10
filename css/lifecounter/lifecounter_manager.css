@@ -226,6 +226,7 @@ body {
   z-index: 600 !important;
   pointer-events: visible !important;
 }
+
 .rotate-text-clockWise {
   writing-mode: sideways-rl !important;
 }

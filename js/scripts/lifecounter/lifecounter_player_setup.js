@@ -185,6 +185,8 @@ function life_counter_player_setup() {
     );
     self.Buttons[self.Buttons.length] = self.Buttons.DeletePlayer =
       self.DOM.find("#button-deletePlayer-lifeCounter-player-setup");
+    self.Buttons[self.Buttons.length] = self.Buttons.SetAsFirstPlayer =
+      self.DOM.find("#button-setAsFirstPlayer-lifeCounter-player-setup");
     self.Buttons[self.Buttons.length] = self.Buttons.ChangeName = self.DOM.find(
       "#button-changePlayerName-lifeCounter-player-setup"
     );
@@ -348,6 +350,12 @@ function life_counter_player_setup() {
       );
     });
 
+    self.Buttons.SetAsFirstPlayer.on("click", function (e) {
+      e.preventDefault();
+
+      self.SetAsFirstPlayer();
+    });
+
     self.Buttons.ChangeName.on("click", function (e) {
       e.preventDefault();
 
@@ -438,6 +446,18 @@ function life_counter_player_setup() {
     );
 
     confirmBtn.text("originalBtnText");
+  };
+  self.SetAsFirstPlayer = () => {
+    const manager = self.Current_LifeCounter_Manager;
+    const players = self.Current_LifeCounter_Players;
+    const index = players.findIndex(
+      (player) => player.PlayerId == self.Current_LifeCounter_Player.PlayerId
+    );
+    manager.FirstPlayerIndex = index;
+
+    self.SetLifeCounterTemplates();
+
+    self.RedirectToLifeCounterManager(manager.LifeCounterManagerId);
   };
   self.DeletePlayer = () => {
     const players = self.Current_LifeCounter_Players;
