@@ -91,62 +91,81 @@ function lifecounter_manager() {
   self.decreasingPointsCounter = 0;
 
   self.SearchLocalStorageForLifeCounter = () => {
+    if (localStorage.getItem("LifeCounterTemplates") != null) {
+      self.LifeCounterTemplates = self.GetLifeCounterTemplates();
+      self.Search_URL_Params_LifeCounterManagerId();
+      return;
+    }
+
+    self.BuildDefaultLifeCounterTemplate();
+  };
+  self.Search_URL_Params_LifeCounterManagerId = () => {
     const managerId = new URLSearchParams(window.location.search).get(
       "LifeCounterManagerId"
     );
-    if (localStorage.getItem("LifeCounterTemplates") != null) {
-      self.LifeCounterTemplates = self.GetLifeCounterTemplates();
 
-      if (managerId) {
-        self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
-          (template) =>
-            template.LifeCounterManagers.find(
-              (manager) => manager.LifeCounterManagerId == managerId
-            )
-        );
-
-        self.Current_LifeCounter_Manager =
-          self.Current_LifeCounter_Template.LifeCounterManagers.find(
-            (manager) => manager.LifeCounterManagerId == managerId
-          );
-
-        self.Current_LifeCounter_Players =
-          self.Current_LifeCounter_Manager.LifeCounterPlayers;
-      } else {
-        const mostRecentManager = self.LifeCounterTemplates.flatMap(
-          (template) => template.LifeCounterManagers
-        ).reduce(
-          (latest, current) =>
-            current.StartingTime > (latest?.StartingTime ?? -Infinity)
-              ? current
-              : latest,
-          null
-        );
-
-        if (!mostRecentManager) {
-          self.Current_LifeCounter_Template =
-            self.LifeCounterTemplates[self.LifeCounterTemplates.length - 1];
-
-          self.BuildDefaultLifeCounterManager();
-
-          return;
-        }
-
-        self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
-          (template) =>
-            template.LifeCounterTemplateId ==
-            mostRecentManager.LifeCounterTemplateId
-        );
-
-        self.Current_LifeCounter_Manager = mostRecentManager;
-
-        self.Current_LifeCounter_Players = mostRecentManager.LifeCounterPlayers;
+    if (managerId) {
+      if (self.IsUserLoggedIn === true) {
+        self.User_Get_LifeCounterManagerDetails(managerId);
+        return;
       }
+      // Sets the self.Current_LifeCounter_Template based on the managerId
+      self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
+        (template) =>
+          template.LifeCounterManagers.find(
+            (manager) => manager.LifeCounterManagerId == managerId
+          )
+      );
+
+      // Sets the self.Current_LifeCounter_Manager based on the managerId
+      self.Current_LifeCounter_Manager =
+        self.Current_LifeCounter_Template.LifeCounterManagers.find(
+          (manager) => manager.LifeCounterManagerId == managerId
+        );
+
+      // Sets the self.Current_LifeCounter_Players based on the managerId
+      self.Current_LifeCounter_Players =
+        self.Current_LifeCounter_Manager.LifeCounterPlayers;
 
       self.BuildLifeCounterManager();
-    } else {
-      self.BuildDefaultLifeCounterTemplate();
+
+      return;
     }
+
+    const mostRecentManager = self.LifeCounterTemplates.flatMap(
+      (template) => template.LifeCounterManagers
+    ).reduce(
+      (latest, current) =>
+        current.StartingTime > (latest?.StartingTime ?? -Infinity)
+          ? current
+          : latest,
+      null
+    );
+
+    if (!mostRecentManager) {
+      if (self.IsUserLoggedIn === true) {
+        self.User_QuickStart_LifeCounterManager();
+        return;
+      }
+      self.Current_LifeCounter_Template =
+        self.LifeCounterTemplates[self.LifeCounterTemplates.length - 1];
+
+      self.BuildDefaultLifeCounterManager();
+
+      return;
+    }
+
+    self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
+      (template) =>
+        template.LifeCounterTemplateId ==
+        mostRecentManager.LifeCounterTemplateId
+    );
+
+    self.Current_LifeCounter_Manager = mostRecentManager;
+
+    self.Current_LifeCounter_Players = mostRecentManager.LifeCounterPlayers;
+
+    self.BuildLifeCounterManager();
   };
 
   self.BuildDefaultLifeCounterTemplate = () => {
@@ -571,7 +590,7 @@ function lifecounter_manager() {
 
         self.Buttons.ChangeLifeCounterTemplate.text(selectedTemplateName);
 
-        self.StartLifeCounterManager(selectedTemplateId);
+        self.NewLifeCounterManager(selectedTemplateId);
       }
     );
 
@@ -634,7 +653,7 @@ function lifecounter_manager() {
     self.DOM.on("click", "#button-new-lifeCounterManager", function (e) {
       e.preventDefault();
 
-      self.StartLifeCounterManager(
+      self.NewLifeCounterManager(
         self.Current_LifeCounter_Template.LifeCounterTemplateId
       );
     });
@@ -1254,6 +1273,7 @@ function lifecounter_manager() {
   };
   self.ReopenLifeCounterManager = (lifeCounterManagerId) => {
     self.Current_LifeCounter_Manager = [];
+    self.Current_LifeCounter_Players = [];
 
     const template = self.Current_LifeCounter_Template;
 
@@ -1262,7 +1282,7 @@ function lifecounter_manager() {
     );
 
     if (self.IsUserLoggedIn === true) {
-      self.GetLifeCounterManagerDetails(lifeCounterManagerId);
+      self.User_Get_LifeCounterManagerDetails(lifeCounterManagerId);
 
       return;
     }
@@ -1277,7 +1297,7 @@ function lifecounter_manager() {
   };
 
   //! METHODS FOR USERS...
-  self.GetUserLifeCounterTemplate = (templateId) => {
+  self.User_GetLifeCounterTemplate = (templateId) => {
     $.ajax({
       url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${templateId}`,
       method: "GET",
@@ -1308,14 +1328,14 @@ function lifecounter_manager() {
 
         self.SetLifeCounterTemplates();
 
-        self.StartUserLifeCounterManager(templateId);
+        self.User_StartLifeCounterManager(templateId);
       },
       error: function (xhr, status, error) {
         console.error("Error fetching board game details:", error);
       },
     });
   };
-  self.StartUserLifeCounterManager = (templateId) => {
+  self.User_StartLifeCounterManager = (templateId) => {
     self.DOM.loadcontent("charge-contentloader");
     $.ajax({
       type: "POST",
@@ -1382,7 +1402,7 @@ function lifecounter_manager() {
     });
   };
 
-  self.QuickStartUserLifeCounter = () => {
+  self.User_QuickStart_LifeCounterManager = () => {
     $.ajax({
       type: "POST",
       url: `https://localhost:7081/users/quickstartlifecounter`,
@@ -1395,7 +1415,7 @@ function lifecounter_manager() {
 
         const lifeCounterTemplateId = response.content.lifeCounterTemplateId;
         const lifeCounterManagerId = response.content.lifeCounterManagerId;
-        self.GetLifeCounterTemplateDetails(
+        self.User_Get_LifeCounterTemplateDetails(
           lifeCounterTemplateId,
           lifeCounterManagerId
         );
@@ -1407,7 +1427,7 @@ function lifecounter_manager() {
       },
     });
   };
-  self.GetLifeCounterTemplateDetails = (
+  self.User_Get_LifeCounterTemplateDetails = (
     lifeCounterTemplateId,
     lifeCounterManagerId
   ) => {
@@ -1442,7 +1462,7 @@ function lifecounter_manager() {
         self.LifeCounterTemplates.push(self.Current_LifeCounter_Template);
 
         if (lifeCounterManagerId) {
-          self.GetLifeCounterManagerDetails(lifeCounterManagerId);
+          self.User_Get_LifeCounterManagerDetails(lifeCounterManagerId);
         }
       },
       error: function (xhr, status, error) {
@@ -1450,7 +1470,7 @@ function lifecounter_manager() {
       },
     });
   };
-  self.GetLifeCounterManagerDetails = (lifeCounterManagerId) => {
+  self.User_Get_LifeCounterManagerDetails = (lifeCounterManagerId) => {
     // Fetch Life Counter Details based on provided LifeCounterId
     const id = lifeCounterManagerId;
 
@@ -1464,22 +1484,26 @@ function lifecounter_manager() {
           return;
         }
 
-        // Fetching LIFE COUNTER TEMPLATE
-        // const template = response.content.lifeCounterTemplate;
-        // self.Current_LifeCounter_Template = {
-        //   LifeCounterTemplateId: template.lifeCounterTemplateId,
-        //   LifeCounterTemplateName: template.lifeCounterTemplateName,
-        //   PlayersStartingLifePoints: template.playersStartingLifePoints,
-        //   PlayersCount: template.playersCount,
-        //   FixedMaxLifePointsMode: template.fixedMaxLifePointsMode,
-        //   PlayersMaxLifePoints: template.playersMaxLifePoints,
-        //   AutoDefeatMode: template.autoDefeatMode,
-        //   AutoEndMode: template.autoEndMode,
-        //   LifeCounterManagersCount: template.lifeCounterManagersCount,
-        //   LifeCounterManagers: [],
-        // };
+        let template = self.Current_LifeCounter_Template;
 
-        const template = self.Current_LifeCounter_Template;
+        console.log("template: ", template);
+
+        if (!template || template.length == 0) {
+          // Fetching LIFE COUNTER TEMPLATE
+          template = response.content.lifeCounterTemplate;
+          self.Current_LifeCounter_Template = {
+            LifeCounterTemplateId: template.lifeCounterTemplateId,
+            LifeCounterTemplateName: template.lifeCounterTemplateName,
+            PlayersStartingLifePoints: template.playersStartingLifePoints,
+            PlayersCount: template.playersCount,
+            FixedMaxLifePointsMode: template.fixedMaxLifePointsMode,
+            PlayersMaxLifePoints: template.playersMaxLifePoints,
+            AutoDefeatMode: template.autoDefeatMode,
+            AutoEndMode: template.autoEndMode,
+            LifeCounterManagersCount: template.lifeCounterManagersCount,
+            LifeCounterManagers: [],
+          };
+        }
 
         // Fetching LIFE COUNTER MANAGER
         const manager = response.content;
@@ -1531,22 +1555,24 @@ function lifecounter_manager() {
     });
   };
 
-  self.StartLifeCounterManager = (lifeCounterTemplateId) => {
-    const startDefaultLifeCounterManager = () => {
+  self.NewLifeCounterManager = (lifeCounterTemplateId) => {
+    self.Current_LifeCounter_Manager = [];
+    self.Current_LifeCounter_Players = [];
+
+    const default_startLifeCounterManager = () => {
       if (!lifeCounterTemplateId) {
         self.LifeCounterTemplates = self.GetLifeCounterTemplates();
         const mostCurrentTemplate = self.LifeCounterTemplates.length - 1;
         self.Current_LifeCounter_Template =
           self.LifeCounterTemplates[mostCurrentTemplate];
       }
-      self.BuildDefaultLifeCounterManager();
 
-      self.BuildLifeCounterManager();
+      self.BuildDefaultLifeCounterManager();
 
       return;
     };
 
-    const startUserLifeCounterManager = () => {
+    const user_startLifeCounterManager = () => {
       if (!lifeCounterTemplateId) {
         self.GetUserLastLifeCounterManager();
         return;
@@ -1554,16 +1580,17 @@ function lifecounter_manager() {
 
       const templateId =
         self.Current_LifeCounter_Template.LifeCounterTemplateId;
-      //self.GetUserLifeCounterTemplate(lifeCounterTemplateId);
-      self.StartUserLifeCounterManager(templateId);
+      //self.User_GetLifeCounterTemplate(lifeCounterTemplateId);
+      self.User_StartLifeCounterManager(templateId);
       return;
     };
 
     if (self.IsUserLoggedIn === false) {
-      startDefaultLifeCounterManager();
+      default_startLifeCounterManager();
       return;
     }
-    startUserLifeCounterManager();
+
+    user_startLifeCounterManager();
   };
 
   //? GENERIC METHODS...
@@ -1606,6 +1633,31 @@ function lifecounter_manager() {
   };
 
   self.OrganizeSits = (lifeCountersCount) => {
+    function resetPlayerBlock(block) {
+      block.attr("style", ""); // Clear inline styles
+
+      block.find("button .bi-dash-lg").removeClass("rotate-i");
+      block
+        .find(".playerstats")
+        .removeClass("rotate-text-clockWise rotate-text-antiClockWise");
+
+      block
+        .find(self.Buttons.IncreaseLifePoints)
+        .removeClass("increasePointsFlexRow increasePointsFlexColumn");
+      block
+        .find(self.Buttons.DecreaseLifePoints)
+        .removeClass("decreasePointsFlexRow decreasePointsFlexColumn");
+    }
+
+    [
+      self.PlayerBlocks.First,
+      self.PlayerBlocks.Second,
+      self.PlayerBlocks.Third,
+      self.PlayerBlocks.Fourth,
+      self.PlayerBlocks.Fifth,
+      self.PlayerBlocks.Sixth,
+    ].forEach(resetPlayerBlock);
+
     function ShowOneLifeCounter() {
       if (self.LifeCounterInstances[0].hasClass("d-none")) {
         self.LifeCounterInstances[0].removeClass("d-none");
@@ -2155,7 +2207,7 @@ function lifecounter_manager() {
 
     const manager = self.Current_LifeCounter_Manager;
 
-    if (!self.FirstPlayerIndex) {
+    if (self.FirstPlayerIndex === undefined || self.FirstPlayerIndex === null) {
       self.FirstPlayerIndex = manager.FirstPlayerIndex;
     }
 
@@ -2808,13 +2860,13 @@ function lifecounter_manager() {
           withCredentials: true,
         },
         success: (resp) => {
-          if (resp.content == null) {
+          if (resp.content === null) {
             sweetAlertError(resp.message);
 
             return;
           }
 
-          self.Build();
+          self.BuildLifeCounterManager();
         },
         error: (err) => {
           sweetAlertError(err);
@@ -2854,12 +2906,12 @@ function lifecounter_manager() {
       self.IsBuilt = true;
     }
 
-    if (self.IsUserLoggedIn === true) {
-      self.QuickStartUserLifeCounter();
+    if (self.IsUserLoggedIn === false) {
+      self.SearchLocalStorageForLifeCounter();
       return;
     }
 
-    self.SearchLocalStorageForLifeCounter();
+    self.Search_URL_Params_LifeCounterManagerId();
   };
 
   self.CheckAuthenticationStatus();
