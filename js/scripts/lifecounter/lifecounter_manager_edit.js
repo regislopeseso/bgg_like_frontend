@@ -305,6 +305,22 @@ function life_counter_manager_edit() {
     self.Inputs.AutoEndMode.attr("checked", manager.AutoEndMode == true);
   };
 
+  self.EvaluateNewName = (newName) => {
+    const newNameAlreadyExists =
+      self.Current_LifeCounter_Template.LifeCounterManagers.some(
+        (manager) =>
+          manager.lifeCounterManagerId !=
+            self.Current_LifeCounter_Manager.LifeCounterManagerId &&
+          manager.LifeCounterManagerName.trim().toLowerCase() ===
+            newName.trim().toLowerCase()
+      );
+
+    if (newNameAlreadyExists) {
+      return false;
+    }
+
+    return true;
+  };
   self.EvaluatePlayersCount = () => {
     const manager = self.Current_LifeCounter_Manager;
 
@@ -403,6 +419,17 @@ function life_counter_manager_edit() {
   };
   self.EditLifeCounterManager = () => {
     const manager = self.Current_LifeCounter_Manager;
+    let newName = self.Inputs.LifeCounterName.val();
+    let isNameValid = self.EvaluateNewName(newName);
+
+    if (isNameValid === false) {
+      sweetAlertError(
+        "Requested name is already in use, please choose another one."
+      );
+
+      return;
+    }
+
     manager.LifeCounterManagerName = self.Inputs.LifeCounterName.val();
 
     manager.PlayesStartingLifePoints =
