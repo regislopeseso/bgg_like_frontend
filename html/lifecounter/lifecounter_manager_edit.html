@@ -7,7 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SET UP LIFE COUNTER</title>
     <link rel="stylesheet" href="/css/addons.css" />
-    <link rel="stylesheet" href="/css/lifecounter/lifecounter_setup.css" />
+    <link
+      rel="stylesheet"
+      href="/css/lifecounter/lifecounter_manager_edit.css"
+    />
   </head>
   <body>
     <main id="main-lifeCounter-explore-setUp">
@@ -70,11 +73,12 @@
               <div
                 class="playersCountOptions-container d-flex flex-row gap-5 justify-content-center align-items-center"
               >
-                <button type="button" class="players-count-options">+1</button>
-                <button type="button" class="players-count-options">+2</button>
-                <button type="button" class="players-count-options">+3</button>
-                <button type="button" class="players-count-options">+4</button>
-                <button type="button" class="players-count-options">+5</button>
+                <button type="button" class="players-count-options">1</button>
+                <button type="button" class="players-count-options">2</button>
+                <button type="button" class="players-count-options">3</button>
+                <button type="button" class="players-count-options">4</button>
+                <button type="button" class="players-count-options">5</button>
+                <button type="button" class="players-count-options">6</button>
               </div>
             </div>
 
@@ -170,6 +174,14 @@
             >
               <button
                 type="button"
+                id="button-delete-lifeCounter-explore-setup"
+                class="btn btn-sm btn-outline-danger"
+              >
+                Delete
+              </button>
+
+              <button
+                type="button"
                 id="button-clear-lifeCounter-explore-setup"
                 class="btn-refresh btn btn-sm btn-outline-warning"
               >
@@ -198,6 +210,6 @@
     <script src="/js/plugins/content_loader.js"></script>
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
-    <script src="/js/scripts/lifecounter/lifecounter_setup.js"></script>
+    <script src="/js/scripts/lifecounter/lifecounter_manager_edit.js"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-function life_counter_player_setup() {
+function life_counter_player_edit() {
   let self = this;
 
   self.LifeCounterPlayerId = null;
@@ -515,5 +515,5 @@ function life_counter_player_setup() {
 }
 
 $(function () {
-  new life_counter_player_setup();
+  new life_counter_player_edit();
 });

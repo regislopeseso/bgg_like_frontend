@@ -1,3 +1,5 @@
+// USER'S LIFE COUNTER MANAGER SETUP -> LOGGED IN-ONLY
+
 function life_counter_manager_setup() {
   let self = this;
 

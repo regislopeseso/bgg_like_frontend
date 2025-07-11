@@ -124,6 +124,15 @@ function lifecounter_manager() {
           null
         );
 
+        if (!mostRecentManager) {
+          self.Current_LifeCounter_Template =
+            self.LifeCounterTemplates[self.LifeCounterTemplates.length - 1];
+
+          self.BuildDefaultLifeCounterManager();
+
+          return;
+        }
+
         self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
           (template) =>
             template.LifeCounterTemplateId ==
@@ -137,17 +146,17 @@ function lifecounter_manager() {
 
       self.BuildLifeCounterManager();
     } else {
-      self.BuildDefaultLifeCounter();
+      self.BuildDefaultLifeCounterTemplate();
       if (self.IsUserLoggedIn == true) {
         self.SyncUserLifeCounterData();
       }
     }
   };
-  self.BuildDefaultLifeCounter = () => {
+
+  self.BuildDefaultLifeCounterTemplate = () => {
     // Setting the commom parameters
     const playersStartingLifePoints = 10;
     const playersCount = 3;
-    const firstPlayerIndex = Math.floor(Math.random() * playersCount) + 1;
     const fixedMaxLifePointsMode = true;
     const playersMaxLifePoints = 15;
     const autoDefeatMode = true;
@@ -158,7 +167,7 @@ function lifecounter_manager() {
     const template_virtualId = "lct" + (self.LifeCounterTemplates.length + 1);
     self.Current_LifeCounter_Template = {
       LifeCounterTemplateId: template_virtualId,
-      LifeCounterTemplateName: "Life Counter Template Zer0",
+      LifeCounterTemplateName: "Life Counter Template 1.",
       PlayersStartingLifePoints: playersStartingLifePoints,
       PlayersCount: playersCount,
       FixedMaxLifePointsMode: fixedMaxLifePointsMode,
@@ -172,16 +181,33 @@ function lifecounter_manager() {
     // Updates Life Counter TEMPLATES >LIST<
     self.LifeCounterTemplates.push(self.Current_LifeCounter_Template);
 
-    // Building a Default Life Counter MANAGER
+    self.SetLifeCounterTemplates();
+
+    self.BuildDefaultLifeCounterManager();
+  };
+  self.BuildDefaultLifeCounterManager = () => {
+    const template = self.Current_LifeCounter_Template;
+
     self.Current_LifeCounter_Manager = [];
-    // Creating a new LIFE COUNTER MANAGER
-    const manager_virtualId =
-      "lcm" +
-      (self.Current_LifeCounter_Template.LifeCounterManagers.length + 1);
+
+    // Setting the commom parameters
+    const templateId = template.LifeCounterTemplateId;
+    const manager_virtualId = "lcm" + (template.LifeCounterManagersCount + 1);
+    const lifeCounterManagerName = `${template.LifeCounterTemplateName}M${
+      template.LifeCounterManagersCount + 1
+    }`;
+    const playersStartingLifePoints = template.PlayersStartingLifePoints;
+    const playersCount = template.PlayersCount;
+    const firstPlayerIndex = Math.floor(Math.random() * template.PlayersCount);
+    const fixedMaxLifePointsMode = template.FixedMaxLifePointsMode;
+    const playersMaxLifePoints = template.PlayersMaxLifePoints;
+    const autoDefeatMode = template.AutoDefeatMode;
+    const autoEndMode = template.AutoEndMode;
+
     self.Current_LifeCounter_Manager = {
-      LifeCounterTemplateId: template_virtualId,
+      LifeCounterTemplateId: templateId,
       LifeCounterManagerId: manager_virtualId,
-      LifeCounterManagerName: "Life Counter Manager Zer0",
+      LifeCounterManagerName: lifeCounterManagerName,
       PlayersStartingLifePoints: playersStartingLifePoints,
       PlayersCount: playersCount,
       LifeCounterPlayers: [],
@@ -196,19 +222,29 @@ function lifecounter_manager() {
       IsFinished: false,
     };
     // Updates Life Counter TEMPLATE -> Managers
-    self.Current_LifeCounter_Template.LifeCounterManagers.push(
-      self.Current_LifeCounter_Manager
-    );
+    template.LifeCounterManagers.push(self.Current_LifeCounter_Manager);
 
     // Updates Life Counter TEMPLATE
-    self.Current_LifeCounter_Template.LifeCounterManagersCount++;
+    template.LifeCounterManagersCount++;
 
-    // Creating the Life Counter Players
+    self.SetLifeCounterTemplates();
+
+    self.BuildDefaultLifeCounterPlayers();
+  };
+  self.BuildDefaultLifeCounterPlayers = () => {
     self.Current_LifeCounter_Players = [];
+
+    const manager = self.Current_LifeCounter_Manager;
+
+    // Setting the commom parameters
+    const lifeCounterManagerId = manager.LifeCounterManagerId;
+    const playersCount = 3;
+    const playersStartingLifePoints = manager.PlayersStartingLifePoints;
+
     for (let i = 0; i < playersCount; i++) {
       const player_virtualId = "lcp" + (i + 1);
       let newPlayer = {
-        LifeCounterManagerId: manager_virtualId,
+        LifeCounterManagerId: lifeCounterManagerId,
         PlayerId: player_virtualId,
         PlayerName: "Player " + (i + 1),
         CurrentLifePoints: playersStartingLifePoints,
@@ -218,8 +254,7 @@ function lifecounter_manager() {
       self.Current_LifeCounter_Players.push(newPlayer);
     }
     // Updates Life Counter TEMPLATE -> MANAGERS -> Players
-    self.Current_LifeCounter_Manager.LifeCounterPlayers =
-      self.Current_LifeCounter_Players;
+    manager.LifeCounterPlayers = self.Current_LifeCounter_Players;
 
     // Updates Local Storage: Life Counter TEMPLATES >LIST<
     self.SetLifeCounterTemplates();
@@ -287,7 +322,7 @@ function lifecounter_manager() {
       self.DOM.find("#button-refresh-lifeCounterManager");
     self.Buttons[self.Buttons.length] = self.Buttons.ChangeLifeCounterManager =
       self.DOM.find("#button-change-lifeCounterManager");
-    self.Buttons[self.Buttons.length] = self.Buttons.SetUpLifeCounter =
+    self.Buttons[self.Buttons.length] = self.Buttons.EditLifeCounterManager =
       self.DOM.find("#button-setUp-lifeCounter");
     //
     self.Buttons[self.Buttons.length] = self.Buttons.AccessDiceThrower =
@@ -384,10 +419,11 @@ function lifecounter_manager() {
       self.Locations.LifeCounter_EditTemplate =
         "/html/lifecounter/lifecounter_template_edit.html";
     self.Locations[self.Locations.length] =
-      self.Locations.LifeCounterManagerSetUp = "/html/lifecounter_setup.html";
+      self.Locations.LifeCounterManagerSetUp =
+        "/html/lifecounter/lifecounter_manager_edit.html";
     self.Locations[self.Locations.length] =
       self.Locations.LifeCounterPlayerSetUp =
-        "/html/lifecounter/lifecounter_player_setup.html";
+        "/html/lifecounter/lifecounter_player_edit.html";
   };
 
   self.RedirectToHomePage = () => {
@@ -400,11 +436,12 @@ function lifecounter_manager() {
   self.RedirectToLifeCounter_EditTemplate = () => {
     window.location.href = `${self.Locations.LifeCounter_EditTemplate}`;
   };
-
-  self.RedirectToLifeCounterManagerSetUp = () => {
-    window.location.href = `${self.Locations.LifeCounterManagerSetUp}`;
+  self.RedirectToLifeCounter_EditManager = (managerId) => {
+    window.location.href = `${
+      self.Locations.LifeCounterManagerSetUp
+    }?LifeCounterManagerId=${encodeURIComponent(managerId)}`;
   };
-  self.RedirectToLifeCounterPlayerSetUp = (playerId) => {
+  self.RedirectToLifeCounter_EditPlayer = (playerId) => {
     window.location.href = `${
       self.Locations.LifeCounterPlayerSetUp
     }?PlayerId=${encodeURIComponent(playerId)}`;
@@ -597,10 +634,12 @@ function lifecounter_manager() {
       }
     );
 
-    self.Buttons.SetUpLifeCounter.on("click", function (e) {
+    self.Buttons.EditLifeCounterManager.on("click", function (e) {
       e.preventDefault();
 
-      self.RedirectToLifeCounterManagerSetUp(self.LifeCounterId);
+      const manager = self.Current_LifeCounter_Manager;
+
+      self.RedirectToLifeCounter_EditManager(manager.LifeCounterManagerId);
     });
 
     self.Buttons.SyncLifeCounterData_DB.on("click", () => {});
@@ -851,7 +890,7 @@ function lifecounter_manager() {
 
       const playerId = player.PlayerId;
 
-      self.RedirectToLifeCounterPlayerSetUp(playerId);
+      self.RedirectToLifeCounter_EditPlayer(playerId);
     });
 
     self.Buttons.IncreaseLifePoints.on("mousedown touchstart", function (e) {
@@ -1486,7 +1525,7 @@ function lifecounter_manager() {
 
     self.Fields.ShowDurationWrapper.addClass("d-none");
 
-    self.Buttons.SetUpLifeCounter.removeClass("d-none");
+    self.Buttons.EditLifeCounterManager.removeClass("d-none");
 
     for (let i = 0; i < manager.PlayersCount; i++) {
       self.LifeCounterInstances[i]
@@ -2540,7 +2579,7 @@ function lifecounter_manager() {
       buildLifeCounterLength(rawDuration);
     }
 
-    self.Buttons.SetUpLifeCounter.addClass("d-none");
+    self.Buttons.EditLifeCounterManager.addClass("d-none");
 
     self.Buttons.RestorePlayer.attr("disabled", true).addClass("d-none");
   };
@@ -2645,7 +2684,7 @@ function lifecounter_manager() {
     showIncreasingAmount();
   };
   self.RefreshLifeCounter = () => {
-    self.Buttons.SetUpLifeCounter.removeClass("d-none");
+    self.Buttons.EditLifeCounterManager.removeClass("d-none");
     self.Fields.ShowDurationWrapper.addClass("d-none");
     self.Fields.ShowDuration.html("");
 
