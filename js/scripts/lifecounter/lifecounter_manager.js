@@ -91,12 +91,11 @@ function lifecounter_manager() {
   self.decreasingPointsCounter = 0;
 
   self.SearchLocalStorageForLifeCounter = () => {
+    const managerId = new URLSearchParams(window.location.search).get(
+      "LifeCounterManagerId"
+    );
     if (localStorage.getItem("LifeCounterTemplates") != null) {
       self.LifeCounterTemplates = self.GetLifeCounterTemplates();
-
-      const managerId = new URLSearchParams(window.location.search).get(
-        "LifeCounterManagerId"
-      );
 
       if (managerId) {
         self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
@@ -147,9 +146,6 @@ function lifecounter_manager() {
       self.BuildLifeCounterManager();
     } else {
       self.BuildDefaultLifeCounterTemplate();
-      if (self.IsUserLoggedIn == true) {
-        self.SyncUserLifeCounterData();
-      }
     }
   };
 
@@ -308,8 +304,8 @@ function lifecounter_manager() {
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.ChangeLifeCounterTemplate =
       self.DOM.find("#button-change-lifeCounterTemplate");
-    self.Buttons[self.Buttons.length] = self.Buttons.CreateLifeCounterTemplate =
-      self.DOM.find("#create-lifeCounterTemplate");
+    self.Buttons[self.Buttons.length] = self.Buttons.NewLifeCounterTemplate =
+      self.DOM.find("#button-new-lifeCounterTemplate");
     self.Buttons[self.Buttons.length] = self.Buttons.EditLifeCounterTemplate =
       self.DOM.find("#button-edit-LifeCounterTemplate");
     //
@@ -322,6 +318,8 @@ function lifecounter_manager() {
       self.DOM.find("#button-refresh-lifeCounterManager");
     self.Buttons[self.Buttons.length] = self.Buttons.ChangeLifeCounterManager =
       self.DOM.find("#button-change-lifeCounterManager");
+    self.Buttons[self.Buttons.length] = self.Buttons.NewLifeCounterManager =
+      self.DOM.find("#button-new-lifeCounterManager");
     self.Buttons[self.Buttons.length] = self.Buttons.EditLifeCounterManager =
       self.DOM.find("#button-setUp-lifeCounter");
     //
@@ -556,16 +554,12 @@ function lifecounter_manager() {
   }
 
   self.LoadEvents = () => {
+    // Click to load Life Counter TEMPLATES in the drop down list
     self.Buttons.ChangeLifeCounterTemplate.on("click", (e) => {
       self.LoadLifeCounterTemplates();
     });
 
-    //self.Buttons.AcessLifeCounterTemplateMenu
-    self.DOM.on("click", "#create-lifeCounterTemplate", function (e) {
-      e.preventDefault();
-      self.RedirectToLifeCounter_CreateTemplate();
-    });
-
+    // Selects a Life Counter TEMPLATE from the drop down list
     self.DOM.on(
       "click",
       self.lifeCounterTemplateDropDownItems_class,
@@ -580,6 +574,12 @@ function lifecounter_manager() {
         self.StartLifeCounterManager(selectedTemplateId);
       }
     );
+
+    // Starts a New Life Counter TEMPLATE
+    self.DOM.on("click", "#button-new-lifeCounterTemplate", function (e) {
+      e.preventDefault();
+      sweetAlertSuccess("Hey1");
+    });
 
     self.Buttons.EditLifeCounterTemplate.on("click", () => {
       // const templateId =
@@ -607,16 +607,12 @@ function lifecounter_manager() {
       self.RefreshLifeCounter();
     });
 
+    // Click to load Life Counter MANAGERS in the drop down list
     self.Buttons.ChangeLifeCounterManager.on("click", (e) => {
       self.LoadLifeCounterManagers();
     });
 
-    //self.Buttons.AcessLifeCounterTemplateMenu
-    self.DOM.on("click", "#create-lifeCounterManager", function (e) {
-      e.preventDefault();
-      self.RedirectToLifeCounter_CreateManager();
-    });
-
+    // Selects a Life Counter MANAGER from the drop down list
     self.DOM.on(
       "click",
       self.lifeCounterManagerDropDownItems_class,
@@ -630,9 +626,18 @@ function lifecounter_manager() {
 
         self.Buttons.ChangeLifeCounterManager.text(selectedManagerName);
 
-        // self.BuildLifeCounterManager();
+        self.ReopenLifeCounterManager(selectedManagerId);
       }
     );
+
+    // Starts a New Life Counter Manager
+    self.DOM.on("click", "#button-new-lifeCounterManager", function (e) {
+      e.preventDefault();
+
+      self.StartLifeCounterManager(
+        self.Current_LifeCounter_Template.LifeCounterTemplateId
+      );
+    });
 
     self.Buttons.EditLifeCounterManager.on("click", function (e) {
       e.preventDefault();
@@ -1123,7 +1128,7 @@ function lifecounter_manager() {
         </li>
 
         <li class="li-change-lifeCounterTemplate">  
-            <btn id="create-lifeCounterTemplate" class="button dropdown-item">CREATE TEMPLATE</btn>
+            <button id="button-new-lifeCounterTemplate" class="dropdown-item">NEW TEMPLATE</button>
         </li>
         `;
       self.LifeCounterTemplatesDropDown.append(createTemplateBtn);
@@ -1159,9 +1164,6 @@ function lifecounter_manager() {
         buildDropDown(lifeCounterTemplates);
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching life counter templates:", error);
-        console.log("Status:", status);
-        console.log("Response:", xhr.responseText);
         sweetAlertError("Failed to fetch life counter templates.");
       },
     });
@@ -1205,7 +1207,7 @@ function lifecounter_manager() {
         </li>
 
         <li class="li-change-lifeCounterManager">  
-            <btn id="create-lifeCounterManager" class="button dropdown-item">NEW MANAGER</btn>
+            <button id="button-new-lifeCounterManager" class="btn btn-outline-info dropdown-item">NEW MANAGER</button>
         </li>
         `;
       self.LifeCounterManagersDropDown.append(createManagerBtn);
@@ -1246,34 +1248,32 @@ function lifecounter_manager() {
         buildDropDown(lifeCounterManagers);
       },
       error: function (xhr, status, error) {
-        console.error(
-          "Error fetching unfinished life counter managers:",
-          error
-        );
-        console.log("Status:", status);
-        console.log("Response:", xhr.responseText);
         sweetAlertError("Failed to fetch life counter managers.");
       },
     });
   };
-  self.ReopenLifeCounterManager = () => {
-    //self.DOM.loadcontent("charge-contentloader");
-    // Set up board game selection change handler
-    self.DOM.find(self.ReloadLifeCounterManager)
-      .off("select2:select", self.ReloadLifeCounterManager)
-      .on("select2:select", self.ReloadLifeCounterManager, function () {
-        // Get selected Life Counter Manager Id
-        self.LifeCounterManagerId = $(this).val();
+  self.ReopenLifeCounterManager = (lifeCounterManagerId) => {
+    self.Current_LifeCounter_Manager = [];
 
-        if (self.LifeCounterManagerId === null) {
-          sweetAlertError("Error: missing life counter manager id");
+    const template = self.Current_LifeCounter_Template;
 
-          return;
-        }
+    self.Current_LifeCounter_Manager = template.LifeCounterManagers.find(
+      (manager) => manager.LifeCounterManagerId == lifeCounterManagerId
+    );
 
-        self.RedirectToLifeCounterManager(self.LifeCounterManagerId);
-        //self.DOM.loadcontent("demolish-contentloader");
-      });
+    if (self.IsUserLoggedIn === true) {
+      self.GetLifeCounterManagerDetails(lifeCounterManagerId);
+
+      return;
+    }
+
+    self.Current_LifeCounter_Players = [];
+    self.Current_LifeCounter_Players =
+      self.Current_LifeCounter_Manager.LifeCounterPlayers;
+
+    self.SetLifeCounterTemplates();
+
+    self.BuildLifeCounterManager();
   };
 
   //! METHODS FOR USERS...
@@ -1334,7 +1334,7 @@ function lifecounter_manager() {
         self.Current_LifeCounter_Manager = {
           LifeCounterManagerId: manager.lifeCounterManagerId,
           LifeCounterTemplateId: manager.lifeCounterTemplateId,
-          LifeCounterManagerName: manager.lifeCounterTemplateName,
+          LifeCounterManagerName: manager.lifeCounterManagerName,
           PlayersStartingLifePoints: manager.playersStartingLifePoints,
           PlayersCount: manager.playersCount,
           FirstPlayerIndex: manager.firstPlayerIndex,
@@ -1369,8 +1369,6 @@ function lifecounter_manager() {
           self.Current_LifeCounter_Players.push(newPlayer);
         });
 
-        self.SetLifeCounterTemplates();
-
         self.BuildLifeCounterManager();
       },
       error: function (xhr, status, error) {
@@ -1395,13 +1393,60 @@ function lifecounter_manager() {
           return;
         }
 
+        const lifeCounterTemplateId = response.content.lifeCounterTemplateId;
         const lifeCounterManagerId = response.content.lifeCounterManagerId;
-        self.GetLifeCounterManagerDetails(lifeCounterManagerId);
+        self.GetLifeCounterTemplateDetails(
+          lifeCounterTemplateId,
+          lifeCounterManagerId
+        );
       },
       error: function (xhr, status, error) {
         sweetAlertError(
           "Failed to fetch requested LIFE COUNTER MANAGER DETAILS."
         );
+      },
+    });
+  };
+  self.GetLifeCounterTemplateDetails = (
+    lifeCounterTemplateId,
+    lifeCounterManagerId
+  ) => {
+    // Fetch Life Counter Details based on provided LifeCounterId
+    const id = lifeCounterTemplateId;
+
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${id}`,
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        if (!response.content) {
+          sweetAlertError(response.message_text);
+          return;
+        }
+
+        // Fetching LIFE COUNTER TEMPLATE
+        const template = response.content;
+        self.Current_LifeCounter_Template = {
+          LifeCounterTemplateId: id,
+          LifeCounterTemplateName: template.lifeCounterTemplateName,
+          PlayersStartingLifePoints: template.playersStartingLifePoints,
+          PlayersCount: template.playersCount,
+          FixedMaxLifePointsMode: template.fixedMaxLifePointsMode,
+          PlayersMaxLifePoints: template.playersMaxLifePoints,
+          AutoDefeatMode: template.autoDefeatMode,
+          AutoEndMode: template.autoEndMode,
+          LifeCounterManagersCount: template.lifeCounterManagersCount,
+          LifeCounterManagers: [],
+        };
+
+        self.LifeCounterTemplates.push(self.Current_LifeCounter_Template);
+
+        if (lifeCounterManagerId) {
+          self.GetLifeCounterManagerDetails(lifeCounterManagerId);
+        }
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError("Could not load life counter");
       },
     });
   };
@@ -1420,19 +1465,21 @@ function lifecounter_manager() {
         }
 
         // Fetching LIFE COUNTER TEMPLATE
-        const template = response.content.lifeCounterTemplate;
-        self.Current_LifeCounter_Template = {
-          LifeCounterTemplateId: template.lifeCounterTemplateId,
-          LifeCounterTemplateName: template.lifeCounterTemplateName,
-          PlayersStartingLifePoints: template.playersStartingLifePoints,
-          PlayersCount: template.playersCount,
-          FixedMaxLifePointsMode: template.fixedMaxLifePointsMode,
-          PlayersMaxLifePoints: template.playersMaxLifePoints,
-          AutoDefeatMode: template.autoDefeatMode,
-          AutoEndMode: template.autoEndMode,
-          LifeCounterManagersCount: template.lifeCounterManagersCount,
-          LifeCounterManagers: [],
-        };
+        // const template = response.content.lifeCounterTemplate;
+        // self.Current_LifeCounter_Template = {
+        //   LifeCounterTemplateId: template.lifeCounterTemplateId,
+        //   LifeCounterTemplateName: template.lifeCounterTemplateName,
+        //   PlayersStartingLifePoints: template.playersStartingLifePoints,
+        //   PlayersCount: template.playersCount,
+        //   FixedMaxLifePointsMode: template.fixedMaxLifePointsMode,
+        //   PlayersMaxLifePoints: template.playersMaxLifePoints,
+        //   AutoDefeatMode: template.autoDefeatMode,
+        //   AutoEndMode: template.autoEndMode,
+        //   LifeCounterManagersCount: template.lifeCounterManagersCount,
+        //   LifeCounterManagers: [],
+        // };
+
+        const template = self.Current_LifeCounter_Template;
 
         // Fetching LIFE COUNTER MANAGER
         const manager = response.content;
@@ -1488,8 +1535,11 @@ function lifecounter_manager() {
     const startDefaultLifeCounterManager = () => {
       if (!lifeCounterTemplateId) {
         self.LifeCounterTemplates = self.GetLifeCounterTemplates();
-        self.LifeCounterTemplate = self.LifeCounterTemplates[0];
+        const mostCurrentTemplate = self.LifeCounterTemplates.length - 1;
+        self.Current_LifeCounter_Template =
+          self.LifeCounterTemplates[mostCurrentTemplate];
       }
+      self.BuildDefaultLifeCounterManager();
 
       self.BuildLifeCounterManager();
 
@@ -1502,7 +1552,10 @@ function lifecounter_manager() {
         return;
       }
 
-      self.GetUserLifeCounterTemplate(lifeCounterTemplateId);
+      const templateId =
+        self.Current_LifeCounter_Template.LifeCounterTemplateId;
+      //self.GetUserLifeCounterTemplate(lifeCounterTemplateId);
+      self.StartUserLifeCounterManager(templateId);
       return;
     };
 

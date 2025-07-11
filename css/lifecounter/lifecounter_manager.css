@@ -51,6 +51,17 @@ body {
   filter: none;
 }
 
+#button-new-lifeCounterTemplate,
+#button-new-lifeCounterManager {
+  color: var(--greenish) !important;
+}
+#button-new-lifeCounterTemplate:hover,
+#button-new-lifeCounterManager:hover {
+  color: var(--main-color) !important;
+  background-color: var(--bg-color) !important;
+  box-shadow: none;
+}
+
 .show-lifeCounter-timeSpan {
   border: 1px solid var(--main-color);
   padding: 5px;
@@ -268,7 +279,7 @@ body {
   box-shadow: 0 0 10px 1px var(--main-color);
   font-weight: bolder;
   font-size: 3.5rem;
-  color: var(---main-color);
+  color: var(--main-color);
 }
 .increase-life-points:disabled {
   box-shadow: none;

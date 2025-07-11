@@ -348,7 +348,7 @@ function life_counter_manager_edit() {
       formData.append("LifeCounterManagerId", self.LifeCounterManagerId);
       $.ajax({
         type: "POST",
-        url: `https://localhost:7081/users/finishlifecountermanager`,
+        url: `https://localhost:7081/users/deletelifecountermanager`,
         data: formData,
         processData: false,
         contentType: false,
