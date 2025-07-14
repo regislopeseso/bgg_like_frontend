@@ -39,8 +39,8 @@ function life_counter_manager_edit() {
     );
   };
 
-  self.Current_LifeCounter_Template = [];
-  self.Current_LifeCounter_Manager = [];
+  self.Current_LifeCounter_Template = {};
+  self.Current_LifeCounter_Manager = {};
   self.Current_LifeCounter_Players = [];
   self.FirstPlayerIndex = null;
 
@@ -84,7 +84,7 @@ function life_counter_manager_edit() {
     self.LifeCounterMenu = self.DOM.find("#a-menu-lifeCounter-explore-setup");
 
     self.Inputs = [];
-    self.Inputs[self.Inputs.length] = self.Inputs.LifeCounterName =
+    self.Inputs[self.Inputs.length] = self.Inputs.LifeCounterManagerName =
       self.DOM.find("#input-gameName-lifeCounter-explore-setup");
     self.Inputs[self.Inputs.length] = self.Inputs.PlayersStartingLifePoints =
       self.DOM.find(
@@ -108,6 +108,18 @@ function life_counter_manager_edit() {
     self.Locations = [];
     self.Locations[self.Locations.length] = self.Locations.LifeCounterManager =
       "/html/lifecounter/lifecounter_manager.html";
+  };
+
+  self.RedirectToLifeCounterManager = (lifeCounterManagerId) => {
+    if (!lifeCounterManagerId) {
+      window.location.href = `${self.Locations.LifeCounterManager}`;
+
+      return;
+    }
+
+    window.location.href = `${
+      self.Locations.LifeCounterManager
+    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterManagerId)}`;
   };
 
   function sweetAlertSuccess(title_text, message_text) {
@@ -145,18 +157,6 @@ function life_counter_manager_edit() {
   function closeOnAnyKey() {
     Swal.close();
   }
-
-  self.RedirectToLifeCounterManager = (lifeCounterManagerId) => {
-    if (!lifeCounterManagerId) {
-      window.location.href = `${self.Locations.LifeCounterManager}`;
-
-      return;
-    }
-
-    window.location.href = `${
-      self.Locations.LifeCounterManager
-    }?LifeCounterManagerId=${encodeURIComponent(lifeCounterManagerId)}`;
-  };
 
   self.GetLifeCounterManagerDetails = () => {
     self.OldPlayersCount = null;
@@ -274,7 +274,7 @@ function life_counter_manager_edit() {
   self.PreFillForm = () => {
     const manager = self.Current_LifeCounter_Manager;
 
-    self.Inputs.LifeCounterName.val(manager.LifeCounterManagerName)
+    self.Inputs.LifeCounterManagerName.val(manager.LifeCounterManagerName)
       .trigger("focus")
       .trigger("select");
 
@@ -303,59 +303,6 @@ function life_counter_manager_edit() {
     self.Inputs.AutoDefeatMode.attr("checked", manager.AutoDefeatMode == true);
 
     self.Inputs.AutoEndMode.attr("checked", manager.AutoEndMode == true);
-  };
-
-  self.EvaluateNewName = (newName) => {
-    const newNameAlreadyExists =
-      self.Current_LifeCounter_Template.LifeCounterManagers.some(
-        (manager) =>
-          manager.lifeCounterManagerId !=
-            self.Current_LifeCounter_Manager.LifeCounterManagerId &&
-          manager.LifeCounterManagerName.trim().toLowerCase() ===
-            newName.trim().toLowerCase()
-      );
-
-    if (newNameAlreadyExists) {
-      return false;
-    }
-
-    return true;
-  };
-  self.EvaluatePlayersCount = () => {
-    const manager = self.Current_LifeCounter_Manager;
-
-    const players = self.Current_LifeCounter_Players;
-
-    if (self.NewPlayersCount > self.OldPlayersCount) {
-      for (let i = self.OldPlayersCount; i < self.NewPlayersCount; i++) {
-        const player_virtualId = "lcp" + (i + 1);
-        let newPlayer = {
-          LifeCounterManagerId: manager.LifeCounterManagerId,
-          PlayerId: player_virtualId,
-          PlayerName: "Player " + (i + 1),
-          CurrentLifePoints: manager.PlayersStartingLifePoints,
-          IsDefeated: false,
-        };
-
-        players.push(newPlayer);
-      }
-    } else if (self.NewPlayersCount < self.OldPlayersCount) {
-      manager.PlayersCount = self.NewPlayersCount;
-
-      self.Current_LifeCounter_Players = players.slice(0, self.NewPlayersCount);
-
-      self.Current_LifeCounter_Manager.LifeCounterPlayers =
-        self.Current_LifeCounter_Players;
-
-      const firstPlayerIndex = manager.FirstPlayerIndex;
-      if (firstPlayerIndex > self.NewPlayersCount - 1) {
-        manager.FirstPlayerIndex = Math.floor(
-          Math.random() * self.NewPlayersCount
-        );
-      }
-    } else {
-      return;
-    }
   };
 
   self.DeleteLifeCounterManager = () => {
@@ -398,12 +345,13 @@ function life_counter_manager_edit() {
 
     self.RedirectToLifeCounterManager();
   };
+
   self.ClearForm = () => {
     $.each(self.Inputs, function (i, input) {
       input.val("");
     });
 
-    self.Inputs.LifeCounterName.trigger("focus");
+    self.Inputs.LifeCounterManagerName.trigger("focus");
 
     self.Inputs.PlayersStartingLifePoints.val(1);
 
@@ -417,9 +365,12 @@ function life_counter_manager_edit() {
 
     self.Inputs.AutoEndMode.prop("checked", false).prop("disabled", true);
   };
+
   self.EditLifeCounterManager = () => {
     const manager = self.Current_LifeCounter_Manager;
-    let newName = self.Inputs.LifeCounterName.val();
+
+    let newName = self.Inputs.LifeCounterManagerName.val();
+
     let isNameValid = self.EvaluateNewName(newName);
 
     if (isNameValid === false) {
@@ -430,7 +381,7 @@ function life_counter_manager_edit() {
       return;
     }
 
-    manager.LifeCounterManagerName = self.Inputs.LifeCounterName.val();
+    manager.LifeCounterManagerName = self.Inputs.LifeCounterManagerName.val();
 
     manager.PlayesStartingLifePoints =
       self.Inputs.PlayersStartingLifePoints.val().trim();
@@ -529,6 +480,58 @@ function life_counter_manager_edit() {
     self.SetLifeCounterTemplates();
 
     self.RedirectToLifeCounterManager(manager.LifeCounterManagerId);
+  };
+  self.EvaluateNewName = (newName) => {
+    const newNameAlreadyExists =
+      self.Current_LifeCounter_Template.LifeCounterManagers.some(
+        (manager) =>
+          manager.LifeCounterManagerId !=
+            self.Current_LifeCounter_Manager.LifeCounterManagerId &&
+          manager.LifeCounterManagerName.trim().toLowerCase() ===
+            newName.trim().toLowerCase()
+      );
+
+    if (newNameAlreadyExists) {
+      return false;
+    }
+
+    return true;
+  };
+  self.EvaluatePlayersCount = () => {
+    const manager = self.Current_LifeCounter_Manager;
+
+    const players = self.Current_LifeCounter_Players;
+
+    if (self.NewPlayersCount > self.OldPlayersCount) {
+      for (let i = self.OldPlayersCount; i < self.NewPlayersCount; i++) {
+        const player_virtualId = "lcp" + (i + 1);
+        let newPlayer = {
+          LifeCounterManagerId: manager.LifeCounterManagerId,
+          PlayerId: player_virtualId,
+          PlayerName: "Player " + (i + 1),
+          CurrentLifePoints: manager.PlayersStartingLifePoints,
+          IsDefeated: false,
+        };
+
+        players.push(newPlayer);
+      }
+    } else if (self.NewPlayersCount < self.OldPlayersCount) {
+      manager.PlayersCount = self.NewPlayersCount;
+
+      self.Current_LifeCounter_Players = players.slice(0, self.NewPlayersCount);
+
+      self.Current_LifeCounter_Manager.LifeCounterPlayers =
+        self.Current_LifeCounter_Players;
+
+      const firstPlayerIndex = manager.FirstPlayerIndex;
+      if (firstPlayerIndex > self.NewPlayersCount - 1) {
+        manager.FirstPlayerIndex = Math.floor(
+          Math.random() * self.NewPlayersCount
+        );
+      }
+    } else {
+      return;
+    }
   };
 
   self.LoadEvents = () => {

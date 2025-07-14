@@ -50,7 +50,7 @@ body {
   background-color: transparent;
 }
 
-.players-count-options,
+.template-players-count-options,
 .edit-players-count-options {
   display: flex;
   justify-content: center;

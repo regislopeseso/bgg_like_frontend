@@ -46,6 +46,7 @@ function life_counter_player_edit() {
   };
 
   self.LifeCounterTemplates = [];
+
   self.Current_LifeCounter_Template = [];
   self.Current_LifeCounter_Manager = [];
   self.Current_LifeCounter_Players = [];

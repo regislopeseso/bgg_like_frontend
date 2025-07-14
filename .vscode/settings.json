@@ -1,3 +1,32 @@
 {
-  "liveServer.settings.port": 5501
+  "liveServer.settings.port": 5501,
+  "editor.formatOnSave": true,
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "onFocusChange",
+  "editor.tabSize": 2,
+  "workbench.colorTheme": "One Monokai",
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#5757f5",
+    "statusBar.foreground": "#FFFFFF",
+    "statusBar.noFolderBackground": "#232324",
+    "statusBar.debuggingBackground": "#ff0000"
+  },
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingComments": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.autoClosingOvertype": "always",
+  "editor.autoClosingDelete": "always",
+  "window.zoomLevel": 2.223901085741545,
+  "editor.linkedEditing": true,
+  "git.openRepositoryInParentFolders": "always",
+  "cSpell.userWords": ["accusamus", "adipisicing", "aliquid"],
+  "prettier.quoteProps": "preserve",
+  "workbench.iconTheme": "material-icon-theme",
+  "prettier.experimentalTernaries": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "editor.inlineSuggest.edits.showCollapsed": true,
+  "liveServer.settings.donotVerifyTags": true,
+  "editor.foldingStrategy": "indentation",
+  "workbench.settings.applyToAllProfiles": ["editor.formatOnSave"]
 }
