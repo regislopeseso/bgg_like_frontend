@@ -1,6 +1,8 @@
 function life_counter_template_edit() {
   let self = this;
 
+  self.IsBuilt = false;
+
   self.IsUserLoggedIn = false;
   self.CheckAuthenticationStatus = () => {
     $.ajax({
@@ -34,17 +36,6 @@ function life_counter_template_edit() {
     );
   };
 
-  self.LifeCounterTemplates = [];
-  self.GetLifeCounterTemplates = () => {
-    return JSON.parse(localStorage.getItem("LifeCounterTemplates"));
-  };
-  self.SetLifeCounterTemplates = () => {
-    localStorage.setItem(
-      "LifeCounterTemplates",
-      JSON.stringify(self.LifeCounterTemplates)
-    );
-  };
-
   self.Current_LifeCounter_Template = {};
   self.LifeCounterTemplateId = null;
   self.GetLifeCounterTemplateId = () => {
@@ -66,12 +57,6 @@ function life_counter_template_edit() {
     self.LifeCounterManagerId = new URLSearchParams(window.location.search).get(
       "LifeCounterManagerId"
     );
-
-    if (!self.LifeCounterManagerId) {
-      sweetAlertError("failed");
-
-      return;
-    }
   };
 
   self.NewPlayersCount = null;
@@ -121,8 +106,6 @@ function life_counter_template_edit() {
   };
 
   self.RedirectToLifeCounterManager = () => {
-    self.GetLifeCounterManagerId();
-
     if (!self.LifeCounterManagerId) {
       window.location.href = `${self.Locations.LifeCounterManager}`;
 
@@ -180,8 +163,8 @@ function life_counter_template_edit() {
   self.GetLifeCounterTemplateDetails = () => {
     if (self.IsUserLoggedIn === true) {
       $.ajax({
-        url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${self.LifeCounterTemplateId}`,
         method: "GET",
+        url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${self.LifeCounterTemplateId}`,
         xhrFields: {
           withCredentials: true,
         },
@@ -262,17 +245,13 @@ function life_counter_template_edit() {
   self.DeleteLifeCounterTemplate = () => {
     if (self.IsUserLoggedIn === true) {
       const formData = new FormData();
-      formData.append("LifeCounterManagerId", self.LifeCounterManagerId);
+      formData.append("LifeCounterTemplateId", self.LifeCounterTemplateId);
       $.ajax({
-        type: "POST",
-        url: `https://localhost:7081/users/deletelifecountermanager`,
-        data: formData,
-        processData: false,
-        contentType: false,
+        type: "DELETE",
+        url: `https://localhost:7081/users/deletelifecountertemplate?LifeCounterTemplateId=${self.LifeCounterTemplateId}`,
         xhrFields: { withCredentials: true },
-
         success: function (resp) {
-          if (resp.content === null) {
+          if (!resp.content) {
             sweetAlertSuccess(resp.message);
             return;
           }
@@ -282,7 +261,6 @@ function life_counter_template_edit() {
         error: function (err) {
           sweetAlertError(err);
         },
-        complete: () => {},
       });
 
       return;
@@ -393,10 +371,7 @@ function life_counter_template_edit() {
     const autoDefeatMode = self.Current_LifeCounter_Template.AutoDefeatMode;
     const autoEndMode = self.Current_LifeCounter_Template.AutoEndMode;
 
-    console.log(
-      "Edited life counter template: ",
-      self.Current_LifeCounter_Template
-    );
+    self.GetLifeCounterManagerId();
 
     if (self.IsUserLoggedIn === true) {
       $.ajax({
@@ -502,15 +477,20 @@ function life_counter_template_edit() {
       self.EditLifeCounterTemplate();
     });
 
-    self.Buttons.Delete.on("click", () => {
+    self.Buttons.Delete.on("click", (e) => {
+      e.preventDefault();
+
       self.DeleteLifeCounterTemplate();
     });
   };
 
   self.Build = () => {
-    self.LoadReferences();
-    self.GetLifeCounterTemplateId();
-    self.LoadEvents();
+    if (self.IsBuilt == false) {
+      self.LoadReferences();
+      self.GetLifeCounterTemplateId();
+      self.LoadEvents();
+      self.IsBuilt = true;
+    }
   };
 
   self.CheckAuthenticationStatus();

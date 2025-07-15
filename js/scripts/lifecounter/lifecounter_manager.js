@@ -553,7 +553,6 @@ function lifecounter_manager() {
     self.Buttons.ChangeLifeCounterTemplate.on("click", (e) => {
       self.LoadLifeCounterTemplates();
     });
-
     // Selects a Life Counter TEMPLATE from the drop down list
     self.DOM.on(
       "click",
@@ -603,14 +602,12 @@ function lifecounter_manager() {
         self.ReopenLifeCounterManager(selectedManagerId);
       }
     );
-
     // Starts a New Life Counter TEMPLATE
     self.DOM.on("click", "#button-new-lifeCounterTemplate", function (e) {
       e.preventDefault();
 
       self.NewLifeCounterTemplate();
     });
-
     // Edits the selected Life Counter Template
     self.Buttons.EditLifeCounterTemplate.on("click", () => {
       const templateId =
@@ -638,7 +635,6 @@ function lifecounter_manager() {
         self.Current_LifeCounter_Template.LifeCounterTemplateId;
       self.LoadLifeCounterManagers(templateId);
     });
-
     // Selects a Life Counter MANAGER from the drop down list
     self.DOM.on(
       "click",
@@ -656,7 +652,6 @@ function lifecounter_manager() {
         self.ReopenLifeCounterManager(selectedManagerId);
       }
     );
-
     // Starts a New Life Counter Manager
     self.DOM.on("click", "#button-new-lifeCounterManager", function (e) {
       e.preventDefault();
@@ -666,7 +661,6 @@ function lifecounter_manager() {
 
       self.NewLifeCounterManager(templateID);
     });
-
     self.Buttons.EditLifeCounterManager.on("click", function (e) {
       e.preventDefault();
 
@@ -695,7 +689,6 @@ function lifecounter_manager() {
       // Toggle dice options
       self.DiceOptions.toggleClass("d-none");
     });
-
     self.Buttons.FourFacedDice.hover(
       function () {
         self.ImgFourFacedDice.attr(
@@ -836,7 +829,6 @@ function lifecounter_manager() {
 
       $(document).on("mouseup touchend", stopIncreasing);
     });
-
     self.Buttons.YellowCounter.on("mousedown touchstart", () => {
       let currentValue = parseInt(self.Buttons.YellowCounter.text(), 10);
       let holdTimer;
@@ -871,7 +863,6 @@ function lifecounter_manager() {
 
       $(document).on("mouseup touchend", stopIncreasing);
     });
-
     self.Buttons.GreenCounter.on("mousedown touchstart", () => {
       let currentValue = parseInt(self.Buttons.GreenCounter.text(), 10);
       let holdTimer;
@@ -925,7 +916,6 @@ function lifecounter_manager() {
 
       self.RedirectToLifeCounter_EditPlayer(playerId);
     });
-
     self.Buttons.IncreaseLifePoints.on("mousedown touchstart", function (e) {
       e.preventDefault();
 
@@ -1020,7 +1010,6 @@ function lifecounter_manager() {
 
       $(document).on("mouseup touchend", stopIncreasing);
     });
-
     self.Buttons.DecreaseLifePoints.on("mousedown touchstart", function (e) {
       e.preventDefault();
 
@@ -1122,7 +1111,6 @@ function lifecounter_manager() {
 
       $(document).on("mouseup touchend", stopDecreasing);
     });
-
     self.Buttons.RestorePlayer.on("click", function (e) {
       e.preventDefault();
 
@@ -1307,46 +1295,18 @@ function lifecounter_manager() {
 
   // ! METHODS FOR USERS...
   self.User_CreateLifeCounterTemplate = () => {
-    const templatesCount = self.LifeCounterTemplates.length;
-
-    const templateName = "Life Counter Template " + templatesCount + ".";
-    const playerStartingLifePoints = 10;
-    const playersCount = 1;
-    const fixedMaxLifePointsMode = false;
-    const playersMaxLifePoints = null;
-    const autoDefeatMode = false;
-    const autoEndMode = false;
-
-    const formData = new FormData();
-    formData.append("LifeCounterTemplateName", templateName);
-    formData.append("PlayersStartingLifePoints", playerStartingLifePoints);
-    formData.append("PlayersCount", playersCount);
-    formData.append("FixedMaxLifeMode", fixedMaxLifePointsMode);
-    formData.append("PlayersMaxLifePoints", playersMaxLifePoints);
-    formData.append("AutoDefeatMode", autoDefeatMode);
-    formData.append("AutoEndMode", autoEndMode);
-
-    let lifeCounterTemplateId = null;
-
     $.ajax({
       type: "POST",
       url: "https://localhost:7081/users/createLifeCounterTemplate",
-      data: formData,
-      processData: false,
-      contentType: false,
       xhrFields: {
-        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+        withCredentials: true,
       },
       success: (resp) => {
-        if (resp.content === null) {
+        if (!resp.content) {
           sweetAlertError(resp.message);
         }
 
-        lifeCounterTemplateId = resp.content;
-
-        self.User_Get_LifeCounterTemplateDetails(lifeCounterTemplateId);
-
-        self.User_StartLifeCounterManager(lifeCounterTemplateId);
+        self.User_StartLifeCounterManager(resp.content.lifeCounterTemplateId);
       },
       error: (err) => {
         sweetAlertError(err);
@@ -1387,7 +1347,7 @@ function lifecounter_manager() {
         self.User_StartLifeCounterManager(templateId);
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching board game details:", error);
+        sweetAlertError(status, error);
       },
     });
   };
@@ -1424,9 +1384,6 @@ function lifecounter_manager() {
           Duration_minutes: null,
           IsFinished: false,
         };
-        self.Current_LifeCounter_Template.LifeCounterManagers.push(
-          self.Current_LifeCounter_Manager
-        );
 
         self.FirstPlayerIndex =
           self.Current_LifeCounter_Manager.FirstPlayerIndex;
@@ -1444,16 +1401,13 @@ function lifecounter_manager() {
 
           self.Current_LifeCounter_Players.push(newPlayer);
         });
-
+        self.DOM.loadcontent("demolish-contentloader");
         self.BuildLifeCounterManager();
       },
-      error: function (xhr, status, error) {
+      error: () => {
         sweetAlertError(
           "Failed to fetch requested LIFE COUNTER MANAGER DETAILS."
         );
-      },
-      complete: function () {
-        self.DOM.loadcontent("demolish-contentloader");
       },
     });
   };
@@ -1548,12 +1502,9 @@ function lifecounter_manager() {
     lifeCounterTemplateId,
     lifeCounterManagerId
   ) => {
-    // Fetch Life Counter Details based on provided LifeCounterId
-    const id = lifeCounterTemplateId;
-
     $.ajax({
       type: "GET",
-      url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${id}`,
+      url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${lifeCounterTemplateId}`,
       xhrFields: { withCredentials: true },
       success: function (response) {
         if (!response.content) {
@@ -1563,8 +1514,9 @@ function lifecounter_manager() {
 
         // Fetching LIFE COUNTER TEMPLATE
         const template = response.content;
+
         self.Current_LifeCounter_Template = {
-          LifeCounterTemplateId: id,
+          LifeCounterTemplateId: lifeCounterTemplateId,
           LifeCounterTemplateName: template.lifeCounterTemplateName,
           PlayersStartingLifePoints: template.playersStartingLifePoints,
           PlayersCount: template.playersCount,
@@ -1603,7 +1555,11 @@ function lifecounter_manager() {
 
         let template = self.Current_LifeCounter_Template;
 
-        if (!template || template.length == 0) {
+        if (
+          !template ||
+          typeof template !== "object" ||
+          Object.keys(template).length === 0
+        ) {
           // Fetching LIFE COUNTER TEMPLATE
           template = response.content.lifeCounterTemplate;
           self.Current_LifeCounter_Template = {
@@ -1695,7 +1651,6 @@ function lifecounter_manager() {
 
     self.CheckForDefeatedPlayers();
 
-    console.log("Estou aqui: ", template);
     self.Buttons.ChangeLifeCounterTemplate.text(
       template.LifeCounterTemplateName
     );
@@ -2352,11 +2307,6 @@ function lifecounter_manager() {
 
     const user_newLifeCounterTemplate = () => {
       self.User_CreateLifeCounterTemplate();
-
-      const templateId =
-        self.Current_LifeCounter_Template.LifeCounterTemplateId;
-
-      self.User_StartLifeCounterManager(templateId);
 
       return;
     };
