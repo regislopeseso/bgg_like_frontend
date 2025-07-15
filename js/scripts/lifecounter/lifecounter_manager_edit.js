@@ -180,26 +180,20 @@ function life_counter_manager_edit() {
           }
 
           // Fetching LIFE COUNTER TEMPLATE
-          const template = response.content.lifeCounterTemplate;
+          const templateId = response.content.lifeCounterTemplateId;
+          const templateName = response.content.lifeCounterTemplateName;
 
           self.Current_LifeCounter_Template = {
-            LifeCounterTemplateId: template.lifeCounterTemplateId,
-            LifeCounterTemplateName: template.lifeCounterTemplateName,
-            PlayersStartingLifePoints: template.playersStartingLifePoints,
-            PlayersCount: template.playersCount,
-            FixedMaxLifePointsMode: template.fixedMaxLifePointsMode,
-            PlayersMaxLifePoints: template.playersMaxLifePoints,
-            AutoDefeatMode: template.autoDefeatMode,
-            AutoEndMode: template.autoEndMode,
-            LifeCounterManagersCount: template.lifeCounterManagersCount,
-            LifeCounterManagers: [],
+            LifeCounterTemplateId: templateId,
+            LifeCounterTemplateName: templateName,
           };
 
           // Fetching LIFE COUNTER MANAGER
           const manager = response.content;
 
           self.Current_LifeCounter_Manager = {
-            LifeCounterTemplateId: template.lifeCounterTemplateId,
+            LifeCounterTemplateId: templateId,
+
             LifeCounterManagerId: self.LifeCounterManagerId,
             LifeCounterManagerName: manager.lifeCounterManagerName,
             PlayersStartingLifePoints: manager.playersStartingLifePoints,
@@ -216,9 +210,6 @@ function life_counter_manager_edit() {
             IsFinished: manager.isFinished,
           };
 
-          self.Current_LifeCounter_Template.LifeCounterManagers.push(
-            self.Current_LifeCounter_Manager
-          );
           self.FirstPlayerIndex = manager.FirstPlayerIndex;
 
           // Fetching LIFE COUNTER PLAYERS
@@ -308,17 +299,13 @@ function life_counter_manager_edit() {
   self.DeleteLifeCounterManager = () => {
     if (self.IsUserLoggedIn === true) {
       const formData = new FormData();
-      formData.append("LifeCounterManagerId", self.LifeCounterManagerId);
+      formData.append("LifeCounterTemplateId", self.LifeCounterTemplateId);
       $.ajax({
-        type: "POST",
-        url: `https://localhost:7081/users/deletelifecountermanager`,
-        data: formData,
-        processData: false,
-        contentType: false,
+        type: "DELETE",
+        url: `https://localhost:7081/users/deletelifecountermanager?LifeCounterManagerId=${self.LifeCounterManagerId}`,
         xhrFields: { withCredentials: true },
-
         success: function (resp) {
-          if (resp.content === null) {
+          if (!resp.content) {
             sweetAlertSuccess(resp.message);
             return;
           }
@@ -328,7 +315,6 @@ function life_counter_manager_edit() {
         error: function (err) {
           sweetAlertError(err);
         },
-        complete: () => {},
       });
 
       return;
@@ -371,14 +357,16 @@ function life_counter_manager_edit() {
 
     let newName = self.Inputs.LifeCounterManagerName.val();
 
-    let isNameValid = self.EvaluateNewName(newName);
+    if (self.IsUserLoggedIn === false) {
+      let isNameValid = self.EvaluateNewName(newName);
 
-    if (isNameValid === false) {
-      sweetAlertError(
-        "Requested name is already in use, please choose another one."
-      );
+      if (isNameValid === false) {
+        sweetAlertError(
+          "Requested name is already in use, please choose another one."
+        );
 
-      return;
+        return;
+      }
     }
 
     manager.LifeCounterManagerName = self.Inputs.LifeCounterManagerName.val();
