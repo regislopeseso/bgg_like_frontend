@@ -55,13 +55,61 @@
               >
                 <i class="bi bi-floppy"></i>
               </button>
-              <button
-                id="button-showInfo-lifeCounter"
-                class="btn btn-outline-info btn-md d-none"
-                type="button"
-              >
-                <i class="bi bi-info-lg"></i>
-              </button>
+
+              <div class="dropdown me-1 d-flex gap-0 align-items-center">
+                <button
+                  id="button-showInfo-lifeCounter"
+                  class="btn btn-outline-info btn-md d-none"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="bi bi-info-lg"></i>
+                </button>
+
+                <ul id="ul-infos-lifeCounter" class="dropdown-menu">
+                  <li
+                    class="d-flex flex-column align-items-center justify-content-center"
+                  >
+                    <h3
+                      class="dropdown-item p-0 m-0 w-100 d-flex justify-content-center"
+                    >
+                      <span>S</span>tatistics
+                    </h3>
+                    <hr />
+                  </li>
+
+                  <li class="list-group-item">
+                    <p class="dropdown-item pb-0 m-0">
+                      Most Used Life Counter:
+                    </p>
+                    <p class="ps-3"><span></span></p>
+                  </li>
+                  <li class="list-group-item">
+                    <p class="dropdown-item">
+                      Life Counters Created: <span></span>
+                    </p>
+                  </li>
+                  <li class="list-group-item">
+                    <p class="dropdown-item">
+                      Life Counters Started: <span></span>
+                    </p>
+                  </li>
+                  <li class="list-group-item">
+                    <p class="dropdown-item">
+                      Unfinished Life Counters: <span></span>
+                    </p>
+                  </li>
+                  <li class="list-group-item">
+                    <p class="dropdown-item">
+                      Favorite Players Count: <span></span>
+                    </p>
+                  </li>
+                  <li>
+                    <hr />
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
@@ -125,7 +173,7 @@
                   >
                     <i class="bi bi-dice-5"></i>
                   </button>
-                  <div class="d-none pe-2" id="dice-throw-result"></div>
+                  <div class="d-none" id="dice-throw-result"></div>
                 </div>
 
                 <div

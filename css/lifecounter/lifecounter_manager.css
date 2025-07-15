@@ -44,6 +44,20 @@ body {
   border: none !important;
 }
 
+#ul-infos-lifeCounter {
+  background-color: var(--bg-color) !important;
+}
+#ul-infos-lifeCounter h3 {
+  color: var(--main-color) !important;
+}
+
+#ul-infos-lifeCounter .dropdown-item {
+  pointer-events: none;
+
+  color: var(--text-color) !important; /* Optional: make it look disabled */
+  opacity: 1; /* Optional: make it look dimmed */
+}
+
 .white-icon {
   filter: brightness(0) invert(1);
 }
@@ -348,6 +362,15 @@ body {
   color: var(--reddish);
   font-weight: font-weight;
   text-decoration: line-through;
+}
+
+.dice-result {
+  padding: 0 10px;
+  margin: 0 10px 0 0;
+  border-radius: 20px;
+  background-color: var(--second-bg-color);
+  color: var(--main-color);
+  box-shadow: 0 0 10px 5px var(--main-color);
 }
 
 button.disabled {

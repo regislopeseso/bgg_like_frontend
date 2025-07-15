@@ -56,6 +56,12 @@ function lifecounter_manager() {
     if (localStorage.getItem("LifeCounterTemplates") != null) {
       self.LifeCounterTemplates = self.GetLifeCounterTemplates();
       self.Search_URL_Params_LifeCounterManagerId();
+
+      if (self.IsUserLoggedIn === true) {
+        self.User_SyncLifeCounterData();
+        return;
+      }
+
       return;
     }
 
@@ -80,7 +86,6 @@ function lifecounter_manager() {
             (manager) => manager.LifeCounterManagerId === managerId
           )
       );
-      console.log("Template: ", self.Current_LifeCounter_Template);
 
       // Sets the self.Current_LifeCounter_Manager based on the managerId
       self.Current_LifeCounter_Manager =
@@ -275,6 +280,22 @@ function lifecounter_manager() {
     self.LifeCounterManagerDropDownItems = self.DOM.find(
       self.lifeCounterManagerDropDownItems_class
     );
+
+    //*
+    //*
+    //* LIFE COUNTER STATISTICS
+    self.Statistics = self.DOM.find("#ul-infos-lifeCounter");
+    self.StatisticsItems = [];
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.First = self.DOM.find(".list-group-item").eq(0);
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.Second = self.DOM.find(".list-group-item").eq(1);
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.Third = self.DOM.find(".list-group-item").eq(2);
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.Fourth = self.DOM.find(".list-group-item").eq(3);
+    self.StatisticsItems[self.StatisticsItems.length] =
+      self.StatisticsItems.Fifth = self.DOM.find(".list-group-item").eq(4);
 
     //*
     //*
@@ -545,9 +566,9 @@ function lifecounter_manager() {
 
     const roll = Math.floor(Math.random() * diceType) + 1;
 
-    self.Fields.DiceThrowResult.removeClass("d-none").html(
-      `D${diceType}: ${roll}`
-    );
+    self.Fields.DiceThrowResult.removeClass("d-none")
+      .addClass("dice-result")
+      .html(`D${diceType}: ${roll}`);
 
     sweetAlertRollDice(img, roll);
   }
@@ -615,12 +636,6 @@ function lifecounter_manager() {
 
       const managerId = self.Current_LifeCounter_Manager.LifeCounterManagerId;
 
-      console.log("managerId: ", managerId);
-      console.log(
-        "managerName: ",
-        self.Current_LifeCounter_Manager.LifeCounterManagerName
-      );
-
       self.RedirectToLifeCounter_EditTemplate(templateId, managerId);
     });
 
@@ -629,6 +644,11 @@ function lifecounter_manager() {
         "d-none",
         !self.IsUserLoggedIn
       );
+    });
+    self.Buttons.ShowLifeCountersInfo.on("click", (e) => {
+      e.preventDefault();
+
+      self.User_LoadStatistics();
     });
 
     self.Buttons.RefreshLifeCounter.on("click", function () {
@@ -1052,18 +1072,8 @@ function lifecounter_manager() {
         let currentLife = fetchCurrentLife();
 
         if (autoDefeatMode === true && currentLife - desiredValue <= 0) {
-          // ex.:
-          // current life = 9
-          // desired value = 10
-          // => return 9
-          // =>=> new current life == 0
           return currentLife;
         } else {
-          // ex.:
-          // current life = 11
-          // desired value = 10
-          // => return 10
-          // =>=> new current life == 1
           return desiredValue;
         }
       };
@@ -1301,6 +1311,32 @@ function lifecounter_manager() {
   };
 
   // ! METHODS FOR USERS...
+  self.User_SyncLifeCounterData = () => {
+    console.log("self.LifeCounterTemplates: ", self.LifeCounterTemplates);
+
+    let request = {
+      LifeCounterTemplates: self.LifeCounterTemplates,
+    };
+
+    $.ajax({
+      type: "POST",
+      url: `https://localhost:7081/users/synclifecounterdata`,
+      data: JSON.stringify(request),
+      processData: false,
+      contentType: "application/json",
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        if (!response.content) {
+          sweetAlertError(response.message);
+        }
+      },
+      error: () => {
+        sweetAlertError(
+          "Failed to fetch requested LIFE COUNTER MANAGER DETAILS."
+        );
+      },
+    });
+  };
   self.User_CreateLifeCounterTemplate = () => {
     $.ajax({
       type: "POST",
@@ -1327,8 +1363,8 @@ function lifecounter_manager() {
   };
   self.User_GetLifeCounterTemplate = (templateId) => {
     $.ajax({
-      url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${templateId}`,
       method: "GET",
+      url: `https://localhost:7081/users/getlifecountertemplatedetails?LifeCounterTemplateId=${templateId}`,
       xhrFields: {
         withCredentials: true,
       },
@@ -1360,6 +1396,46 @@ function lifecounter_manager() {
       },
       error: function (xhr, status, error) {
         sweetAlertError(status, error);
+      },
+    });
+  };
+  self.User_LoadStatistics = () => {
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/getlifecounterstatistics`,
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        // Clear current statistics items
+        self.StatisticsItems.forEach((item) => {
+          item.find("span").text("loading...");
+        });
+
+        // Check if any data are returned
+        if (response.content == null) {
+          sweetAlertError(response.message);
+          return;
+        }
+
+        let statsData = response.content;
+
+        self.StatisticsItems.First.find("span").text(
+          statsData.mostUsedLifeCounter
+        );
+        self.StatisticsItems.Second.find("span").text(
+          statsData.lifeCountersCreated
+        );
+        self.StatisticsItems.Third.find("span").text(
+          statsData.lifeCountersStarted
+        );
+        self.StatisticsItems.Fourth.find("span").text(
+          statsData.unfinishedLifeCounters
+        );
+        self.StatisticsItems.Fifth.find("span").text(
+          statsData.favoritePlayersCount
+        );
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError("Failed to fetch life counter statistics.");
       },
     });
   };
@@ -2978,11 +3054,11 @@ function lifecounter_manager() {
       self.IsBuilt = true;
     }
 
+    self.SearchLocalStorageForLifeCounter();
     if (self.IsUserLoggedIn === false) {
       self.SearchLocalStorageForLifeCounter();
       return;
     }
-
     self.Search_URL_Params_LifeCounterManagerId();
   };
 
