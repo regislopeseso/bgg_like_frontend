@@ -77,9 +77,10 @@ function lifecounter_manager() {
       self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
         (template) =>
           template.LifeCounterManagers.find(
-            (manager) => manager.LifeCounterManagerId == managerId
+            (manager) => manager.LifeCounterManagerId === managerId
           )
       );
+      console.log("Template: ", self.Current_LifeCounter_Template);
 
       // Sets the self.Current_LifeCounter_Manager based on the managerId
       self.Current_LifeCounter_Manager =
@@ -179,7 +180,10 @@ function lifecounter_manager() {
 
     // Setting the commom parameters
     const templateId = template.LifeCounterTemplateId;
-    const manager_virtualId = "lcm" + (template.LifeCounterManagersCount + 1);
+    const manager_virtualId =
+      template.LifeCounterTemplateId +
+      "lcm" +
+      (template.LifeCounterManagersCount + 1);
     const lifeCounterManagerName = `${template.LifeCounterTemplateName}M${
       template.LifeCounterManagersCount + 1
     }`;
@@ -229,7 +233,7 @@ function lifecounter_manager() {
     const playersStartingLifePoints = manager.PlayersStartingLifePoints;
 
     for (let i = 0; i < playersCount; i++) {
-      const player_virtualId = "lcp" + (i + 1);
+      const player_virtualId = lifeCounterManagerId + "lcp" + (i + 1);
       let newPlayer = {
         LifeCounterManagerId: lifeCounterManagerId,
         PlayerId: player_virtualId,
@@ -580,11 +584,6 @@ function lifecounter_manager() {
           (template) => template.LifeCounterTemplateId === selectedTemplateId
         );
 
-        if (!selectedTemplate) {
-          sweetAlertError("Life Counter Template Selection failed");
-          return;
-        }
-
         self.Current_LifeCounter_Template = selectedTemplate;
 
         self.LoadLifeCounterManagers();
@@ -594,6 +593,7 @@ function lifecounter_manager() {
 
         let selectedManagerName =
           self.Current_LifeCounter_Manager.LifeCounterManagerName;
+
         let selectedManagerId =
           self.Current_LifeCounter_Manager.LifeCounterManagerId;
 
@@ -614,6 +614,12 @@ function lifecounter_manager() {
         self.Current_LifeCounter_Template.LifeCounterTemplateId;
 
       const managerId = self.Current_LifeCounter_Manager.LifeCounterManagerId;
+
+      console.log("managerId: ", managerId);
+      console.log(
+        "managerName: ",
+        self.Current_LifeCounter_Manager.LifeCounterManagerName
+      );
 
       self.RedirectToLifeCounter_EditTemplate(templateId, managerId);
     });
@@ -1589,7 +1595,7 @@ function lifecounter_manager() {
   //? GENERIC METHODS...
   self.BuildLifeCounterManager = () => {
     const template = self.Current_LifeCounter_Template;
-    console.log("template: ", template);
+
     const manager = self.Current_LifeCounter_Manager;
     const players = self.Current_LifeCounter_Players;
 
@@ -2616,6 +2622,52 @@ function lifecounter_manager() {
 
     let rawDuration = null;
     let lifeCounterLength = "";
+    let message = "";
+
+    const evaluateParticipants = () => {
+      let winnerIndex = players.findIndex(
+        (player) => player.IsDefeated === false
+      );
+
+      if (playersCount == 1 && winnerIndex == -1) {
+        message = "You Lost!";
+        winnerIndex = winnerIndex === -1 ? 0 : winnerIndex;
+
+        sweetAlertSuccess(message, "Duration: " + lifeCounterLength);
+
+        return;
+      }
+
+      const winnerName = players[winnerIndex].PlayerName;
+
+      const winnerBlock = self.PlayerBlocks[winnerIndex];
+
+      const winnerNameField = winnerBlock.find(self.Fields.PlayerName);
+      winnerNameField.addClass("d-none");
+
+      const winnerAlterNameField = winnerBlock.find(
+        self.Fields.AlternativeName
+      );
+
+      winnerAlterNameField
+        .removeClass("d-none")
+        .html("WINNER: " + winnerName)
+        .addClass("markAsWinner");
+
+      const winnerCurrentLifePointsField = winnerBlock.find(
+        self.Fields.PlayerCurrentLifePoints
+      );
+      winnerCurrentLifePointsField.addClass("markAsWinner");
+
+      self.PlayerBlocks.forEach((block) => {
+        block.find("button").attr("disabled", true);
+      });
+
+      sweetAlertSuccess(
+        "Winner is: " + winnerName,
+        "Duration: " + lifeCounterLength
+      );
+    };
 
     const buildLifeCounterLength = (rawDuration) => {
       if (rawDuration == null || rawDuration < 0) {
@@ -2674,40 +2726,6 @@ function lifecounter_manager() {
           return;
         }
 
-        const winnerIndex = players.findIndex(
-          (player) => player.IsDefeated === false
-        );
-
-        const winnerName = players[winnerIndex].PlayerName;
-
-        const winnerBlock = self.PlayerBlocks[winnerIndex];
-
-        const winnerNameField = winnerBlock.find(self.Fields.PlayerName);
-        winnerNameField.addClass("d-none");
-
-        const winnerAlterNameField = winnerBlock.find(
-          self.Fields.AlternativeName
-        );
-
-        winnerAlterNameField
-          .removeClass("d-none")
-          .html("WINNER: " + winnerName)
-          .addClass("markAsWinner");
-
-        const winnerCurrentLifePointsField = winnerBlock.find(
-          self.Fields.PlayerCurrentLifePoints
-        );
-        winnerCurrentLifePointsField.addClass("markAsWinner");
-
-        self.PlayerBlocks.forEach((block) => {
-          block.find("button").attr("disabled", true);
-        });
-
-        sweetAlertSuccess(
-          "Winner is: " + winnerName,
-          "Duration: " + lifeCounterLength
-        );
-
         self.Fields.ShowDurationWrapper.removeClass("d-none");
         self.Fields.ShowDuration.html(lifeCounterLength);
       }
@@ -2725,6 +2743,7 @@ function lifecounter_manager() {
 
           rawDuration = response.content.duration_minutes;
           buildLifeCounterLength(rawDuration);
+          evaluateParticipants();
         },
         error: function (xhr, status, error) {
           sweetAlertError("Could not load life counter");
@@ -2733,6 +2752,7 @@ function lifecounter_manager() {
     } else {
       rawDuration = manager.Duration_minutes;
 
+      evaluateParticipants();
       buildLifeCounterLength(rawDuration);
     }
 

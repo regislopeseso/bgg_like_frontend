@@ -25,7 +25,7 @@ function life_counter_template_edit() {
     });
   };
 
-  self.LifeCounterTemplates = null;
+  self.LifeCounterTemplates = [];
   self.GetLifeCounterTemplates = () => {
     return JSON.parse(localStorage.getItem("LifeCounterTemplates"));
   };
@@ -111,6 +111,8 @@ function life_counter_template_edit() {
 
       return;
     }
+
+    console.log("self.LifeCounterManagerId: ", self.LifeCounterManagerId);
 
     window.location.href = `${
       self.Locations.LifeCounterManager
@@ -199,10 +201,11 @@ function life_counter_template_edit() {
       return;
     }
 
-    self.GetLifeCounterTemplates();
+    self.LifeCounterTemplates = self.GetLifeCounterTemplates();
 
     self.Current_LifeCounter_Template = self.LifeCounterTemplates.find(
-      (template) => template.LifeCounterTemplateId == self.LifeCounterTemplateId
+      (template) =>
+        template.LifeCounterTemplateId === self.LifeCounterTemplateId
     );
 
     self.PreFillEditForm();
@@ -266,11 +269,10 @@ function life_counter_template_edit() {
       return;
     }
 
-    const template = self.Current_LifeCounter_Template;
-    const current_manager = self.Current_LifeCounter_Manager;
+    const current_template = self.Current_LifeCounter_Template;
 
-    template.LifeCounterManagers = template.LifeCounterManagers.filter(
-      (manager) => manager !== current_manager
+    self.LifeCounterTemplates = self.LifeCounterTemplates.filter(
+      (template) => template !== current_template
     );
 
     self.SetLifeCounterTemplates();
@@ -303,16 +305,6 @@ function life_counter_template_edit() {
 
     let newName = self.Inputs.LifeCounterTemplateName.val();
 
-    // let isNameValid = self.EvaluateNewName(newName);
-
-    // if (isNameValid === false) {
-    //   sweetAlertError(
-    //     "Requested name is already in use, please choose another one."
-    //   );
-
-    //   return;
-    // }
-
     template.LifeCounterTemplateName =
       self.Inputs.LifeCounterTemplateName.val();
 
@@ -332,18 +324,6 @@ function life_counter_template_edit() {
         self.Inputs.PlayersMaxLifePoints.val(),
         10
       );
-
-      let playersCurrentLifePoints = [];
-
-      self.Current_LifeCounter_Players.forEach((player) => {
-        playersCurrentLifePoints.push(player.CurrentLifePoints);
-      });
-
-      let playersMaxCurrentLifePoints = Math.max(...playersCurrentLifePoints);
-
-      if (playersMaxCurrentLifePoints > template.PlayersMaxLifePoints) {
-        template.PlayersMaxLifePoints = playersMaxCurrentLifePoints;
-      }
     } else {
       template.PlayersMaxLifePoints = null;
     }
@@ -406,6 +386,16 @@ function life_counter_template_edit() {
           self.ClearForm();
         },
       });
+    }
+
+    let isNameValid = self.EvaluateNewName(newName);
+
+    if (isNameValid === false) {
+      sweetAlertError(
+        "Requested name is already in use, please choose another one."
+      );
+
+      return;
     }
 
     self.SetLifeCounterTemplates();

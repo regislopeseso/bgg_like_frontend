@@ -47,10 +47,10 @@ function life_counter_player_edit() {
 
   self.LifeCounterTemplates = [];
 
-  self.Current_LifeCounter_Template = [];
-  self.Current_LifeCounter_Manager = [];
+  self.Current_LifeCounter_Template = {};
+  self.Current_LifeCounter_Manager = {};
   self.Current_LifeCounter_Players = [];
-  self.Current_LifeCounter_Player = null;
+  self.Current_LifeCounter_Player = {};
 
   self.GetLifeCounterDetails = () => {
     if (!self.LifeCounterPlayerId) {
@@ -134,7 +134,6 @@ function life_counter_player_edit() {
           return;
         }
 
-        const template = response.content.lifeCounterTemplate;
         const manager = response.content;
         const players = response.content.lifeCounterPlayers;
 
@@ -151,7 +150,7 @@ function life_counter_player_edit() {
         });
 
         self.Current_LifeCounter_Manager = {
-          LifeCounterTemplateId: template.lifeCounterTemplateId,
+          LifeCounterTemplateId: manager.lifeCounterTemplateId,
           LifeCounterManagerId: managerId,
           LifeCounterManagerName: manager.lifeCounterManagerName,
           PlayersStartingLifePoints: manager.playersStartingLifePoints,
