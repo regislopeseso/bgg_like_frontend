@@ -1,4 +1,4 @@
-let __global = {};
+var __global = {};
 
 function redirectToIndexPage() {
   window.location.href = "/index.html";

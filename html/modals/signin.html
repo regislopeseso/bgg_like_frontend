@@ -1,0 +1,53 @@
+<!--? Modal: Sign In from Life Counter Manager Page -->
+<div class="modal fade" id="signInModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div
+        class="modal-header d-flex flex-row justify-content-between align-items-start"
+      >
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          <div>
+            In order to <span>S</span>ync <span>L</span>ife <span>C</span>ounter
+            <span>D</span>ata,
+          </div>
+          <div>please <span>S</span>ign <span>I</span>n...</div>
+        </h1>
+
+        <button
+          type="button"
+          id="button-close-signIn-modal"
+          class="custom-close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form-sign-in-modal">
+          <div class="mb-3">
+            <label class="col-form-label"><span>U</span>ser:</label>
+            <input type="email" class="form-control" id="user-name" required />
+          </div>
+          <div class="mb-3">
+            <label class="col-form-label"><span>P</span>assword:</label>
+            <input
+              type="password"
+              class="form-control"
+              id="user-password"
+              required
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          for="form-sign-in-modal"
+          type="submit"
+          id="button-confirm-signIn"
+          class="btn btn-outline-info"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

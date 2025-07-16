@@ -57,11 +57,6 @@ function lifecounter_manager() {
       self.LifeCounterTemplates = self.GetLifeCounterTemplates();
       self.Search_URL_Params_LifeCounterManagerId();
 
-      if (self.IsUserLoggedIn === true) {
-        //self.User_SyncLifeCounterData();
-        return;
-      }
-
       return;
     }
 
@@ -271,6 +266,10 @@ function lifecounter_manager() {
     self.lifeCounterTemplateDropDownItems_class = ".lf-template";
     self.LifeCounterTemplateDropDownItems = self.DOM.find(
       self.lifeCounterTemplateDropDownItems_class
+    );
+
+    self.LifeCounterShowInfoDropDown = self.DOM.find(
+      "#dropdown-showInfo-lifeCounter"
     );
 
     self.LifeCounterManagersDropDown = self.DOM.find(
@@ -573,6 +572,12 @@ function lifecounter_manager() {
     sweetAlertRollDice(img, roll);
   }
 
+  self.OnSuccessfullSigningIn = () => {
+    self.User_SyncLifeCounterData();
+
+    self.LifeCounterShowInfoDropDown.removeClass("d-none");
+  };
+
   self.LoadEvents = () => {
     // Click to load Life Counter TEMPLATES in the drop down list
     self.Buttons.ChangeLifeCounterTemplate.on("click", (e) => {
@@ -639,8 +644,28 @@ function lifecounter_manager() {
       self.RedirectToLifeCounter_EditTemplate(templateId, managerId);
     });
 
+    // Sync Life Counter DB + LogIn Modal Logic
+    $("#signIn-modal").load("/html/modals/signin.html", function () {
+      $(
+        (function (signInModal) {
+          __global.Modal_SignIn = signInModal;
+        })(new modal_SignIn())
+      );
+      self.Buttons.SyncLifeCounterData_DB.on("click", (e) => {
+        e.preventDefault();
+
+        if (self.IsUserLoggedIn == false) {
+          __global.Modal_SignIn.OpenModal(self.OnSuccessfullSigningIn);
+
+          return;
+        }
+
+        self.User_SyncLifeCounterData();
+      });
+    });
+
     $(function () {
-      self.Buttons.ShowLifeCountersInfo.toggleClass(
+      self.LifeCounterShowInfoDropDown.toggleClass(
         "d-none",
         !self.IsUserLoggedIn
       );
@@ -1312,10 +1337,16 @@ function lifecounter_manager() {
 
   // ! METHODS FOR USERS...
   self.User_SyncLifeCounterData = () => {
-    console.log("self.LifeCounterTemplates: ", self.LifeCounterTemplates);
+    let localStorageTemplates = self.GetLifeCounterTemplates();
+    console.log("self.LifeCounterTemplates: ", localStorageTemplates);
+
+    if (!localStorageTemplates || localStorageTemplates.length == 0) {
+      sweetAlertError("Nothing to be synced!");
+      return;
+    }
 
     let request = {
-      LifeCounterTemplates: self.LifeCounterTemplates,
+      LifeCounterTemplates: localStorageTemplates,
     };
 
     $.ajax({
@@ -1331,9 +1362,7 @@ function lifecounter_manager() {
         }
       },
       error: () => {
-        sweetAlertError(
-          "Failed to fetch requested LIFE COUNTER MANAGER DETAILS."
-        );
+        sweetAlertError("Failed to sync life counter data... try again");
       },
     });
   };
@@ -3054,7 +3083,6 @@ function lifecounter_manager() {
       self.IsBuilt = true;
     }
 
-    //self.SearchLocalStorageForLifeCounter();
     if (self.IsUserLoggedIn === false) {
       self.SearchLocalStorageForLifeCounter();
       return;

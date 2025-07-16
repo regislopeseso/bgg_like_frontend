@@ -8,6 +8,7 @@
     <title>LIFE COUNTER</title>
     <link rel="stylesheet" href="/css/addons.css" />
     <link rel="stylesheet" href="/css/lifecounter/lifecounter_manager.css" />
+    <link rel="stylesheet" href="/css/modals/signin.css" />
   </head>
   <body>
     <main id="main-lifeCounter" class="d-flex flex-column h-100">
@@ -22,7 +23,7 @@
                 <button
                   type="button"
                   id="button-change-lifeCounterTemplate"
-                  class="btn btn-outline-info btn-lg dropdown-toggle ms-4"
+                  class="btn btn-outline-info btn-lg dropdown-toggle ms-4 custom-close"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                   data-bs-offset="10,20"
@@ -56,10 +57,13 @@
                 <i class="bi bi-floppy"></i>
               </button>
 
-              <div class="dropdown me-1 d-flex gap-0 align-items-center">
+              <div
+                id="dropdown-showInfo-lifeCounter"
+                class="dropdown me-1 d-flex gap-0 align-items-center d-none"
+              >
                 <button
                   id="button-showInfo-lifeCounter"
-                  class="btn btn-outline-info btn-md d-none"
+                  class="btn btn-outline-info btn-md"
                   type="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
@@ -515,6 +519,11 @@
       </section>
     </main>
 
+    <div id="signIn-modal"></div>
+
+    <script>
+      var __global = [];
+    </script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -525,5 +534,6 @@
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
     <script src="/js/scripts/lifecounter/lifecounter_manager.js"></script>
+    <script src="/js/modals/signin.js"></script>
   </body>
 </html>
