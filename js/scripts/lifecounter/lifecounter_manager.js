@@ -58,7 +58,7 @@ function lifecounter_manager() {
       self.Search_URL_Params_LifeCounterManagerId();
 
       if (self.IsUserLoggedIn === true) {
-        self.User_SyncLifeCounterData();
+        //self.User_SyncLifeCounterData();
         return;
       }
 
@@ -3054,7 +3054,7 @@ function lifecounter_manager() {
       self.IsBuilt = true;
     }
 
-    self.SearchLocalStorageForLifeCounter();
+    //self.SearchLocalStorageForLifeCounter();
     if (self.IsUserLoggedIn === false) {
       self.SearchLocalStorageForLifeCounter();
       return;

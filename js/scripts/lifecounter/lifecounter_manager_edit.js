@@ -371,7 +371,7 @@ function life_counter_manager_edit() {
 
     manager.LifeCounterManagerName = self.Inputs.LifeCounterManagerName.val();
 
-    manager.PlayesStartingLifePoints =
+    manager.PlayersStartingLifePoints =
       self.Inputs.PlayersStartingLifePoints.val().trim();
 
     if (self.NewPlayersCount) {
@@ -418,6 +418,7 @@ function life_counter_manager_edit() {
       self.Current_LifeCounter_Manager.LifeCounterManagerName;
     const playersStartingLifePoints =
       self.Current_LifeCounter_Manager.PlayersStartingLifePoints;
+    console.log("New starting life points: ", playersStartingLifePoints);
     const playersCount = self.Current_LifeCounter_Manager.PlayersCount;
     const firstPlayerIndex = self.Current_LifeCounter_Manager.FirstPlayerIndex;
     const fixedMaxLifeMode =
@@ -451,13 +452,11 @@ function life_counter_manager_edit() {
             sweetAlertError(resp.message);
             return;
           }
+
+          console.log("New starting life points: ", playersStartingLifePoints);
         },
         error: (err) => {
           sweetAlertError(err);
-        },
-        complete: () => {
-          confirmBtn.attr("disabled", false).text(originalBtnText);
-          self.ClearForm();
         },
       });
 
