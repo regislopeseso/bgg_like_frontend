@@ -80,15 +80,15 @@ body {
 
 #dice-box {
   border: 2px solid var(--main-color);
-  padding: 8px;
+  padding: 0 8px;
   border-radius: 20px;
 }
 #dice-box img {
   width: 50px;
 }
 #button-diceThrower-lifeCounter {
-  margin: 12px;
-  padding: 1px;
+  margin: 2px;
+  padding: 10px;
   border: none !important;
   transform: scale(2);
   transition: transform 0.3s ease;
@@ -140,7 +140,6 @@ body {
 
 #btn-four-faced-dice img {
   position: relative;
-
   z-index: 1;
   width: 50px;
   height: 50px;
@@ -152,7 +151,6 @@ body {
 #btn-twelve-faced-dice,
 #btn-twenty-faced-dice {
   border: none;
-
   box-shadow: none;
   padding: 0;
   margin: 0;
