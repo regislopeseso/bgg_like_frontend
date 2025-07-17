@@ -24,17 +24,35 @@
       <div class="modal-body">
         <form id="form-sign-in-modal">
           <div class="mb-3">
-            <label class="col-form-label"><span>U</span>ser:</label>
-            <input type="email" class="form-control" id="user-name" required />
+            <label for="user-name" class="col-form-label"
+              ><span>U</span>ser:</label
+            >
+            <input
+              type="email"
+              class="new-data form-control"
+              id="user-name"
+              required
+            />
           </div>
           <div class="mb-3">
             <label class="col-form-label"><span>P</span>assword:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="user-password"
-              required
-            />
+            <div class="d-flex flex-row w-100 align-items-center">
+              <input
+                type="password"
+                class="new-data form-control"
+                id="user-password"
+                required
+              />
+
+              <span class="d-flex align-items-center">
+                <img
+                  id="toggle-show-password-modalSignIn"
+                  src="/images/icons/eye_show.svg"
+                  style="height: 2.5em; cursor: pointer"
+                  title="Show password"
+                />
+              </span>
+            </div>
           </div>
         </form>
       </div>

@@ -12,7 +12,5 @@
   font-size: 2rem;
 }
 #button-close-signIn-modal:hover {
-  color: var(--reddish);
-  background-color: transparent;
-  box-shadow: 0 0 10px 1px var(--text-color);
+  color: var(--text-color);
 }

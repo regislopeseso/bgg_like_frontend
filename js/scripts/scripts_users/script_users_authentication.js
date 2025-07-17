@@ -204,11 +204,7 @@ $(function () {
     $("#toggle-show-password-confirmation").on("click", function (e) {
       e.preventDefault();
 
-      console.log("Eye state1:", signUpEyeState);
-
       signUpEyeState = signUpEyeState === 0 ? 1 : 0;
-
-      console.log("Eye state2:", signUpEyeState);
 
       if (signUpEyeState === 1) {
         $("#toggle-show-password-confirmation").attr("src", closeEye);

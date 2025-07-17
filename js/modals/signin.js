@@ -19,6 +19,11 @@ function modal_SignIn() {
       self.DOM.find("#button-close-signIn-modal");
     self.Buttons[self.Buttons.length] = self.Buttons.ConfirmSignIn =
       self.DOM.find("#button-confirm-signIn");
+    self.Buttons[self.Buttons.length] = self.Buttons.ToggleShowPassword =
+      self.DOM.find("#toggle-show-password-modalSignIn");
+
+    self.OpenEyeImg = "/images/icons/eye_show.svg";
+    self.CloseEyeImg = "/images/icons/eye_hide.svg";
   };
 
   self.LoadEvents = () => {
@@ -40,6 +45,24 @@ function modal_SignIn() {
         self.ConfirmSignIn(userEmail, userPassword, false);
       } else {
         form.reportValidity(); // Shows validation errors
+      }
+    });
+
+    let signUpEyeState = 0;
+    self.Buttons.ToggleShowPassword.on("click", function (e) {
+      e.preventDefault();
+
+      signUpEyeState = signUpEyeState === 0 ? 1 : 0;
+
+      if (signUpEyeState === 1) {
+        self.Buttons.ToggleShowPassword.attr("src", self.CloseEyeImg);
+        self.Inputs.UserPassword.attr("type", "text");
+        self.Buttons.ToggleShowPassword.attr("title", "Hide password");
+      }
+      if (signUpEyeState === 0) {
+        self.Buttons.ToggleShowPassword.attr("src", self.OpenEyeImg);
+        self.Inputs.UserPassword.attr("type", "password");
+        self.Buttons.ToggleShowPassword.attr("title", "Show password");
       }
     });
   };
@@ -101,6 +124,10 @@ function modal_SignIn() {
     });
 
     modalInstance.show();
+
+    self.DOM.on("shown.bs.modal", function () {
+      self.Inputs.UserName.focus();
+    });
   };
 
   self.OpenModal = (onSuccessfullSigningIn) => {
