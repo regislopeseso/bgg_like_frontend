@@ -45,10 +45,6 @@ const Flipper = (function () {
         { id: "#userOption-editSession", template: "edit-session-template" },
         { id: "#userOption-rateBg", template: "rate-bg-template" },
         { id: "#userOption-editRate", template: "edit-rate-template" },
-        {
-          id: "#userOption-LifeCounter",
-          template: "new-life-counter-template",
-        },
       ];
 
       // Cache menu button elements
@@ -636,8 +632,6 @@ function loadTemplate(templateId) {
             </div>
           </form>
         </div>`;
-    case "new-life-counter-template":
-      return `<p>Template "${templateId}" not yet implemented.</p>`;
     default:
       return `<p>Template "${templateId}" não encontrado.</p>`;
   }

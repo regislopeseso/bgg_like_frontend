@@ -2,13 +2,13 @@
 @import "/node_modules/bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
-  --bg-color: rgb(31, 36, 46);
-  --second-bg-color: #323946;
-  --text-color: rgb(255, 255, 255);
-  --main-color: rgb(0, 238, 255);
-  --reddish: rgb(255, 51, 0);
-  --yellowish: rgb(255, 230, 0);
-  --greenish: rgb(0, 255, 128);
+  --bg-color: #1f242e;
+  --second-bg-color: #333a48;
+  --text-color: #ffffff;
+  --main-color: #00eeff;
+  --reddish: #ff3300;
+  --yellowish: #ffe600;
+  --greenish: #00ff80;
 }
 
 * {

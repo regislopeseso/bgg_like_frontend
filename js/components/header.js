@@ -50,6 +50,9 @@ function loadHeader(userData, roleData) {
           <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter_manager.html"">
             <img src="/images/icons/lifecounter_white.png" alt=""/>
           </a> 
+          <a id="img-play" href="/html/lifecounter/lifecounter_manager.html"">
+            <img src="/images/icons/play.png" alt=""/>
+          </a> 
           <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
           <a href="/html/pages_users/users_page.html" class="loggedIn-clearance d-none">USER</a>
           <a href="/html/pages_admins/admins_page.html" class="admins-clearance d-none">ADMIN</a>
@@ -85,14 +88,11 @@ function loadHeader(userData, roleData) {
               </button>
 
               <div class="collapse navbar-collapse text-end" id="toggle-hamburguer-menu">                 
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">               
 
-               
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/index.html">HOME</a>
-                  </li>
-                 
+                  <li class="nav-item">
+                      <a class="nav-link" href="/index.html">HOME</a>
+                  </li>                 
                   <li class="nav-item">
                     <a class="nav-link" href="/html/explore.html">EXPLORE</a>
                   </li>
@@ -100,7 +100,12 @@ function loadHeader(userData, roleData) {
                     <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter_manager.html"">
                       <img src="/images/icons/lifecounter_white.png" alt=""/>
                     </a> 
-                  </li>                
+                  </li>       
+                   <li class="nav-item">
+                    <a id="img-play" href="/html/lifecounter/lifecounter_manager.html"">
+                      <img src="/images/icons/play.png" alt=""/>
+                    </a> 
+                  </li>         
                   <li class="nav-item">
                     <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance nav-link d-none">SIGN UP/IN</a>
                   </li>
@@ -115,16 +120,16 @@ function loadHeader(userData, roleData) {
                   </li>
 
                   <div class="dropdown loggedIn-clearance d-none">
-                      <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-gear"></i>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item m-0 " href="#">Edit Profile</a></li>
-                        <li><a class="dropdown-item m-0" href="#">Delete Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item m-0" href="#">Sign Out</a></li>
-                      </ul>
-                    </div>                 
+                    <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
+                      <i class="bi bi-person-gear"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item m-0 " href="#">Edit Profile</a></li>
+                      <li><a class="dropdown-item m-0" href="#">Delete Profile</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item m-0" href="#">Sign Out</a></li>
+                    </ul>
+                  </div>                 
 
                   <li class="nav-item">
                     <butto style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
