@@ -46,8 +46,7 @@ function loadHeader(userData, roleData) {
          
                 
           <a href="/index.html">HOME</a>
-          <a href="/html/explore.html">EXPLORE</a>
-          <a href="/html/lifecounter_explore.html">LIFE COUNTER</a> 
+          <a href="/html/explore.html">EXPLORE</a>         
           <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter_manager.html"">
             <img src="/images/icons/lifecounter_white.png" alt=""/>
           </a> 
@@ -93,26 +92,15 @@ function loadHeader(userData, roleData) {
                 <li class="nav-item">
                     <a class="nav-link" href="/index.html">HOME</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/index.html">HOME</a>
-                  </li>
+                 
                   <li class="nav-item">
                     <a class="nav-link" href="/html/explore.html">EXPLORE</a>
                   </li>
                   <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      href="/html/lifecounter/lifecounter_manager.html"
-                      >LIFE COUNTER FINAL</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      class="nav-link"
-                      href="/html/pages_users/lifecounter/users_lifecounter_setup.html"
-                      >LIFE COUNTER</a
-                    >
-                  </li>
+                    <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter_manager.html"">
+                      <img src="/images/icons/lifecounter_white.png" alt=""/>
+                    </a> 
+                  </li>                
                   <li class="nav-item">
                     <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance nav-link d-none">SIGN UP/IN</a>
                   </li>
