@@ -1,10 +1,6 @@
-#one {
-  z-index: 999 !important;
-}
-
 body {
   background-color: var(--bg-color);
-  height: 100vh;
+  height: 90vh;
 }
 
 #ul-change-lifeCounterTemplate,
@@ -45,7 +41,7 @@ body {
 }
 
 #ul-infos-lifeCounter {
-  background-color: var(--bg-color) !important;
+  background-color: var(--second-bg-color) !important;
 }
 #ul-infos-lifeCounter h3 {
   color: var(--main-color) !important;
@@ -84,13 +80,15 @@ body {
 
 #dice-box {
   border: 2px solid var(--main-color);
-  padding: 2px;
+  padding: 8px;
   border-radius: 20px;
 }
 #dice-box img {
   width: 50px;
 }
 #button-diceThrower-lifeCounter {
+  margin: 12px;
+  padding: 1px;
   border: none !important;
   transform: scale(2);
   transition: transform 0.3s ease;
@@ -388,5 +386,138 @@ button.disabled {
   }
   to {
     transform: scale(2) rotate(360deg);
+  }
+}
+
+#header-lifeCounter-explore {
+  z-index: 999;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0 0 1rem;
+}
+
+.grid-layout {
+  display: grid;
+}
+
+#div-lifeCounter-templates {
+  justify-self: start;
+  padding-right: 2rem;
+}
+
+#div-sync-info-buttons {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+}
+
+#div-dice-thrower {
+  padding: 0 10px;
+}
+
+#quit-lifecounter {
+  position: absolute;
+  top: 1rem;
+  justify-self: end;
+  padding-right: 1rem;
+}
+
+#button-toggle-lifecounter-menu {
+  background-color: transparent;
+  transition: 0.5s all ease-in-out;
+}
+
+.menu-expanded {
+  transform: rotate(180deg);
+  filter: brightness(0) saturate(100%) invert(81%) sepia(69%) saturate(1412%)
+    hue-rotate(145deg) brightness(95%) contrast(101%);
+}
+#expand-contract-icon {
+  display: none;
+}
+#expand-contract-icon:hover {
+  filter: brightness(0) saturate(100%) invert(81%) sepia(69%) saturate(1412%)
+    hue-rotate(145deg) brightness(95%) contrast(101%);
+  transform: scale(1.1);
+}
+
+hr {
+  display: none !important;
+}
+
+@media screen and (max-width: 1700px) {
+  .hidden {
+    display: none !important;
+  }
+
+  #header-lifeCounter-explore {
+    /* display: none; */
+    z-index: 999;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 60px 60px 80px 80px 20px;
+    justify-items: start;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  #div-lifeCounter-templates {
+    grid-row-start: 1;
+    grid-row-end: 1;
+    grid-column-start: 1;
+    grid-column-end: 1;
+    padding-left: 1rem;
+  }
+  #div-sync-info-buttons {
+    grid-row-start: 1;
+    grid-row-end: 1;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    justify-self: start;
+  }
+
+  #div-lifeCounter-managers {
+    grid-row-start: 2;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    justify-self: start;
+    padding-left: 1rem;
+  }
+
+  #div-general-markers {
+    grid-row-start: 3;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    padding-left: 1rem;
+    justify-self: start;
+  }
+
+  #div-dice-thrower {
+    grid-row-start: 4;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    padding-left: 1rem;
+    justify-self: start;
+  }
+  hr {
+    display: flex !important;
+    border: 1px solid var(--main-color);
+    padding: 0 !important;
+    margin: 0 !important;
+    grid-row-start: 5;
+    grid-row-end: 5;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  #expand-contract-icon {
+    display: flex;
+    justify-self: center;
+    padding: 0.5rem 0;
   }
 }

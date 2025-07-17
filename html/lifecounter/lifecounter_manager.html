@@ -12,21 +12,24 @@
   </head>
   <body>
     <main id="main-lifeCounter" class="d-flex flex-column h-100">
-      <section id="one">
-        <div
-          id="header-lifeCounter-explore"
-          class="row d-flex justify-content-between align-items-center w-100 pt-3"
-        >
-          <div
-            id="div-lifeCounter-templates"
-            class="col d-flex flex-row justify-content-between gap-2"
+      <section>
+        <div id="quit-lifecounter">
+          <button
+            id="button-close-lifeCounter"
+            class="btn btn-outline-danger btn-md"
+            type="button"
           >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div id="header-lifeCounter-explore" class="grid-layout hidden">
+          <div id="div-lifeCounter-templates">
             <div class="d-flex flex-row">
               <div class="dropdown me-1 d-flex gap-0 align-items-center">
                 <button
                   type="button"
                   id="button-change-lifeCounterTemplate"
-                  class="btn btn-outline-info btn-lg dropdown-toggle ms-4 custom-close"
+                  class="btn btn-outline-info btn-lg dropdown-toggle custom-close"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                   data-bs-offset="10,20"
@@ -47,7 +50,50 @@
                 </button>
               </div>
             </div>
+          </div>
 
+          <div id="div-lifeCounter-managers">
+            <div class="dropdown d-flex gap-0 align-items-center">
+              <button
+                id="button-refresh-lifeCounterManager"
+                class="btn btn-outline-info btn-md"
+                type="button"
+              >
+                <i class="bi bi-arrow-clockwise"></i>
+              </button>
+              <span>-</span>
+              <button
+                type="button"
+                id="button-change-lifeCounterManager"
+                class="btn btn-outline-info btn-lg dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                data-bs-offset="10,20"
+              >
+                LIFE COUNTER
+              </button>
+              <ul id="ul-change-lifeCounterManager" class="dropdown-menu"></ul>
+              <span>-</span>
+              <button
+                id="button-setUp-lifeCounter"
+                class="btn btn-outline-info btn-md"
+                type="button"
+              >
+                <i class="bi bi-wrench"></i>
+              </button>
+              <div
+                id="div-show-duration-lifeCounter"
+                class="d-none align-items-end"
+              >
+                <div class="show-lifeCounter-timeSpan d-flex flex-column gap-0">
+                  <span>Finished! Duration:</span>
+                  <span id="span-show-duration-lifeCounter"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="div-sync-info-buttons">
             <div
               id="user-exclusive-features"
               class="d-flex flex-row gap-4 align-items-center"
@@ -120,163 +166,116 @@
             </div>
           </div>
 
-          <div
-            class="col d-flex flex-row text-center justify-content-center align-items-center gap-3"
-          >
-            <div class="dropdown me-1 d-flex gap-0 align-items-center">
-              <button
-                id="button-refresh-lifeCounterManager"
-                class="btn btn-outline-info btn-md"
-                type="button"
-              >
-                <i class="bi bi-arrow-clockwise"></i>
-              </button>
-              <span>-</span>
-              <button
-                type="button"
-                id="button-change-lifeCounterManager"
-                class="btn btn-outline-info btn-lg dropdown-toggle"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                data-bs-offset="10,20"
-              >
-                LIFE COUNTER
-              </button>
-              <ul id="ul-change-lifeCounterManager" class="dropdown-menu"></ul>
-              <span>-</span>
-              <button
-                id="button-setUp-lifeCounter"
-                class="btn btn-outline-info btn-md"
-                type="button"
-              >
-                <i class="bi bi-wrench"></i>
-              </button>
-              <div
-                id="div-show-duration-lifeCounter"
-                class="d-none align-items-end"
-              >
-                <div class="show-lifeCounter-timeSpan d-flex flex-column gap-0">
-                  <span>Finished! Duration:</span>
-                  <span id="span-show-duration-lifeCounter"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col d-flex justify-content-between">
-            <div
-              id="extra-features-lifeCounter"
-              class="d-flex flex-row align-items-center gap-2"
-            >
-              <div
-                id="dice-box"
-                class="d-flex flex-row align-items-center gap-1"
-              >
-                <div class="d-flex flex-row align-items-center">
-                  <button
-                    id="button-diceThrower-lifeCounter"
-                    class="btn btn-outline-info btn-sm m-3"
-                    type="button"
-                  >
-                    <i class="bi bi-dice-5"></i>
-                  </button>
-                  <div class="d-none" id="dice-throw-result"></div>
-                </div>
-
-                <div
-                  id="dice-options"
-                  class="d-flex flex-row align-items-center justify-content-center gap-1 pe-3 d-none"
+          <div id="div-dice-thrower">
+            <div id="dice-box" class="d-flex flex-row align-items-center gap-1">
+              <div class="d-flex flex-row align-items-center">
+                <button
+                  id="button-diceThrower-lifeCounter"
+                  class="btn btn-outline-info btn-sm"
+                  type="button"
                 >
-                  <div id="dice-separator">
-                    <h1 class="d-flex align-items-center p-0 pe-1">|</h1>
-                  </div>
-
-                  <button
-                    id="btn-four-faced-dice"
-                    class="btn btn-outline-info btn-sm d-flex justify-content-center p-0 m-0"
-                  >
-                    <img
-                      id="img-four-faced-dice"
-                      src="/images/icons/four_faced_dice.svg"
-                      alt=""
-                    />
-                  </button>
-
-                  <button
-                    id="btn-six-faced-dice"
-                    class="btn btn-outline-info d-flex justify-content-center"
-                  >
-                    <img
-                      id="img-six-faced-dice"
-                      src="/images/icons/six_faced_dice.svg"
-                      alt=""
-                    />
-                  </button>
-
-                  <button
-                    id="btn-eight-faced-dice"
-                    class="btn btn-outline-info d-flex justify-content-center"
-                  >
-                    <img
-                      id="img-eight-faced-dice"
-                      src="/images/icons/eight_faced_dice.svg"
-                      alt=""
-                    />
-                  </button>
-
-                  <button
-                    id="btn-ten-faced-dice"
-                    class="btn btn-outline-info d-flex justify-content-center"
-                  >
-                    <img
-                      id="img-ten-faced-dice"
-                      src="/images/icons/ten_faced_dice.svg"
-                      alt=""
-                    />
-                  </button>
-
-                  <button
-                    id="btn-twelve-faced-dice"
-                    class="btn btn-outline-info btn-sm d-flex justify-content-center"
-                  >
-                    <img
-                      id="img-twelve-faced-dice"
-                      src="/images/icons/twelve_faced_dice.svg"
-                      alt=""
-                    />
-                  </button>
-
-                  <button
-                    id="btn-twenty-faced-dice"
-                    class="btn btn-outline-info btn-sm d-flex justify-content-center"
-                  >
-                    <img
-                      id="img-twenty-faced-dice"
-                      src="/images/icons/twenty_faced_dice.svg"
-                      alt=""
-                    />
-                  </button>
-                </div>
+                  <i class="bi bi-dice-5"></i>
+                </button>
+                <div class="d-none" id="dice-throw-result"></div>
               </div>
 
-              <div id="counter-box" class="d-flex flex-row gap-4">
-                <button id="red-counter" class="counters">0</button>
-                <button id="yellow-counter" class="counters">0</button>
-                <button id="green-counter" class="counters">0</button>
+              <div
+                id="dice-options"
+                class="d-flex flex-row align-items-center justify-content-center gap-1 pe-3 d-none"
+              >
+                <div id="dice-separator">
+                  <h1 class="d-flex align-items-center p-0 pe-1">|</h1>
+                </div>
+
+                <button
+                  id="btn-four-faced-dice"
+                  class="btn btn-outline-info btn-sm d-flex justify-content-center p-0 m-0"
+                >
+                  <img
+                    id="img-four-faced-dice"
+                    src="/images/icons/four_faced_dice.svg"
+                    alt=""
+                  />
+                </button>
+
+                <button
+                  id="btn-six-faced-dice"
+                  class="btn btn-outline-info d-flex justify-content-center"
+                >
+                  <img
+                    id="img-six-faced-dice"
+                    src="/images/icons/six_faced_dice.svg"
+                    alt=""
+                  />
+                </button>
+
+                <button
+                  id="btn-eight-faced-dice"
+                  class="btn btn-outline-info d-flex justify-content-center"
+                >
+                  <img
+                    id="img-eight-faced-dice"
+                    src="/images/icons/eight_faced_dice.svg"
+                    alt=""
+                  />
+                </button>
+
+                <button
+                  id="btn-ten-faced-dice"
+                  class="btn btn-outline-info d-flex justify-content-center"
+                >
+                  <img
+                    id="img-ten-faced-dice"
+                    src="/images/icons/ten_faced_dice.svg"
+                    alt=""
+                  />
+                </button>
+
+                <button
+                  id="btn-twelve-faced-dice"
+                  class="btn btn-outline-info btn-sm d-flex justify-content-center"
+                >
+                  <img
+                    id="img-twelve-faced-dice"
+                    src="/images/icons/twelve_faced_dice.svg"
+                    alt=""
+                  />
+                </button>
+
+                <button
+                  id="btn-twenty-faced-dice"
+                  class="btn btn-outline-info btn-sm d-flex justify-content-center"
+                >
+                  <img
+                    id="img-twenty-faced-dice"
+                    src="/images/icons/twenty_faced_dice.svg"
+                    alt=""
+                  />
+                </button>
               </div>
             </div>
-            <button
-              id="button-close-lifeCounter"
-              class="btn btn-outline-danger btn-md m-0"
-              type="button"
-            >
-              <i class="fa-solid fa-xmark"></i>
-            </button>
           </div>
+
+          <div id="div-general-markers">
+            <div id="counter-box" class="d-flex flex-row gap-4">
+              <button id="red-counter" class="counters">0</button>
+              <button id="yellow-counter" class="counters">0</button>
+              <button id="green-counter" class="counters">0</button>
+            </div>
+          </div>
+          <hr />
+        </div>
+
+        <div id="expand-contract-icon">
+          <button
+            id="button-toggle-lifecounter-menu"
+            class="p-0 m-0"
+            type="button"
+          >
+            <img src="/images/icons/expand-arrows.png" class="p-0 m-0" />
+          </button>
         </div>
       </section>
-
-      <hr />
 
       <section
         id="section-lifeCounter"

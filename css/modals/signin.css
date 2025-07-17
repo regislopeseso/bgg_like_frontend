@@ -14,10 +14,3 @@
 #button-close-signIn-modal:hover {
   color: var(--text-color);
 }
-
-@media screen and (max-width: 1700px) {
-  #header-lifeCounter-explore > div {
-    :flex ;
-    flex-direction: column !important;
-  }
-}

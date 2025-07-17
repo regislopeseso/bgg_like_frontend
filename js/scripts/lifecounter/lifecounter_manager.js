@@ -256,6 +256,8 @@ function lifecounter_manager() {
   self.LoadReferences = () => {
     self.DOM = $("#main-lifeCounter");
 
+    self.LifeCounterMenu = self.DOM.find("#header-lifeCounter-explore");
+
     self.LifeCountersField = self.DOM.find("#section-lifeCounter");
 
     self.LifeCountersOrganizer = self.DOM.find("#organizer-lifeCounter");
@@ -317,6 +319,9 @@ function lifecounter_manager() {
     //*
     //* BUTTONS
     self.Buttons = [];
+    self.Buttons[self.Buttons.length] = self.Buttons.ToggleLifeCounterMenu =
+      self.DOM.find("#button-toggle-lifecounter-menu");
+
     self.Buttons[self.Buttons.length] = self.Buttons.ChangeLifeCounterTemplate =
       self.DOM.find("#button-change-lifeCounterTemplate");
     self.Buttons[self.Buttons.length] = self.Buttons.NewLifeCounterTemplate =
@@ -596,6 +601,17 @@ function lifecounter_manager() {
   };
 
   self.LoadEvents = () => {
+    self.Buttons.ToggleLifeCounterMenu.on("click", (e) => {
+      e.preventDefault();
+
+      console.log("teste");
+      self.Buttons.ToggleLifeCounterMenu.toggleClass("menu-expanded");
+
+      self.DOM.find("hr").show();
+
+      self.LifeCounterMenu.toggleClass("hidden");
+    });
+
     // Click to load Life Counter TEMPLATES in the drop down list
     self.Buttons.ChangeLifeCounterTemplate.on("click", (e) => {
       self.LoadLifeCounterTemplates();
