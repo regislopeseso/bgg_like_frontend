@@ -330,14 +330,14 @@ textarea.new-data {
 /*? !!!!!! SweetAlert2 !!!!!! */
 /* Override the main popup font and background */
 .swal2-popup {
-  font-family: "Anta", sans-serif;
-  background-color: var(--second-bg-color); /* Light background */
-  color: var(--text-color); /* Text color */
+  font-family: "Anta", sans-serif !important;
+  background-color: var(--second-bg-color) !important; /* Light background */
+  color: var(--text-color) !important; /* Text color */
 }
 
 /* Override the title style */
 .swal2-title {
-  color: var(--text-color); /* Your brand color */
+  color: var(--text-color) !important; /* Your brand color */
   font-weight: 100 !important;
 }
 
@@ -345,38 +345,42 @@ textarea.new-data {
 .swal2-confirm {
   background-color: transparent !important;
   color: var(--main-color) !important;
-  font-weight: bold;
+  font-weight: bold !important;
   border: 1px solid var(--main-color) !important;
-  border-radius: 6px;
+  border-radius: 6px !important;
 }
 .swal2-confirm:hover {
   background-color: var(--main-color) !important;
   color: var(--text-color) !important;
-  font-weight: bold;
-  border-radius: 6px;
-  box-shadow: 0 0 15px 1px var(--text-color);
+  font-weight: bold !important;
+  border-radius: 6px !important;
+  box-shadow: 0 0 15px 1px var(--text-color) !important;
+}
+
+.swal2-toast.swal2-show {
+  animation: var(--swal2-toast-show-animation) !important;
 }
 
 /* Override the cancel button */
 .swal2-cancel {
   background-color: transparent !important;
   color: var(--reddish) !important;
-  font-weight: bold;
+  font-weight: bold !important;
   border: 1px solid var(--reddish) !important;
-  border-radius: 6px;
+  border-radius: 6px !important;
 }
 .swal2-cancel:hover {
   background-color: var(--reddish) !important;
   color: var(--text-color) !important;
-  font-weight: bold;
-  border-radius: 6px;
-  box-shadow: 0 0 15px 1px var(--text-color);
+  font-weight: bold !important;
+  border-radius: 6px !important;
+  box-shadow: 0 0 15px 1px var(--text-color) !important;
 }
 /** Success Icon */
 /* Outer ring of the success icon */
 .swal2-icon.swal2-success {
   border-color: var(--main-color) !important;
-  color: var(--main-color);
+  color: var(--main-color) !important;
 }
 /* Checkmark lines specifically */
 .swal2-icon.swal2-success .swal2-success-line-tip,
@@ -385,13 +389,26 @@ textarea.new-data {
 }
 /* Success ring animation fix (optional but safe) */
 .swal2-icon.swal2-success .swal2-success-ring {
-  border: 4px solid var(--main-color); /* you can also use `var(--main-color)` with alpha if needed */
+  border: 4px solid var(--main-color);
+}
+/*? Warning Icon */
+/* Outer ring of the success icon */
+.swal2-icon.swal2-warning {
+  font-size: 1rem !important;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-color: transparent !important;
+  color: var(--yellowish) !important ;
+}
+.swal2-toast .swal2-icon .swal2-icon-content {
+  align-items: center;
+  font-size: 100px !important;
+  font-weight: 100 !important;
 }
 /*! Error Icon */
 /* Outer ring of the error icon */
 .swal2-icon.swal2-error {
   border-color: var(--reddish) !important;
-  color: var(--reddish);
+  color: var(--reddish) !important;
 }
 /* Checkmark lines specifically */
 .swal2-icon.swal2-error .swal2-success-line-tip,
@@ -400,7 +417,7 @@ textarea.new-data {
 }
 /* Error ring animation fix (optional but safe) */
 .swal2-icon.swal2-error .swal2-error-ring {
-  border: 4px solid var(--reddish); /* you can also use `var(--main-color)` with alpha if needed */
+  border: 4px solid var(--reddish) !important; /* you can also use `var(--main-color)` with alpha if needed */
 }
 .swal2-x-mark-line-left,
 .swal2-x-mark-line-right {

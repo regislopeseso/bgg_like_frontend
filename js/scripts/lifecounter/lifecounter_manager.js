@@ -483,6 +483,23 @@ function lifecounter_manager() {
       },
     });
   }
+  function sweetAlertWaning(title_text, message_text) {
+    return Swal.fire({
+      position: "center",
+      confirmButtonText: "Refresh now!",
+      icon: "warning",
+      toast: "true",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: true,
+      showCancelButton: true, // optional, if you want an extra button
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+    }).then((result) => {
+      return result.isConfirmed === true;
+    });
+  }
   function sweetAlertError(title_text, message_text) {
     Swal.fire({
       position: "center",
@@ -654,7 +671,7 @@ function lifecounter_manager() {
       self.Buttons.SyncLifeCounterData_DB.on("click", (e) => {
         e.preventDefault();
 
-        if (self.IsUserLoggedIn == false) {
+        if (self.IsUserLoggedIn === false) {
           __global.Modal_SignIn.OpenModal(self.OnSuccessfullSigningIn);
 
           return;
@@ -677,7 +694,15 @@ function lifecounter_manager() {
     });
 
     self.Buttons.RefreshLifeCounter.on("click", function () {
-      self.RefreshLifeCounter();
+      sweetAlertWaning(
+        "Players Life Points will be refreshed!",
+        "To confirm please hit refresh now"
+      ).then((isConfirmed) => {
+        console.log("isConfirmed: ", isConfirmed);
+        if (isConfirmed === true) {
+          self.RefreshLifeCounter();
+        }
+      });
     });
 
     // Click to load Life Counter MANAGERS in the drop down list
@@ -1360,6 +1385,8 @@ function lifecounter_manager() {
         if (!response.content) {
           sweetAlertError(response.message);
         }
+
+        self.Buttons.SyncLifeCounterData_DB.addClass("d-none");
       },
       error: () => {
         sweetAlertError("Failed to sync life counter data... try again");
