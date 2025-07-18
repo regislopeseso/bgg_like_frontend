@@ -3,6 +3,28 @@ body {
   height: 90vh;
 }
 
+hr {
+  display: none !important;
+}
+
+#header-lifeCounter-explore {
+  z-index: 999;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0 0 1rem;
+}
+
+.grid-layout {
+  display: grid;
+}
+
+#div-lifeCounter-templates {
+  justify-self: start;
+  padding-right: 2rem;
+}
 #ul-change-lifeCounterTemplate,
 #ul-change-lifeCounterManager {
   background-color: var(--second-bg-color);
@@ -22,6 +44,30 @@ body {
   color: var(--greenish);
 }
 
+
+.white-icon {
+  filter: brightness(0) invert(1);
+}
+.lf-manager:hover .white-icon {
+  filter: none;
+}
+#button-new-lifeCounterTemplate,
+#button-new-lifeCounterManager {
+  color: var(--greenish) !important;
+}
+#button-new-lifeCounterTemplate:hover,
+#button-new-lifeCounterManager:hover {
+  color: var(--main-color) !important;
+  background-color: var(--bg-color) !important;
+  box-shadow: none;
+}
+.show-lifeCounter-timeSpan {
+  border: 1px solid var(--main-color);
+  padding: 5px;
+  border-radius: 1rem;
+}
+
+
 #user-exclusive-features {
   border: 2px solid var(--main-color);
   padding: 5px;
@@ -39,14 +85,17 @@ body {
   box-shadow: none !important;
   border: none !important;
 }
-
+#div-sync-info-buttons {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+}
 #ul-infos-lifeCounter {
   background-color: var(--second-bg-color) !important;
 }
 #ul-infos-lifeCounter h3 {
   color: var(--main-color) !important;
 }
-
 #ul-infos-lifeCounter .dropdown-item {
   pointer-events: none;
 
@@ -54,31 +103,15 @@ body {
   opacity: 1; /* Optional: make it look dimmed */
 }
 
-.white-icon {
-  filter: brightness(0) invert(1);
-}
-.lf-manager:hover .white-icon {
-  filter: none;
-}
 
-#button-new-lifeCounterTemplate,
-#button-new-lifeCounterManager {
-  color: var(--greenish) !important;
+#div-dice-thrower {
+  padding: 0 10px;
 }
-#button-new-lifeCounterTemplate:hover,
-#button-new-lifeCounterManager:hover {
-  color: var(--main-color) !important;
-  background-color: var(--bg-color) !important;
-  box-shadow: none;
-}
-
-.show-lifeCounter-timeSpan {
-  border: 1px solid var(--main-color);
-  padding: 5px;
-  border-radius: 1rem;
-}
-
 #dice-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
   border: 2px solid var(--main-color);
   padding: 0 8px;
   border-radius: 20px;
@@ -99,6 +132,16 @@ body {
   box-shadow: none !important;
   border: none !important;
 }
+#dice-options{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-right: 15px;
+}
+
+
 .rotate-on-click {
   animation: rotateOnce 0.6s ease-in-out;
   transform: rotate(360deg);
@@ -157,6 +200,22 @@ body {
   border-radius: 50%;
 }
 
+.dice-result {
+  display: flex;  
+  justify-content: center;
+  align-content: center;
+  flex-wrap: nowrap;
+  
+  border-radius: 20px;
+  background-color: var(--second-bg-color);
+  color: var(--main-color);
+  box-shadow: 0 0 10px 5px var(--main-color);
+  width: 80px;
+  padding: 5px 0;
+  max-width: 200px;
+  margin: 0 10px;
+}
+
 #counter-box {
   border: 2px solid var(--main-color);
   padding: 16px;
@@ -170,6 +229,23 @@ body {
   width: 60px;
   height: 40px;
 }
+.counters[data-tooltip]::after{  
+  content: attr(data-tooltip);
+  position: absolute;
+  
+  background: var(--second-bg-color);
+  color: var(--text-color);
+  padding: 10px;
+  border-radius: 4px;
+  white-space: wrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+  transform: translate(-25px, 40px);
+  pointer-events: none;
+}
+.counters[data-tooltip]:hover::after {
+  opacity: 1;
+}
 #red-counter {
   border: 3px solid var(--reddish);
 }
@@ -178,6 +254,15 @@ body {
 }
 #green-counter {
   border: 3px solid var(--greenish);
+}
+
+#red-counter-increase,
+#red-counter-decrease,
+#yellow-counter-increase,
+#yellow-counter-decrease,
+#green-counter-increase,
+#green-counter-decrease {
+  display: none;
 }
 
 #button-close-lifeCounter {
@@ -194,16 +279,12 @@ body {
 #organizer-lifeCounter {
   padding: 1rem;
   display: grid;
-
   width: 95vw;
   height: 85vh;
-
   gap: 2rem;
-
   align-self: center;
   align-content: center;
   align-items: center;
-
   justify-self: center;
   justify-content: center;
   justify-items: center;
@@ -222,7 +303,6 @@ body {
   width: 100%;
   height: 100%;
 }
-
 .playerstats {
   position: absolute;
   top: 50%;
@@ -247,14 +327,12 @@ body {
   z-index: 600 !important;
   pointer-events: visible !important;
 }
-
 .rotate-text-clockWise {
   writing-mode: sideways-rl !important;
 }
 .rotate-text-antiClockWise {
   writing-mode: sideways-lr !important;
 }
-
 .increase-life-points,
 .decrease-life-points {
   position: relative;
@@ -274,11 +352,9 @@ body {
   background-color: var(--second-bg-color);
   box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
 }
-
 .rotate-i::before {
   transform: rotate(90deg);
 }
-
 .increase-life-points:active {
   box-shadow: inset 0 0 1rem 0px var(--main-color);
   border-radius: 2rem;
@@ -299,7 +375,6 @@ body {
   box-shadow: none;
   color: var(--bg-color);
 }
-
 .decrease-life-points:active {
   box-shadow: inset 0 0 1rem 0 var(--main-color);
   border-radius: 2rem;
@@ -320,7 +395,6 @@ body {
   box-shadow: none;
   color: var(--bg-color);
 }
-
 .increasePointsFlexRow {
   display: flex;
   flex-direction: row;
@@ -335,7 +409,6 @@ body {
   justify-content: start;
   padding-left: 2rem;
 }
-
 .decreasePointsFlexColumn {
   display: flex;
   flex-direction: column;
@@ -350,7 +423,6 @@ body {
   justify-content: end;
   padding-bottom: 2rem;
 }
-
 .markAsWinner {
   color: var(--greenish) !important;
 }
@@ -359,62 +431,15 @@ body {
   font-weight: font-weight;
   text-decoration: line-through;
 }
-
-.dice-result {
-  padding: 0 10px;
-  margin: 0 10px 0 0;
-  border-radius: 20px;
-  background-color: var(--second-bg-color);
-  color: var(--main-color);
-  box-shadow: 0 0 10px 5px var(--main-color);
-}
-
 button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 .restore-player {
   pointer-events: visible !important;
 }
 
-@keyframes rotateOnce {
-  from {
-    transform: scale(2) rotate(0deg);
-  }
-  to {
-    transform: scale(2) rotate(360deg);
-  }
-}
 
-#header-lifeCounter-explore {
-  z-index: 999;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-  justify-items: center;
-  align-items: center;
-  width: 100%;
-  padding: 10px 0 0 1rem;
-}
-
-.grid-layout {
-  display: grid;
-}
-
-#div-lifeCounter-templates {
-  justify-self: start;
-  padding-right: 2rem;
-}
-
-#div-sync-info-buttons {
-  display: flex;
-  justify-content: center;
-  width: fit-content;
-}
-
-#div-dice-thrower {
-  padding: 0 10px;
-}
 
 #quit-lifecounter {
   position: absolute;
@@ -427,7 +452,6 @@ button.disabled {
   background-color: transparent;
   transition: 0.5s all ease-in-out;
 }
-
 .menu-expanded {
   transform: rotate(180deg);
   filter: brightness(0) saturate(100%) invert(81%) sepia(69%) saturate(1412%)
@@ -442,11 +466,18 @@ button.disabled {
   transform: scale(1.1);
 }
 
-hr {
-  display: none !important;
+
+@keyframes rotateOnce {
+  from {
+    transform: scale(2) rotate(0deg);
+  }
+  to {
+    transform: scale(2) rotate(360deg);
+  }
 }
 
-@media screen and (max-width: 1700px) {
+
+@media screen and (max-width: 1750px) {
   .hidden {
     display: none !important;
   }
@@ -455,8 +486,8 @@ hr {
     /* display: none; */
     z-index: 999;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 60px 60px 80px 80px 20px;
-    justify-items: start;
+    grid-template-rows: 60px 80px 200px 200px;
+    justify-items: center;
     align-items: center;
     width: 100%;
     padding: 0;
@@ -496,12 +527,15 @@ hr {
   }
 
   #div-dice-thrower {
+    display: flex;
     grid-row-start: 4;
     grid-row-end: 4;
     grid-column-start: 1;
     grid-column-end: 3;
     padding-left: 1rem;
     justify-self: start;
+    align-self: center;
+    vertical-align: middle;
   }
   hr {
     display: flex !important;
@@ -517,5 +551,66 @@ hr {
     display: flex;
     justify-self: center;
     padding: 0.5rem 0;
+  }
+
+  #button-diceThrower-lifeCounter{
+    pointer-events: none;
+  }
+  #dice-box{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: start;
+  
+  }
+  #dice-separator{
+    display: none;
+  }
+  #dice-options{
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 15px;
+  }
+
+  .counters{
+    pointer-events: none;
+  }
+  .counters[data-tooltip]::after{ 
+    display: none;
+  }
+
+  
+  #red-counter-increase,
+  #red-counter-decrease,
+  #yellow-counter-increase,
+  #yellow-counter-decrease,
+  #green-counter-increase,
+  #green-counter-decrease {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    background-color: var(--second-bg-color);
+    height: 3rem;
+    border: 1px solid var(--second-bg-color);    
+  }
+  #red-counter-increase, 
+  #yellow-counter-increase,
+  #green-counter-increase {   
+    border-radius: 1.5rem 1.5rem  0  0;
+  }
+  #red-counter-decrease, 
+  #yellow-counter-decrease,
+  #green-counter-decrease {   
+    border-radius: 0 0 1.5rem 1.5rem;
+  }
+
+  #red-counter-increase:hover,
+  #red-counter-decrease:hover,
+  #yellow-counter-increase:hover,
+  #yellow-counter-decrease:hover,
+  #green-counter-increase:hover,
+  #green-counter-decrease:hover {
+    color: var(--main-color);
   }
 }

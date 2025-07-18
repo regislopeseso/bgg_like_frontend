@@ -528,19 +528,20 @@ function lifecounter_manager() {
   function closeOnAnyKey() {
     Swal.close();
   }
+
   function sweetAlertRollDice(diceImgHtml, result) {
     Swal.fire({
-      position: "top",
-      cancelButtonText: "close",
+      position: "center",
+      animation: "true",
+      width: "15rem",      
       theme: "bulma",
-      background: "var(--bg-color)",
-
+      allowOutsideClick: "true",
+      allowEscapeKey: "true",     
       text: result || "",
-      showConfirmButton: true,
+      showConfirmButton: false,
       html: `
       <div style="display: flex; flex-direction: column; align-items: center;">
-        ${diceImgHtml}
-        <h2 style="color: white; margin-top: 1rem;">Result: ${result}</h2>
+        ${diceImgHtml}        
       </div>
     `,
       didOpen: () => {
@@ -553,7 +554,6 @@ function lifecounter_manager() {
       },
     });
   }
-
   function rollDice(diceType) {
     self.Fields.DiceThrowResult.html("").addClass("d-none");
 
@@ -579,19 +579,24 @@ function lifecounter_manager() {
         break;
     }
 
-    let img = `<img
-                id="img-four-faced-dice"
-                src="/images/icons/${faceType}_faced_dice.svg"
-                style="width: 80px; height: 80px;"             
-              />`;
+   
 
-    const roll = Math.floor(Math.random() * diceType) + 1;
+    const throwResult = Math.floor(Math.random() * diceType) + 1;
+
+    let img = getDiceImg(faceType, throwResult)
 
     self.Fields.DiceThrowResult.removeClass("d-none")
       .addClass("dice-result")
-      .html(`D${diceType}: ${roll}`);
+      .html(`D${diceType}: ${throwResult}`);
 
-    sweetAlertRollDice(img, roll);
+    sweetAlertRollDice(img, throwResult);
+  }
+  function getDiceImg(diceType, throwResult) {
+     return `<img
+                id="img-four-faced-dice"
+                src="/images/icons/${diceType}_faced_dice_${throwResult}.svg"
+                style="width: 100px; height: 100px;"             
+              />`;
   }
 
   self.OnSuccessfullSigningIn = () => {
@@ -603,8 +608,8 @@ function lifecounter_manager() {
   self.LoadEvents = () => {
     self.Buttons.ToggleLifeCounterMenu.on("click", (e) => {
       e.preventDefault();
-
-      console.log("teste");
+      self.DiceOptions.toggleClass("d-none");
+      
       self.Buttons.ToggleLifeCounterMenu.toggleClass("menu-expanded");
 
       self.DOM.find("hr").show();
