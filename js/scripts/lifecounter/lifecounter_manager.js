@@ -284,6 +284,7 @@ function lifecounter_manager() {
     self.LifeCounterManagerDropDownItems = self.DOM.find(
       self.lifeCounterManagerDropDownItems_class
     );
+    self.SecondConector = self.DOM.find("#second-connector");
 
     self.Div_GeneralCounters = self.DOM.find("#div-general-counters")
     
@@ -3068,6 +3069,8 @@ function lifecounter_manager() {
       buildLifeCounterLength(rawDuration);
     }
 
+    self.SecondConector.addClass("d-none");
+
     self.Buttons.EditLifeCounterManager.addClass("d-none");
 
     self.Buttons.RestorePlayer.attr("disabled", true).addClass("d-none");
@@ -3173,6 +3176,7 @@ function lifecounter_manager() {
     showIncreasingAmount();
   };
   self.RefreshLifeCounter = () => {
+    self.SecondConector.removeClass("d-none");
     self.Buttons.EditLifeCounterManager.removeClass("d-none");
     self.Fields.ShowDurationWrapper.addClass("d-none");
     self.Fields.ShowDuration.html("");
