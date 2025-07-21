@@ -15,10 +15,11 @@
       <section id="users-configurations-delete-profile">
         <div id="delete-profile">
           <form id="delete-profile-form">
-            <div class="mb-3 d-flex flex-row w-100 justify-content-between">
-              <h3 class="text-center">
-                <span style="color: var(--reddish) !important">Delete</span>
-                Profile
+            <div class="mb-3 d-flex flex-row w-100 justify-content-between align-items-center gap-2">
+              <h3 class="text-center d-flex flex-row">
+                <span style="color: var(--reddish) !important">Delete&nbsp;</span> 
+                Profile&nbsp;
+                <span style="color: var(--reddish) !important">?</span>
               </h3>
 
               <a
@@ -28,19 +29,15 @@
               >
                 cancel
               </a>
-            </div>
 
-            <div
-              class="d-flex flex-column flex-nowrap w-100 align-items-center"
-            >
               <button
                 type="button"
                 id="request-delete-profile"
                 class="btn btn-outline-warning w-50 m-2"
               >
-                DELETE
+                CONFIRM
               </button>
-            </div>
+            </div>          
 
             <div id="user-password-confirmation" class="d-none">
               <label for="user-password" class="form-label w-100 text-start"
@@ -74,6 +71,8 @@
               </div>
             </div>
           </form>
+
+          <button id="button-export-user-data" class="btn btn-outline-info">Export user data</button>
         </div>
       </section>
     </main>
