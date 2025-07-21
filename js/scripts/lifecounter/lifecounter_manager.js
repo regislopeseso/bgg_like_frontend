@@ -408,9 +408,9 @@ function lifecounter_manager() {
     self.Fields[self.Fields.length] = self.Fields.LifeCounterManagerName =
       self.DOM.find("#name-lifeCounter");
     self.Fields[self.Fields.length] = self.Fields.ShowDurationWrapper =
-      self.DOM.find("#div-show-duration-lifeCounter");
+      self.DOM.find(".div-show-duration-lifeCounter");
     self.Fields[self.Fields.length] = self.Fields.ShowDuration = self.DOM.find(
-      "#span-show-duration-lifeCounter"
+      ".span-show-duration-lifeCounter"
     );
     self.Fields[self.Fields.length] = self.Fields.PlayerName =
       self.DOM.find(".player-title");
@@ -3031,8 +3031,15 @@ function lifecounter_manager() {
           return;
         }
 
-        self.Fields.ShowDurationWrapper.removeClass("d-none");
-        self.Fields.ShowDuration.html(lifeCounterLength);
+        if (window.innerWidth < 1783) {
+          self.Fields.ShowDurationWrapper.eq(0).removeClass("d-none");
+          self.Fields.ShowDuration.eq(0).html(lifeCounterLength); 
+          
+          return;
+        }     
+
+        self.Fields.ShowDurationWrapper.eq(0).removeClass("d-none");
+        self.Fields.ShowDuration.eq(0).html(lifeCounterLength);       
       }
     };
 
