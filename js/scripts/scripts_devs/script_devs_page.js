@@ -75,8 +75,6 @@ $(function () {
             svgPath.setAttribute("stroke", "var(--main-color)");
           }, 1000);
 
-          console.log("Seeded successfully:", response);
-
           setTimeout(() => {
             const fadeInterval = setInterval(() => {
               if (progress > 0) {
@@ -160,8 +158,6 @@ $(function () {
             svgPath.setAttribute("stroke", "var(--main-color)");
           }, 1000);
 
-          console.log("Seeded successfully:", response);
-
           setTimeout(() => {
             const fadeInterval = setInterval(() => {
               if (progress > 0) {
@@ -243,8 +239,6 @@ $(function () {
             const svgPath = document.querySelector(".ldBar svg path.mainline");
             svgPath.setAttribute("stroke", "var(--main-color)");
           }, 1000);
-
-          console.log("Seeded successfully:", response);
 
           setTimeout(() => {
             const fadeInterval = setInterval(() => {
@@ -328,8 +322,6 @@ $(function () {
             const svgPath = document.querySelector(".ldBar svg path.mainline");
             svgPath.setAttribute("stroke", "var(--main-color)");
           }, 1000);
-
-          console.log("Seeded successfully:", response);
 
           setTimeout(() => {
             const fadeInterval = setInterval(() => {

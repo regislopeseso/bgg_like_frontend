@@ -4,7 +4,6 @@ function modal_SignIn() {
 
   self.LoadReferences = () => {
     self.DOM = $("#signInModal");
-    console.log("DOM: ", self.DOM);
 
     //self.DOM_signInModal = $("#signInModal");
 

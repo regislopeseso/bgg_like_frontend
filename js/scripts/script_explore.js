@@ -54,9 +54,6 @@ $(function () {
           </tr>
         `;
         $(".table-allBoardGames tbody").append(trEnd);
-
-        // Exibe a mensagem da API no console
-        console.log(response.message);
       }
     );
   }
@@ -93,8 +90,6 @@ $(function () {
 
         const teensFavoriteBG = response.content.teensFavoriteBoardGames;
         buildTeensFavoriteBgTable(teensFavoriteBG);
-
-        console.log(response.message);
       }
     );
   }
@@ -236,10 +231,6 @@ $(function () {
 
         const shortestCats = response.content.shortestCategories;
         buildShortestCatsTable(shortestCats);
-
-        console.log(response.message);
-
-        //$("body").loadcontent("demolish");
       }
     );
   }

@@ -274,9 +274,9 @@ function lifecounter_manager() {
       "#dropdown-showInfo-lifeCounter"
     );
 
-    self.Div_SecondBlock = self.DOM.find("#second-block")
+    self.Div_SecondBlock = self.DOM.find("#second-block");
 
-    self.Div_LifeCounterManagers = self.DOM.find("#div-lifeCounter-managers")
+    self.Div_LifeCounterManagers = self.DOM.find("#div-lifeCounter-managers");
     self.LifeCounterManagersDropDown = self.DOM.find(
       "#ul-change-lifeCounterManager"
     );
@@ -286,15 +286,13 @@ function lifecounter_manager() {
     );
     self.SecondConector = self.DOM.find("#second-connector");
 
-    self.Div_GeneralCounters = self.DOM.find("#div-general-counters")
-    
-    self.Div_DiceThrower = self.DOM.find("#div-dice-thrower")
-    
-    self.LifeCounterMenu_Divider = self.DOM.find("#lifecounter-menu-line-divider")
+    self.Div_GeneralCounters = self.DOM.find("#div-general-counters");
 
+    self.Div_DiceThrower = self.DOM.find("#div-dice-thrower");
 
-
-    
+    self.LifeCounterMenu_Divider = self.DOM.find(
+      "#lifecounter-menu-line-divider"
+    );
 
     //*
     //*
@@ -390,7 +388,7 @@ function lifecounter_manager() {
     self.Buttons[self.Buttons.length] = self.Buttons.DecreaseCounterValue =
       self.DOM.find(".counters-decrease-button");
     //
-      self.Buttons[self.Buttons.length] = self.Buttons.CloseLifeCounter =
+    self.Buttons[self.Buttons.length] = self.Buttons.CloseLifeCounter =
       self.DOM.find("#button-close-lifeCounter");
     //
     self.Buttons[self.Buttons.length] = self.Buttons.PlayerSetUp =
@@ -552,10 +550,10 @@ function lifecounter_manager() {
     Swal.fire({
       position: "center",
       animation: "true",
-      width: "15rem",      
+      width: "15rem",
       theme: "bulma",
       allowOutsideClick: "true",
-      allowEscapeKey: "true",     
+      allowEscapeKey: "true",
       text: result || "",
       showConfirmButton: false,
       html: `
@@ -598,11 +596,9 @@ function lifecounter_manager() {
         break;
     }
 
-   
-
     const throwResult = Math.floor(Math.random() * diceType) + 1;
 
-    let img = getDiceImg(faceType, throwResult)
+    let img = getDiceImg(faceType, throwResult);
 
     self.Fields.DiceThrowResult.removeClass("d-none")
       .addClass("dice-result")
@@ -611,7 +607,7 @@ function lifecounter_manager() {
     sweetAlertRollDice(img, throwResult);
   }
   function getDiceImg(diceType, throwResult) {
-     return `<img
+    return `<img
                 id="img-four-faced-dice"
                 src="/images/icons/${diceType}_faced_dice_${throwResult}.svg"
                 style="width: 100px; height: 100px;"             
@@ -628,8 +624,8 @@ function lifecounter_manager() {
     self.Buttons.ToggleLifeCounterMenu.on("click", (e) => {
       e.preventDefault();
       self.DiceOptions.toggleClass("d-none");
-      
-      self.Buttons.ToggleLifeCounterMenu.toggleClass("menu-expanded");      
+
+      self.Buttons.ToggleLifeCounterMenu.toggleClass("menu-expanded");
 
       self.LifeCounterMenu.toggleClass("hidden");
     });
@@ -645,8 +641,8 @@ function lifecounter_manager() {
         self.Div_GeneralCounters.css("opacity", 0);
         self.Div_DiceThrower.css("opacity", 0);
         self.LifeCounterMenu_Divider.css("opacity", 0);
-        self.Buttons.ToggleLifeCounterMenu.css("opacity", 0);   
-        self.LifeCountersField.css("opacity", 0);   
+        self.Buttons.ToggleLifeCounterMenu.css("opacity", 0);
+        self.LifeCountersField.css("opacity", 0);
       }
 
       self.LoadLifeCounterTemplates();
@@ -660,14 +656,14 @@ function lifecounter_manager() {
 
       self.LifeCounterMenu_Divider.css("opacity", 1);
 
-      self.Buttons.ToggleLifeCounterMenu.css("opacity", 1); 
+      self.Buttons.ToggleLifeCounterMenu.css("opacity", 1);
 
-      self.LifeCountersField.css("opacity", 1); 
+      self.LifeCountersField.css("opacity", 1);
 
       const element = $(e.target);
 
-      element.removeClass("dropdown-open");      
-    });  
+      element.removeClass("dropdown-open");
+    });
     // Selects a Life Counter TEMPLATE from the drop down list
     self.DOM.on(
       "click",
@@ -675,7 +671,7 @@ function lifecounter_manager() {
       function (e) {
         e.preventDefault();
 
-        self.Buttons.ChangeLifeCounterTemplate.removeClass("dropdown-open")
+        self.Buttons.ChangeLifeCounterTemplate.removeClass("dropdown-open");
 
         let selectedTemplateName = $(this).text();
         let selectedTemplateId = $(this).data("template-id");
@@ -719,7 +715,7 @@ function lifecounter_manager() {
     self.DOM.on("click", "#button-new-lifeCounterTemplate", function (e) {
       e.preventDefault();
 
-      self.Buttons.ChangeLifeCounterTemplate.removeClass("dropdown-open")
+      self.Buttons.ChangeLifeCounterTemplate.removeClass("dropdown-open");
 
       self.NewLifeCounterTemplate();
     });
@@ -770,7 +766,6 @@ function lifecounter_manager() {
         "Players Life Points will be refreshed!",
         "To confirm please hit refresh now"
       ).then((isConfirmed) => {
-        console.log("isConfirmed: ", isConfirmed);
         if (isConfirmed === true) {
           self.RefreshLifeCounter();
         }
@@ -783,12 +778,12 @@ function lifecounter_manager() {
 
       element.addClass("dropdown-open");
 
-       if (window.innerWidth < 1783) {
+      if (window.innerWidth < 1783) {
         self.Div_GeneralCounters.css("opacity", 0);
         self.Div_DiceThrower.css("opacity", 0);
         self.LifeCounterMenu_Divider.css("opacity", 0);
-        self.Buttons.ToggleLifeCounterMenu.css("opacity", 0); 
-        self.LifeCountersField.css("opacity", 0);        
+        self.Buttons.ToggleLifeCounterMenu.css("opacity", 0);
+        self.LifeCountersField.css("opacity", 0);
       }
 
       const templateId =
@@ -801,12 +796,12 @@ function lifecounter_manager() {
 
       self.Div_DiceThrower.css("opacity", 1);
       self.LifeCounterMenu_Divider.css("opacity", 1);
-      self.Buttons.ToggleLifeCounterMenu.css("opacity", 1); 
-      self.LifeCountersField.css("opacity", 1);   
+      self.Buttons.ToggleLifeCounterMenu.css("opacity", 1);
+      self.LifeCountersField.css("opacity", 1);
 
       const element = $(e.target);
 
-      element.removeClass("dropdown-open");      
+      element.removeClass("dropdown-open");
     });
     // Selects a Life Counter MANAGER from the drop down list
     self.DOM.on(
@@ -1076,7 +1071,9 @@ function lifecounter_manager() {
       e.preventDefault();
 
       const $button = $(this);
-      const $counter = $button.closest("div.d-flex.flex-column").find(".counters");
+      const $counter = $button
+        .closest("div.d-flex.flex-column")
+        .find(".counters");
 
       let holdTimer;
       let intervalId;
@@ -1109,12 +1106,14 @@ function lifecounter_manager() {
       };
 
       $(document).on("mouseup touchend", stop);
-      });
+    });
     $(".counters-decrease-button").on("mousedown touchstart", function (e) {
       e.preventDefault();
 
       const $button = $(this);
-      const $counter = $button.closest("div.d-flex.flex-column").find(".counters");
+      const $counter = $button
+        .closest("div.d-flex.flex-column")
+        .find(".counters");
 
       let holdTimer;
       let intervalId;
@@ -1537,7 +1536,6 @@ function lifecounter_manager() {
   // ! METHODS FOR USERS...
   self.User_SyncLifeCounterData = () => {
     let localStorageTemplates = self.GetLifeCounterTemplates();
-    console.log("self.LifeCounterTemplates: ", localStorageTemplates);
 
     if (!localStorageTemplates || localStorageTemplates.length == 0) {
       sweetAlertError("Nothing to be synced!");
@@ -2858,6 +2856,7 @@ function lifecounter_manager() {
     const players = self.Current_LifeCounter_Players;
 
     const player = players[playerId];
+    console.log("player", player);
 
     const playerName = player.PlayerName;
 
@@ -3034,13 +3033,13 @@ function lifecounter_manager() {
 
         if (window.innerWidth < 1783) {
           self.Fields.ShowDurationWrapper.eq(0).removeClass("d-none");
-          self.Fields.ShowDuration.eq(0).html(lifeCounterLength); 
-          
+          self.Fields.ShowDuration.eq(0).html(lifeCounterLength);
+
           return;
-        }     
+        }
 
         self.Fields.ShowDurationWrapper.eq(0).removeClass("d-none");
-        self.Fields.ShowDuration.eq(0).html(lifeCounterLength);       
+        self.Fields.ShowDuration.eq(0).html(lifeCounterLength);
       }
     };
 

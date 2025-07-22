@@ -302,8 +302,6 @@ $(function () {
 
       signIpEyeState = signIpEyeState === 0 ? 1 : 0;
 
-      console.log("Eye state2:", signIpEyeState);
-
       if (signIpEyeState === 1) {
         $("#toggle-signin-password").attr("src", closeEye);
         $("#signInPassword").attr("type", "text");

@@ -53,8 +53,6 @@ function modal_Mechanic_DataBase() {
       self.DOM.on("click", ".mechanic-delete-button", function () {
         const mechanicId = $(this).attr("data-mechanic-id");
 
-        console.log(mechanicId);
-
         __global.MechanicDeleteRestoreModalController.OpenDeleteRestoreModal(
           mechanicId,
           self.LoadAllMechanics,

@@ -106,7 +106,6 @@ $(function () {
           contentType: "application/json",
           xhrFields: { withCredentials: true },
           success: function (resp) {
-            console.log(resp);
             if (resp.content === null) {
               sweetAlertError(resp.message);
             } else if (resp.content.remainingPasswordAttempts === null) {

@@ -353,8 +353,6 @@ function life_counter_manager_edit() {
   };
 
   self.EditLifeCounterManager = () => {
-    const manager = self.Current_LifeCounter_Manager;
-
     let newName = self.Inputs.LifeCounterManagerName.val();
 
     if (self.IsUserLoggedIn === false) {
@@ -369,22 +367,23 @@ function life_counter_manager_edit() {
       }
     }
 
-    manager.LifeCounterManagerName = self.Inputs.LifeCounterManagerName.val();
+    self.Current_LifeCounter_Manager.LifeCounterManagerName =
+      self.Inputs.LifeCounterManagerName.val();
 
-    manager.PlayersStartingLifePoints =
+    self.Current_LifeCounter_Manager.PlayersStartingLifePoints =
       self.Inputs.PlayersStartingLifePoints.val().trim();
 
     if (self.NewPlayersCount) {
       self.EvaluatePlayersCount();
 
-      manager.PlayersCount = self.NewPlayersCount;
+      self.Current_LifeCounter_Manager.PlayersCount = self.NewPlayersCount;
     }
 
-    manager.FixedMaxLifePointsMode =
+    self.Current_LifeCounter_Manager.FixedMaxLifePointsMode =
       self.Inputs.FixedMaxLifePointsMode.is(":checked");
 
     if (self.Inputs.FixedMaxLifePointsMode.is(":checked") === true) {
-      manager.PlayersMaxLifePoints = parseInt(
+      self.Current_LifeCounter_Manager.PlayersMaxLifePoints = parseInt(
         self.Inputs.PlayersMaxLifePoints.val(),
         10
       );
@@ -397,28 +396,34 @@ function life_counter_manager_edit() {
 
       let playersMaxCurrentLifePoints = Math.max(...playersCurrentLifePoints);
 
-      if (playersMaxCurrentLifePoints > manager.PlayersMaxLifePoints) {
-        manager.PlayersMaxLifePoints = playersMaxCurrentLifePoints;
+      if (
+        playersMaxCurrentLifePoints >
+        self.Current_LifeCounter_Manager.PlayersMaxLifePoints
+      ) {
+        self.Current_LifeCounter_Manager.PlayersMaxLifePoints =
+          playersMaxCurrentLifePoints;
       }
     } else {
-      manager.PlayersMaxLifePoints = null;
+      self.Current_LifeCounter_Manager.PlayersMaxLifePoints = null;
     }
 
-    manager.AutoDefeatMode = self.Inputs.AutoDefeatMode.is(":checked");
+    self.Current_LifeCounter_Manager.AutoDefeatMode =
+      self.Inputs.AutoDefeatMode.is(":checked");
 
     if (self.Inputs.AutoDefeatMode.is(":checked") === true) {
-      manager.AutoEndMode = self.Inputs.AutoEndMode.is(":checked");
+      self.Current_LifeCounter_Manager.AutoEndMode =
+        self.Inputs.AutoEndMode.is(":checked");
     } else {
-      manager.AutoEndMode = false;
+      self.Current_LifeCounter_Manager.AutoEndMode = false;
     }
 
     const lifeCounterManagerId =
       self.Current_LifeCounter_Manager.LifeCounterManagerId;
     const lifeCounterManagerName =
       self.Current_LifeCounter_Manager.LifeCounterManagerName;
+
     const playersStartingLifePoints =
       self.Current_LifeCounter_Manager.PlayersStartingLifePoints;
-    console.log("New starting life points: ", playersStartingLifePoints);
     const playersCount = self.Current_LifeCounter_Manager.PlayersCount;
     const firstPlayerIndex = self.Current_LifeCounter_Manager.FirstPlayerIndex;
     const fixedMaxLifeMode =
@@ -452,21 +457,23 @@ function life_counter_manager_edit() {
             sweetAlertError(resp.message);
             return;
           }
-
-          console.log("New starting life points: ", playersStartingLifePoints);
         },
         error: (err) => {
           sweetAlertError(err);
         },
+        complete: () => {
+          self.RedirectToLifeCounterManager(self.LifeCounterManagerId);
+        },
       });
 
-      self.RedirectToLifeCounterManager(self.LifeCounterManagerId);
       return;
     }
 
     self.SetLifeCounterTemplates();
 
-    self.RedirectToLifeCounterManager(manager.LifeCounterManagerId);
+    self.RedirectToLifeCounterManager(
+      self.Current_LifeCounter_Manager.LifeCounterManagerId
+    );
   };
   self.EvaluateNewName = (newName) => {
     const newNameAlreadyExists =
@@ -491,7 +498,8 @@ function life_counter_manager_edit() {
 
     if (self.NewPlayersCount > self.OldPlayersCount) {
       for (let i = self.OldPlayersCount; i < self.NewPlayersCount; i++) {
-        const player_virtualId = "lcp" + (i + 1);
+        const player_virtualId = manager.LifeCounterManagerId + "lcp" + (i + 1);
+
         let newPlayer = {
           LifeCounterManagerId: manager.LifeCounterManagerId,
           PlayerId: player_virtualId,

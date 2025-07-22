@@ -53,8 +53,6 @@ function modal_Category_DataBase() {
       self.DOM.on("click", ".category-delete-button", function () {
         const categoryId = $(this).attr("data-category-id");
 
-        console.log(categoryId);
-
         __global.CategoryDeleteRestoreModalController.OpenDeleteRestoreModal(
           categoryId,
           self.LoadAllCategories,

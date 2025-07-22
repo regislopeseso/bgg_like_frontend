@@ -112,8 +112,6 @@ function life_counter_template_edit() {
       return;
     }
 
-    console.log("self.LifeCounterManagerId: ", self.LifeCounterManagerId);
-
     window.location.href = `${
       self.Locations.LifeCounterManager
     }?LifeCounterManagerId=${encodeURIComponent(self.LifeCounterManagerId)}`;
@@ -301,49 +299,50 @@ function life_counter_template_edit() {
   };
 
   self.EditLifeCounterTemplate = () => {
-    const template = self.Current_LifeCounter_Template;
-
     let newName = self.Inputs.LifeCounterTemplateName.val();
 
-    template.LifeCounterTemplateName =
+    self.Current_LifeCounter_Template.LifeCounterTemplateName =
       self.Inputs.LifeCounterTemplateName.val();
 
-    template.PlayesStartingLifePoints =
-      self.Inputs.PlayersStartingLifePoints.val().trim();
+    self.Current_LifeCounter_Template.PlayersStartingLifePoints =
+      self.Inputs.PlayersStartingLifePoints.val();
 
     if (!self.NewPlayersCount) {
-      self.NewPlayersCount = template.PlayersCount;
+      self.NewPlayersCount = self.Current_LifeCounter_Template.PlayersCount;
     }
-    template.PlayersCount = self.NewPlayersCount;
+    self.Current_LifeCounter_Template.PlayersCount = self.NewPlayersCount;
 
-    template.FixedMaxLifePointsMode =
+    self.Current_LifeCounter_Template.FixedMaxLifePointsMode =
       self.Inputs.FixedMaxLifePointsMode.is(":checked");
 
     if (self.Inputs.FixedMaxLifePointsMode.is(":checked") === true) {
-      template.PlayersMaxLifePoints = parseInt(
+      self.Current_LifeCounter_Template.PlayersMaxLifePoints = parseInt(
         self.Inputs.PlayersMaxLifePoints.val(),
         10
       );
     } else {
-      template.PlayersMaxLifePoints = null;
+      self.Current_LifeCounter_Template.PlayersMaxLifePoints = null;
     }
 
-    template.AutoDefeatMode = self.Inputs.AutoDefeatMode.is(":checked");
+    self.Current_LifeCounter_Template.AutoDefeatMode =
+      self.Inputs.AutoDefeatMode.is(":checked");
 
     if (self.Inputs.AutoDefeatMode.is(":checked") === true) {
-      template.AutoEndMode = self.Inputs.AutoEndMode.is(":checked");
+      self.Current_LifeCounter_Template.AutoEndMode =
+        self.Inputs.AutoEndMode.is(":checked");
     } else {
-      template.AutoEndMode = false;
+      self.Current_LifeCounter_Template.AutoEndMode = false;
     }
 
     const lifeCounterTemplateId =
       self.Current_LifeCounter_Template.LifeCounterTemplateId;
     const lifeCounterTemplateName =
       self.Current_LifeCounter_Template.LifeCounterTemplateName;
+
     const playersStartingLifePoints =
       self.Current_LifeCounter_Template.PlayersStartingLifePoints;
+
     const playersCount = self.Current_LifeCounter_Template.PlayersCount;
-    const firstPlayerIndex = self.Current_LifeCounter_Template.FirstPlayerIndex;
     const fixedMaxLifeMode =
       self.Current_LifeCounter_Template.FixedMaxLifePointsMode;
     const playersMaxLifePoints =
