@@ -53,12 +53,6 @@ $(function () {
   }
 
   function loadEvents() {
-    $("#button-export-user-data").on("click", (e) => {
-      // e.preventDefault();
-
-      exportUserData();
-    });
-
     $("#request-delete-profile").on("click", function (e) {
       e.preventDefault();
       $("#request-delete-profile").addClass("d-none");
@@ -127,21 +121,6 @@ $(function () {
             $("confirm-delete-profile").trigger("focus");
           },
         });
-      });
-  }
-
-  function exportUserData() {
-    fetch("https://localhost:7081/users/exportuserdata", {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const { base64Data, fileName, contentType } = res.content;
-
-        const link = document.createElement("a");
-        link.href = `data:${contentType};base64,${base64Data}`;
-        link.download = fileName;
-        link.click();
       });
   }
 

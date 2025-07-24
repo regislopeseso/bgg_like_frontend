@@ -9,35 +9,49 @@
       rel="stylesheet"
       href="/css/style_users/style_users_delete_profile.css"
     />
+    <link
+      rel="stylesheet"
+      href="/css/style_users/style_users_backup_data.css"
+    />
   </head>
   <body>
     <main class="ps-0 pe-0">
       <section id="users-configurations-delete-profile">
         <div id="delete-profile">
           <form id="delete-profile-form">
-            <div class="mb-3 d-flex flex-row w-100 justify-content-between align-items-center gap-2">
+            <div
+              class="mb-3 d-flex flex-column w-100 justify-content-between align-items-center gap-2"
+            >
               <h3 class="text-center d-flex flex-row">
-                <span style="color: var(--reddish) !important">Delete&nbsp;</span> 
+                <span style="color: var(--reddish) !important"
+                  >Delete&nbsp;</span
+                >
                 Profile&nbsp;
                 <span style="color: var(--reddish) !important">?</span>
               </h3>
 
-              <a
-                id="cancel-delete-profile"
-                href="/html/pages_users/users_page.html"
-                class="btn btn-outline-danger"
-              >
-                cancel
-              </a>
+              <hr />
 
-              <button
-                type="button"
-                id="request-delete-profile"
-                class="btn btn-outline-warning w-50 m-2"
+              <div
+                class="d-flex flex-row w-100 justify-content-between align-items-center"
               >
-                CONFIRM
-              </button>
-            </div>          
+                <a
+                  id="cancel-delete-profile"
+                  href="/html/pages_users/users_page.html"
+                  class="btn btn-outline-danger"
+                >
+                  cancel
+                </a>
+
+                <button
+                  type="button"
+                  id="request-delete-profile"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  CONFIRM
+                </button>
+              </div>
+            </div>
 
             <div id="user-password-confirmation" class="d-none">
               <label for="user-password" class="form-label w-100 text-start"
@@ -72,7 +86,19 @@
             </div>
           </form>
 
-          <button id="button-export-user-data" class="btn btn-outline-info">Export user data</button>
+          <hr />
+
+          <div
+            class="export-container d-flex flex-row align-items-center pt-2 gap-3"
+          >
+            <button
+              id="button-export-user-data"
+              class="btn btn-outline-info btn-sm"
+            >
+              <img src="/images/icons/export.png" alt="" />
+            </button>
+            <p class="text-export-user-data m-0 p-0">Export user data</p>
+          </div>
         </div>
       </section>
     </main>
@@ -88,5 +114,6 @@
     <!-- Other existing scripts -->
     <script src="/js/components/header.js"></script>
     <script src="/js/scripts/scripts_users/script_users_delete_profile.js"></script>
+    <script src="/js/scripts/scripts_users/script_users_backup_data.js"></script>
   </body>
 </html>

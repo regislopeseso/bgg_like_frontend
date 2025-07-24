@@ -54,6 +54,11 @@
   color: var(--reddish);
   box-shadow: 0 0 1rem var(--reddish) !important;
 }
+#li-backup-data:hover {
+  color: var(--text-color);
+  font-weight: bold;
+  box-shadow: 0 0 1rem var(--main-color) !important;
+}
 #li-sign-out:hover {
   color: var(--main-color);
   font-weight: bold;

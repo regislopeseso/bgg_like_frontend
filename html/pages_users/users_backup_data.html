@@ -1,0 +1,97 @@
+<!-- USERS BACKUP DATA -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>USERS - Backup Data</title>
+    <link rel="stylesheet" href="/css/addons.css" />
+    <link
+      rel="stylesheet"
+      href="/css/style_users/style_users_backup_data.css"
+    />
+  </head>
+  <body>
+    <main class="ps-0 pe-0">
+      <section id="users-backup-data">
+        <div id="div-users-backup-data">
+          <div class="mb-3 d-flex flex-row w-100 justify-content-between">
+            <h3 class="text-center"><span>B</span>ackup <span>D</span>ata</h3>
+
+            <a
+              id="cancel-edit-profile"
+              href="/html/pages_users/users_page.html"
+              class="btn btn-outline-danger"
+            >
+              close
+            </a>
+          </div>
+
+          <hr />
+
+          <div
+            id="div-data-backup-options"
+            class="d-flex flex-column flex-nowrap w-100 align-items-start justify-content-center pb-5 gap-5"
+          >
+            <div
+              class="export-container d-flex flex-row align-items-center pt-5 gap-3"
+            >
+              <button
+                id="button-export-user-data"
+                class="btn btn-outline-info btn-sm"
+              >
+                <img src="/images/icons/export.png" alt="" />
+              </button>
+              <p class="m-0 p-0"><span>Export</span> user data</p>
+            </div>
+            <div
+              class="import-container d-flex flex-row justify-content-end align-items-center w-100 gap-3"
+            >
+              <p class="m-0 h-0">
+                <span style="color: var(--greenish)">Import</span> User Data
+              </p>
+              <button
+                type="button"
+                id="button-open-import-user-data"
+                class="btn btn-outline-success btn-sm"
+              >
+                <img src="/images/icons/import.png" alt="" />
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="div-import-file"
+            class="d-flex flex-column justify-content-between w-100 d-none"
+          >
+            <div class="d-flex flex-column gap-3">
+              <input type="file" id="input-csv-file" accept=".csv" />
+              <button
+                id="button-confirm-import"
+                class="btn btn-outline-success btn-lg w-100"
+              >
+                Import
+              </button>
+              <p id="import-status"></p>
+            </div>
+          </div>
+
+          <hr />
+        </div>
+      </section>
+    </main>
+
+    <!-- Load jQuery and other libraries first -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/node_modules/select2/dist/js/select2.min.js"></script>
+    <script src="/js/plugins/page_loader.js"></script>
+    <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Other existing scripts -->
+    <script src="/js/components/header.js"></script>
+    <script src="/js/scripts/scripts_users/script_users_backup_data.js"></script>
+  </body>
+</html>

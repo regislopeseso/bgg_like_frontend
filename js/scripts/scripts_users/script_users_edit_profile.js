@@ -79,26 +79,6 @@ $(function () {
   }
 
   function loadEvents() {
-    $("#button-open-import-user-data").on("click", (e) => {
-      e.preventDefault();
-
-      $("#edit-profile-form").addClass("d-none");
-
-      $("#div-import-file").removeClass("d-none");
-    });
-    $("#button-close-import-user-data").on("click", (e) => {
-      e.preventDefault();
-
-      $("#edit-profile-form").removeClass("d-none");
-
-      $("#div-import-file").addClass("d-none");
-    });
-    $("#button-confirm-import").on("click", (e) => {
-      e.preventDefault();
-
-      importUserData();
-    });
-
     $("#change-name").on("click", function (e) {
       e.preventDefault();
 
@@ -382,43 +362,6 @@ $(function () {
           },
         });
       });
-  }
-
-  function importUserData() {
-    const fileInput = $("#input-csv-file")[0];
-
-    if (!fileInput) {
-      alert("Error: CSV file input not found.");
-      return;
-    }
-
-    const file = fileInput.files[0];
-
-    if (!file) {
-      alert("Please select a file.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const base64Csv = e.target.result.split(",")[1];
-
-      $.ajax({
-        method: "POST",
-        url: "https://localhost:7081/users/importuserdata",
-        contentType: "application/json",
-        data: JSON.stringify({ Base64CsvData: base64Csv }),
-        xhrFields: { withCredentials: true },
-        success: function (response) {
-          $("#import-status").text(response.message);
-        },
-        error: function () {
-          $("#import-status").text("Import failed.");
-        },
-      });
-    };
-
-    reader.readAsDataURL(file);
   }
 
   function Build() {

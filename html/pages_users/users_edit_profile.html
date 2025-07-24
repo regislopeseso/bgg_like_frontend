@@ -9,6 +9,10 @@
       rel="stylesheet"
       href="/css/style_users/style_users_edit_profile.css"
     />
+    <link
+      rel="stylesheet"
+      href="/css/style_users/style_users_backup_data.css"
+    />
   </head>
   <body>
     <main class="ps-0 pe-0">
@@ -26,6 +30,8 @@
                 close
               </a>
             </div>
+
+            <hr />
 
             <div class="mb-3 d-flex flex-column">
               <label for="user-name" class="form-label"
@@ -73,17 +79,24 @@
               </div>
             </div>
 
+            <hr />
+
             <div
               id="div-buttons"
               class="d-flex flex-row flex-nowrap w-100 align-items-center justify-content-between"
             >
-              <button
-                type="button"
-                id="button-open-import-user-data"
-                class="btn btn-outline-success btn-sm"
+              <div
+                class="import-container d-flex flex-row align-items-center gap-3"
               >
-                Import User Data
-              </button>
+                <button
+                  type="button"
+                  id="button-open-import-user-data"
+                  class="btn btn-outline-success btn-sm"
+                >
+                  <img src="/images/icons/import.png" alt="" />
+                </button>
+                <p class="text-import-user-data m-0 h-0">Import User Data</p>
+              </div>
 
               <button
                 type="submit"
@@ -134,5 +147,6 @@
     <!-- Other existing scripts -->
     <script src="/js/components/header.js"></script>
     <script src="/js/scripts/scripts_users/script_users_edit_profile.js"></script>
+    <script src="/js/scripts/scripts_users/script_users_backup_data.js"></script>
   </body>
 </html>

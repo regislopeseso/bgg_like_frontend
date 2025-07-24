@@ -67,6 +67,8 @@ function loadHeader(userData, roleData) {
               <li><a id="li-change-password" class="config-item dropdown-item m-0 " href="/html/pages_users/users_change_password.html">Change Password</a></li>
               <li><a id="li-delete-profile" class="config-item dropdown-item m-0" href="/html/pages_users/users_delete_profile.html">Delete Profile</a></li>
               <li><hr class="dropdown-divider"></li>
+              <li><a id="li-backup-data" class="config-item dropdown-item m-0" href="/html/pages_users/users_backup_data.html">Backup Data</a></li>    
+              <li><hr class="dropdown-divider"></li>
               <li><a id="li-sign-out" class="config-item logOut dropdown-item m-0" href="/index.html">Sign Out</a></li>
             </ul>
           </div>
@@ -126,6 +128,8 @@ function loadHeader(userData, roleData) {
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item m-0 " href="#">Edit Profile</a></li>
                       <li><a class="dropdown-item m-0" href="#">Delete Profile</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item m-0" href="#">Backup Data</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item m-0" href="#">Sign Out</a></li>
                     </ul>
