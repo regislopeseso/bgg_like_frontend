@@ -64,6 +64,15 @@ $(function () {
         xhrFields: { withCredentials: true },
         success: function (response) {
           $("#import-status").text(response.message);
+
+          if (response.content != null) {
+            const { base64Data, fileName, contentType } = response.content;
+
+            const link = document.createElement("a");
+            link.href = `data:${contentType};base64,${base64Data}`;
+            link.download = fileName;
+            link.click();
+          }
         },
         error: function () {
           $("#import-status").text("Import failed.");
