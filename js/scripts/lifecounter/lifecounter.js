@@ -109,7 +109,12 @@ function lifecounter_manager() {
 
     if (!mostRecentManager) {
       if (self.IsUserLoggedIn === true) {
+        if (localStorage.getItem("LifeCounterTemplates") != null) {
+          self.User_SyncLifeCounterData();
+        }
         self.User_QuickStart_LifeCounterManager();
+
+        self.Buttons.SyncLifeCounterData_DB.addClass("d-none");
         return;
       }
       self.Current_LifeCounter_Template =
@@ -1559,6 +1564,8 @@ function lifecounter_manager() {
         }
 
         self.Buttons.SyncLifeCounterData_DB.addClass("d-none");
+
+        localStorage.clear();
       },
       error: () => {
         sweetAlertError("Failed to sync life counter data... try again");
@@ -2501,7 +2508,7 @@ function lifecounter_manager() {
   };
   self.SetFirstPlayer = () => {
     const firstPlayerImg = (playerName) => `
-    <div class="d-flex flex-row align-items-center gap-2">
+    <div class="d-flex flex-column align-items-center gap-2">
       <img class="first-player-img" src="/images/first_player.png" />
       <div>${playerName}</div>
     </div>
@@ -2612,7 +2619,7 @@ function lifecounter_manager() {
     const user_startLifeCounterManager = () => {
       const templateId =
         self.Current_LifeCounter_Template.LifeCounterTemplateId;
-      //self.User_GetLifeCounterTemplate(lifeCounterTemplateId);
+
       self.User_StartLifeCounterManager(templateId);
       return;
     };

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LIFE COUNTER</title>
     <link rel="stylesheet" href="/css/addons.css" />
-    <link rel="stylesheet" href="/css/lifecounter/lifecounter_manager.css" />
+    <link rel="stylesheet" href="/css/lifecounter/lifecounter.css" />
     <link rel="stylesheet" href="/css/modals/signin.css" />
   </head>
   <body>
@@ -27,7 +27,9 @@
           <div class="show-lifeCounter-timeSpan">
             <h3>
               <div>
-                <span>T</span>he <span>M</span>atch <span>I</span>s <span>N</span>ow <span>F</span>inished <span>L</span>asting&nbsp;
+                <span>T</span>he <span>M</span>atch <span>I</span>s
+                <span>N</span>ow <span>F</span>inished
+                <span>L</span>asting&nbsp;
               </div>
               <span class="span-show-duration-lifeCounter"></span>
             </h3>
@@ -64,7 +66,10 @@
             </div>
           </div>
 
-          <div id="second-block" class="d-flex flex-row align-items-center justify-content-start gap-2 w-100">          
+          <div
+            id="second-block"
+            class="d-flex flex-row align-items-center justify-content-start gap-2 w-100"
+          >
             <div id="div-lifeCounter-managers">
               <div class="dropdown d-flex gap-0 align-items-center">
                 <button
@@ -85,7 +90,10 @@
                 >
                   LIFE COUNTER
                 </button>
-                <ul id="ul-change-lifeCounterManager" class="dropdown-menu"></ul>
+                <ul
+                  id="ul-change-lifeCounterManager"
+                  class="dropdown-menu"
+                ></ul>
                 <span id="second-connector">-</span>
                 <button
                   id="button-setUp-lifeCounter"
@@ -93,11 +101,11 @@
                   type="button"
                 >
                   <i class="bi bi-wrench"></i>
-                </button>                
+                </button>
               </div>
             </div>
 
-             <div id="div-sync-info-buttons">
+            <div id="div-sync-info-buttons">
               <button
                 id="button-sync-DB-lifeCounter"
                 class="btn btn-outline-info btn-md"
@@ -164,8 +172,8 @@
                 </ul>
               </div>
             </div>
-          </div>         
-     
+          </div>
+
           <div id="div-dice-thrower">
             <div id="dice-box">
               <div class="d-flex flex-row align-items-center">
@@ -179,10 +187,7 @@
                 <div class="d-none" id="dice-throw-result"></div>
               </div>
 
-              <div
-                id="dice-options"
-                class=" d-none"
-              >
+              <div id="dice-options" class="d-none">
                 <div id="dice-separator">
                   <h1 class="d-flex align-items-center p-0 pe-1">|</h1>
                 </div>
@@ -259,28 +264,76 @@
           <div id="div-general-counters">
             <div id="counter-box" class="d-flex flex-row gap-4">
               <div class="d-flex flex-column justify-content-center">
-                <button id="red-counter-increase" class="btn counters-increase-button"><i class="bi bi-chevron-compact-up"></i></button>
-                <button id="red-counter" class="counters" data-tooltip="click to increase or hold to decrease">0</button>
-                <button id="red-counter-decrease" class="btn counters-decrease-button"><i class="bi bi-chevron-compact-down"></i></button>
+                <button
+                  id="red-counter-increase"
+                  class="btn counters-increase-button"
+                >
+                  <i class="bi bi-chevron-compact-up"></i>
+                </button>
+                <button
+                  id="red-counter"
+                  class="counters"
+                  data-tooltip="click to increase or hold to decrease"
+                >
+                  0
+                </button>
+                <button
+                  id="red-counter-decrease"
+                  class="btn counters-decrease-button"
+                >
+                  <i class="bi bi-chevron-compact-down"></i>
+                </button>
               </div>
 
               <div class="d-flex flex-column justify-content-center">
-                <button id="yellow-counter-increase" class="btn counters-increase-button"><i class="bi bi-chevron-compact-up"></i></button>
-                <button id="yellow-counter" class="counters" data-tooltip="click to increase or hold to decrease">0</button>
-                <button id="yellow-counter-decrease" class="btn counters-decrease-button"><i class="bi bi-chevron-compact-down"></i></button>
+                <button
+                  id="yellow-counter-increase"
+                  class="btn counters-increase-button"
+                >
+                  <i class="bi bi-chevron-compact-up"></i>
+                </button>
+                <button
+                  id="yellow-counter"
+                  class="counters"
+                  data-tooltip="click to increase or hold to decrease"
+                >
+                  0
+                </button>
+                <button
+                  id="yellow-counter-decrease"
+                  class="btn counters-decrease-button"
+                >
+                  <i class="bi bi-chevron-compact-down"></i>
+                </button>
               </div>
 
               <div class="d-flex flex-column justify-content-center">
-                <button id="green-counter-increase" class="btn counters-increase-button"><i class="bi bi-chevron-compact-up"></i></button>
-                <button id="green-counter" class="counters" data-tooltip="click to increase or hold to decrease">0</button>
-                <button id="green-counter-decrease" class="btn counters-decrease-button"><i class="bi bi-chevron-compact-down"></i></button>
+                <button
+                  id="green-counter-increase"
+                  class="btn counters-increase-button"
+                >
+                  <i class="bi bi-chevron-compact-up"></i>
+                </button>
+                <button
+                  id="green-counter"
+                  class="counters"
+                  data-tooltip="click to increase or hold to decrease"
+                >
+                  0
+                </button>
+                <button
+                  id="green-counter-decrease"
+                  class="btn counters-decrease-button"
+                >
+                  <i class="bi bi-chevron-compact-down"></i>
+                </button>
               </div>
             </div>
           </div>
         </div>
-        
-        <hr id="lifecounter-menu-line-divider"/>
-        
+
+        <hr id="lifecounter-menu-line-divider" />
+
         <div id="expand-contract-icon">
           <button
             id="button-toggle-lifecounter-menu"
@@ -305,15 +358,13 @@
 
             <div class="playerstats">
               <div
-                class="d-flex flex-column justify-content-center align-items-center gap-3"
+                class="d-flex flex-column justify-content-center align-items-center gap-4"
               >
-                <div class="d-flex flex-row align-items-center gap-2">
-                  <button
-                    class="player-setup player-title text-center btn btn-outline-info"
-                  >
-                    loading...
-                  </button>
-                </div>
+                <button
+                  class="player-setup player-title text-center btn btn-outline-info"
+                >
+                  loading...
+                </button>
 
                 <div class="alter-title d-none"></div>
 
@@ -346,7 +397,7 @@
 
             <div class="playerstats">
               <div
-                class="d-flex flex-column justify-content-center align-items-center gap-3"
+                class="d-flex flex-column justify-content-center align-items-center gap-4"
               >
                 <button
                   class="player-setup player-title text-center btn btn-outline-info"
@@ -385,7 +436,7 @@
 
             <div class="playerstats">
               <div
-                class="d-flex flex-column justify-content-center align-items-center gap-3"
+                class="d-flex flex-column justify-content-center align-items-center gap-4"
               >
                 <button
                   class="player-setup player-title text-center btn btn-outline-info"
@@ -550,7 +601,7 @@
     <script src="/js/plugins/content_loader.js"></script>
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
-    <script src="/js/scripts/lifecounter/lifecounter_manager.js"></script>
+    <script src="/js/scripts/lifecounter/lifecounter.js"></script>
     <script src="/js/modals/signin.js"></script>
   </body>
 </html>

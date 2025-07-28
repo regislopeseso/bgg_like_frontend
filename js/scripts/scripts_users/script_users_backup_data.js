@@ -72,7 +72,13 @@ $(function () {
             link.href = `data:${contentType};base64,${base64Data}`;
             link.download = fileName;
             link.click();
+
+            sweetAlertSuccess(response.message);
+
+            return;
           }
+
+          sweetAlertError(response.message);
         },
         error: function () {
           $("#import-status").text("Import failed.");

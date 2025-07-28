@@ -47,10 +47,10 @@ function loadHeader(userData, roleData) {
                 
           <a href="/index.html">HOME</a>
           <a href="/html/explore.html">EXPLORE</a>         
-          <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter_manager.html"">
+          <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter.html"">
             <img src="/images/icons/lifecounter_white.png" alt=""/>
           </a> 
-          <a id="img-play" href="/html/lifecounter/lifecounter_manager.html"">
+          <a id="img-play" href="/html/lifecounter/lifecounter.html"">
             <img src="/images/icons/play.png" alt=""/>
           </a> 
           <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
@@ -99,12 +99,12 @@ function loadHeader(userData, roleData) {
                     <a class="nav-link" href="/html/explore.html">EXPLORE</a>
                   </li>
                   <li class="nav-item">
-                    <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter_manager.html"">
+                    <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter.html"">
                       <img src="/images/icons/lifecounter_white.png" alt=""/>
                     </a> 
                   </li>       
                    <li class="nav-item">
-                    <a id="img-play" href="/html/lifecounter/lifecounter_manager.html"">
+                    <a id="img-play" href="/html/lifecounter/lifecounter.html"">
                       <img src="/images/icons/play.png" alt=""/>
                     </a> 
                   </li>         
@@ -191,8 +191,6 @@ function loadHeader(userData, roleData) {
 
       if (response.content?.isUserSignOut) {
         localStorage.clear();
-
-        //localStorage.removeItem("keyName");
 
         // Successfully logged out
         sweetAlertSuccess("Bye Bye!");

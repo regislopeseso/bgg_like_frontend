@@ -107,7 +107,7 @@ function life_counter_manager_edit() {
 
     self.Locations = [];
     self.Locations[self.Locations.length] = self.Locations.LifeCounterManager =
-      "/html/lifecounter/lifecounter_manager.html";
+      "/html/lifecounter/lifecounter.html";
   };
 
   self.RedirectToLifeCounterManager = (lifeCounterManagerId) => {

@@ -61,7 +61,7 @@ const Flipper = (function () {
               e.preventDefault();
 
               return (window.location.href =
-                "/html/pages_users/lifecounter/lifecounter_manager.html");
+                "/html/pages_users/lifecounter/lifecounter.html");
             }
 
             this.rotateTo(button.template, $menuButtons); // Pass the button elements

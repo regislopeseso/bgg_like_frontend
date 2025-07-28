@@ -12,7 +12,7 @@ hr {
   display: none !important;
 }
 
-#header-lifeCounter-explore {  
+#header-lifeCounter-explore {
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(1, 1fr);
   justify-items: center;
@@ -26,7 +26,7 @@ hr {
 }
 
 .dropdown-open {
-  box-shadow: 0 0 10px 5px var(--main-color)
+  box-shadow: 0 0 10px 5px var(--main-color);
 }
 
 #div-lifeCounter-templates,
@@ -44,7 +44,7 @@ hr {
   color: var(--text-color);
 }
 .lf-template:hover,
-.lf-manager:hover {  
+.lf-manager:hover {
   color: var(--main-color);
   background-color: var(--bg-color) !important;
 }
@@ -52,7 +52,6 @@ hr {
 #create-lifeCounterManager {
   color: var(--greenish);
 }
-
 
 .white-icon {
   filter: brightness(0) invert(1);
@@ -71,20 +70,18 @@ hr {
   box-shadow: none;
 }
 
-.div-show-duration-lifeCounter{
+.div-show-duration-lifeCounter {
   display: flex;
   justify-content: start;
 }
 
-.show-lifeCounter-timeSpan h3{
+.show-lifeCounter-timeSpan h3 {
   display: flex;
   flex-direction: row;
   text-wrap: nowrap;
   width: fit-content;
   margin: 10px 0 0 10px;
 }
-
-
 
 #button-sync-DB-lifeCounter,
 #button-showInfo-lifeCounter {
@@ -116,7 +113,6 @@ hr {
   opacity: 1; /* Optional: make it look dimmed */
 }
 
-
 #div-dice-thrower {
   padding: 0 10px;
 }
@@ -145,7 +141,7 @@ hr {
   box-shadow: none !important;
   border: none !important;
 }
-#dice-options{
+#dice-options {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -153,7 +149,6 @@ hr {
   gap: 10px;
   padding-right: 15px;
 }
-
 
 .rotate-on-click {
   animation: rotateOnce 0.6s ease-in-out;
@@ -214,11 +209,11 @@ hr {
 }
 
 .dice-result {
-  display: flex;  
+  display: flex;
   justify-content: center;
   align-content: center;
   flex-wrap: nowrap;
-  
+
   border-radius: 20px;
   background-color: var(--second-bg-color);
   color: var(--main-color);
@@ -242,10 +237,10 @@ hr {
   width: 60px;
   height: 40px;
 }
-.counters[data-tooltip]::after{  
+.counters[data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
-  
+
   background: var(--second-bg-color);
   color: var(--text-color);
   padding: 10px;
@@ -274,7 +269,7 @@ hr {
 }
 
 .counters-increase-button,
-.counters-decrease-button{
+.counters-decrease-button {
   display: none;
 }
 
@@ -320,22 +315,25 @@ hr {
   position: absolute;
   top: 50%;
   left: 50%;
+
   transform: translate(-50%, -50%);
   font-weight: bolder;
   color: var(--text-color); /* Transparent background feel */
   background-color: transparent;
-  border-radius: 2rem;
+  border-radius: 0;
   z-index: 1;
   pointer-events: none;
 }
+
 .playerstats .btn {
   color: var(--text-color) !important;
-  border: 1px solid var(--text-color) !important;
+  border: none !important;
 }
 .playerstats .btn:hover {
   background-color: transparent;
 }
 .player-title {
+  width: fit-content !important;
   padding-bottom: 5px;
   z-index: 600 !important;
   pointer-events: visible !important;
@@ -345,6 +343,9 @@ hr {
 }
 .rotate-text-antiClockWise {
   writing-mode: sideways-lr !important;
+}
+.player-lifepoints {
+  font: 5rem "Press Start 2P", cursive;
 }
 .increase-life-points,
 .decrease-life-points {
@@ -452,8 +453,6 @@ button.disabled {
   pointer-events: visible !important;
 }
 
-
-
 #quit-lifecounter {
   position: absolute;
   top: 1rem;
@@ -481,7 +480,6 @@ button.disabled {
   transform: scale(1.1);
 }
 
-
 @keyframes rotateOnce {
   from {
     transform: scale(2) rotate(0deg);
@@ -491,8 +489,7 @@ button.disabled {
   }
 }
 
-
-@media screen and (max-width: 1780px) {  
+@media screen and (max-width: 1780px) {
   html {
     overflow-x: hidden;
   }
@@ -501,27 +498,25 @@ button.disabled {
     display: none !important;
   }
 
-  section:first-child{
+  section:first-child {
     width: 100% !important;
   }
-  section:last-child{
+  section:last-child {
     width: 100% !important;
-  }   
+  }
 
   #quit-lifecounter {
-  position: absolute;
-  top: 1rem;
-  right: 25px;
-  justify-self: end;
-  padding: 0 !important;
-  margin: 0 !important;
+    position: absolute;
+    top: 1rem;
+    right: 25px;
+    justify-self: end;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-  .show-lifeCounter-timeSpan h3{
+  .show-lifeCounter-timeSpan h3 {
     flex-direction: column;
   }
-
-
 
   #header-lifeCounter-explore {
     z-index: 999;
@@ -534,7 +529,7 @@ button.disabled {
     padding: 0 !important;
     margin: 0 !important;
   }
-  #div-lifeCounter-templates {    
+  #div-lifeCounter-templates {
     grid-row-start: 1;
     grid-row-end: 1;
     grid-column-start: 1;
@@ -542,7 +537,7 @@ button.disabled {
     padding-left: 1rem;
     justify-content: start;
   }
- 
+
   #second-block {
     grid-row-start: 2;
     grid-row-end: 2;
@@ -572,7 +567,7 @@ button.disabled {
     align-self: center;
     vertical-align: middle;
   }
-  
+
   hr {
     display: flex !important;
     border: 1px solid var(--main-color);
@@ -590,52 +585,51 @@ button.disabled {
     padding: 0.5rem 0;
   }
 
-  #button-diceThrower-lifeCounter{
+  #button-diceThrower-lifeCounter {
     pointer-events: none;
   }
-  #dice-box{
+  #dice-box {
     display: flex;
     flex-direction: column;
     align-self: center;
     align-items: start;
-    max-width: 280px;  
+    max-width: 280px;
   }
-  #dice-separator{
+  #dice-separator {
     display: none;
   }
-  #dice-options{
+  #dice-options {
     display: flex;
     flex-wrap: wrap;
     padding-bottom: 15px;
   }
 
-  #button-change-lifeCounterTemplate:has(.dropdown-open) ~ #div-general-counters{
+  #button-change-lifeCounterTemplate:has(.dropdown-open)
+    ~ #div-general-counters {
     opacity: 0 !important;
   }
 
-  .counters{
+  .counters {
     pointer-events: none;
   }
-  .counters[data-tooltip]::after{ 
+  .counters[data-tooltip]::after {
     display: none;
   }
 
-  
   .counters-increase-button,
-  .counters-decrease-button
-  {
+  .counters-decrease-button {
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--text-color);
     background-color: var(--second-bg-color);
     height: 3rem;
-    border: 1px solid var(--second-bg-color);    
+    border: 1px solid var(--second-bg-color);
   }
-  .counters-increase-button {   
-    border-radius: 1.5rem 1.5rem  0  0;
+  .counters-increase-button {
+    border-radius: 1.5rem 1.5rem 0 0;
   }
-  .counters-decrease-button {   
+  .counters-decrease-button {
     border-radius: 0 0 1.5rem 1.5rem;
   }
 
@@ -643,11 +637,9 @@ button.disabled {
   .counters-decrease-button {
     color: var(--main-color);
   }
-
-  
 }
-@media screen and (max-width: 575px) { 
-   #header-lifeCounter-explore {
+@media screen and (max-width: 575px) {
+  #header-lifeCounter-explore {
     z-index: 999;
     grid-template-columns: 1fr;
     grid-template-rows: 50px 50px 150px 200px;
@@ -657,31 +649,31 @@ button.disabled {
     width: 90%;
     padding: 0 !important;
     margin: 0 !important;
-  } 
+  }
 
   #ul-change-lifeCounterTemplate,
-  #ul-change-lifeCounterManager {    
+  #ul-change-lifeCounterManager {
     transform: translate(0, 35px) !important;
   }
 }
-@media screen and (max-width: 350px) { 
+@media screen and (max-width: 350px) {
   #header-lifeCounter-explore {
-  z-index: 999;
-  grid-template-columns: 1fr;
-  grid-template-rows: 60px 80px 150px 200px;
-  justify-items: center;
-  justify-self: start !important;
-  align-items: center;
-  width: 90%;
-  padding: 0 !important;
-  margin: 0 !important;
-  } 
- 
-  #second-block{
+    z-index: 999;
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px 80px 150px 200px;
     justify-items: center;
-  } 
-  
-  #div-sync-info-buttons{
+    justify-self: start !important;
+    align-items: center;
+    width: 90%;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #second-block {
+    justify-items: center;
+  }
+
+  #div-sync-info-buttons {
     display: flex;
     justify-content: start;
     width: 100%;
