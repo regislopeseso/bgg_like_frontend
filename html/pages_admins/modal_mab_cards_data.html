@@ -1,0 +1,79 @@
+<!--? Modal MAB CARDS DATA TABLE-->
+<div
+  class="modal fade"
+  id="modal-mab-cards-data"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="modal-mab-cards-data-title"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+  >
+    <div class="data-base-content modal-content">
+      <div class="modal-header">
+        <div class="d-flex flex-row gap-2">
+          <h1 class="modal-title fs-5" id="modal-mab-cards-data-title">
+            <span>M</span>edieval <span>A</span>uto <span>B</span>attler
+            <span>C</span>cards
+          </h1>
+
+          <button
+            id="button-mab-add-card"
+            class="btn btn-outline-info d-flex align-items-center justify-content-center"
+            style="
+              width: 2rem;
+              height: 2rem;
+              margin: 0 !important;
+              padding: 0 !important;
+              border: 3px solid var(--main-color);
+              border-radius: 50%;
+              overflow: hidden;
+            "
+          >
+            <i class="bi bi-plus" style="font-size: 50px"></i>
+          </button>
+        </div>
+
+        <button
+          type="button"
+          id="button-x-mab-card-db-modal-close"
+          class="custom-close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-responsive ps-3 pe-3">
+          <table
+            id="table-mab-cards-data"
+            class="table-fixed table table-bordered table-dark align-middle table-sm"
+          >
+            <thead class="text-center">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Is Deleted</th>
+                <th scope="col">*</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider text-center"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          id="button-mabCard-db-modal-close"
+          class="btn btn-outline-danger"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/scripts/scripts_admins/modal_mab_cards_data.js"></script>

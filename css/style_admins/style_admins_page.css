@@ -18,3 +18,10 @@
   border-radius: 2rem;
   margin: 2rem;
 }
+
+#mab-tools-wrapper {
+  display: none;
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 2rem;
+  margin: 2rem;
+}

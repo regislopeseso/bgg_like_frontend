@@ -1,61 +1,180 @@
-$(function () {
-  $("body").loadpage("charge");
+function admins_page() {
+  let self = this;
 
-  fetch("https://localhost:7081/users/validatestatus", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.content.isUserLoggedIn == true) {
-        // If the user is logged in, proceed to load the page normally
-        Build();
-        $("body").loadpage("demolish");
+  self.IsBuilt = false;
+
+  self.CheckCredentials = async function () {
+    $("body").loadpage("charge");
+
+    let userData = null;
+    let roleData = null;
+
+    try {
+      const statusResponse = await fetch(
+        "https://localhost:7081/users/validatestatus",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      userData = await statusResponse.json();
+
+      if (userData.content.isUserLoggedIn === true) {
+        const roleResponse = await fetch(
+          "https://localhost:7081/users/getrole",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
+        roleData = await roleResponse.json();
+
+        if (
+          roleData.content.role === "Admin" ||
+          roleData.content.role === "Developer"
+        ) {
+          self.Build();
+        }
       } else {
-        // If the user is not authenticated, redirect them to the authentication page
-        window.location.href = "html/pages_users/users_authentication.html";
+        sweetAlertError(userData.message);
       }
-    });
+    } catch (err) {
+      sweetAlertError("Failed to fetch authentication status or role", err);
+    }
+  };
 
-  function loadEvents() {
-    $("#bg-data-button").on("click", function (e) {
+  self.LoadReferences = () => {
+    self.DOM = $("#body-admins-page");
+
+    self.Buttons = [];
+    self.Buttons[self.Buttons.length] = self.Buttons.BgData =
+      self.DOM.find("#bg-data-button");
+    self.Buttons[self.Buttons.length] = self.Buttons.LoadBgData =
+      self.DOM.find("#load-bg-button");
+    self.Buttons[self.Buttons.length] = self.Buttons.LoadBgCategoryData =
+      self.DOM.find("#load-category-button");
+    self.Buttons[self.Buttons.length] = self.Buttons.LoadBgMechanicData =
+      self.DOM.find("#load-mechanic-button");
+
+    self.Buttons[self.Buttons.length] = self.Buttons.MabData =
+      self.DOM.find("#mab-data-button");
+    self.Buttons[self.Buttons.length] = self.Buttons.LoadMabCardsData =
+      self.DOM.find("#button-mab-cards-load");
+
+    self.BgToolsWrapper = self.DOM.find("#bg-tools-wrapper");
+    self.MabToolsWrapper = self.DOM.find("#mab-tools-wrapper");
+
+    self.Modals = [];
+    self.Modals[self.Modals.length] = self.Modals.BgData =
+      self.DOM.find("#bg-modal");
+    self.Modals[self.Modals.length] = self.Modals.BgCategoryData =
+      self.DOM.find("#category-modal");
+    self.Modals[self.Modals.length] = self.Modals.BgMechanicData =
+      self.DOM.find("#mechanic-modal");
+
+    self.Modals[self.Modals.length] = self.Modals.MabCardsData =
+      self.DOM.find("#mab-card-modal");
+    self.Modals[self.Modals.length] = self.Modals.MabNpcsData =
+      self.DOM.find("#mab-npc-modal");
+    self.Modals[self.Modals.length] = self.Modals.MabBoostersData =
+      self.DOM.find("#mab-booster-modal");
+
+    self.Locations = [];
+    self.Locations[self.Locations.length] = self.Locations.Modal_BgDataBase =
+      "admins_modal_bg_data_base.html";
+    self.Locations[self.Locations.length] =
+      self.Locations.Modal_BgCategoryData =
+        "admins_modal_category_data_base.html";
+    self.Locations[self.Locations.length] =
+      self.Locations.Modal_BgMechanicData =
+        "admins_modal_mechanic_data_base.html";
+
+    self.Locations[self.Locations.length] = self.Locations.Modal_MabCardsData =
+      "modal_mab_cards_data.html";
+  };
+
+  self.OpenModal_BgDataBase = () => {
+    self.Modals.BgData.load(self.Locations.Modal_BgDataBase, (e) => {});
+  };
+
+  self.LoadEvents = () => {
+    // Toggle BG Data menu
+    self.Buttons.BgData.on("click", (e) => {
       e.preventDefault();
 
-      $("#bg-tools-wrapper").slideToggle();
+      self.MabToolsWrapper.hide();
+
+      self.BgToolsWrapper.slideToggle();
+    });
+
+    // Toggle BG Data menu
+    self.Buttons.MabData.on("click", (e) => {
+      e.preventDefault();
+
+      self.BgToolsWrapper.hide();
+
+      self.MabToolsWrapper.slideToggle();
     });
 
     // Load BOARD GAMES modal HTML, THEN initialize modal logic
-    $("#bg-modal").load("admins_modal_bg_data_base.html", function () {
+    self.Modals.BgData.load(self.Locations.Modal_BgDataBase, function () {
       // Hook up the button to open the modal AFTER it's ready
-      $("#load-bg-button").on("click", function () {
+      self.Buttons.LoadBgData.on("click", function () {
         __global.BgDataBaseModalController.OpenModal();
       });
     });
 
     // Load CATEGORY modal HTML, THEN initialize modal logic
-    $("#category-modal").load(
-      "admins_modal_category_data_base.html",
+    self.Modals.BgCategoryData.load(
+      self.Locations.Modal_BgCategoryData,
       function () {
         // Hook up the button to open the modal AFTER it's ready
-        $("#load-category-button").on("click", function () {
+        self.Buttons.LoadBgCategoryData.on("click", function () {
           __global.CategoryDataBaseModalController.OpenModal();
         });
       }
     );
 
     // Load MECHANIC modal HTML, THEN initialize modal logic
-    $("#mechanic-modal").load(
-      "admins_modal_mechanic_data_base.html",
+    self.Modals.BgMechanicData.load(
+      self.Locations.Modal_BgMechanicData,
       function () {
         // Hook up the button to open the modal AFTER it's ready
-        $("#load-mechanic-button").on("click", function () {
+        self.Buttons.LoadBgMechanicData.on("click", function () {
           __global.MechanicDataBaseModalController.OpenModal();
         });
       }
     );
-  }
 
-  function Build() {
-    loadEvents();
-  }
+    // Load MEDIEVAL AUTO BATTLER CARDS modal HTML, THEN initialize modal logic
+    self.Modals.MabCardsData.load(
+      self.Locations.Modal_MabCardsData,
+      function () {
+        // Hook up the button to open the modal AFTER it's ready
+        self.Buttons.LoadMabCardsData.on("click", function () {
+          __global.MabCardsDataModalController.OpenModal();
+        });
+      }
+    );
+  };
+
+  self.Build = () => {
+    $("body").loadpage("demolish");
+
+    if (self.IsBuilt == false) {
+      self.LoadReferences();
+
+      self.LoadEvents();
+
+      self.IsBuilt = true;
+    }
+  };
+
+  self.CheckCredentials();
+}
+
+$(function () {
+  new admins_page();
 });

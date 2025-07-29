@@ -27,6 +27,6 @@
   "liveServer.settings.donotShowInfoMsg": true,
   "editor.inlineSuggest.edits.showCollapsed": true,
   "liveServer.settings.donotVerifyTags": true,
-  "editor.foldingStrategy": "indentation",
+  "editor.foldingStrategy": "auto",
   "workbench.settings.applyToAllProfiles": ["editor.formatOnSave"]
 }

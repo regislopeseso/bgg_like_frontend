@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/addons.css" />
     <link rel="stylesheet" href="/css/style_admins/admins_addons.css" />
   </head>
-  <body>
+  <body id="body-admins-page">
     <main>
       <section class="d-flex justify-content-center">
         <div id="adm-tools" class="d-flex flex-column w-100 gap-2">
@@ -29,12 +29,12 @@
               Board Games Data Tools
             </button>
 
-            <button class="btn btn-lg btn-outline-info" style="border: none">
-              Board Game Simulator Tools
-            </button>
-
-            <button class="btn btn-lg btn-outline-info" style="border: none">
-              Life Counters Tools
+            <button
+              id="mab-data-button"
+              class="btn btn-lg btn-outline-info"
+              style="border: none"
+            >
+              Medieval Auto Battler
             </button>
           </div>
 
@@ -43,7 +43,7 @@
               <div class="d-flex flex-wrap text-center align-items-center">
                 <div style="transform: rotate(-90deg)">
                   <h3 class="p-0 m-0"><span>B</span>oard</h3>
-                  <h3 class="p-0 m-0">Games</h3>
+                  <h3 class="p-0 m-0"><span>G</span>ames</h3>
                 </div>
               </div>
 
@@ -69,13 +69,56 @@
               </div>
             </div>
           </div>
+
+          <div id="mab-tools-wrapper">
+            <div class="d-flex flex-row justify-content-evenly p-3">
+              <div class="d-flex flex-wrap text-center align-items-center">
+                <div style="transform: rotate(-90deg)">
+                  <h3 class="p-0 m-0"><span>M</span>edieval</h3>
+                  <h3 class="p-0 m-0">
+                    <span>A</span>uto <span>B</span>attler
+                  </h3>
+                </div>
+              </div>
+
+              <div
+                id="mab-tools"
+                class="d-flex flex-column align-items-center gap-3"
+              >
+                <button
+                  id="load-mab-saves-button"
+                  class="btn btn-outline-info w-100"
+                >
+                  Saves
+                </button>
+                <button
+                  id="button-mab-cards-load"
+                  class="btn btn-outline-info w-100"
+                >
+                  Cards
+                </button>
+                <button
+                  id="load-mab-npcs-button"
+                  class="btn btn-outline-info w-100"
+                >
+                  Npcs
+                </button>
+                <button
+                  id="load-mab-boosters-button"
+                  class="btn btn-outline-info w-100"
+                >
+                  Boosters
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <section id="admins-modals">
         <!-- Modal BG Data Table-->
         <div id="bg-modal"></div>
-        <!-- Modal BG Add-->
+        <!-- Modal BG Add & Edit-->
         <div id="bg-add-edit"></div>
 
         <!-- Modal BG Data Table-->
@@ -87,6 +130,23 @@
         <div id="mechanic-modal"></div>
         <!-- Modal BG Add-->
         <div id="mechanic-add"></div>
+      </section>
+
+      <section id="section-mab-modals">
+        <!-- Modal MAB Cards Data Table-->
+        <div id="mab-card-modal"></div>
+        <!-- Modal MAB Cards Add & Edit-->
+        <div id="mab-card-add-edit"></div>
+
+        <!-- Modal MAB Npcs Data Table-->
+        <div id="mab-npc-modal"></div>
+        <!-- Modal MAB Npcs Add & Edit-->
+        <div id="mab-npc-add-edit"></div>
+
+        <!-- Modal MAB Boosters Data Table-->
+        <div id="mab-booster-modal"></div>
+        <!-- Modal MAB Boosters Add & Edit-->
+        <div id="mab-booster-add-edit"></div>
       </section>
     </main>
     <!-- Load jQuery and other libraries first -->
