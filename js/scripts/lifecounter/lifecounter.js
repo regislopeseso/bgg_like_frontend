@@ -3157,7 +3157,7 @@ function lifecounter_manager() {
         processData: false,
         contentType: false,
         xhrFields: {
-          withCredentials: true, // Only if you're using cookies; otherwise can be removed
+          withCredentials: true,
         },
         success: (resp) => {
           if (resp.content === null) {

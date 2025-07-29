@@ -1,115 +1,116 @@
-$(function () {
-  $("body").loadpage("charge");
+function devs_page() {
+  let self = this;
 
-  fetch("https://localhost:7081/users/validatestatus", {
-    method: "GET",
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.content.isUserLoggedIn == true) {
-        // If the user is logged in, proceed to load the page normally
-        console.log("User is authenticated. Welcome!");
-        setTimeout(function (e) {
-          $("body").loadpage("demolish");
-        }, 600);
+  self.IsBuilt = false;
 
-        $("body").show();
+  self.LoadReferences = () => {
+    self.DOM = $("#body-devs-page");
 
-        builder();
-      } else {
-        // If the user is not authenticated, redirect them to the authentication page
-        window.location.href = "html/pages_users/users_authentication.html";
+    self.Buttons = [];
+    self.Buttons[self.Buttons.length] = self.Buttons.BoardGames_Seed =
+      self.DOM.find("#seedBg");
+    self.Buttons[self.Buttons.length] = self.Buttons.BoardGames_DeleteSeed =
+      self.DOM.find("#deleteSeededBg");
+    self.Buttons[self.Buttons.length] = self.Buttons.MedievalAutoBattler_Seed =
+      self.DOM.find("#seedMab");
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.MedievalAutoBattler_DeleteSeed =
+        self.DOM.find("#deleteSeededMab");
+
+    self.BoardGames_ProgressBar = self.DOM.find(".bg-progressBar");
+    self.MedievalAutoBattler_ProgressBar = self.DOM.find(".mab-progressBar");
+
+    self.LoadingBar_Element = ".ldBar";
+  };
+
+  self.BoardGames_Seed = () => {
+    self.BoardGames_ProgressBar.empty();
+
+    let pg = `
+        <div
+          class="ldBar label-center"
+          data-type="stroke"
+          data-stroke="red"
+          data-stroke-trail="white"
+        ></div>
+      `;
+
+    self.BoardGames_ProgressBar.append(pg);
+
+    let bar = new ldBar(self.LoadingBar_Element); // target the ldBar element
+    let progress = 0;
+    let interval;
+
+    // Reset progress
+    progress = 0;
+    bar.set(progress);
+
+    self.Buttons.BoardGames_Seed.prop("disabled", true);
+    self.Buttons.BoardGames_DeleteSeed.prop("disabled", true);
+
+    // Simulate loading animation
+    interval = setInterval(() => {
+      if (progress < 95) {
+        // stop before 100% to allow success to finalize it
+        progress += 1;
+        bar.set(progress);
       }
+    }, 50); // speed of animation, adjust if needed
+
+    $.ajax({
+      method: "POST",
+      url: "https://localhost:7081/devs/boardgamesseed",
+      xhrFields: {
+        withCredentials: true,
+      },
+      data: JSON.stringify({}),
+      contentType: "application/json",
+      success: function (response) {
+        clearInterval(interval);
+
+        bar.set(100); // complete the progress
+
+        setTimeout(() => {
+          document.querySelector(".ldBar .ldBar-label").style.color =
+            "var(--main-color)";
+
+          const svgPath = document.querySelector(".ldBar svg path.mainline");
+          svgPath.setAttribute("stroke", "var(--main-color)");
+        }, 1000);
+
+        setTimeout(() => {
+          const fadeInterval = setInterval(() => {
+            if (progress > 0) {
+              document.querySelector(".ldBar .ldBar-label").style.color = ""; // reset to default
+              const svgPath = document.querySelector(
+                ".ldBar svg path.mainline"
+              );
+              svgPath.setAttribute("stroke", "red");
+              progress -= 0.3;
+              bar.set(progress);
+            } else {
+              clearInterval(fadeInterval);
+              self.Buttons.BoardGames_Seed.prop("disabled", false);
+              self.Buttons.BoardGames_DeleteSeed.prop("disabled", false);
+              self.BoardGames_ProgressBar.empty();
+            }
+          }, 15);
+        }, 2000);
+      },
+      error: function (xhr, status, error) {
+        clearInterval(interval);
+        bar.set(0); // reset on error
+        console.error("Error seeding:", error);
+        self.Buttons.BoardGames_Seed.prop("disabled", false);
+        self.Buttons.BoardGames_DeleteSeed.prop("disabled", false);
+        self.BoardGames_ProgressBar.empty();
+      },
     });
+  };
+  self.BoardGames_DeleteSeed = () => {
+    self.BoardGames_ProgressBar.empty();
 
-  function loadEvents() {
-    $("#seedBg").on("click", function (e) {
-      e.preventDefault();
-
-      $(".bg-progressBar").empty();
-      let pg = `
-        <div
-          class="ldBar label-center"
-          data-type="stroke"
-          data-stroke="red"
-          data-stroke-trail="white"
-        ></div>
-      `;
-      $(".bg-progressBar").append(pg);
-
-      let bar = new ldBar(".ldBar"); // target the ldBar element
-      let progress = 0;
-      let interval;
-
-      // Reset progress
-      progress = 0;
-      bar.set(progress);
-
-      $("#seedBg").prop("disabled", true);
-      $("#deleteSeededBg").prop("disabled", true);
-
-      // Simulate loading animation
-      interval = setInterval(() => {
-        if (progress < 95) {
-          // stop before 100% to allow success to finalize it
-          progress += 1;
-          bar.set(progress);
-        }
-      }, 50); // speed of animation, adjust if needed
-
-      $.ajax({
-        method: "POST",
-        url: "https://localhost:7081/devs/seed",
-        data: JSON.stringify({}),
-        contentType: "application/json",
-        success: function (response) {
-          clearInterval(interval);
-          bar.set(100); // complete the progress
-
-          setTimeout(() => {
-            document.querySelector(".ldBar .ldBar-label").style.color =
-              "var(--main-color)";
-
-            const svgPath = document.querySelector(".ldBar svg path.mainline");
-            svgPath.setAttribute("stroke", "var(--main-color)");
-          }, 1000);
-
-          setTimeout(() => {
-            const fadeInterval = setInterval(() => {
-              if (progress > 0) {
-                document.querySelector(".ldBar .ldBar-label").style.color = ""; // reset to default
-                const svgPath = document.querySelector(
-                  ".ldBar svg path.mainline"
-                );
-                svgPath.setAttribute("stroke", "red");
-                progress -= 0.3;
-                bar.set(progress);
-              } else {
-                clearInterval(fadeInterval);
-                $("#seedBg").prop("disabled", false);
-                $("#deleteSeededBg").prop("disabled", false);
-                $(".bg-progressBar").empty();
-              }
-            }, 15);
-          }, 2000);
-        },
-        error: function (xhr, status, error) {
-          clearInterval(interval);
-          bar.set(0); // reset on error
-          console.error("Error seeding:", error);
-          $("#seedBg").prop("disabled", false);
-          $("#deleteSeededBg").prop("disabled", false);
-          $(".bg-progressBar").empty();
-        },
-      });
-    });
-
-    $("#deleteSeededBg").on("click", function (e) {
-      e.preventDefault();
-
-      $(".bg-progressBar").empty();
-      let pg = `
+    let pg = `
         <div
           class="ldBar label-center"
           data-type="stroke"
@@ -118,81 +119,92 @@ $(function () {
         ></div>
       `;
 
-      $(".bg-progressBar").append(pg);
+    self.BoardGames_ProgressBar.append(pg);
 
-      let bar = new ldBar(".ldBar"); // target the ldBar element
-      let progress = 0;
-      let interval;
-      $(".ldBar svg").css("transform", "rotate(180deg)");
+    let bar = new ldBar(self.LoadingBar_Element); // target the ldBar element
+    let progress = 0;
+    let interval;
+    $(".ldBar svg").css("transform", "rotate(180deg)");
 
-      // Reset progress
-      progress = 0;
-      bar.set(progress);
+    // Reset progress
+    progress = 0;
+    bar.set(progress);
 
-      $("#seedBg").prop("disabled", true);
-      $("#deleteSeededBg").prop("disabled", true);
+    self.Buttons.BoardGames_Seed.prop("disabled", true);
+    self.Buttons.BoardGames_DeleteSeed.prop("disabled", true);
 
-      // Simulate loading animation
-      interval = setInterval(() => {
-        if (progress < 95) {
-          // stop before 100% to allow success to finalize it
-          progress += 1;
-          bar.set(progress);
-        }
-      }, 50); // speed of animation, adjust if needed
+    // Simulate loading animation
+    interval = setInterval(() => {
+      if (progress < 95) {
+        // stop before 100% to allow success to finalize it
+        progress += 1;
+        bar.set(progress);
+      }
+    }, 50); // speed of animation, adjust if needed
 
-      $.ajax({
-        method: "DELETE",
-        url: "https://localhost:7081/devs/deleteseed",
-        data: JSON.stringify({}),
-        contentType: "application/json",
-        success: function (response) {
-          clearInterval(interval);
-          bar.set(100); // complete the progress
+    $.ajax({
+      method: "DELETE",
+      url: "https://localhost:7081/devs/boardgamesdeleteseed",
+      xhrFields: {
+        withCredentials: true,
+      },
+      data: JSON.stringify({}),
+      contentType: "application/json",
+      success: function (response) {
+        clearInterval(interval);
 
-          setTimeout(() => {
-            document.querySelector(".ldBar .ldBar-label").style.color =
-              "var(--main-color)";
+        bar.set(100); // complete the progress
 
-            const svgPath = document.querySelector(".ldBar svg path.mainline");
-            svgPath.setAttribute("stroke", "var(--main-color)");
-          }, 1000);
+        setTimeout(() => {
+          document.querySelector(".ldBar .ldBar-label").style.color =
+            "var(--main-color)";
 
-          setTimeout(() => {
-            const fadeInterval = setInterval(() => {
-              if (progress > 0) {
-                document.querySelector(".ldBar .ldBar-label").style.color = ""; // reset to default
-                const svgPath = document.querySelector(
-                  ".ldBar svg path.mainline"
-                );
-                svgPath.setAttribute("stroke", "red");
-                progress -= 0.3;
-                bar.set(progress);
-              } else {
-                clearInterval(fadeInterval);
-                $("#seedBg").prop("disabled", false);
-                $("#deleteSeededBg").prop("disabled", false);
-                $(".bg-progressBar").empty();
-              }
-            }, 15);
-          }, 2000);
-        },
-        error: function (xhr, status, error) {
-          clearInterval(interval);
-          bar.set(0); // reset on error
-          console.error("Error seeding:", error);
-          $("#seedBg").prop("disabled", false);
-          $("#deleteSeededBg").prop("disabled", false);
-          $(".bg-progressBar").empty();
-        },
-      });
+          const svgPath = document.querySelector(".ldBar svg path.mainline");
+
+          svgPath.setAttribute("stroke", "var(--main-color)");
+        }, 1000);
+
+        setTimeout(() => {
+          const fadeInterval = setInterval(() => {
+            if (progress > 0) {
+              document.querySelector(".ldBar .ldBar-label").style.color = ""; // reset to default
+
+              const svgPath = document.querySelector(
+                ".ldBar svg path.mainline"
+              );
+
+              svgPath.setAttribute("stroke", "red");
+
+              progress -= 0.3;
+
+              bar.set(progress);
+            } else {
+              clearInterval(fadeInterval);
+
+              self.Buttons.BoardGames_Seed.prop("disabled", false);
+
+              self.Buttons.BoardGames_DeleteSeed.prop("disabled", false);
+
+              self.BoardGames_ProgressBar.empty();
+            }
+          }, 15);
+        }, 2000);
+      },
+      error: function (xhr, status, error) {
+        clearInterval(interval);
+        bar.set(0); // reset on error
+        console.error("Error seeding:", error);
+        self.Buttons.BoardGames_Seed.prop("disabled", false);
+        self.Buttons.BoardGames_DeleteSeed.prop("disabled", false);
+        self.BoardGames_ProgressBar.empty();
+      },
     });
+  };
 
-    $("#seedMab").on("click", function (e) {
-      e.preventDefault();
+  self.MedievalBattler_Seed = () => {
+    self.MedievalAutoBattler_ProgressBar.empty();
 
-      $(".mab-progressBar").empty();
-      let pg = `
+    let pg = `
         <div
           class="ldBar label-center"
           data-type="stroke"
@@ -201,80 +213,83 @@ $(function () {
         ></div>
       `;
 
-      $(".mab-progressBar").append(pg);
+    self.MedievalAutoBattler_ProgressBar.append(pg);
 
-      let bar = new ldBar(".ldBar"); // target the ldBar element
-      let progress = 0;
-      let interval;
+    let bar = new ldBar(self.LoadingBar_Element); // target the ldBar element
+    let progress = 0;
+    let interval;
 
-      // Reset progress
-      progress = 0;
-      bar.set(progress);
+    // Reset progress
+    progress = 0;
+    bar.set(progress);
 
-      $("#seedMab").prop("disabled", true);
-      $("#deleteSeededMab").prop("disabled", true);
+    self.Buttons.MedievalAutoBattler_Seed.prop("disabled", true);
+    self.Buttons.MedievalAutoBattler_DeleteSeed.prop("disabled", true);
 
-      // Simulate loading animation
-      interval = setInterval(() => {
-        if (progress < 95) {
-          // stop before 100% to allow success to finalize it
-          progress += 1;
-          bar.set(progress);
-        }
-      }, 50); // speed of animation, adjust if needed
+    // Simulate loading animation
+    interval = setInterval(() => {
+      if (progress < 95) {
+        // stop before 100% to allow success to finalize it
+        progress += 1;
+        bar.set(progress);
+      }
+    }, 50); // speed of animation, adjust if needed
 
-      $.ajax({
-        method: "POST",
-        url: "https://localhost:7108/devs/seed",
-        data: JSON.stringify({}),
-        contentType: "application/json",
-        success: function (response) {
-          clearInterval(interval);
-          bar.set(100); // complete the progress
+    $.ajax({
+      method: "POST",
+      url: "https://localhost:7081/devs/medievalautobattlerseed",
+      xhrFields: {
+        withCredentials: true,
+      },
+      data: JSON.stringify({}),
+      contentType: "application/json",
+      success: function (response) {
+        clearInterval(interval);
+        bar.set(100); // complete the progress
 
-          setTimeout(() => {
-            document.querySelector(".ldBar .ldBar-label").style.color =
-              "var(--main-color)";
+        setTimeout(() => {
+          document.querySelector(".ldBar .ldBar-label").style.color =
+            "var(--main-color)";
 
-            const svgPath = document.querySelector(".ldBar svg path.mainline");
-            svgPath.setAttribute("stroke", "var(--main-color)");
-          }, 1000);
+          const svgPath = document.querySelector(".ldBar svg path.mainline");
+          svgPath.setAttribute("stroke", "var(--main-color)");
+        }, 1000);
 
-          setTimeout(() => {
-            const fadeInterval = setInterval(() => {
-              if (progress > 0) {
-                document.querySelector(".ldBar .ldBar-label").style.color = ""; // reset to default
-                const svgPath = document.querySelector(
-                  ".ldBar svg path.mainline"
-                );
-                svgPath.setAttribute("stroke", "red");
-                progress -= 0.3;
-                bar.set(progress);
-              } else {
-                clearInterval(fadeInterval);
-                $("#seedMab").prop("disabled", false);
-                $("#deleteSeededMab").prop("disabled", false);
-                $(".mab-progressBar").empty();
-              }
-            }, 15);
-          }, 2000);
-        },
-        error: function (xhr, status, error) {
-          clearInterval(interval);
-          bar.set(0); // reset on error
-          console.error("Error seeding:", error);
-          $("#seedMab").prop("disabled", false);
-          $("#deleteSeededMab").prop("disabled", false);
-          $(".mab-progressBar").empty();
-        },
-      });
+        setTimeout(() => {
+          const fadeInterval = setInterval(() => {
+            if (progress > 0) {
+              document.querySelector(".ldBar .ldBar-label").style.color = ""; // reset to default
+              const svgPath = document.querySelector(
+                ".ldBar svg path.mainline"
+              );
+              svgPath.setAttribute("stroke", "red");
+              progress -= 0.3;
+              bar.set(progress);
+            } else {
+              clearInterval(fadeInterval);
+              self.Buttons.MedievalAutoBattler_Seed.prop("disabled", false);
+              self.Buttons.MedievalAutoBattler_DeleteSeed.prop(
+                "disabled",
+                false
+              );
+              self.MedievalAutoBattler_ProgressBar.empty();
+            }
+          }, 15);
+        }, 2000);
+      },
+      error: function (xhr, status, error) {
+        clearInterval(interval);
+        bar.set(0); // reset on error
+        console.error("Error seeding:", error);
+        self.Buttons.MedievalAutoBattler_Seed.prop("disabled", false);
+        self.Buttons.MedievalAutoBattler_DeleteSeed.prop("disabled", false);
+        self.MedievalAutoBattler_ProgressBar.empty();
+      },
     });
-
-    $("#deleteSeededMab").on("click", function (e) {
-      e.preventDefault();
-
-      $(".mab-progressBar").empty();
-      let pg = `
+  };
+  self.MedievalBattler_DeleteSeed = () => {
+    self.MedievalAutoBattler_ProgressBar.empty();
+    let pg = `
         <div
           class="ldBar label-center"
           data-type="stroke"
@@ -283,80 +298,121 @@ $(function () {
         ></div>
       `;
 
-      $(".mab-progressBar").append(pg);
+    self.MedievalAutoBattler_ProgressBar.append(pg);
 
-      let bar = new ldBar(".ldBar"); // target the ldBar element
-      let progress = 0;
-      let interval;
-      $(".ldBar svg").css("transform", "rotate(180deg)");
+    let bar = new ldBar(".ldBar"); // target the ldBar element
+    let progress = 0;
+    let interval;
+    $(".ldBar svg").css("transform", "rotate(180deg)");
 
-      // Reset progress
-      progress = 0;
-      bar.set(progress);
+    // Reset progress
+    progress = 0;
+    bar.set(progress);
 
-      $("#seedMab").prop("disabled", true);
-      $("#deleteSeededMab").prop("disabled", true);
+    self.Buttons.MedievalAutoBattler_Seed.prop("disabled", true);
+    self.Buttons.MedievalAutoBattler_DeleteSeed.prop("disabled", true);
 
-      // Simulate loading animation
-      interval = setInterval(() => {
-        if (progress < 95) {
-          // stop before 100% to allow success to finalize it
-          progress += 1;
-          bar.set(progress);
-        }
-      }, 50); // speed of animation, adjust if needed
+    // Simulate loading animation
+    interval = setInterval(() => {
+      if (progress < 95) {
+        // stop before 100% to allow success to finalize it
+        progress += 1;
+        bar.set(progress);
+      }
+    }, 50); // speed of animation, adjust if needed
 
-      $.ajax({
-        method: "DELETE",
-        url: "https://localhost:7108/devs/deleteseed",
-        data: JSON.stringify({}),
-        contentType: "application/json",
-        success: function (response) {
-          clearInterval(interval);
-          bar.set(100); // complete the progress
+    $.ajax({
+      method: "DELETE",
+      url: "https://localhost:7081/devs/medievalautobattlerdeleteseed",
+      xhrFields: {
+        withCredentials: true,
+      },
+      data: JSON.stringify({}),
+      contentType: "application/json",
+      success: function (response) {
+        clearInterval(interval);
+        bar.set(100); // complete the progress
 
-          setTimeout(() => {
-            document.querySelector(".ldBar .ldBar-label").style.color =
-              "var(--main-color)";
+        setTimeout(() => {
+          document.querySelector(".ldBar .ldBar-label").style.color =
+            "var(--main-color)";
 
-            const svgPath = document.querySelector(".ldBar svg path.mainline");
-            svgPath.setAttribute("stroke", "var(--main-color)");
-          }, 1000);
+          const svgPath = document.querySelector(".ldBar svg path.mainline");
+          svgPath.setAttribute("stroke", "var(--main-color)");
+        }, 1000);
 
-          setTimeout(() => {
-            const fadeInterval = setInterval(() => {
-              if (progress > 0) {
-                document.querySelector(".ldBar .ldBar-label").style.color = ""; // reset to default
-                const svgPath = document.querySelector(
-                  ".ldBar svg path.mainline"
-                );
-                svgPath.setAttribute("stroke", "red");
-                progress -= 0.3;
-                bar.set(progress);
-              } else {
-                clearInterval(fadeInterval);
-                $("#seedMab").prop("disabled", false);
-                $("#deleteSeededMab").prop("disabled", false);
-                $(".mab-progressBar").empty();
-              }
-            }, 15);
-          }, 2000);
-        },
-        error: function (xhr, status, error) {
-          clearInterval(interval);
-          bar.set(0); // reset on error
-          console.error("Error seeding:", error);
-          $("#seedMab").prop("disabled", false);
-          $("#deleteSeededMab").prop("disabled", false);
-          $(".mab-progressBar").empty();
-        },
-      });
+        setTimeout(() => {
+          const fadeInterval = setInterval(() => {
+            if (progress > 0) {
+              document.querySelector(".ldBar .ldBar-label").style.color = ""; // reset to default
+              const svgPath = document.querySelector(
+                ".ldBar svg path.mainline"
+              );
+              svgPath.setAttribute("stroke", "red");
+              progress -= 0.3;
+              bar.set(progress);
+            } else {
+              clearInterval(fadeInterval);
+              self.Buttons.MedievalAutoBattler_Seed.prop("disabled", false);
+              self.Buttons.MedievalAutoBattler_DeleteSeed.prop(
+                "disabled",
+                false
+              );
+              self.MedievalAutoBattler_ProgressBar.empty();
+            }
+          }, 15);
+        }, 2000);
+      },
+      error: function (xhr, status, error) {
+        clearInterval(interval);
+        bar.set(0); // reset on error
+        console.error("Error seeding:", error);
+        self.Buttons.MedievalAutoBattler_Seed.prop("disabled", false);
+        self.Buttons.MedievalAutoBattler_DeleteSeed.prop("disabled", false);
+        self.MedievalAutoBattler_ProgressBar.empty();
+      },
     });
-  }
+  };
 
-  function builder() {
-    loadEvents();
-  }
+  self.LoadEvents = () => {
+    self.Buttons.BoardGames_Seed.on("click", function (e) {
+      e.preventDefault();
 
-  //builder();
+      self.BoardGames_Seed();
+    });
+
+    self.Buttons.BoardGames_DeleteSeed.on("click", function (e) {
+      e.preventDefault();
+
+      console.log("Deleting seeded board games...");
+
+      self.BoardGames_DeleteSeed();
+    });
+
+    self.Buttons.MedievalAutoBattler_Seed.on("click", function (e) {
+      e.preventDefault();
+
+      self.MedievalBattler_Seed();
+    });
+
+    self.Buttons.MedievalAutoBattler_DeleteSeed.on("click", function (e) {
+      e.preventDefault();
+
+      self.MedievalBattler_DeleteSeed();
+    });
+  };
+
+  self.Build = () => {
+    if (self.IsBuilt === false) {
+      self.LoadReferences();
+      self.LoadEvents();
+      self.IsBuilt = true;
+    }
+  };
+
+  self.Build();
+}
+
+$(function () {
+  new devs_page();
 });
