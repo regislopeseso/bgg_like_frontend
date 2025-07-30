@@ -1,11 +1,11 @@
-<!--? Modal MAB CARDS DATA TABLE-->
+<!--? Modal BG DATA TABLE-->
 <div
   class="modal fade"
-  id="modal-mab-cards-data"
+  id="dom-modal-mab-cards-db"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
   tabindex="-1"
-  aria-labelledby="modal-mab-cards-data-title"
+  aria-labelledby="title-modal-mab-cards-db"
   aria-hidden="true"
 >
   <div
@@ -14,13 +14,13 @@
     <div class="data-base-content modal-content">
       <div class="modal-header">
         <div class="d-flex flex-row gap-2">
-          <h1 class="modal-title fs-5" id="modal-mab-cards-data-title">
+          <h1 class="modal-title fs-5" id="title-modal-mab-cards-db">
             <span>M</span>edieval <span>A</span>uto <span>B</span>attler
             <span>C</span>ards
           </h1>
 
           <button
-            id="button-mab-card-add"
+            id="button-modal-mab-card-add"
             class="btn btn-outline-info d-flex align-items-center justify-content-center"
             style="
               width: 2rem;
@@ -38,7 +38,7 @@
 
         <button
           type="button"
-          id="button-x-mab-card-db-modal-close"
+          id="button-x-mab-cards-db-close"
           class="custom-close"
         >
           <i class="fa-solid fa-xmark"></i>
@@ -46,17 +46,17 @@
       </div>
 
       <div class="modal-body">
-        <div class="table-responsive ps-3 pe-3">
+        <div class="table-scroll-hint table-responsive ps-3 pe-3">
           <table
-            id="table-mab-cards-data"
+            id="table-modal-mab-cards-db"
             class="table-fixed table table-bordered table-dark align-middle table-sm"
+            style="min-width: 900px"
           >
             <thead class="text-center">
               <tr>
-                <th scope="col" class="text-start">Name</th>
+                <th scope="col">Name</th>
                 <th scope="col" class="text-center">Power</th>
                 <th scope="col" class="text-center">Upper Hand</th>
-                <th scope="col" class="text-center">Level</th>
                 <th scope="col" class="text-center">Type</th>
                 <th scope="col" class="text-center">*</th>
               </tr>
@@ -69,7 +69,7 @@
       <div class="modal-footer">
         <button
           type="button"
-          id="button-mabCard-db-modal-close"
+          id="button-modal-mab-cards-db-close"
           class="btn btn-outline-danger"
         >
           Close
@@ -79,4 +79,4 @@
   </div>
 </div>
 
-<script src="/js/scripts/scripts_admins/modal_mab_cards_data.js"></script>
+<script src="/js/scripts/scripts_admins/modal_mab_cards_db.js"></script>

@@ -57,6 +57,15 @@
   animation: fadePulse 3s ease-in-out 1s 1;
 }
 
+.dt-length label {
+  padding-left: 10px !important;
+}
+
+.dt-input {
+  background-color: var(--bg-color) !important;
+  color: var(--main-color) !important;
+}
+
 /* Subtle pulsing animation to draw attention */
 @keyframes fadePulse {
   0% {

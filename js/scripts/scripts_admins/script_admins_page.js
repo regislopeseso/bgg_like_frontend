@@ -92,11 +92,7 @@ function admins_page() {
         "admins_modal_mechanic_data_base.html";
 
     self.Locations[self.Locations.length] = self.Locations.Modal_MabCardsData =
-      "modal_mab_cards_data.html";
-  };
-
-  self.OpenModal_BgDataBase = () => {
-    self.Modals.BgData.load(self.Locations.Modal_BgDataBase, (e) => {});
+      "modal_mab_cards_db.html";
   };
 
   self.LoadEvents = () => {
@@ -118,7 +114,7 @@ function admins_page() {
       self.MabToolsWrapper.slideToggle();
     });
 
-    // Load BOARD GAMES modal HTML, THEN initialize modal logic
+    // Load BOARD GAMES (BG) modal HTML, THEN initialize modal logic
     self.Modals.BgData.load(self.Locations.Modal_BgDataBase, function () {
       // Hook up the button to open the modal AFTER it's ready
       self.Buttons.LoadBgData.on("click", function () {
@@ -126,7 +122,7 @@ function admins_page() {
       });
     });
 
-    // Load CATEGORY modal HTML, THEN initialize modal logic
+    // Load BG CATEGORY modal HTML, THEN initialize modal logic
     self.Modals.BgCategoryData.load(
       self.Locations.Modal_BgCategoryData,
       function () {
@@ -137,7 +133,7 @@ function admins_page() {
       }
     );
 
-    // Load MECHANIC modal HTML, THEN initialize modal logic
+    // Load BG MECHANIC modal HTML, THEN initialize modal logic
     self.Modals.BgMechanicData.load(
       self.Locations.Modal_BgMechanicData,
       function () {
@@ -148,13 +144,13 @@ function admins_page() {
       }
     );
 
-    // Load MEDIEVAL AUTO BATTLER CARDS modal HTML, THEN initialize modal logic
+    // Load MEDIEVAL AUTO BATTLER (MAB) CARDS modal HTML, THEN initialize modal logic
     self.Modals.MabCardsData.load(
       self.Locations.Modal_MabCardsData,
       function () {
         // Hook up the button to open the modal AFTER it's ready
         self.Buttons.LoadMabCardsData.on("click", function () {
-          __global.MabCardsDataModalController.OpenModal();
+          __global.MabCardsDataBaseModalController.OpenModal();
         });
       }
     );
