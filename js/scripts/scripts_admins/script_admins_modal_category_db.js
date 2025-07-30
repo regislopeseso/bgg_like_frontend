@@ -117,9 +117,10 @@ function modal_Category_DataBase() {
 
   self.LoadAllCategories = () => {
     self.AddContentLoader();
+
     $.ajax({
-      url: "https://localhost:7081/admins/listcategories",
       method: "GET",
+      url: "https://localhost:7081/admins/listcategories",
       xhrFields: {
         withCredentials: true,
       },

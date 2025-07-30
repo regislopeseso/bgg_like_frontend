@@ -1,58 +1,48 @@
-function modal_cards_data() {
+function modal_mab_cards_data() {
   let self = this;
-
   self.IsBuilt = false;
 
   self.LoadReferences = () => {
-    self.DOM_Modal_MabCardAddEdit = $("#mab-card-add-edit");
+    self.DOMadmPage = $("#mab-card-add-edit");
     self.DOM = $("#modal-mab-cards-data");
+
+    self.Table = self.DOM.find("#table-mab-cards-data");
 
     self.TableResult = self.DOM.find("#table-mab-cards-data tbody");
 
     self.AddEditModal = self.DOM.find("#mab-card-add-edit");
 
     self.Buttons = [];
-    self.Buttons[self.Buttons.length] = self.Buttons.AddMabCard = self.DOM.find(
-      "#button-mab-add-card"
+    self.Buttons[self.Buttons.length] = self.Buttons.MabCardAdd = self.DOM.find(
+      "#button-mab-card-add"
     );
-    self.Buttons[self.Buttons.length] = self.Buttons.EditMabCard =
-      self.DOM.find("#button-mab-card-edit");
-
-    self.CardAddEdit_Element = ".button-mab-card-edit";
-
-    self.Attribute.MabCardId = "mabCard-id";
-
-    self.Locations = [];
-    self.Locations[self.Locations.length] =
-      self.Locations.Modal_Mab_Card_Add_Edit = "modal_mab_card_add_edit.html";
-    self.Locations[self.Locations.length] =
-      self.Locations.Modal_Mab_Card_Delete_Restore =
-        "modal_mab_card_delete_restore.html";
+    self.Buttons[self.Buttons.length] = self.Buttons.MabCardEdit =
+      self.DOM.find(".button-mab-card-edit");
   };
 
   self.LoadEvents = () => {
     $.when(
-      $.get(self.Locations.Modal_Mab_Card_Add_Edit),
-      $.get(self.Locations.Modal_Mab_Card_Delete_Restore)
+      $.get("modal_mab_cards_add_edit.html"),
+      $.get("modal_mab_cards_delete_restore.html")
     ).done(function (addEditHtml, deleteRestoreHtml) {
-      self.DOM_Modal_MabCardAddEdit.append(addEditHtml[0]);
-      self.DOM_Modal_MabCardAddEdit.append(deleteRestoreHtml[0]);
+      self.DOMadmPage.append(addEditHtml[0]);
+      self.DOMadmPage.append(deleteRestoreHtml[0]);
 
       // Initialize the ADD/EDIT Modal Controller after loading HTML
-      __global.MabCardEditModalController = new modal_mab_card_add_edit();
+      __global.MabCardEditModalController = new modal_mab_cards_add_edit();
       // Initialize the DELETE/RESTORE Modal Controller after loading HTML
       __global.MabCardDeleteRestoreModalController =
-        new modal_mab_card_delete_restore();
+        new modal_mab_cards_delete_restore();
 
       // Hook up the buttons to open the modals AFTER they are ready
-      // Opens ADD CATEGORY MODAL
-      self.Buttons.AddMabCard.on("click", function () {
+      // Opens ADD MAB CARD MODAL
+      self.Buttons.MabCardAdd.on("click", function () {
         __global.MabCardEditModalController.OpenAddModal(self.LoadAllMabCards);
       });
 
-      // Opens EDIT CATEGORY MODAL
-      self.DOM.on("click", self.CardAddEdit_Element, function () {
-        const mabCardId = $(this).attr(self.Attribute.MabCardId);
+      // Opens EDIT MAB CARD MODAL
+      self.DOM.on("click", ".mab-card-edit-button", function () {
+        const mabCardId = $(this).attr("data-mab-card-id");
 
         __global.MabCardEditModalController.OpenEditModal(
           mabCardId,
@@ -60,9 +50,9 @@ function modal_cards_data() {
         );
       });
 
-      // Opens DELETE CATEGORY MODAL
-      self.DOM.on("click", ".mabCard-delete-button", function () {
-        const mabCardId = $(this).attr(self.Attribute.MabCardId);
+      // Opens DELETE MAB CARD MODAL
+      self.DOM.on("click", ".mab-card-delete-button", function () {
+        const mabCardId = $(this).attr("data-mab-card-id");
 
         __global.MabCardDeleteRestoreModalController.OpenDeleteRestoreModal(
           mabCardId,
@@ -71,9 +61,9 @@ function modal_cards_data() {
         );
       });
 
-      // Opens RESTORE CATEGORY MODAL
-      self.DOM.on("click", ".category-restore-button", function () {
-        const mabCardId = $(this).attr(self.Attribute.MabCardId);
+      // Opens RESTORE MAB CARD MODAL
+      self.DOM.on("click", ".mab-card-restore-button", function () {
+        const mabCardId = $(this).attr("data-mab-card-id");
 
         __global.MabCardDeleteRestoreModalController.OpenDeleteRestoreModal(
           mabCardId,
@@ -82,7 +72,7 @@ function modal_cards_data() {
         );
       });
 
-      // Closes ALL CATEGORY TABLE MODAL
+      // Closes ALL MAB CARD TABLE MODAL
       self.DOM.on(
         "click",
         "#button-x-mab-card-db-modal-close, #button-mabCard-db-modal-close",
@@ -115,7 +105,6 @@ function modal_cards_data() {
   };
 
   self.OpenModal = () => {
-    console.log("oi");
     self.Show();
     self.LoadAllMabCards();
   };
@@ -131,8 +120,8 @@ function modal_cards_data() {
     self.AddContentLoader();
 
     $.ajax({
-      url: "https://localhost:7081/admins/getallcards",
       method: "GET",
+      url: "https://localhost:7081/admins/getallcards",
       xhrFields: {
         withCredentials: true,
       },
@@ -148,45 +137,36 @@ function modal_cards_data() {
         $.each(response.content, function (index, item) {
           let tr = $(`
             <tr class="align-middle">
-              <td class="text-start align-middle">${item.name}</td>         
-              
-              <td class="text-center align-middle">${item.isDeleted}</td>
+              <td class="text-start align-middle">${item.cardName}</td>         
+              <td class="text-center align-middle">${item.cardPower}</td>         
+              <td class="text-center align-middle">${item.cardUpperHand}</td>         
+              <td class="text-center align-middle">${item.cardLevel}</td>         
+              <td class="text-center align-middle">${item.cardType}</td>         
+            
               <td class="align-middle">
                 <div class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2">
-                  <button id="button-mabCard-edit-${index}" class="button-mabCard-edit btn btn-sm btn-outline-warning w-60" mabCard-id="${item.mabCardId}">
+                  <button id="mab-card-edit-button-${index}" class="mab-card-edit-button btn btn-sm btn-outline-warning w-60" data-mab-card-id="${item.cardId}">
                     Edit
                   </button>
 
-                  <button id="button-mabCard-delete-${index}" class="button-mabCard-delete btn btn-sm btn-outline-danger w-60" mabCard-id="${item.mabCardId}">
+                  <button id="mab-card-delete-button-${index}" class="mab-card-delete-button btn btn-sm btn-outline-danger w-60" data-mab-card-id="${item.cardId}">
                     Delete
                   </button>
 
-                  <button id="button-mabCard-restore-${index}" class="button-mabCard-restore btn btn-sm btn-outline-info w-60" mabCard-id="${item.mabCardId}">
-                    Restore
-                  </button>
                 </div>
               </td>
             </tr>
           `);
-
           self.TableResult.append(tr);
-
-          if (item.isDeleted === false) {
-            tr.find("td").css("color", "var(--text-color)");
-            $(`#button-mabCard-delete-${index}`).show();
-            $(`#button-mabCard-restore-${index}`).hide();
-          }
-
-          if (item.isDeleted === true) {
-            tr.find("td").css("color", "var(--reddish)");
-            $(`#button-mabCard-delete-${index}`).hide();
-            $(`#button-mabCard-restore-${index}`).show();
-          }
         });
+
         self.RemoveContentLoader();
+
+        self.Table.DataTable();
       },
       error: function (xhr, status, error) {
         console.error("Request failed:", error);
+        self.RemoveContentLoader();
       },
     });
   };
@@ -207,5 +187,5 @@ function modal_cards_data() {
 $(
   (function (modalMabCardsData) {
     __global.MabCardsDataModalController = modalMabCardsData;
-  })(new modal_cards_data())
+  })(new modal_mab_cards_data())
 );

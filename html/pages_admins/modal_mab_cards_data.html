@@ -9,18 +9,18 @@
   aria-hidden="true"
 >
   <div
-    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen"
   >
     <div class="data-base-content modal-content">
       <div class="modal-header">
         <div class="d-flex flex-row gap-2">
           <h1 class="modal-title fs-5" id="modal-mab-cards-data-title">
             <span>M</span>edieval <span>A</span>uto <span>B</span>attler
-            <span>C</span>cards
+            <span>C</span>ards
           </h1>
 
           <button
-            id="button-mab-add-card"
+            id="button-mab-card-add"
             class="btn btn-outline-info d-flex align-items-center justify-content-center"
             style="
               width: 2rem;
@@ -53,9 +53,12 @@
           >
             <thead class="text-center">
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Is Deleted</th>
-                <th scope="col">*</th>
+                <th scope="col" class="text-start">Name</th>
+                <th scope="col" class="text-center">Power</th>
+                <th scope="col" class="text-center">Upper Hand</th>
+                <th scope="col" class="text-center">Level</th>
+                <th scope="col" class="text-center">Type</th>
+                <th scope="col" class="text-center">*</th>
               </tr>
             </thead>
             <tbody class="table-group-divider text-center"></tbody>

@@ -41,10 +41,9 @@ function loadHeader(userData, roleData) {
       <a href="/index.html" class="logo">BBG <span>LIKE</span> </a>
       
       <nav class="navbar">
-        <div class="navOptions d-flex flex-row align-items-center justify-content-between">        
-         
-         
+        <div class="navOptions d-flex flex-row align-items-center justify-content-between">                   
                 
+          <a href="table.html">Table Data</a>
           <a href="/index.html">HOME</a>
           <a href="/html/explore.html">EXPLORE</a>         
           <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter.html"">

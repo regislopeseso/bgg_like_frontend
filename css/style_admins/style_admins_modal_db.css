@@ -28,12 +28,6 @@
   table-layout: fixed;
   width: 100%; /* obrigatório para o 'fixed' funcionar corretamente */
 }
-.tabela-fixed th,
-.tabela-fixed td {
-  text-align: center; /* opcional */
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
 
 .expand-details-icon {
   transition: transform 0.3s ease;
