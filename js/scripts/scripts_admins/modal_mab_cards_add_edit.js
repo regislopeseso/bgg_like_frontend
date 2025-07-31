@@ -186,6 +186,11 @@ function modal_Mab_Cards_Add_Edit() {
         withCredentials: true,
       },
       success: (resp) => {
+        if (!resp.content) {
+          sweetAlertError(resp.message);
+
+          return;
+        }
         sweetAlertSuccess(resp.message);
 
         self.forceClearForm();

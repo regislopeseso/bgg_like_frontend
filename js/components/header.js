@@ -43,31 +43,77 @@ function loadHeader(userData, roleData) {
       <nav class="navbar">
         <div class="navOptions d-flex flex-row align-items-center justify-content-between">                  
                     
-          <a href="/index.html">HOME</a>
-          <a href="/html/explore.html">EXPLORE</a>         
+          <a href="/index.html">
+            HOME
+          </a>
+
+          <a href="/html/explore.html">
+            EXPLORE
+          </a>   
+
           <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter.html"">
             <img src="/images/icons/lifecounter_white.png" alt=""/>
           </a> 
-          <a id="img-play" href="/html/lifecounter/lifecounter.html"">
-            <img src="/images/icons/play.png" alt=""/>
-          </a> 
-          <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">SIGN UP/IN</a>
-          <a href="/html/pages_users/users_page.html" class="loggedIn-clearance d-none">USER</a>
-          <a href="/html/pages_admins/admins_page.html" class="admins-clearance d-none">ADMIN</a>
-          <a href="/html/pages_devs/devs.html" class="devs-clearance d-none">DEV</a>
+           
+          <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance d-none">
+            SIGN UP/IN
+          </a>
+          
+          <a href="/html/pages_users/users_page.html" class="loggedIn-clearance d-none">
+            USER
+          </a>
+
+          <a href="/html/pages_admins/admins_page.html" class="admins-clearance d-none">
+            ADMIN
+          </a>
+          
+          <a href="/html/pages_devs/devs.html" class="devs-clearance d-none">
+            DEV
+          </a>
 
           <div class="dropdown loggedIn-clearance d-none">
             <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person-gear"></i>
             </a>
+
             <ul id="ul-profile-configurations" class="dropdown-menu">
-              <li><a id="li-edit-profile" class="config-item dropdown-item m-0" href="/html/pages_users/users_edit_profile.html">Edit Profile</a></li>
-              <li><a id="li-change-password" class="config-item dropdown-item m-0 " href="/html/pages_users/users_change_password.html">Change Password</a></li>
-              <li><a id="li-delete-profile" class="config-item dropdown-item m-0" href="/html/pages_users/users_delete_profile.html">Delete Profile</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a id="li-backup-data" class="config-item dropdown-item m-0" href="/html/pages_users/users_backup_data.html">Backup Data</a></li>    
-              <li><hr class="dropdown-divider"></li>
-              <li><a id="li-sign-out" class="config-item logOut dropdown-item m-0" href="/index.html">Sign Out</a></li>
+              <li>
+                <a id="li-edit-profile" class="config-item dropdown-item m-0" href="/html/pages_users/users_edit_profile.html">
+                  Edit Profile
+                </a>
+              </li>
+              
+              <li>
+                <a id="li-change-password" class="config-item dropdown-item m-0 " href="/html/pages_users/users_change_password.html">
+                  Change Password
+                </a>
+              </li>
+              
+              <li>
+                <a id="li-delete-profile" class="config-item dropdown-item m-0" href="/html/pages_users/users_delete_profile.html">
+                  Delete Profile
+                </a>
+              </li>
+
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              
+              <li>
+                <a id="li-backup-data" class="config-item dropdown-item m-0" href="/html/pages_users/users_backup_data.html">
+                  Backup Data
+                </a>
+              </li>    
+
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+
+              <li>
+                <a id="li-sign-out" class="config-item logOut dropdown-item m-0" href="/index.html">
+                  Sign Out
+                </a>
+              </li>
             </ul>
           </div>
           
@@ -91,52 +137,91 @@ function loadHeader(userData, roleData) {
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">               
 
                   <li class="nav-item">
-                      <a class="nav-link" href="/index.html">HOME</a>
-                  </li>                 
+                      <a class="nav-link" href="/index.html">
+                        HOME
+                      </a>
+                  </li>       
+
                   <li class="nav-item">
-                    <a class="nav-link" href="/html/explore.html">EXPLORE</a>
+                    <a class="nav-link" href="/html/explore.html">
+                      EXPLORE
+                    </a>
                   </li>
+
                   <li class="nav-item">
                     <a id="img-access-lifecounter" href="/html/lifecounter/lifecounter.html"">
                       <img src="/images/icons/lifecounter_white.png" alt=""/>
                     </a> 
                   </li>       
-                   <li class="nav-item">
-                    <a id="img-play" href="/html/lifecounter/lifecounter.html"">
-                      <img src="/images/icons/play.png" alt=""/>
-                    </a> 
-                  </li>         
+                         
                   <li class="nav-item">
-                    <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance nav-link d-none">SIGN UP/IN</a>
+                    <a href="/html/pages_users/users_authentication.html" class="anonymous-clearance nav-link d-none">
+                      SIGN UP/IN
+                    </a>
                   </li>
+
                   <li class="nav-item">
-                    <a href="/html/pages_users/users_page.html" class="loggedIn-clearance nav-link d-none">USER</a>
+                    <a href="/html/pages_users/users_page.html" class="loggedIn-clearance nav-link d-none">
+                      USER
+                    </a>
                   </li>
+
                   <li class="nav-item">
-                    <a href="/html/pages_admins/admins_page.html" class="admins-clearance nav-link d-none">ADMIN</a>
+                    <a href="/html/pages_admins/admins_page.html" class="admins-clearance nav-link d-none">
+                      ADMIN
+                    </a>
                   </li>
+
                   <li class="nav-item">
-                    <a href="/html/pages_devs/devs.html" class="devs-clearance nav-link d-none">DEV</a>
+                    <a href="/html/pages_devs/devs.html" class="devs-clearance nav-link d-none">
+                      DEV
+                    </a>
                   </li>
 
                   <div class="dropdown loggedIn-clearance d-none">
                     <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown">
                       <i class="bi bi-person-gear"></i>
                     </a>
+
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item m-0 " href="#">Edit Profile</a></li>
-                      <li><a class="dropdown-item m-0" href="#">Delete Profile</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item m-0" href="#">Backup Data</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item m-0" href="#">Sign Out</a></li>
+                      <li>
+                        <a class="dropdown-item m-0 " href="#">
+                          Edit Profile
+                        </a>
+                      </li>
+                      
+                      <li>
+                        <a class="dropdown-item m-0" href="#">
+                          Delete Profile
+                        </a>
+                      </li>
+
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
+
+                      <li>
+                        <a class="dropdown-item m-0" href="#">
+                          Backup Data
+                        </a>
+                      </li>
+
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
+                      
+                      <li>
+                        <a class="dropdown-item m-0" href="#">
+                          Sign Out
+                        </a>
+                      </li>
                     </ul>
                   </div>                 
 
                   <li class="nav-item">
-                    <butto style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <button style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                       <i class="bi bi-gear" ></i>
-                    </butto>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -147,11 +232,17 @@ function loadHeader(userData, roleData) {
 
       <div class="offcanvas-custom offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">
         <div class="offcanvas-header pb-5">
-          <h5 class=" offcanvas-title" id="offcanvasRightLabel"><span>T</span>heme <span>C</span>onfiguration</h5>
+          <h5 class=" offcanvas-title" id="offcanvasRightLabel">
+            <span>T</span>heme <span>C</span>onfiguration
+          </h5>
+          
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
+
         <div class="offcanvas-body d-flex flex-column align-items-center">            
-          <button id="theme-toggler" class="btn-theme btn btn-outline-info d-flex flex-row align-items-center justify-content-center" type="button" data-bs-dismiss="offcanvas">Light Theme</button>
+          <button id="theme-toggler" class="btn-theme btn btn-outline-info d-flex flex-row align-items-center justify-content-center" type="button" data-bs-dismiss="offcanvas">
+            Light Theme
+          </button>
         </div>
       </div>
       
