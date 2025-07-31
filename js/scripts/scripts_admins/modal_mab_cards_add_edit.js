@@ -31,11 +31,8 @@ function modal_Mab_Cards_Add_Edit() {
       self.DOM.find("#input-modal-mab-cards-add-edit-cardupperhand");
 
     self.Inputs[self.Inputs.length] = self.Inputs.MabCardType = self.DOM.find(
-      "#input-modal-mab-cards-add-edit-cardtype"
+      "#input-select-modal-mab-cards-add-edit-cardtype"
     );
-
-    self.Inputs[self.Inputs.length] = self.Inputs.MabCardTypeSelect =
-      self.DOM.find("#input-modal-mab-cards-add-edit-cardtype");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.Submit = self.DOM.find(
@@ -66,11 +63,11 @@ function modal_Mab_Cards_Add_Edit() {
 
   self.loadCardTypes = () => {
     // First destroy any existing select2 instance to prevent duplicates
-    if (self.Inputs.MabCardTypeSelect.hasClass("select2-hidden-accessible")) {
-      self.Inputs.MabCardTypeSelect.select2("destroy");
+    if (self.Inputs.MabCardType.hasClass("select2-hidden-accessible")) {
+      self.Inputs.MabCardType.select2("destroy");
     }
 
-    // Fetch the category list once from the backend
+    // Fetch the mab card types list once from the backend
     fetch("https://localhost:7081/admins/listcardtypes", {
       method: "GET",
       credentials: "include",
@@ -78,17 +75,17 @@ function modal_Mab_Cards_Add_Edit() {
       .then((res) => res.json())
       .then((data) => {
         if (!data.content) {
-          sweetAlertError.error(data.message);
+          console.error("Failed to load card types:", data.message);
           return;
         }
 
-        const categories = data.content.map((item) => ({
+        const mabCardTypes = data.content.map((item) => ({
           id: item.cardTypeValue,
           text: item.cardTypeName,
         }));
 
-        self.Inputs.MabCardTypeSelect.select2({
-          data: categories,
+        self.Inputs.MabCardType.select2({
+          data: mabCardTypes,
           dropdownParent: self.DOM,
           placeholder: "Select a card type",
           allowClear: true,
@@ -171,6 +168,8 @@ function modal_Mab_Cards_Add_Edit() {
     self.Inputs.forEach((input) => {
       input.val(null);
     });
+
+    self.Inputs.MabCardType.val(null).trigger("change");
   };
 
   self.SetUpAddMabCardForm = () => {
@@ -217,7 +216,7 @@ function modal_Mab_Cards_Add_Edit() {
     // Get form values
     const mabCardId = self.currentMabCardId;
     console.log("mabCardId: ", mabCardId);
-    debugger;
+
     const mabCardName = self.Inputs.MabCardName.val();
     const mabCardPower = self.Inputs.MabCardPower.val();
     const mabCardUpperHand = self.Inputs.MabCardUpperHand.val();
@@ -268,7 +267,7 @@ function modal_Mab_Cards_Add_Edit() {
   self.PopulateFormForEditing = (mabCard) => {
     // Set the form to edit mode
     self.isEditMode = true;
-    self.Inputs.MabCardId = mabCard.cardId;
+    self.Inputs.MabCardId.val(mabCard.cardId);
 
     // Update the modal title and button text
     self.ModalTitle.html("<span>E</span>dit <span>C</span>ard");
@@ -278,7 +277,9 @@ function modal_Mab_Cards_Add_Edit() {
     self.Inputs.MabCardName.val(mabCard.cardName);
     self.Inputs.MabCardPower.val(mabCard.cardPower);
     self.Inputs.MabCardUpperHand.val(mabCard.cardUpperHand);
-    self.Inputs.MabCardType.val(mabCard.cardType);
+
+    // Set card type (need to wait for select2 to be initialized)
+    self.Inputs.MabCardType.val(mabCard.cardTypeValue).trigger("change");
 
     // Recheck form to enable submit button if needed
     self.checkFormFilling();
@@ -312,8 +313,8 @@ function modal_Mab_Cards_Add_Edit() {
     }
 
     self.LoadReferences();
-    self.loadCardTypes();
     self.LoadEvents();
+    self.loadCardTypes();
     self.IsBuilt = true;
   };
 

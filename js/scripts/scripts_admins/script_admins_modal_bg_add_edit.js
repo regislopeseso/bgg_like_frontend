@@ -264,9 +264,6 @@ function modal_BG_Add_Edit() {
       input.val(null);
     });
 
-    // Clear hidden board game ID (unecessary!)
-    // self.BoardGameIdInput.val("");
-
     // Clear catergory and mechanics selection
     self.Inputs.SelectCategory.trigger("change");
     //self.Inputs.SelectMechanics.trigger("change");

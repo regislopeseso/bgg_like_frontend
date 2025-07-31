@@ -29,21 +29,27 @@ function modal_Mab_Cards_DB() {
 
       // Initialize the ADD/EDIT Modal Controller after loading HTML
       __global.MabCardsAddEditModalController = new modal_Mab_Cards_Add_Edit();
+
       // Initialize the DELETE/RESTORE Modal Controller after loading HTML
       __global.MabCardsDeleteModalController = new modal_Mab_Cards_Delete();
 
       // Hook up the buttons to open the modals AFTER they are ready
       // Opens ADD MAB CARDS MODAL
+      // Opens EDIT MAB CARDS MODAL
       self.Buttons.MabCardAdd.on("click", function () {
-        __global.MabCardsAddEditModalController.OpenAddModal();
+        __global.MabCardsAddEditModalController.OpenAddModal(
+          self.LoadAllMabCards
+        );
       });
 
       // Opens EDIT MAB CARDS MODAL
       self.DOM.on("click", ".button-modal-mab-cards-edit", function () {
         const mabCardId = $(this).attr("mab-card-id");
 
-        console.log("oi");
-        __global.MabCardsAddEditModalController.OpenEditModal(mabCardId);
+        __global.MabCardsAddEditModalController.OpenEditModal(
+          mabCardId,
+          self.LoadAllMabCards
+        );
       });
 
       // Opens DELETE MAB CARDS MODAL
@@ -142,7 +148,15 @@ function modal_Mab_Cards_DB() {
         $.each(response.content, function (index, item) {
           let tr = $(`
         <tr class="align-middle">
-          <td class="text-start align-middle">${item.cardName}</td>
+          <td class="text-center align-middle">
+            <button class="btn btn-outline-info btn-sm">
+              view card
+            </button>
+          </td>
+          
+          <td class="text-start align-middle">
+            ${item.cardName} 
+          </td>
          
           <td class="text-center align-middle">${item.cardPower}</td>
           <td class="text-center align-middle">${item.cardUpperHand}</td>
