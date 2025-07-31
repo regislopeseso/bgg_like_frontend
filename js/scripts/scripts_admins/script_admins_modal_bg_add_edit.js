@@ -37,9 +37,10 @@ function modal_BG_Add_Edit() {
     );
     self.Inputs[self.Inputs.length] = self.Inputs.BgMinAge =
       self.DOM.find("#new-bg-min-age");
-
-    self.SelectCategory = $("#new-bg-category-select");
-    self.SelectMechanics = $("#new-bg-mechanics-select");
+    self.Inputs[self.Inputs.length] = self.Inputs.SelectCategory =
+      self.DOM.find("#new-bg-category-select");
+    self.Inputs[self.Inputs.length] = self.Inputs.SelectMechanics =
+      self.DOM.find("#new-bg-mechanics-select");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.Submit =
@@ -183,10 +184,12 @@ function modal_BG_Add_Edit() {
     let areFieldsFilled = true;
 
     const isCategorySelected =
-      self.SelectCategory.val() !== null && self.SelectCategory.val() !== "";
+      self.Inputs.SelectCategory.val() !== null &&
+      self.Inputs.SelectCategory.val() !== "";
 
     const areMechanicsSelected =
-      self.SelectMechanics.val() !== null && self.SelectMechanics.val() !== "";
+      self.Inputs.SelectMechanics.val() !== null &&
+      self.Inputs.SelectMechanics.val() !== "";
 
     self.Inputs.Required.each(function () {
       const value = $(this).val();
@@ -209,13 +212,13 @@ function modal_BG_Add_Edit() {
 
   self.CheckForm = () => {
     // React to mechanics selection
-    self.SelectMechanics.on("select2:select", self.checkFormFilling);
-    self.SelectMechanics.on("select2:clear", () => {
+    self.Inputs.SelectMechanics.on("select2:select", self.checkFormFilling);
+    self.Inputs.SelectMechanics.on("select2:clear", () => {
       self.checkFormFilling();
     });
     // React to category selection
-    self.SelectCategory.on("select2:select", self.checkFormFilling);
-    self.SelectCategory.on("select2:clear", () => {
+    self.Inputs.SelectCategory.on("select2:select", self.checkFormFilling);
+    self.Inputs.SelectCategory.on("select2:clear", () => {
       self.checkFormFilling();
     });
     // React to typing in any input
@@ -237,8 +240,6 @@ function modal_BG_Add_Edit() {
       text: message_text || "",
       showConfirmButton: false,
       timer: 1500,
-    }).then((result) => {
-      redirectToUsersPage();
     });
   }
   function sweetAlertError(title_text, message_text) {
@@ -251,8 +252,6 @@ function modal_BG_Add_Edit() {
       text: message_text || "",
       showConfirmButton: false,
       timer: 1500,
-    }).then((result) => {
-      redirectToUsersPage();
     });
   }
 
@@ -269,9 +268,9 @@ function modal_BG_Add_Edit() {
     // self.BoardGameIdInput.val("");
 
     // Clear catergory and mechanics selection
-    self.SelectCategory.trigger("change");
-    //self.SelectMechanics.trigger("change");
-    self.SelectMechanics.trigger("change");
+    self.Inputs.SelectCategory.trigger("change");
+    //self.Inputs.SelectMechanics.trigger("change");
+    self.Inputs.SelectMechanics.trigger("change");
   };
 
   self.SetUpAddBgForm = () => {
@@ -316,14 +315,14 @@ function modal_BG_Add_Edit() {
     submitBtn.attr("disabled", true).text("Submitting...");
 
     // Get form values
-    const boardGameId = self.currentBoardGameId;
-    const boardGameName = $("#new-bg-name").val();
-    const boardGameDescription = $("#new-bg-description").val();
-    const minPlayersCount = $("#new-bg-min-players").val();
-    const maxPlayersCount = $("#new-bg-max-players").val();
-    const minAge = $("#new-bg-min-age").val();
-    const category = $("#new-bg-category-select").val();
-    const mechanics = $("#new-bg-mechanics-select").val();
+    const boardGameId = self.Inputs.BgId.val();
+    const boardGameName = self.Inputs.BgName.val();
+    const boardGameDescription = self.Inputs.BgDescription.val();
+    const minPlayersCount = self.Inputs.BgMinPlayers.val();
+    const maxPlayersCount = self.Inputs.BgMaxPlayers.val();
+    const minAge = self.Inputs.BgMinAge.val();
+    const category = self.Inputs.SelectCategory.val();
+    const mechanics = self.Inputs.SelectMechanics.val();
 
     $.ajax({
       url: "https://localhost:7081/admins/editboardgame",
@@ -373,7 +372,6 @@ function modal_BG_Add_Edit() {
   self.PopulateFormForEditing = (boardGame) => {
     // Set the form to edit mode
     self.isEditMode = true;
-    self.Inputs.BgId = boardGame.boardGameId;
 
     // Update the modal title and button text
     self.ModalTitle.html(
@@ -381,10 +379,8 @@ function modal_BG_Add_Edit() {
     );
     self.Buttons.Submit.text("Update");
 
-    // Set the hidden board game ID
-    //self.Inputs.BgId.val(boardGame.boardGameId);
-
     // Fill in the form fields
+    self.Inputs.BgId.val(boardGame.boardGameId);
     self.Inputs.BgName.val(boardGame.boardGameName);
     self.Inputs.BgDescription.val(boardGame.boardGameDescription);
     self.Inputs.BgMinPlayers.val(boardGame.minPlayersCount);
@@ -392,10 +388,10 @@ function modal_BG_Add_Edit() {
     self.Inputs.BgMinAge.val(boardGame.minAge);
 
     // Set category (need to wait for select2 to be initialized)
-    self.SelectCategory.val(boardGame.category).trigger("change");
+    self.Inputs.SelectCategory.val(boardGame.category).trigger("change");
 
     // Set mechanics (need to wait for select2 to be initialized)
-    self.SelectMechanics.val(boardGame.mechanics).trigger("change");
+    self.Inputs.SelectMechanics.val(boardGame.mechanics).trigger("change");
 
     // Recheck form to enable submit button if needed
     self.checkFormFilling();

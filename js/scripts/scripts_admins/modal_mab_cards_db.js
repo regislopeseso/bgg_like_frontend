@@ -42,6 +42,7 @@ function modal_Mab_Cards_DB() {
       self.DOM.on("click", ".button-modal-mab-cards-edit", function () {
         const mabCardId = $(this).attr("mab-card-id");
 
+        console.log("oi");
         __global.MabCardsAddEditModalController.OpenEditModal(mabCardId);
       });
 
@@ -99,6 +100,19 @@ function modal_Mab_Cards_DB() {
     }
   };
 
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "error",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
   self.LoadAllMabCards = () => {
     self.AddContentLoader();
     $.ajax({
@@ -108,13 +122,22 @@ function modal_Mab_Cards_DB() {
         withCredentials: true,
       },
       success: function (response) {
-        if (!response.content || !Array.isArray(response.content)) {
-          console.error("Unexpected response format:", response);
-          return;
-        }
-
         // Clear the table
         self.TableResult.empty();
+
+        if (!response.content) {
+          sweetAlertError(response.message);
+
+          let tr = $(`
+            <tr class="align-middle">
+              <td class="text-start align-middle">No cards to be displayed...</td>              
+            </tr>
+          `);
+
+          self.TableResult.append(tr);
+
+          return;
+        }
 
         $.each(response.content, function (index, item) {
           let tr = $(`
@@ -123,7 +146,7 @@ function modal_Mab_Cards_DB() {
          
           <td class="text-center align-middle">${item.cardPower}</td>
           <td class="text-center align-middle">${item.cardUpperHand}</td>
-          <td class="text-start align-middle">${item.cardType}</td>
+          <td class="text-center align-middle">${item.cardType}</td>
          
           <td class="align-middle">
             <div class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2">
@@ -142,11 +165,12 @@ function modal_Mab_Cards_DB() {
         });
 
         self.Table.DataTable();
-
-        self.RemoveContentLoader();
       },
       error: function (xhr, status, error) {
         console.error("Request failed:", error);
+      },
+      complete: () => {
+        self.RemoveContentLoader();
       },
     });
   };

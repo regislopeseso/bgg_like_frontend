@@ -1,0 +1,133 @@
+<!--? Modal: MAB CARDS ADD/EDIT -->
+<div
+  class="modal fade"
+  id="dom-modal-mab-cards-add-edit"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="add-edit-content modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="title-modal-mab-cards-add-edit"></h3>
+
+        <button
+          type="button"
+          class="custom-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form-modal-mab-cards-add-edit">
+          <!-- Input 1: Mab Card Name -->
+          <div class="mb-3">
+            <label class="form-label"><span>N</span>ame</label>
+            <input
+              name="CardName"
+              id="input-modal-mab-cards-add-edit-cardname"
+              class="new-data form-control required"
+              type="text"
+              required
+            />
+          </div>
+
+          <!-- Input 2: Mab Card Power -->
+          <div class="mb-3">
+            <label class="form-label"><span>P</span>ower</label>
+            <input
+              name="CardPower"
+              id="input-modal-mab-cards-add-edit-cardpower"
+              class="new-data form-control required"
+              type="number"
+              value="0"
+              min="0"
+              max="9"
+              required
+            />
+          </div>
+
+          <!-- Input 3: Mab Card Upper Hand -->
+          <div class="mb-3">
+            <label class="form-label"
+              ><span>U</span>pper <span>H</span>and</label
+            >
+            <input
+              name="CardUpperHand"
+              id="input-modal-mab-cards-add-edit-cardupperhand"
+              class="new-data form-control required"
+              type="number"
+              value="0"
+              min="0"
+              max="9"
+              required
+            />
+          </div>
+
+          <!-- Input 4: Mab Card Type -->
+          <div class="mb-3">
+            <label class="form-label"><span>T</span>ype</label>
+            <input
+              name="CardType"
+              id="input-modal-mab-cards-add-edit-cardtype"
+              class="new-data form-control required"
+              type="text"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">
+              <span>S</span>elect
+              <span style="text-decoration: underline; color: var(--text-color)"
+                >a</span
+              >
+              <span>T</span>ype
+            </label>
+
+            <div class="comboBox-wrapper">
+              <div class="comboBox">
+                <select
+                  name="CardId"
+                  id="select-modal-mab-cards-add-edit"
+                  class="form-control form-select required"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer w-100 justify-content-between">
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+
+        <button
+          type="button"
+          id="button-modal-mab-cards-add-edit-reset"
+          class="btn-refresh btn btn-sm btn-outline-warning"
+        >
+          Clear Form
+        </button>
+
+        <button
+          id="button-modal-mab-cards-add-edit-submit"
+          class="btn btn-outline-info"
+          type="button"
+          disabled
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/scripts/scripts_admins/modal_mab_cards_add_edit.js"></script>
