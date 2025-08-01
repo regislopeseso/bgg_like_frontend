@@ -62,6 +62,8 @@ function admins_page() {
       self.DOM.find("#mab-data-button");
     self.Buttons[self.Buttons.length] = self.Buttons.LoadMabCardsData =
       self.DOM.find("#button-mab-cards-load");
+    self.Buttons[self.Buttons.length] = self.Buttons.LoadMabNpcsData =
+      self.DOM.find("#button-mab-npcs-load");
 
     self.BgToolsWrapper = self.DOM.find("#bg-tools-wrapper");
     self.MabToolsWrapper = self.DOM.find("#mab-tools-wrapper");
@@ -75,11 +77,11 @@ function admins_page() {
       self.DOM.find("#mechanic-modal");
 
     self.Modals[self.Modals.length] = self.Modals.MabCardsData =
-      self.DOM.find("#mab-card-modal");
+      self.DOM.find("#mab-cards-modal");
     self.Modals[self.Modals.length] = self.Modals.MabNpcsData =
-      self.DOM.find("#mab-npc-modal");
+      self.DOM.find("#mab-npcs-modal");
     self.Modals[self.Modals.length] = self.Modals.MabBoostersData =
-      self.DOM.find("#mab-booster-modal");
+      self.DOM.find("#mab-boosters-modal");
 
     self.Locations = [];
     self.Locations[self.Locations.length] = self.Locations.Modal_BgDataBase =
@@ -93,6 +95,8 @@ function admins_page() {
 
     self.Locations[self.Locations.length] = self.Locations.Modal_MabCardsData =
       "modal_mab_cards_db.html";
+    self.Locations[self.Locations.length] = self.Locations.Modal_MabNpcsData =
+      "modal_mab_npcs_db.html";
   };
 
   self.LoadEvents = () => {
@@ -144,7 +148,8 @@ function admins_page() {
       }
     );
 
-    // Load MEDIEVAL AUTO BATTLER (MAB) CARDS modal HTML, THEN initialize modal logic
+    // MEDIEVAL AUTO BATTLER (MAB)
+    // Load MAB CARDS modal HTML, THEN initialize modal logic
     self.Modals.MabCardsData.load(
       self.Locations.Modal_MabCardsData,
       function () {
@@ -154,6 +159,15 @@ function admins_page() {
         });
       }
     );
+
+    // Load MAB NPCS modal HTML, THEN initialize modal logic
+    self.Modals.MabNpcsData.load(self.Locations.Modal_MabNpcsData, function () {
+      // Hook up the button to open the modal AFTER it's ready
+      self.Buttons.LoadMabNpcsData.on("click", function () {
+        console.log("oi");
+        __global.MabNpcsDataBaseModalController.OpenModal();
+      });
+    });
   };
 
   self.Build = () => {

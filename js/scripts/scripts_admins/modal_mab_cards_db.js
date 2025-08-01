@@ -3,7 +3,7 @@ function modal_Mab_Cards_DB() {
   self.IsBuilt = false;
 
   self.LoadReferences = () => {
-    self.DOMadmPage = $("#mab-card-add-edit");
+    self.DOMadmPage = $("#mab-cards-add-edit");
     self.DOM = $("#dom-modal-mab-cards-db");
 
     self.Table = self.DOM.find("#table-modal-mab-cards-db");
@@ -13,7 +13,7 @@ function modal_Mab_Cards_DB() {
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.MabCardAdd = self.DOM.find(
-      "#button-modal-mab-card-add"
+      "#button-modal-mab-cards-add"
     );
     self.Buttons[self.Buttons.length] = self.Buttons.MabCardEdit =
       self.DOM.find(".button-modal-mab-cards-edit");
@@ -133,6 +133,10 @@ function modal_Mab_Cards_DB() {
   }
 
   self.LoadAllMabCards = () => {
+    if ($.fn.DataTable.isDataTable(self.Table)) {
+      self.Table.DataTable().destroy();
+    }
+
     self.AddContentLoader();
     $.ajax({
       method: "GET",
@@ -210,7 +214,7 @@ function modal_Mab_Cards_DB() {
         self.Table.DataTable();
       },
       error: function (xhr, status, error) {
-        console.error("Request failed:", error);
+        sweetAlertError("Request failed:", error);
       },
       complete: () => {
         self.RemoveContentLoader();
@@ -225,6 +229,7 @@ function modal_Mab_Cards_DB() {
 
     self.LoadReferences();
     self.LoadEvents();
+
     self.IsBuilt = true;
   };
 

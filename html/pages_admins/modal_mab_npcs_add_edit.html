@@ -1,7 +1,7 @@
-<!--? Modal: MAB CARDS ADD/EDIT -->
+<!--? Modal: MAB NPCS ADD/EDIT -->
 <div
   class="modal fade"
-  id="dom-modal-mab-cards-add-edit"
+  id="dom-modal-mab-npcs-add-edit"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
   tabindex="-1"
@@ -16,66 +16,59 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="form-modal-mab-cards-add-edit">
-          <!-- Input 1: Mab Card Name -->
+        <form id="form-modal-mab-npcs-add-edit">
+          <!-- Input 1: Mab Npc Name -->
           <div class="mb-3">
             <label class="form-label"><span>N</span>ame</label>
             <input
-              name="CardName"
-              id="input-modal-mab-cards-add-edit-cardname"
+              name="NpcName"
+              id="input-modal-mab-npcs-add-edit-npcname"
               class="new-data form-control required"
               type="text"
               required
             />
           </div>
 
-          <!-- Input 2: Mab Card Power -->
+          <!-- Input 2: Mab Npc Description -->
           <div class="mb-3">
-            <label class="form-label"><span>P</span>ower</label>
+            <label class="form-label"><span>D</span>escription</label>
             <input
-              name="CardPower"
-              id="input-modal-mab-cards-add-edit-cardpower"
+              name="NpcDescription"
+              id="input-modal-mab-npcs-add-edit-npcdescription"
               class="new-data form-control required"
-              type="number"
-              value="0"
-              min="0"
-              max="9"
+              type="text"
               required
             />
           </div>
 
-          <!-- Input 3: Mab Card Upper Hand -->
+          <!-- Input 3: Mab Npc Level -->
           <div class="mb-3">
-            <label class="form-label"
-              ><span>U</span>pper <span>H</span>and</label
-            >
+            <label class="form-label"><span>L</span>evel</label>
             <input
-              name="CardUpperHand"
-              id="input-modal-mab-cards-add-edit-cardupperhand"
+              name="NpcLevel"
+              id="input-modal-mab-npcs-add-edit-npclevel"
               class="new-data form-control required"
-              type="number"
-              value="0"
-              min="0"
-              max="9"
-              required
+              type="text"
+              value="determined after 5 cards are chosen"
+              disabled
             />
           </div>
 
-          <!-- Input 4: Mab Card Type -->
+          <!-- Input 4: Mab Npc Cards -->
           <div class="mb-3">
             <label class="form-label">
               <span>S</span>elect
               <span style="text-decoration: underline; color: var(--text-color)"
                 >a</span
               >
-              <span>T</span>ype
+              <span>C</span>ards
             </label>
 
             <div class="comboBox-wrapper">
               <div class="comboBox">
                 <select
                   name="CardType"
-                  id="input-select-modal-mab-cards-add-edit-cardtype"
+                  id="input-select-modal-mab-npcs-add-edit-npccards"
                   class="form-control form-select required"
                 ></select>
               </div>
@@ -95,14 +88,14 @@
 
         <button
           type="button"
-          id="button-modal-mab-cards-add-edit-reset"
+          id="button-modal-mab-npcs-add-edit-reset"
           class="btn-refresh btn btn-sm btn-outline-warning"
         >
           Clear Form
         </button>
 
         <button
-          id="button-modal-mab-cards-add-edit-submit"
+          id="button-modal-mab-npcs-add-edit-submit"
           class="btn btn-outline-info"
           type="button"
           disabled
@@ -114,4 +107,4 @@
   </div>
 </div>
 
-<script src="/js/scripts/scripts_admins/modal_mab_cards_add_edit.js"></script>
+<script src="/js/scripts/scripts_admins/modal_mab_npcs_add_edit.js"></script>

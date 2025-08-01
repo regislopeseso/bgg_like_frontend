@@ -1,45 +1,45 @@
-function modal_Mab_Cards_Add_Edit() {
+function modal_Mab_Npcs_Add_Edit() {
   let self = this;
   self.IsBuilt = false;
   self.isEditMode = false;
-  self.currentMabCardId = null;
+  self.currentMabNpcId = null;
   self.onSuccessCallback = null;
 
   self.LoadReferences = () => {
-    self.DOM = $("#dom-modal-mab-cards-add-edit");
+    self.DOM = $("#dom-modal-mab-npcs-add-edit");
 
-    self.ModalTitle = self.DOM.find("#title-modal-mab-cards-add-edit");
-    self.Form = $("#form-modal-mab-cards-add-edit");
+    self.ModalTitle = self.DOM.find("#title-modal-mab-npcs-add-edit");
+    self.Form = $("#form-modal-mab-npcs-add-edit");
 
     // Add a hidden input for the CATEGORY ID when in edit mode
     self.Form.append(
-      '<input type="hidden" id="mab-card-id" name="MabCardId" value="">'
+      '<input type="hidden" id="mab-npc-id" name="MabNpcId" value="">'
     );
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.Required =
       self.DOM.find(".required");
-    self.Inputs[self.Inputs.length] = self.Inputs.MabCardId =
-      self.DOM.find("#mab-card-id");
-    self.Inputs[self.Inputs.length] = self.Inputs.MabCardName = self.DOM.find(
-      "#input-modal-mab-cards-add-edit-cardname"
+    self.Inputs[self.Inputs.length] = self.Inputs.MabNpcId =
+      self.DOM.find("#mab-npc-id");
+    self.Inputs[self.Inputs.length] = self.Inputs.MabNpcName = self.DOM.find(
+      "#input-modal-mab-npcs-add-edit-npcname"
     );
-    self.Inputs[self.Inputs.length] = self.Inputs.MabCardPower = self.DOM.find(
-      "#input-modal-mab-cards-add-edit-cardpower"
+    self.Inputs[self.Inputs.length] = self.Inputs.MabNpcDescription =
+      self.DOM.find("#input-modal-mab-npcs-add-edit-npcdescription");
+    self.Inputs[self.Inputs.length] = self.Inputs.MabNpcLevel = self.DOM.find(
+      "#input-modal-mab-npcs-add-edit-npclevel"
     );
-    self.Inputs[self.Inputs.length] = self.Inputs.MabCardUpperHand =
-      self.DOM.find("#input-modal-mab-cards-add-edit-cardupperhand");
 
-    self.Inputs[self.Inputs.length] = self.Inputs.MabCardType = self.DOM.find(
-      "#input-select-modal-mab-cards-add-edit-cardtype"
+    self.Inputs[self.Inputs.length] = self.Inputs.MabNpcCards = self.DOM.find(
+      "#input-select-modal-mab-npcs-add-edit-npccards"
     );
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.Submit = self.DOM.find(
-      "#button-modal-mab-cards-add-edit-submit"
+      "#button-modal-mab-npcs-add-edit-submit"
     );
     self.Buttons[self.Buttons.length] = self.Buttons.Reset = self.DOM.find(
-      "#button-modal-mab-cards-add-edit-reset"
+      "#button-modal-mab-npcs-add-edit-reset"
     );
   };
 
@@ -48,9 +48,9 @@ function modal_Mab_Cards_Add_Edit() {
       e.preventDefault();
 
       if (self.isEditMode === true) {
-        self.SetUpEditMabCardForm();
+        self.SetUpEditMabNpcForm();
       } else {
-        self.SetUpAddMabCardForm();
+        self.SetUpAddMabNpcForm();
       }
     });
 
@@ -61,33 +61,33 @@ function modal_Mab_Cards_Add_Edit() {
     self.CheckForm();
   };
 
-  self.LoadCardTypes = () => {
+  self.loadMabCards = () => {
     // First destroy any existing select2 instance to prevent duplicates
-    if (self.Inputs.MabCardType.hasClass("select2-hidden-accessible")) {
-      self.Inputs.MabCardType.select2("destroy");
+    if (self.Inputs.MabNpcCards.hasClass("select2-hidden-accessible")) {
+      self.Inputs.MabNpcCards.select2("destroy");
     }
 
     // Fetch the mab card types list once from the backend
-    fetch("https://localhost:7081/admins/listmabcardtypes", {
+    fetch("https://localhost:7081/admins/listmabcards", {
       method: "GET",
       credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
         if (!data.content) {
-          console.error("Failed to load card types:", data.message);
+          sweetAlertError("Failed to load mab cards:", data.message);
           return;
         }
 
-        const mabCardTypes = data.content.map((item) => ({
-          id: item.cardTypeValue,
-          text: item.cardTypeName,
+        const mabNpcCards = data.content.map((item) => ({
+          id: item.npcId,
+          text: item.cardName,
         }));
 
-        self.Inputs.MabCardType.select2({
-          data: mabCardTypes,
+        self.Inputs.MabNpcCards.select2({
+          data: mabNpcCards,
           dropdownParent: self.DOM,
-          placeholder: "Select a card type",
+          placeholder: "Select a card",
           allowClear: true,
           theme: "classic",
           width: "100%",
@@ -103,30 +103,33 @@ function modal_Mab_Cards_Add_Edit() {
   };
 
   // New method to fetch Mab Card details for editing
-  self.FetchMabCardDetails = (mabCardId) => {
+  self.FetchMabNpcDetails = (mabNpcId) => {
     self.AddContentLoader();
-    self.currentMabCardId = mabCardId;
+    self.currentMabNpcId = mabNpcId;
 
     $.ajax({
       method: "GET",
-      url: `https://localhost:7081/admins/showmabcarddetails?CardId=${mabCardId}`,
+      url: `https://localhost:7081/admins/showmabnpcdetails?NpcId=${mabNpcId}`,
       xhrFields: {
         withCredentials: true,
       },
       success: function (response) {
         if (!response.content) {
-          console.error("Failed to fetch category details:", response.message);
+          sweetAlertError(
+            "Failed to fetch category details:",
+            response.message
+          );
           return;
         }
 
-        // Open the edit modal with the board game data
-        __global.MabCardsAddEditModalController.PopulateFormForEditing(
+        // Open the edit modal with the mab NPC data
+        __global.MabNpcsAddEditModalController.PopulateFormForEditing(
           response.content
         );
         self.RemoveContentLoader();
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching category details:", error);
+        sweetAlertError("Error fetching mab npc details:", error);
       },
     });
   };
@@ -156,7 +159,7 @@ function modal_Mab_Cards_Add_Edit() {
     // React to clicking on the clear button:
     self.Buttons.Reset.on("click", () => {
       self.forceClearForm();
-      self.Inputs.MabCardName.focus();
+      self.Inputs.MabNpcName.focus();
     });
   };
 
@@ -169,10 +172,10 @@ function modal_Mab_Cards_Add_Edit() {
       input.val(null);
     });
 
-    self.Inputs.MabCardType.val(null).trigger("change");
+    self.Inputs.MabNpcCards.val(null).trigger("change");
   };
 
-  self.SetUpAddMabCardForm = () => {
+  self.SetUpAddMabNpcForm = () => {
     //Disable submit button to prevent double submissions
     const submitBtn = self.Buttons.Submit;
     const originalBtnText = submitBtn.text();
@@ -180,7 +183,7 @@ function modal_Mab_Cards_Add_Edit() {
 
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/admins/addmabcard",
+      url: "https://localhost:7081/admins/addmabnpc",
       data: self.Form.serialize(),
       xhrFields: {
         withCredentials: true,
@@ -197,7 +200,7 @@ function modal_Mab_Cards_Add_Edit() {
 
         self.CloseModal();
 
-        // Refresh the Cards list
+        // Refresh the CATEGORY list
         if (self.onSuccessCallback) {
           self.onSuccessCallback();
         }
@@ -212,27 +215,26 @@ function modal_Mab_Cards_Add_Edit() {
     });
   };
 
-  self.SetUpEditMabCardForm = () => {
+  self.SetUpEditMabNpcForm = () => {
     //Disable submit button to prevent double submissions
     const submitBtn = self.Buttons.Submit;
     const originalBtnText = submitBtn.text();
     submitBtn.attr("disabled", true).text("Submitting...");
 
     // Get form values
-    const mabCardId = self.currentMabCardId;
-    console.log("mabCardId: ", mabCardId);
+    const mabNpcId = self.currentMabNpcId;
 
-    const mabCardName = self.Inputs.MabCardName.val();
-    const mabCardPower = self.Inputs.MabCardPower.val();
-    const mabCardUpperHand = self.Inputs.MabCardUpperHand.val();
-    const mabCardType = self.Inputs.MabCardType.val();
+    const mabNpcName = self.Inputs.MabNpcName.val();
+    const mabCardPower = self.Inputs.MabNpcDescription.val();
+    const mabCardUpperHand = self.Inputs.MabNpcLevel.val();
+    const mabCardType = self.Inputs.MabNpcCards.val();
 
     $.ajax({
       url: "https://localhost:7081/admins/editmabcard",
       type: "PUT",
       data: JSON.stringify({
-        CardId: mabCardId,
-        CardName: mabCardName,
+        CardId: mabNpcId,
+        CardName: mabNpcName,
         CardPower: mabCardPower,
         CardUpperHand: mabCardUpperHand,
         CardType: mabCardType,
@@ -269,22 +271,22 @@ function modal_Mab_Cards_Add_Edit() {
   };
 
   // Method to fill the form with CATEGORY data for editing
-  self.PopulateFormForEditing = (mabCard) => {
+  self.PopulateFormForEditing = (mabNpc) => {
     // Set the form to edit mode
     self.isEditMode = true;
-    self.Inputs.MabCardId.val(mabCard.cardId);
+    self.Inputs.MabNpcId.val(mabNpc.npcId);
 
     // Update the modal title and button text
-    self.ModalTitle.html("<span>E</span>dit <span>C</span>ard");
+    self.ModalTitle.html("<span>E</span>dit <span>N</span>pc");
     self.Buttons.Submit.text("Update");
 
     // Fill in the form fields
-    self.Inputs.MabCardName.val(mabCard.cardName);
-    self.Inputs.MabCardPower.val(mabCard.cardPower);
-    self.Inputs.MabCardUpperHand.val(mabCard.cardUpperHand);
+    self.Inputs.MabNpcName.val(mabNpc.npcName);
+    self.Inputs.MabNpcDescription.val(mabNpc.npcDescription);
+    self.Inputs.MabNpcLevel.val(mabNpc.npcLevel);
 
     // Set card type (need to wait for select2 to be initialized)
-    self.Inputs.MabCardType.val(mabCard.cardTypeValue).trigger("change");
+    self.Inputs.MabNpcCards.val(mabNpc.npcDeck).trigger("change");
 
     // Recheck form to enable submit button if needed
     self.checkFormFilling();
@@ -293,8 +295,8 @@ function modal_Mab_Cards_Add_Edit() {
   // Reset the form to "Add" mode
   self.ResetToAddMode = () => {
     self.isEditMode = false;
-    self.currentMabCardId = null;
-    self.ModalTitle.html("<span>C</span>reate a <span>C</span>ard");
+    self.currentMabNpcId = null;
+    self.ModalTitle.html("<span>C</span>reate a <span>N</span>pc");
     self.Buttons.Submit.text("Confirm");
   };
 
@@ -319,7 +321,7 @@ function modal_Mab_Cards_Add_Edit() {
 
     self.LoadReferences();
     self.LoadEvents();
-    self.LoadCardTypes();
+    self.loadMabCards();
     self.IsBuilt = true;
   };
 
@@ -363,14 +365,14 @@ function modal_Mab_Cards_Add_Edit() {
   };
 
   // New method to open the modal in edit mode
-  self.OpenEditModal = (mabCardId, onSuccessCallback) => {
+  self.OpenEditModal = (mabNpcId, onSuccessCallback) => {
     self.onSuccessCallback = onSuccessCallback;
     self.Show();
-    self.FetchMabCardDetails(mabCardId);
+    self.FetchMabNpcDetails(mabNpcId);
 
     // Ensure focus is applied after modal is fully shown
     self.DOM.on("shown.bs.modal", function () {
-      self.Inputs.MabCardName.focus();
+      self.Inputs.MabNpcName.focus();
     });
   };
 

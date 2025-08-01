@@ -1,7 +1,7 @@
-<!--? Modal Medieval Auto Battle CARDS DATA TABLE-->
+<!--? Modal Medieval Auto Battle NPCs DATA TABLE-->
 <div
   class="modal fade"
-  id="dom-modal-mab-cards-db"
+  id="dom-modal-mab-npcs-db"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
   tabindex="-1"
@@ -12,13 +12,13 @@
     <div class="data-base-content modal-content">
       <div class="modal-header">
         <div class="d-flex flex-row gap-2">
-          <h1 class="modal-title fs-5" id="title-modal-mab-cards-db">
+          <h1 class="modal-title fs-5" id="title-modal-mab-npcs-db">
             <span>M</span>edieval <span>A</span>uto <span>B</span>attler
-            <span>C</span>ards
+            <span>N</span>pcs
           </h1>
 
           <button
-            id="button-modal-mab-cards-add"
+            id="button-modal-mab-npcs-add"
             class="btn btn-outline-info d-flex align-items-center justify-content-center"
             style="
               width: 2rem;
@@ -36,7 +36,7 @@
 
         <button
           type="button"
-          id="button-x-mab-cards-db-close"
+          id="button-x-mab-npcs-db-close"
           class="custom-close"
         >
           <i class="fa-solid fa-xmark"></i>
@@ -46,7 +46,7 @@
       <div class="modal-body">
         <div class="table-scroll-hint table-responsive ps-3 pe-3">
           <table
-            id="table-modal-mab-cards-db"
+            id="table-modal-mab-npcs-db"
             class="table-fixed table table-bordered table-dark align-middle table-sm"
             style="min-width: 900px"
           >
@@ -54,10 +54,10 @@
               <tr>
                 <th scope="col" class="text-center">*</th>
                 <th scope="col" class="text-center">Name</th>
-                <th scope="col" class="text-center">Power (1-9)</th>
-                <th scope="col" class="text-center">Upper Hand (1-9)</th>
-                <th scope="col" class="text-center">Type</th>
+                <th scope="col" class="text-center">Description</th>
+                <th scope="col" class="text-center">Level</th>
                 <th scope="col" class="text-center">Is Deleted</th>
+                <th scope="col" class="text-center">Deck</th>
                 <th scope="col" class="text-center">*</th>
               </tr>
             </thead>
@@ -69,7 +69,7 @@
       <div class="modal-footer">
         <button
           type="button"
-          id="button-modal-mab-cards-db-close"
+          id="button-modal-mab-npcs-db-close"
           class="btn btn-outline-danger"
         >
           Close
@@ -79,4 +79,4 @@
   </div>
 </div>
 
-<script src="/js/scripts/scripts_admins/modal_mab_cards_db.js"></script>
+<script src="/js/scripts/scripts_admins/modal_mab_npcs_db.js"></script>
