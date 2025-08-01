@@ -22,16 +22,17 @@ function modal_Mab_Cards_DB() {
   self.LoadEvents = () => {
     $.when(
       $.get("modal_mab_cards_add_edit.html"),
-      $.get("modal_mab_cards_delete.html")
-    ).done(function (addEditHtml, deleteHtml) {
+      $.get("modal_mab_cards_delete_restore.html")
+    ).done(function (addEditHtml, deleteRestoreHtml) {
       self.DOMadmPage.append(addEditHtml[0]);
-      self.DOMadmPage.append(deleteHtml[0]);
+      self.DOMadmPage.append(deleteRestoreHtml[0]);
 
       // Initialize the ADD/EDIT Modal Controller after loading HTML
       __global.MabCardsAddEditModalController = new modal_Mab_Cards_Add_Edit();
 
       // Initialize the DELETE/RESTORE Modal Controller after loading HTML
-      __global.MabCardsDeleteModalController = new modal_Mab_Cards_Delete();
+      __global.MabCardsDeleteModalController =
+        new modal_Mab_Cards_Delete_Restore();
 
       // Hook up the buttons to open the modals AFTER they are ready
       // Opens ADD MAB CARDS MODAL
@@ -56,9 +57,21 @@ function modal_Mab_Cards_DB() {
       self.DOM.on("click", ".button-modal-mab-cards-delete", function () {
         const mabCardId = $(this).attr("mab-card-id");
 
-        __global.MabCardsDeleteModalController.OpenDeleteModal(
+        __global.MabCardsDeleteModalController.OpenDeleteRestoreModal(
           mabCardId,
-          self.LoadAllMabCards
+          self.LoadAllMabCards,
+          true
+        );
+      });
+
+      // Opens RESTORE MAB CARDS MODAL
+      self.DOM.on("click", ".button-modal-mab-cards-restore", function () {
+        const mabCardId = $(this).attr("mab-card-id");
+
+        __global.MabCardsDeleteModalController.OpenDeleteRestoreModal(
+          mabCardId,
+          self.LoadAllMabCards,
+          false
         );
       });
 
@@ -123,7 +136,7 @@ function modal_Mab_Cards_DB() {
     self.AddContentLoader();
     $.ajax({
       method: "GET",
-      url: "https://localhost:7081/admins/getallcards",
+      url: "https://localhost:7081/admins/listmabcards",
       xhrFields: {
         withCredentials: true,
       },
@@ -161,6 +174,7 @@ function modal_Mab_Cards_DB() {
           <td class="text-center align-middle">${item.cardPower}</td>
           <td class="text-center align-middle">${item.cardUpperHand}</td>
           <td class="text-center align-middle">${item.cardType}</td>
+          <td class="text-center align-middle">${item.isDeleted}</td>
          
           <td class="align-middle">
             <div class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2">
@@ -170,12 +184,27 @@ function modal_Mab_Cards_DB() {
 
               <button id="button-modal-mab-cards-delete-${index}" class="button-modal-mab-cards-delete btn btn-sm btn-outline-danger w-60" mab-card-id="${item.cardId}">
                 Delete
-              </button>            
+              </button>   
+              
+              <button id="button-modal-mab-cards-restore-${index}" class="button-modal-mab-cards-restore btn btn-sm btn-outline-info w-60" mab-card-id="${item.cardId}">
+                Restore
+              </button>
             </div>
           </td>
         </tr>
       `);
           self.TableResult.append(tr);
+
+          if (item.isDeleted === false) {
+            tr.find("td").css("color", "var(--text-color)");
+            $(`#button-modal-mab-cards-delete-${index}`).show();
+            $(`#button-modal-mab-cards-restore-${index}`).hide();
+          }
+          if (item.isDeleted === true) {
+            tr.find("td").css("color", "var(--reddish)");
+            $(`#button-modal-mab-cards-delete-${index}`).hide();
+            $(`#button-modal-mab-cards-restore-${index}`).show();
+          }
         });
 
         self.Table.DataTable();

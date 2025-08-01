@@ -1,21 +1,22 @@
-function modal_Mab_Cards_Delete() {
+function modal_Mab_Cards_Delete_Restore() {
   let self = this;
   self.IsBuilt = false;
+  self.isDeleteMode = false;
   self.currentMabCardId = null;
   self.onSuccessCallback = null;
 
   self.LoadReferences = () => {
-    self.DOM = $("#dom-modal-mab-cards-delete");
+    self.DOM = $("#dom-modal-mab-cards-delete-restore");
 
-    self.ModalTitle = self.DOM.find("#title-modal-mab-cards-delete");
+    self.ModalTitle = self.DOM.find("#title-modal-mab-cards-delete-restore");
 
     self.ModalBody = self.DOM.find(".modal-body");
 
-    self.ModalBox = self.DOM.find("#modalbox-modal-mab-cards-delete");
+    self.ModalBox = self.DOM.find("#modalbox-modal-mab-cards-delete-restore");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.Confirm = self.DOM.find(
-      "#button-modal-mab-cards-delete-confirm"
+      "#button-modal-mab-cards-delete-restore-confirm"
     );
   };
 
@@ -23,7 +24,11 @@ function modal_Mab_Cards_Delete() {
     self.Buttons.Confirm.on("click", function (e) {
       e.preventDefault();
 
-      self.SetUpDelete();
+      if (self.isDeleteMode === true) {
+        self.SetUpDelete();
+      } else {
+        self.SetUpRestore();
+      }
     });
   };
 
@@ -39,6 +44,18 @@ function modal_Mab_Cards_Delete() {
       position: "center",
       confirmButtonText: "OK!",
       icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+  function sweetAlertWarning(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "warning",
       theme: "bulma",
       title: title_text,
       text: message_text || "",
@@ -64,7 +81,7 @@ function modal_Mab_Cards_Delete() {
 
     $.ajax({
       method: "GET",
-      url: `https://localhost:7081/admins/showcarddetails?CardId=${self.currentMabCardId}`,
+      url: `https://localhost:7081/admins/showmabcarddetails?CardId=${self.currentMabCardId}`,
       xhrFields: {
         withCredentials: true,
       },
@@ -74,11 +91,18 @@ function modal_Mab_Cards_Delete() {
           return;
         }
 
-        // Open the edit modal with the CATEGORY data
-        __global.MabCardsDeleteModalController.RenderDeleteMode(
-          response.content.cardName
-        );
-        self.RemoveContentLoader();
+        // Open the edit modal with the board game data
+        if (self.isDeleteMode === false) {
+          __global.MabCardsDeleteModalController.RenderRestoreMode(
+            response.content.cardName
+          );
+          self.RemoveContentLoader();
+        } else {
+          __global.MabCardsDeleteModalController.RenderDeleteMode(
+            response.content.cardName
+          );
+          self.RemoveContentLoader();
+        }
       },
       error: function (xhr, status, error) {
         console.error("Error fetching card details:", error);
@@ -102,6 +126,19 @@ function modal_Mab_Cards_Delete() {
     );
   };
 
+  self.RenderRestoreMode = (cardName) => {
+    self.ModalBox.removeClass("delete-warning");
+    self.ModalBox.addClass("restore-warning");
+
+    // Update the modal title and button text
+    self.ModalTitle.html(
+      `<h5><span>R</span>estoring the following <span>C</span>ard:</h5>`
+    );
+
+    // Fill in the MODAL BODY with the card NAME
+    self.ModalBody.html(`<h3><span>${cardName}</span></h3>`);
+  };
+
   self.SetUpDelete = () => {
     //Disable submit button to prevent double submissions
     const submitBtn = self.Buttons.Confirm;
@@ -110,7 +147,7 @@ function modal_Mab_Cards_Delete() {
 
     $.ajax({
       type: "DELETE",
-      url: "https://localhost:7081/admins/destructcard",
+      url: "https://localhost:7081/admins/deletemabcard",
       data: JSON.stringify({
         CardId: self.currentMabCardId,
       }),
@@ -119,7 +156,13 @@ function modal_Mab_Cards_Delete() {
         withCredentials: true,
       },
       success: (resp) => {
-        sweetAlertSuccess(resp.message);
+        if (!resp.content) {
+          sweetAlertError(resp.message);
+
+          return;
+        }
+
+        sweetAlertWarning(resp.message);
 
         // Re-enable button
         submitBtn.attr("disabled", false).text(originalBtnText);
@@ -134,6 +177,42 @@ function modal_Mab_Cards_Delete() {
       },
       error: (err) => {
         sweetAlertError(err);
+      },
+    });
+  };
+
+  self.SetUpRestore = () => {
+    //Disable submit button to prevent double submissions
+    const confirmBtn = self.Buttons.Confirm;
+    const originalBtnText = confirmBtn.text();
+    confirmBtn.attr("disabled", true).text("Submitting...");
+
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/admins/restoremabcard",
+      data: JSON.stringify({
+        CardId: self.currentMabCardId,
+      }),
+      contentType: "application/json",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (resp) => {
+        sweetAlertSuccess(resp.message);
+
+        // Re-enable button
+        confirmBtn.attr("disabled", false).text(originalBtnText);
+
+        // Close the modal
+        self.CloseModal();
+
+        // Refresh the cards list
+        if (self.onSuccessCallback) {
+          self.onSuccessCallback();
+        }
+      },
+      error: (err) => {
+        sweetAlertSuccess(err);
       },
     });
   };
@@ -162,9 +241,14 @@ function modal_Mab_Cards_Delete() {
     self.IsBuilt = true;
   };
 
-  self.OpenDeleteModal = (mabCardId, onSuccessCallback) => {
+  self.OpenDeleteRestoreModal = (
+    mabCardId,
+    onSuccessCallback,
+    isDeletedMode
+  ) => {
     self.currentMabCardId = mabCardId;
     self.onSuccessCallback = onSuccessCallback;
+    self.isDeleteMode = isDeletedMode;
     self.FetchMabCardDetails();
     self.Show();
   };

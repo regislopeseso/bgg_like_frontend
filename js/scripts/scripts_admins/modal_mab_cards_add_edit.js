@@ -68,7 +68,7 @@ function modal_Mab_Cards_Add_Edit() {
     }
 
     // Fetch the mab card types list once from the backend
-    fetch("https://localhost:7081/admins/listcardtypes", {
+    fetch("https://localhost:7081/admins/listmabcardtypes", {
       method: "GET",
       credentials: "include",
     })
@@ -109,7 +109,7 @@ function modal_Mab_Cards_Add_Edit() {
 
     $.ajax({
       method: "GET",
-      url: `https://localhost:7081/admins/showcarddetails?CardId=${mabCardId}`,
+      url: `https://localhost:7081/admins/showmabcarddetails?CardId=${mabCardId}`,
       xhrFields: {
         withCredentials: true,
       },
@@ -180,7 +180,7 @@ function modal_Mab_Cards_Add_Edit() {
 
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/admins/createcard",
+      url: "https://localhost:7081/admins/addmabcard",
       data: self.Form.serialize(),
       xhrFields: {
         withCredentials: true,
@@ -228,7 +228,7 @@ function modal_Mab_Cards_Add_Edit() {
     const mabCardType = self.Inputs.MabCardType.val();
 
     $.ajax({
-      url: "https://localhost:7081/admins/editcard",
+      url: "https://localhost:7081/admins/editmabcard",
       type: "PUT",
       data: JSON.stringify({
         CardId: mabCardId,
