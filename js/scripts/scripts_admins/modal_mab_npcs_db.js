@@ -165,24 +165,32 @@ function modal_Mab_Npcs_DB() {
         }
 
         $.each(response.content, function (index, item) {
-          let cardInfo = "";
-          $.each(item.deck, function (index, card) {
-            cardInfo += card.name;
-            cardInfo += card.power;
-            cardInfo += card.upperHand;
-            cardInfo += card.level;
-            cardInfo += card.type;
-          });
+          let deckCards = item.deck
+            .map((card) => {
+              return `
+                <div class="p-2">
+                  <div class="list-group-item d-flex flex-row h-100 p-1"
+                      style="background-color: var(--second-bg-color); color: var(--text-color);">
+                    <div><strong>${card.name}&nbsp;</strong></div>
+                    <div>&nbsp;Type: ${card.type}&nbsp;</div>
+                    <div>&nbsp;P: ${card.power}&nbsp;</div>
+                    <div>&nbsp;UH: ${card.upperHand}&nbsp;</div>
+                  </div>
+                </div>
+              `;
+            })
+            .join("");
+
+          let deckHtml = `
+            <div class="d-flex flex-wrap justify-content-start gap-2">
+              ${deckCards}
+            </div>
+          `;
 
           let tr = $(`
-            <tr class="align-middle">
-              <td class="text-center align-middle">
-                <button class="btn btn-outline-info btn-sm">
-                  view deck
-                </button>
-              </td>
-              
-              
+            <tr class="align-middle">    
+              <td></td>
+                    
               <td class="text-start align-middle">
                 ${item.npcName} 
               </td>
@@ -192,51 +200,79 @@ function modal_Mab_Npcs_DB() {
                 ${item.npcDescription}
               </td>
               
-              <td class="text-center align-middle">
+              <td class="text-center align-middle" style="width: 90px !important">
                 ${item.npcLevel}
               </td>
+              
+              <td class="align-start">
+                ${deckHtml}
+              </td> 
 
-              <td class="text-center align-middle">
+              <td class="align-start">
                 ${item.npcIsDeleted}
               </td>
-              
-              <td class="text-center align-middle">
-                ${cardInfo}
-              </td>
 
-              <td class="align-middle">
-                <div class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2">
-                  <button id="button-modal-mab-npcs-edit-${index}" class="button-modal-mab-npcs-edit btn btn-sm btn-outline-warning w-60" mab-npc-id="${item.npcId}">
+              <td class="align-start">
+                <div
+                  class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2"
+                >
+                  <button
+                    id="button-modal-mab-npcs-edit-${index}"
+                    class="button-modal-mab-npcs-edit btn btn-sm btn-outline-warning w-60"
+                    mab-npc-id="${item.npcId}"
+                  >
                     Edit
                   </button>
 
-                  <button id="button-modal-mab-npcs-delete-${index}" class="button-modal-mab-npcs-delete btn btn-sm btn-outline-danger w-60" mab-npc-id="${item.npcId}">
+                  <button
+                    id="button-modal-mab-npcs-delete-${index}"
+                    class="button-modal-mab-npcs-delete btn btn-sm btn-outline-danger w-60"
+                    mab-npc-id="${item.npcId}"
+                  >
                     Delete
-                  </button>   
-                  
-                  <button id="button-modal-mab-npcs-restore-${index}" class="button-modal-mab-npcs-restore btn btn-sm btn-outline-info w-60" mab-npc-id="${item.npcId}">
+                  </button>
+
+                  <button
+                    id="button-modal-mab-npcs-restore-${index}"
+                    class="button-modal-mab-npcs-restore btn btn-sm btn-outline-info w-60"
+                    mab-npc-id="${item.npcId}"
+                  >
                     Restore
                   </button>
                 </div>
               </td>
             </tr>
-           
           `);
           self.TableResult.append(tr);
 
-          if (item.isDeleted === false) {
+          if (item.npcIsDeleted === false) {
             tr.find("td").css("color", "var(--text-color)");
             $(`#button-modal-mab-npcs-delete-${index}`).show();
             $(`#button-modal-mab-npcs-restore-${index}`).hide();
           }
-          if (item.isDeleted === true) {
+          if (item.npcIsDeleted === true) {
             tr.find("td").css("color", "var(--reddish)");
             $(`#button-modal-mab-npcs-delete-${index}`).hide();
             $(`#button-modal-mab-npcs-restore-${index}`).show();
           }
         });
 
-        self.Table.DataTable();
+        self.Table.DataTable({
+          columnDefs: [
+            {
+              className: "dtr-control",
+              orderable: false,
+              target: 0,
+            },
+          ],
+          order: [1, "asc"],
+          responsive: {
+            details: {
+              type: "column",
+              target: "tr",
+            },
+          },
+        });
       },
       error: function (xhr, status, error) {
         sweetAlertError("Request failed:", error);

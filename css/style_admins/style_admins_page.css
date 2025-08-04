@@ -25,3 +25,47 @@
   border-radius: 2rem;
   margin: 2rem;
 }
+
+table.dataTable th.dt-type-numeric div.dt-column-header {
+  flex-direction: row !important;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li {
+  border-bottom: 1px dotted var(--text-color) !important;
+  padding: 0.5em 0;
+}
+
+.child li {
+  text-align: start;
+}
+.dtr-details .dtr-data {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  color: var(--text-color) !important;
+  max-width: calc(100% - 90px);
+}
+
+.dtr-cntrol::before {
+  color: var(--main-color) !important;
+}
+
+.dtr-details .dtr-data .gap-2 > * {
+  margin-bottom: 5px !important;
+}
+
+table.dataTable.dtr-column > tbody > tr > td.dtr-control:before,
+table.dataTable.dtr-column > tbody > tr > th.dtr-control:before,
+table.dataTable.dtr-column > tbody > tr > td.control:before,
+table.dataTable.dtr-column > tbody > tr > th.control:before {
+  border-left: 10px solid var(--main-color);
+}
+
+table.dataTable.dtr-column > tbody > tr.dtr-expanded td.dtr-control:before,
+table.dataTable.dtr-column > tbody > tr.dtr-expanded th.dtr-control:before,
+table.dataTable.dtr-column > tbody > tr.dtr-expanded td.control:before,
+table.dataTable.dtr-column > tbody > tr.dtr-expanded th.control:before {
+  border-top: 10px solid var(--reddish);
+}
+
+@media screen and (max-width: 700px) {
+}
