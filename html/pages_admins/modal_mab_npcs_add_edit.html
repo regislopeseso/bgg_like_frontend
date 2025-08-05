@@ -6,10 +6,10 @@
   data-bs-keyboard="false"
   tabindex="-1"
 >
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="add-edit-content modal-content">
       <div class="modal-header">
-        <h3 class="modal-title fs-5" id="title-modal-mab-cards-add-edit"></h3>
+        <h3 class="modal-title fs-5" id="title-modal-mab-npcs-add-edit"></h3>
 
         <button type="button" class="custom-close" data-bs-dismiss="modal">
           <i class="fa-solid fa-xmark"></i>
@@ -32,30 +32,16 @@
           <!-- Input 2: Mab Npc Description -->
           <div class="mb-3">
             <label class="form-label"><span>D</span>escription</label>
-            <input
+            <textarea
               name="NpcDescription"
               id="input-modal-mab-npcs-add-edit-npcdescription"
               class="new-data form-control required"
-              type="text"
               required
-            />
-          </div>
-
-          <!-- Input 3: Mab Npc Level -->
-          <div class="mb-3">
-            <label class="form-label"><span>L</span>evel</label>
-            <input
-              name="NpcLevel"
-              id="input-modal-mab-npcs-add-edit-npclevel"
-              class="new-data form-control required"
-              type="text"
-              value="determined after 5 cards are chosen"
-              disabled
-            />
+            ></textarea>
           </div>
 
           <!-- Input 4: Mab Npc Cards -->
-          <div class="mb-3">
+          <div class="mb-3" id="div-select-modal-mab-npcs-add-edit-npccards">
             <label class="form-label">
               <span>S</span>elect
               <span style="text-decoration: underline; color: var(--text-color)"
@@ -65,14 +51,29 @@
             </label>
 
             <div class="comboBox-wrapper">
-              <div class="comboBox">
+              <div class="comboBox d-flex flex-row gap-3">
                 <select
-                  name="CardType"
+                  name="CardIds"
                   id="input-select-modal-mab-npcs-add-edit-npccards"
                   class="form-control form-select required"
                 ></select>
+                <button class="btn btn-outline-info btn-sm w-25" disabled>
+                  add
+                </button>
               </div>
             </div>
+          </div>
+
+          <!-- Output 1: Mab Npc Cards -->
+          <div id="div-cardsList-modal-mab-npcs-add-edit-npccards">
+            <span>C</span>ards <span>L</span>ist
+            <ol id="ol-select-modal-mab-npcs-add-edit-npccards"></ol>
+          </div>
+
+          <!-- Output 2: Mab Npc Level -->
+          <div class="d-flex flex-row gap-1 align-items-center pb-2">
+            <p class="p-0 m-0"><span>L</span>evel:</p>
+            <span id="input-modal-mab-npcs-add-edit-npclevel">?</span>
           </div>
         </form>
       </div>

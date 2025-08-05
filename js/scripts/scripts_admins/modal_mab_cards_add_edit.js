@@ -275,11 +275,13 @@ function modal_Mab_Cards_Add_Edit() {
     self.Inputs.MabCardId.val(mabCard.cardId);
 
     // Update the modal title and button text
-    self.ModalTitle.html("<span>E</span>dit <span>C</span>ard");
+    self.ModalTitle.html(
+      "<strong><span>E</span>dit</strong> <span>M.</span>A.B. <span>C</span>ard"
+    );
     self.Buttons.Submit.text("Update");
 
     // Fill in the form fields
-    self.Inputs.MabCardName.val(mabCard.cardName);
+    self.Inputs.MabCardName.val(mabCard.cardName).trigger("select");
     self.Inputs.MabCardPower.val(mabCard.cardPower);
     self.Inputs.MabCardUpperHand.val(mabCard.cardUpperHand);
 
@@ -294,7 +296,9 @@ function modal_Mab_Cards_Add_Edit() {
   self.ResetToAddMode = () => {
     self.isEditMode = false;
     self.currentMabCardId = null;
-    self.ModalTitle.html("<span>C</span>reate a <span>C</span>ard");
+    self.ModalTitle.html(
+      "<strong><span>C</span>reate</strong> <span>M.</span>A.B. <span>C</span>ard"
+    );
     self.Buttons.Submit.text("Confirm");
   };
 

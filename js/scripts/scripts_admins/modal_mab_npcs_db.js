@@ -167,14 +167,27 @@ function modal_Mab_Npcs_DB() {
         $.each(response.content, function (index, item) {
           let deckCards = item.deck
             .map((card) => {
+              function getCardType(cardType) {
+                switch (cardType) {
+                  case "Ranged":
+                    return "R";
+                  case "Calvary":
+                    return "C";
+                  case "Infantry":
+                    return "I";
+                  default:
+                    return "N";
+                }
+              }
+
               return `
                 <div class="p-2">
                   <div class="list-group-item d-flex flex-row h-100 p-1"
                       style="background-color: var(--second-bg-color); color: var(--text-color);">
                     <div><strong>${card.name}&nbsp;</strong></div>
-                    <div>&nbsp;Type: ${card.type}&nbsp;</div>
-                    <div>&nbsp;P: ${card.power}&nbsp;</div>
-                    <div>&nbsp;UH: ${card.upperHand}&nbsp;</div>
+                    <div>&nbsp;*${getCardType(card.type)}</div>
+                    <div>|${card.power}|</div>
+                    <div>${card.upperHand}*</div>
                   </div>
                 </div>
               `;

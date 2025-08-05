@@ -164,7 +164,6 @@ function admins_page() {
     self.Modals.MabNpcsData.load(self.Locations.Modal_MabNpcsData, function () {
       // Hook up the button to open the modal AFTER it's ready
       self.Buttons.LoadMabNpcsData.on("click", function () {
-        console.log("oi");
         __global.MabNpcsDataBaseModalController.OpenModal();
       });
     });
