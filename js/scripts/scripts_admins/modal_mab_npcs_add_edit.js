@@ -4,6 +4,13 @@ function modal_Mab_Npcs_Add_Edit() {
   self.isEditMode = false;
   self.currentMabNpcId = null;
   self.onSuccessCallback = null;
+  self.DeckSizeLimit = null;
+  self.CurrentDeckSize = 0;
+
+  self.SelectedCardId = null;
+
+  self.Deck_CardIds = [];
+  self.Deck_Cards = [];
 
   self.LoadReferences = () => {
     self.DOM = $("#dom-modal-mab-npcs-add-edit");
@@ -11,7 +18,7 @@ function modal_Mab_Npcs_Add_Edit() {
     self.ModalTitle = self.DOM.find("#title-modal-mab-npcs-add-edit");
     self.Form = $("#form-modal-mab-npcs-add-edit");
 
-    // Add a hidden input for the CATEGORY ID when in edit mode
+    // Add a hidden input for the NPC ID when in edit mode
     self.Form.append(
       '<input type="hidden" id="mab-npc-id" name="MabNpcId" value="">'
     );
@@ -26,9 +33,6 @@ function modal_Mab_Npcs_Add_Edit() {
     );
     self.Inputs[self.Inputs.length] = self.Inputs.MabNpcDescription =
       self.DOM.find("#input-modal-mab-npcs-add-edit-npcdescription");
-    self.Inputs[self.Inputs.length] = self.Inputs.MabNpcLevel = self.DOM.find(
-      "#input-modal-mab-npcs-add-edit-npclevel"
-    );
 
     self.SelectBlock = self.DOM.find(
       "#div-select-modal-mab-npcs-add-edit-npccards"
@@ -43,6 +47,19 @@ function modal_Mab_Npcs_Add_Edit() {
     self.Inputs[self.Inputs.length] = self.Inputs.MabNpcCardsList =
       self.DOM.find("#ol-select-modal-mab-npcs-add-edit-npccards");
 
+    self.MabNpcLvlBlock = self.DOM.find(
+      "#div-modal-mab-npcs-add-edit-npclevel"
+    );
+    self.MabNpcLvlTitle = self.DOM.find(
+      "#title-modal-mab-npcs-add-edit-npclevel"
+    );
+    self.MabNpcLvlArrowImg = self.DOM.find(
+      "#arrow-img-modal-mab-npcs-add-edit-npclevel"
+    );
+    self.Inputs[self.Inputs.length] = self.Inputs.MabNpcLevel = self.DOM.find(
+      "#input-modal-mab-npcs-add-edit-npclevel"
+    );
+
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.AddNpcMabCard =
       self.DOM.find("#button-modal-mab-npcs-addcard");
@@ -55,10 +72,45 @@ function modal_Mab_Npcs_Add_Edit() {
   };
 
   self.LoadEvents = () => {
+    self.Inputs.SelectMabCard.on("select2:select", function (e) {
+      const selectedData = e.params.data;
+      self.SelectedCardId = selectedData.id;
+      self.Buttons.AddNpcMabCard.prop("disabled", false);
+    });
+
     self.Buttons.AddNpcMabCard.on("click", (e) => {
       e.preventDefault();
 
-      console.log("oi");
+      self.CardsListBlock.fadeIn();
+
+      // Add the card ID to the array
+      self.Deck_CardIds.push(self.SelectedCardId);
+      self.CurrentDeckSize = self.Deck_CardIds.length;
+
+      // Create the card manager
+      let cardManager = new CardsListManager(
+        self.SelectedCardId,
+        self.Inputs.MabNpcCardsList,
+        self.Deck_CardIds.length - 1,
+        self.ShowCardSelection
+      );
+
+      // Store the card manager
+      self.Deck_Cards.push(cardManager);
+
+      // Reset the select dropdown
+      self.Inputs.SelectMabCard.val(null).trigger("change");
+      self.SelectedCardId = null;
+      self.Buttons.AddNpcMabCard.prop("disabled", true);
+
+      // Update form validation
+      self.CheckFormFilling();
+
+      self.CheckDeckCompletion();
+    });
+
+    self.Buttons.Reset.on("click", function (e) {
+      self.ForceClearForm();
     });
 
     self.Buttons.Submit.on("click", function (e) {
@@ -71,21 +123,17 @@ function modal_Mab_Npcs_Add_Edit() {
       }
     });
 
-    self.Buttons.Reset.on("click", function (e) {
-      self.forceClearForm();
-    });
-
     self.CheckForm();
   };
 
-  self.loadMabCards = () => {
+  self.LoadMabCards = () => {
     // First destroy any existing select2 instance to prevent duplicates
     if (self.Inputs.SelectMabCard.hasClass("select2-hidden-accessible")) {
       self.Inputs.SelectMabCard.select2("destroy");
     }
 
     // Fetch the mab card types list once from the backend
-    fetch("https://localhost:7081/admins/listmabcards", {
+    fetch("https://localhost:7081/admins/listmabcardids", {
       method: "GET",
       credentials: "include",
     })
@@ -101,10 +149,13 @@ function modal_Mab_Npcs_Add_Edit() {
           text: item.cardName,
         }));
 
+        // Clear previous options and add empty one
+        self.Inputs.SelectMabCard.empty().append(`<option></option>`);
+
         self.Inputs.SelectMabCard.select2({
           data: mabCards,
           dropdownParent: self.DOM,
-          placeholder: "Select 5 cards",
+          placeholder: "Select a card",
           allowClear: true,
           theme: "classic",
           width: "100%",
@@ -139,6 +190,8 @@ function modal_Mab_Npcs_Add_Edit() {
           return;
         }
 
+        self.DeckSizeLimit = response.content.deckSize;
+
         // Open the edit modal with the mab NPC data
         __global.MabNpcsAddEditModalController.PopulateFormForEditing(
           response.content
@@ -151,7 +204,7 @@ function modal_Mab_Npcs_Add_Edit() {
     });
   };
 
-  self.checkFormFilling = () => {
+  self.CheckFormFilling = () => {
     let areFieldsFilled = true;
 
     self.Inputs.Required.each(function () {
@@ -161,7 +214,8 @@ function modal_Mab_Npcs_Add_Edit() {
       if (
         value === null ||
         (typeof value === "string" && value.trim() === "") ||
-        (Array.isArray(value) && value.length === 0)
+        (Array.isArray(value) && value.length === 0) ||
+        self.CurrentDeckSize != 5
       ) {
         areFieldsFilled = false;
       }
@@ -172,28 +226,99 @@ function modal_Mab_Npcs_Add_Edit() {
 
   self.CheckForm = () => {
     // React to typing in any input
-    self.Inputs.Required.on("input", self.checkFormFilling);
+    self.Inputs.Required.on("input", self.CheckFormFilling);
     // React to clicking on the clear button:
     self.Buttons.Reset.on("click", () => {
-      self.forceClearForm();
+      self.ForceClearForm();
       self.Inputs.MabNpcName.focus();
     });
   };
 
-  self.forceClearForm = () => {
-    // Block form submission button
+  self.CheckDeckCompletion = () => {
+    if (self.Deck_CardIds.length >= self.DeckSizeLimit) {
+      self.SelectBlock.fadeOut();
+      self.GetMabNpcNewLvl();
+
+      return;
+    }
+
+    // Show the card selection interface
+    self.SelectBlock.show();
+    self.Inputs.SelectMabCard.select2("open");
+  };
+  self.GetMabNpcNewLvl = () => {
+    $.ajax({
+      method: "POST",
+      url: `https://localhost:7081/admins/getmabnpclvl`,
+      xhrFields: {
+        withCredentials: true,
+      },
+      contentType: "application/json",
+      data: JSON.stringify({
+        MabCardIds: self.Deck_CardIds,
+      }),
+      success: function (response) {
+        if (!response.content) {
+          sweetAlertError(
+            "Failed to fetch category details:",
+            response.message
+          );
+          return;
+        }
+
+        let mabNpcLvl = response.content.mabNpcLvl;
+
+        self.MabNpcLvlTitle
+          .html(`<span>M</span>ab <span>N</span>pc <span>N</span>ew
+              <span>L</span>evel`);
+        self.Inputs.MabNpcLevel.html(
+          `<h3 class="p-0 m-0"><span>${mabNpcLvl}</span></h3>`
+        );
+
+        self.MabNpcLvlTitle.fadeIn(500);
+        self.MabNpcLvlArrowImg.fadeIn(1000);
+        self.Inputs.MabNpcLevel.fadeIn(1500);
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError("Error fetching mab npc details:", error);
+      },
+    });
+  };
+
+  self.ForceClearForm = () => {
     self.Buttons.Submit.prop("disabled", true);
 
-    //Clear form
+    if (self.Deck_Cards && Array.isArray(self.Deck_Cards)) {
+      self.Deck_Cards.forEach((cardManager) => {
+        if (cardManager && typeof cardManager.DestroyHTML === "function") {
+          cardManager.DestroyHTML();
+        }
+      });
+
+      self.Deck_Cards = [];
+    }
+
+    self.Deck_CardIds = [];
+
+    self.Deck_Cards = [];
+
+    self.CurrentDeckSize = 0;
+
     self.Inputs.forEach((input) => {
       input.val(null);
     });
 
-    self.Inputs.SelectMabCard.val(null).trigger("change");
+    self.Inputs.MabNpcLevel.fadeOut(500);
+    self.MabNpcLvlArrowImg.fadeOut(1000);
+    self.MabNpcLvlTitle.fadeOut(1500);
+
+    self.SelectBlock.show();
+    self.Inputs.SelectMabCard.val(null).trigger("change").select2("open");
+
+    self.Inputs.MabNpcCardsList.empty();
   };
 
   self.SetUpAddMabNpcForm = () => {
-    //Disable submit button to prevent double submissions
     const submitBtn = self.Buttons.Submit;
     const originalBtnText = submitBtn.text();
     submitBtn.attr("disabled", true).text("Submitting...");
@@ -208,16 +333,13 @@ function modal_Mab_Npcs_Add_Edit() {
       success: (resp) => {
         if (!resp.content) {
           sweetAlertError(resp.message);
-
           return;
         }
         sweetAlertSuccess(resp.message);
 
-        self.forceClearForm();
-
+        self.ForceClearForm();
         self.CloseModal();
 
-        // Refresh the CATEGORY list
         if (self.onSuccessCallback) {
           self.onSuccessCallback();
         }
@@ -240,15 +362,14 @@ function modal_Mab_Npcs_Add_Edit() {
 
     // Get form values
     const mabNpcId = self.currentMabNpcId;
-
     const mabNpcName = self.Inputs.MabNpcName.val();
     const mabCardPower = self.Inputs.MabNpcDescription.val();
     const mabCardUpperHand = self.Inputs.MabNpcLevel.val();
     const mabCardType = self.Inputs.SelectMabCard.val();
 
     $.ajax({
-      url: "https://localhost:7081/admins/editmabcard",
       type: "PUT",
+      url: "https://localhost:7081/admins/editmabcard",
       data: JSON.stringify({
         CardId: mabNpcId,
         CardName: mabNpcName,
@@ -264,7 +385,7 @@ function modal_Mab_Npcs_Add_Edit() {
         sweetAlertSuccess(resp.message);
 
         // Reset form and exit edit mode
-        self.forceClearForm();
+        self.ForceClearForm();
         self.ResetToAddMode();
 
         // Close the modal
@@ -275,7 +396,7 @@ function modal_Mab_Npcs_Add_Edit() {
           __global.MabCardsDataBaseModalController.LoadAllMabCards();
         }
 
-        self.forceClearForm();
+        self.ForceClearForm();
       },
       error: (err) => {
         sweetAlertError(err);
@@ -287,59 +408,131 @@ function modal_Mab_Npcs_Add_Edit() {
     });
   };
 
+  self.RemoveCardAt = (indexToRemove) => {
+    // Remove the card ID from the array at the specific index
+    if (indexToRemove >= 0 && indexToRemove < self.Deck_CardIds.length) {
+      self.Deck_CardIds.splice(indexToRemove, 1);
+    }
+
+    // Remove the corresponding CardManager from the array
+    if (indexToRemove >= 0 && indexToRemove < self.Deck_Cards.length) {
+      // Properly destroy the specific card manager being removed
+      let cardManagerToRemove = self.Deck_Cards[indexToRemove];
+      if (
+        cardManagerToRemove &&
+        typeof cardManagerToRemove.DestroyHTML === "function"
+      ) {
+        cardManagerToRemove.DestroyHTML();
+      }
+      // Remove it from the array
+      self.Deck_Cards.splice(indexToRemove, 1);
+    }
+
+    // Update the current deck size
+    self.CurrentDeckSize = self.Deck_CardIds.length;
+
+    // Clear the entire UI list
+    self.Inputs.MabNpcCardsList.empty();
+
+    // Update all remaining CardManager instances with their new indexes and rebuild DOM
+    self.Deck_Cards.forEach((cardManager, newIndex) => {
+      if (cardManager) {
+        // Update the internal index of the existing CardManager
+        cardManager.UpdateIndex(newIndex);
+
+        // Rebuild the HTML for this card with the new index
+        cardManager.RebuildHTML();
+      }
+    });
+
+    // Update form validation
+    self.CheckFormFilling();
+  };
+
   self.PopulateFormForEditing = (mabNpc) => {
     // Set the form to edit mode
     self.isEditMode = true;
     self.Inputs.MabNpcId.val(mabNpc.npcId);
 
     // Update the modal title and button text
+    self.Buttons.Submit.text("Update");
+
     self.ModalTitle.html(
       "<strong><span>E</span>dit</strong> <span>M.</span>A.B. <span>N</span>pc"
     );
-    self.Buttons.Submit.text("Update");
 
     // Fill in the form fields
     self.Inputs.MabNpcName.val(mabNpc.npcName).trigger("select");
+
     self.Inputs.MabNpcDescription.val(mabNpc.description);
-    self.Inputs.MabNpcLevel.html(`<span>${mabNpc.level}</span>`);
+
+    self.Inputs.MabNpcLevel.html(
+      `<h3 class="p-0 m-0"><span>${mabNpc.level}</span></h3>`
+    );
 
     // Set card type (need to wait for select2 to be initialized)
-
     self.SelectBlock.hide();
 
     self.Inputs.MabNpcCardsList.empty();
     self.CardsListBlock.show();
 
+    // Clear existing cards array
+    self.Deck_Cards = [];
+    self.Deck_CardIds = [];
+    self.CurrentDeckSize = 0;
+
     mabNpc.cards.forEach((card, index) => {
-      new CardsListManager(
-        card,
+      self.Deck_CardIds.push(card.cardId);
+
+      let cardManager = new CardsListManager(
+        card.cardId,
         self.Inputs.MabNpcCardsList,
         index,
         self.ShowCardSelection
       );
+
+      self.Deck_Cards.push(cardManager);
+
+      self.CurrentDeckSize++;
     });
 
     // Recheck form to enable submit button if needed
-    self.checkFormFilling();
+    self.CheckFormFilling();
   };
-  self.ShowCardSelection = () => {
+
+  self.ShowCardSelection = (indexToRemove) => {
+    // This is called when removing a card in edit mode
+    self.RemoveCardAt(indexToRemove);
+
+    self.Inputs.MabNpcLevel.fadeOut(500);
+    self.MabNpcLvlArrowImg.fadeOut(1000);
+    self.MabNpcLvlTitle.fadeOut(1500);
+
+    // Show the card selection interface
     self.SelectBlock.show();
+    self.Inputs.SelectMabCard.select2("open");
   };
 
   // Reset the form to "Add" mode
   self.ResetToAddMode = () => {
     self.isEditMode = false;
+    self.DeckSizeLimit = 5;
+    self.CurrentDeckSize = 0;
     self.currentMabNpcId = null;
+    self.Deck_CardIds = [];
+    self.Deck_Cards = [];
+
     self.ModalTitle.html(
       "<strong><span>C</span>reate</strong> <span>M.</span>A.B. <span>N</span>pc"
     );
 
     self.Inputs.MabNpcCardsList.empty();
+
     self.CardsListBlock.hide();
 
-    self.Buttons.Submit.text("Confirm");
+    self.MabNpcLvlBlock.hide();
 
-    self.Inputs.MabNpcLevel.html(`? (calculated after 5 cards are chosen...)`);
+    self.Buttons.Submit.text("Confirm");
   };
 
   self.Show = () => {
@@ -362,7 +555,7 @@ function modal_Mab_Npcs_Add_Edit() {
     }
 
     self.LoadReferences();
-    self.loadMabCards();
+    self.LoadMabCards();
     self.LoadEvents();
     self.IsBuilt = true;
   };
@@ -370,6 +563,7 @@ function modal_Mab_Npcs_Add_Edit() {
   self.AddContentLoader = () => {
     self.DOM.loadcontent("charge-contentloader");
   };
+
   self.RemoveContentLoader = () => {
     self.DOM.loadcontent("demolish-contentloader");
   };
@@ -386,6 +580,7 @@ function modal_Mab_Npcs_Add_Edit() {
       timer: 1500,
     });
   }
+
   function sweetAlertError(title_text, message_text) {
     Swal.fire({
       position: "center",
@@ -402,7 +597,7 @@ function modal_Mab_Npcs_Add_Edit() {
   self.OpenAddModal = (onSuccessCallback) => {
     self.onSuccessCallback = onSuccessCallback;
     self.ResetToAddMode();
-    self.forceClearForm();
+    self.ForceClearForm();
     self.Show();
   };
 
@@ -421,7 +616,7 @@ function modal_Mab_Npcs_Add_Edit() {
   self.CloseModal = () => {
     const modalInstance = bootstrap.Modal.getInstance(self.DOM[0]);
     if (modalInstance) {
-      self.forceClearForm();
+      self.ForceClearForm();
       modalInstance.hide();
     }
   };
@@ -429,41 +624,77 @@ function modal_Mab_Npcs_Add_Edit() {
   self.BuildModal();
 }
 
-function CardsListManager(card, targetContainer, index, onRemoveCallback) {
+function CardsListManager(cardId, targetContainer, index, onRemoveCallback) {
   let self = this;
-  self.Card = card;
+  self.CardId = cardId;
   self.TargetContainer = targetContainer;
   self.Index = index;
   self.OnRemoveCallback = onRemoveCallback;
   self.IsBuilt = false;
 
+  self.MabCard = null;
+  self.DOM = null;
+
+  self.FetchMabCardDetails = (mabCardId) => {
+    self.currentMabCardId = mabCardId;
+
+    $.ajax({
+      method: "GET",
+      url: `https://localhost:7081/admins/showmabcarddetails?CardId=${self.CardId}`,
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: function (response) {
+        if (!response.content) {
+          console.error("Failed to fetch card details:", response.message);
+          return;
+        }
+
+        self.MabCard = response.content;
+        self.Build();
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching card details:", error);
+      },
+    });
+  };
+
   self.BuildHtml = () => {
-    console.log("BuildHtml: ");
-    let cardId = self.Card.cardId;
-    let cardName = self.Card.cardName;
-    let cardType = self.Card.cardType;
-    let cardPower = self.Card.cardPower;
-    let cardUpperHand = self.Card.cardUpperHand;
+    let cardId = self.CardId;
+    let cardName = self.MabCard.cardName;
+    let cardType = self.MabCard.cardType;
+    let cardPower = self.MabCard.cardPower;
+    let cardUpperHand = self.MabCard.cardUpperHand;
+
+    // Create a unique ID for this specific instance
+    let elementId = `li-modal-mab-npcs-add-edit-${self.Index}`;
+
+    // Check if element already exists and remove it to prevent duplicates
+    let existingElement = $(`#${elementId}`);
+    if (existingElement.length > 0) {
+      existingElement.remove();
+    }
 
     let listItem = `
-      <li id="li-modal-mab-npcs-add-edit-${self.Index}">
+      <li id="${elementId}" data-card-id="${cardId}" data-index="${self.Index}">
         <div class="d-flex flex-row align-items-center gap-2">
           <button
             class="button-modal-mab-npcs-removecard btn btn-outline-danger p-0 m-0"
             type="button"
-            mab-card-id="${cardId}"
+            data-card-id="${cardId}"
+            data-index="${self.Index}"
           >
             <i class="fa-solid fa-xmark p-1 m-0"></i>
           </button>
 
-          <strong id="mab-card-came" class="p-0 m-0">${cardName}card name</strong>
+          <strong class="mab-card-name p-0 m-0">${cardName}</strong>
 
           <img
             src="/images/icons/io_arrow_right.svg"
             class="bi bi-arrow p-0 m-0"
           />
 
-          <div id="mab-card-data">
+          <div class="mab-card-data">
             <span>T</span>ype: <strong>${cardType}</strong>,
             <span>P</span>ower: <strong>${cardPower}</strong>,
             <span>U</span>pper <span>H</span>and:
@@ -475,12 +706,39 @@ function CardsListManager(card, targetContainer, index, onRemoveCallback) {
 
     self.TargetContainer.append(listItem);
   };
+
+  self.UpdateIndex = (newIndex) => {
+    // Update the internal index
+    self.Index = newIndex;
+  };
+
+  self.RebuildHTML = () => {
+    // Remove the old DOM element if it exists
+    if (self.DOM && self.DOM.length > 0) {
+      self.DOM.find(".button-modal-mab-npcs-removecard").off("click");
+      self.DOM.remove();
+      self.DOM = null;
+    }
+
+    // Rebuild the HTML with the current index
+    self.BuildHtml();
+    self.LoadReferences();
+    self.LoadEvents();
+  };
+
   self.DestroyHTML = () => {
-    self.DOM.empty();
+    if (self.DOM && self.DOM.length > 0) {
+      self.DOM.remove();
+    }
   };
 
   self.LoadReferences = () => {
     self.DOM = $(`#li-modal-mab-npcs-add-edit-${self.Index}`);
+
+    if (self.DOM.length === 0) {
+      console.error(`DOM element not found for index ${self.Index}`);
+      return;
+    }
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.RemoveNpcMabCard =
@@ -491,14 +749,12 @@ function CardsListManager(card, targetContainer, index, onRemoveCallback) {
     self.Buttons.RemoveNpcMabCard.on("click", (e) => {
       e.preventDefault();
 
-      self.DestroyHTML();
-
-      self.OnRemoveCallback();
+      self.OnRemoveCallback(self.Index);
     });
   };
 
   self.Build = () => {
-    if (self.IsBuilt == true) {
+    if (self.IsBuilt) {
       return;
     }
 
@@ -508,5 +764,15 @@ function CardsListManager(card, targetContainer, index, onRemoveCallback) {
     self.IsBuilt = true;
   };
 
-  self.Build();
+  // Public method to get the current card data
+  self.GetCardData = () => {
+    return {
+      cardId: self.CardId,
+      index: self.Index,
+      cardData: self.MabCard,
+    };
+  };
+
+  // Initialize by fetching card details
+  self.FetchMabCardDetails();
 }
