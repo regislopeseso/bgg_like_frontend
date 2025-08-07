@@ -178,9 +178,6 @@ function modal_Mab_Npcs_Add_Edit() {
           return;
         }
 
-        console.log("mabNpc:", response.content);
-        console.log("self.currentMabNpcId:", self.currentMabNpcId);
-
         // Open the edit modal with the mab NPC data
         __global.MabNpcsAddEditModalController.PopulateFormForEditing(
           response.content
@@ -226,6 +223,9 @@ function modal_Mab_Npcs_Add_Edit() {
     self.Deck_CardIds = [];
     self.CurrentDeckSize = 0;
 
+    if (!mabNpc.cards || mabNpc.cards.length < 1) {
+      self.ShowCardSelection();
+    }
     mabNpc.cards.forEach((card, index) => {
       self.Deck_CardIds.push(card.cardId);
 
@@ -690,6 +690,7 @@ function CardsListManager(cardId, targetContainer, index, onRemoveCallback) {
     let cardName = self.MabCard.cardName;
     let cardType = self.MabCard.cardType;
     let cardPower = self.MabCard.cardPower;
+    let cardLvl = self.MabCard.cardLevel;
     let cardUpperHand = self.MabCard.cardUpperHand;
 
     // Create a unique ID for this specific instance
@@ -721,6 +722,8 @@ function CardsListManager(cardId, targetContainer, index, onRemoveCallback) {
           />
 
           <div class="mab-card-data">
+
+            <span>L</span>evel: <strong>${cardLvl}</strong>,
             <span>T</span>ype: <strong>${cardType}</strong>,
             <span>P</span>ower: <strong>${cardPower}</strong>,
             <span>U</span>pper <span>H</span>and:

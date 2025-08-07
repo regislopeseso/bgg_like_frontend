@@ -186,7 +186,8 @@ function modal_Mab_Npcs_DB() {
                       style="background-color: var(--second-bg-color); color: var(--text-color);">
                     <div><strong>${card.name}&nbsp;</strong></div>
                     <div>&nbsp;*${getCardType(card.type)}</div>
-                    <div>|${card.power}|</div>
+                    <div>/${card.level}</div>
+                    <div>/${card.power}/</div>
                     <div>${card.upperHand}*</div>
                   </div>
                 </div>
