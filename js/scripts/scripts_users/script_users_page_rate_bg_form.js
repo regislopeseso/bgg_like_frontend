@@ -62,7 +62,6 @@ const FormHandler_RateBg = (function () {
       timer: 1500,
     });
   }
-
   function sweetAlertError(title_text, message_text) {
     Swal.fire({
       position: "center",

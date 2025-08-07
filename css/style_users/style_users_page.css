@@ -108,6 +108,14 @@ main {
   transform: rotateY(180deg);
 }
 
+#mab-icon {
+  width: 80px;
+  height: 80px;
+}
+.game-title {
+  font-style: none !important;
+}
+
 @keyframes pulse {
   0% {
     transform: scale(0.9);

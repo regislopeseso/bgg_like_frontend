@@ -57,13 +57,6 @@ const Flipper = (function () {
           .on("click", (e) => {
             e.preventDefault();
 
-            if (button.id === "#userOption-LifeCounter") {
-              e.preventDefault();
-
-              return (window.location.href =
-                "/html/pages_users/lifecounter/lifecounter.html");
-            }
-
             this.rotateTo(button.template, $menuButtons); // Pass the button elements
           });
       });
@@ -144,6 +137,7 @@ const Flipper = (function () {
     onContentChanged: function (templateId) {
       // Trigger a custom event that other modules can listen for
       $(document).trigger("flipper:contentChanged", [templateId]);
+
       console.log(`Content changed to: ${templateId}`);
     },
 
@@ -186,7 +180,17 @@ $(function () {
 function loadTemplate(templateId) {
   switch (templateId) {
     case "play-template":
-      return `<p>Template "${templateId}" not yet implemented.</p>`;
+      return `      
+      <div id="play-template">
+        <button id="button-access-medieval-auto-battler" class="btn btn-sm d-flex flex-row gap-3 align-items-center" >
+          <img src="/images/icons/visored-helm.svg" id="mab-icon" alt=""/>
+          
+          <div class="game-title">
+            <h3><span>M</span>edieval <span>A</span>uto <span>B</span>attler</h3>
+          </div>
+        </button> 
+      </div>
+      `;
     case "user-details-template":
       return `
         <div id="user-details-template" class="vanished">
