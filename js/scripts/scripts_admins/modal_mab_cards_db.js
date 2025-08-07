@@ -177,6 +177,7 @@ function modal_Mab_Cards_DB() {
          
           <td class="text-center align-middle">${item.cardPower}</td>
           <td class="text-center align-middle">${item.cardUpperHand}</td>
+          <td class="text-center align-middle">${item.cardLevel}</td>
           <td class="text-center align-middle">${item.cardType}</td>
           <td class="text-center align-middle">${item.isDeleted}</td>
          

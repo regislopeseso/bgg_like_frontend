@@ -67,5 +67,9 @@ table.dataTable.dtr-column > tbody > tr.dtr-expanded th.control:before {
   border-top: 10px solid var(--reddish);
 }
 
-@media screen and (max-width: 700px) {
+#ol-select-modal-mab-npcs-add-edit-npccards {
+  background-color: var(--bg-color);
+  padding: 1rem;
+  border-radius: 1rem;
+  width: fit-content;
 }

@@ -9,7 +9,29 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="add-edit-content modal-content">
       <div class="modal-header">
-        <h3 class="modal-title fs-5" id="title-modal-mab-npcs-add-edit"></h3>
+        <div class="d-flex flex-row gap-4 align-items-center">
+          <h3
+            class="modal-title p-0 m-0"
+            id="title-modal-mab-npcs-add-edit"
+          ></h3>
+
+          <div id="div-modal-mab-npcs-add-edit-npclevel">
+            <div
+              class="d-flex flex-row gap-1 align-items-center justify-content-start"
+            >
+              <h3
+                id="title-modal-mab-npcs-add-edit-npclevel"
+                class="modal-title p-0 m-0"
+              >
+                <span>L</span>evel:
+              </h3>
+
+              <h3 class="modal-title p-0 m-0">
+                <span id="input-modal-mab-npcs-add-edit-npclevel">?</span>
+              </h3>
+            </div>
+          </div>
+        </div>
 
         <button type="button" class="custom-close" data-bs-dismiss="modal">
           <i class="fa-solid fa-xmark"></i>
@@ -55,7 +77,7 @@
                 <select
                   name="CardIds"
                   id="input-select-modal-mab-npcs-add-edit-npccards"
-                  class="form-control form-select required"
+                  class="form-control form-select"
                 ></select>
                 <button
                   id="button-modal-mab-npcs-addcard"
@@ -70,29 +92,11 @@
 
           <!-- Output 1: Mab Npc Cards -->
           <div id="div-cardsList-modal-mab-npcs-add-edit-npccards">
-            <span>C</span>ards <span>L</span>ist
+            <div class="pb-1"><span>C</span>ards <span>L</span>ist</div>
             <ol id="ol-select-modal-mab-npcs-add-edit-npccards"></ol>
           </div>
         </form>
         <!-- Output 2: Mab Npc Level -->
-        <div id="div-modal-mab-npcs-add-edit-npclevel">
-          <div class="d-flex flex-row gap-1 align-items-center pb-2">
-            <h3 id="title-modal-mab-npcs-add-edit-npclevel" class="p-0 m-0">
-              <span>M</span>ab <span>N</span>pc <span>C</span>urrent
-              <span>L</span>evel
-            </h3>
-
-            <img
-              id="arrow-img-modal-mab-npcs-add-edit-npclevel"
-              src="/images/icons/io_arrow_right.svg"
-              class="bi bi-arrow p-0 m-0"
-            />
-
-            <h3 class="p-0 m-0">
-              <span id="input-modal-mab-npcs-add-edit-npclevel">?</span>
-            </h3>
-          </div>
-        </div>
       </div>
 
       <div class="modal-footer w-100 justify-content-between">
