@@ -38,24 +38,28 @@ function medieval_auto_battler() {
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.MabPlayer_NickName =
       self.DOM.find("#mab-campaign-player-nickname");
-    self.EasyDificultyLabel = self.DOM.find(
-      "#text-mab-campaign-difficulty-easy"
-    );
-    self.MediumDificultyLabel = self.DOM.find(
-      "#text-mab-campaign-difficulty-medium"
-    );
-    self.HardDificultyLabel = self.DOM.find(
-      "#text-mab-campaign-difficulty-hard"
-    );
     self.Inputs[self.Inputs.length] = self.Inputs.MabCampaignDifficulty_Easy =
       self.DOM.find("#mab-campaign-difficulty-easy");
     self.Inputs[self.Inputs.length] = self.Inputs.MabCampaignDifficulty_Medium =
       self.DOM.find("#mab-campaign-difficulty-medium");
     self.Inputs[self.Inputs.length] = self.Inputs.MabCampaignDifficulty_Hard =
       self.DOM.find("#mab-campaign-difficulty-hard");
-
     self.Inputs[self.Inputs.length] = self.Inputs.MabPlayer_NewNickName =
       self.DOM.find("#mab-player-new-nickname");
+
+    self.DifficultyLabels = [];
+    self.DifficultyLabels[self.DifficultyLabels.length] =
+      self.DifficultyLabels.Easy = self.DOM.find(
+        "#text-mab-campaign-difficulty-easy"
+      );
+    self.DifficultyLabels[self.DifficultyLabels.length] =
+      self.DifficultyLabels.Medium = self.DOM.find(
+        "#text-mab-campaign-difficulty-medium"
+      );
+    self.DifficultyLabels[self.DifficultyLabels.length] =
+      self.DifficultyLabels.Hard = self.DOM.find(
+        "#text-mab-campaign-difficulty-hard"
+      );
   };
 
   self.LoadEvents = () => {
@@ -75,19 +79,13 @@ function medieval_auto_battler() {
     });
 
     self.Inputs.MabCampaignDifficulty_Easy.on("click", (e) => {
-      self.MediumDificultyLabel.removeClass("paint-yellow");
-      self.HardDificultyLabel.removeClass("paint-red");
-      self.EasyDificultyLabel.addClass("paint-green");
+      self.PaintLabel("easy");
     });
     self.Inputs.MabCampaignDifficulty_Medium.on("click", (e) => {
-      self.EasyDificultyLabel.removeClass("paint-green");
-      self.HardDificultyLabel.removeClass("paint-red");
-      self.MediumDificultyLabel.addClass("paint-yellow");
+      self.PaintLabel("medium");
     });
     self.Inputs.MabCampaignDifficulty_Hard.on("click", (e) => {
-      self.EasyDificultyLabel.removeClass("paint-green");
-      self.MediumDificultyLabel.removeClass("paint-yellow");
-      self.HardDificultyLabel.addClass("paint-red");
+      self.PaintLabel("hard");
     });
 
     self.Buttons.LoadCampaign.on("click", (e) => {
@@ -133,6 +131,23 @@ function medieval_auto_battler() {
     self.Inputs.MabPlayer_NickName.val("");
 
     self.ToggleVisibility(self.StartNewMabCampaign_FormContainer);
+  };
+  self.PaintLabel = (difficulty) => {
+    self.DifficultyLabels.Easy.removeClass("paint-green");
+    self.DifficultyLabels.Medium.removeClass("paint-yellow");
+    self.DifficultyLabels.Hard.removeClass("paint-red");
+
+    switch (difficulty) {
+      case "medium":
+        self.DifficultyLabels.Medium.addClass("paint-yellow");
+        return;
+      case "hard":
+        self.DifficultyLabels.Hard.addClass("paint-red");
+        return;
+      default:
+        self.DifficultyLabels.Hard.addClass("paint-red");
+        return;
+    }
   };
 
   self.LoadMabCampaign = () => {};
