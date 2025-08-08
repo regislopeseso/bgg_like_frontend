@@ -1,0 +1,90 @@
+main {
+  height: calc(100vh - clamp(60px, 10vh, 90px));
+  margin-top: clamp(60px, 10vh, 90px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-title {
+  position: fixed;
+  left: 15px;
+  z-index: 9999;
+
+  top: 100px;
+}
+
+#mab-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+
+  padding: 50px;
+
+  min-height: 600px !important;
+  min-width: 800px !important;
+
+  border-radius: 2.5rem;
+  box-shadow: 1px 1px 10px 10px var(--text-color);
+
+  z-index: 1;
+}
+
+#mab-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+
+  align-items: start;
+
+  z-index: 2;
+}
+
+#container-mab-start-new-campaign-form,
+#container-mab-load-campaign,
+#container-mab-campaign-stats {
+  position: absolute;
+}
+
+.show-div {
+  opacity: 1 !important;
+  transition: opacity 1s ease-in-out;
+}
+.hide-div {
+  pointer-events: none !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.paint-green,
+.paint-yellow,
+.paint-red {
+  transition: all 0.3s ease-in-out;
+}
+.paint-green {
+  font-weight: 100;
+  color: var(--greenish);
+}
+.paint-yellow {
+  font-weight: 500;
+  color: var(--yellowish);
+}
+.paint-red {
+  font-weight: 900;
+  color: var(--reddish);
+}
+
+@media screen and (max-width: 990px) {
+  .game-title {
+    top: 80px !important;
+  }
+}
+@media screen and (max-width: 575px) {
+  .game-title {
+    top: 50px !important;
+  }
+}

@@ -8,8 +8,313 @@
     <link rel="stylesheet" href="/css/style_users/medieval_auto_battler.css" />
   </head>
   <body>
-    <main>
-      <h1>Welcome to Medieval Auto Battler!</h1>
+    <div class="game-title">
+      <h3>
+        <strong
+          ><span>M</span>edieval <span>A</span>uto <span>B</span>attler</strong
+        >
+      </h3>
+    </div>
+    <main id="dom-medieval-auto-battler">
+      <section id="mab-content">
+        <div id="mab-menu" class="show-div">
+          <h3>
+            <span>M</span>.<span>A</span>.<span>B</span>. <span>M</span>ain
+            <span>M</span>enu
+          </h3>
+          <button
+            id="button-mab-start-new-campaign"
+            class="btn btn-outline-info"
+            type="button"
+          >
+            Start New Campaign
+          </button>
+          <button
+            id="button-mab-load-campaign"
+            class="btn btn-outline-info"
+            type="button"
+          >
+            Load Campaign
+          </button>
+          <button
+            id="button-mab-show-campaign-stats"
+            class="btn btn-outline-info"
+            type="button"
+          >
+            Show Campaign Statistics
+          </button>
+        </div>
+
+        <!-- START NEW MAB CAMPAIGN -->
+        <div id="container-mab-start-new-campaign-form" class="hide-div">
+          <div
+            id="header-mab-start-new-campaign"
+            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
+          >
+            <div id="form-title-mab-start-new-campaign" class="p-0 m-0">
+              <h3 class="p-0 m-0">
+                <span>N</span>ew <span>M</span>.<span>A</span>.<span>B</span>.
+                <span>C</span>ampaign
+              </h3>
+            </div>
+            <button
+              id="button-mab-start-new-campain-close-form"
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <hr />
+
+          <form id="form-mab-start-new-campaign" class="pt-3" action="">
+            <div class="mb-3 d-flex flex-column w-100 justify-content-between">
+              <label for="player-nickname"
+                ><span>P</span>layer <span>N</span>ickname</label
+              >
+              <input
+                name="PlayerNickName"
+                id="mab-campaign-player-nickname"
+                class="new-data form-control text-center required mt-3"
+                type="text"
+                required
+                autofocus
+              />
+            </div>
+
+            <div
+              class="mb-3 d-flex flex-column w-100 justify-content-between pt-3 pb-3"
+            >
+              <label for="mab-difficulty"
+                ><span>D</span>ifficulty <span>L</span>evel</label
+              >
+              <div class="form-check mt-2">
+                <input
+                  id="mab-campaign-difficulty-easy"
+                  class="form-check-input"
+                  type="radio"
+                  name="mab-difficulty"
+                  value="easy"
+                  checked
+                />
+                <label
+                  id="text-mab-campaign-difficulty-easy"
+                  class="form-check-label paint-green"
+                  for="mab-difficulty-level-easy"
+                >
+                  Easy
+                </label>
+              </div>
+              <div class="form-check pt-1">
+                <input
+                  id="mab-campaign-difficulty-medium"
+                  class="form-check-input"
+                  type="radio"
+                  name="mab-difficulty"
+                  value="medium"
+                />
+                <label
+                  id="text-mab-campaign-difficulty-medium"
+                  class="form-check-label"
+                  for="mab-difficulty-level-medium"
+                >
+                  Medium
+                </label>
+              </div>
+              <div class="form-check pt-1">
+                <input
+                  id="mab-campaign-difficulty-hard"
+                  class="form-check-input"
+                  type="radio"
+                  name="mab-difficulty"
+                  value="hard"
+                />
+                <label
+                  id="text-mab-campaign-difficulty-hard"
+                  class="form-check-label"
+                  for="mab-difficulty-level-hard"
+                >
+                  Hard
+                </label>
+              </div>
+            </div>
+
+            <hr />
+
+            <button class="btn btn-outline-info w-100 mt-3" type="button">
+              Start
+            </button>
+          </form>
+        </div>
+
+        <!-- MAB CAMPAIGN STATS -->
+        <div
+          id="container-mab-campaign-stats"
+          class="hide-div d-flex flex-column justify-content-center align-items-center"
+        >
+          <!-- Title -->
+          <div
+            id="header-mab-campaign-stats"
+            class="d-flex flex-row justify-content-between align-items-center w-75 gap-3"
+          >
+            <div id="title-mab-campaign-stats" class="p-0 m-0">
+              <h3 class="p-0 m-0">
+                <span>M</span>.<span>A</span>.<span>B</span>.
+                <span>C</span>ampaign <span>S</span>tatistics
+              </h3>
+            </div>
+
+            <button
+              id="button-mab-close-campaign-stats"
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <hr class="w-75" />
+
+          <!-- Fields -->
+          <div
+            class="d-flex flex-column justify-content-start align-items-start w-75 mt-3"
+          >
+            <form id="form-mab-start-new-campaign" action="">
+              <div class="mb-3 d-flex flex-column w-75 justify-content-between">
+                <label for="mab-player-gold-stash"
+                  ><span>P</span>layer <span>N</span>ame</label
+                >
+                <div class="d-flex flex-row gap-3">
+                  <input
+                    name="MabPlayerNewNickName"
+                    id="mab-player-new-nickname"
+                    class="current-data form-control text-center"
+                    type="number"
+                    required
+                    readonly
+                  />
+                  <div class="d-flex flex-row gap-1">
+                    <button
+                      class="btn btn-outline-warning btn-sm"
+                      type="button"
+                    >
+                      edit
+                    </button>
+                    <button
+                      class="btn btn-outline-success btn-sm"
+                      type="button"
+                    >
+                      confirm
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="d-flex flex-row gap-1 w-75">
+              <div
+                class="mb-3 d-flex flex-column w-100 justify-content-between"
+              >
+                <label for="mab-player-level"><span>L</span>evel</label>
+                <input
+                  name="MabPlayerLevel"
+                  id="mab-player-level"
+                  class="current-data form-control text-center"
+                  type="number"
+                  required
+                  readonly
+                />
+              </div>
+
+              <div
+                class="mb-3 d-flex flex-column w-100 justify-content-between"
+              >
+                <label for="mab-player-gold-stash"
+                  ><span>G</span>old <span>S</span>tash</label
+                >
+                <input
+                  name="MabPlayerGoldStash"
+                  id="mab-player-gold-stash"
+                  class="current-data form-control text-center"
+                  type="number"
+                  required
+                  readonly
+                />
+              </div>
+
+              <div
+                class="mb-3 d-flex flex-column w-100 justify-content-between"
+              >
+                <label for="mab-difficulty"
+                  ><span>B</span>attles <span>C</span>ount</label
+                >
+                <input
+                  name="PlayerMabBattlesCount"
+                  id="mab-player-battles-count"
+                  class="current-data form-control text-center"
+                  type="number"
+                  required
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div class="d-flex flex-row gap-1 w-75">
+              <div
+                class="mb-3 d-flex flex-column w-100 justify-content-between"
+              >
+                <label for="mab-difficulty"
+                  ><span>B</span>attles <span>W</span>on</label
+                >
+                <input
+                  name="PlayerMabBattlesWon"
+                  id="mab-player-battles-won"
+                  class="current-data form-control text-center"
+                  type="number"
+                  required
+                  readonly
+                />
+              </div>
+
+              <div
+                class="mb-3 d-flex flex-column w-100 justify-content-between"
+              >
+                <label for="mab-difficulty"
+                  ><span>B</span>attles <span>L</span>ost</label
+                >
+                <input
+                  name="PlayerMabBattlesLost"
+                  id="mab-player-battles-lost"
+                  class="current-data form-control text-center"
+                  type="number"
+                  required
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div class="d-flex flex-row gap-3 w-75">
+              <div class="mb-3 d-flex flex-column w-25 justify-content-between">
+                <label for="mab-difficulty"
+                  ><span>B</span>oosters <span>O</span>pened</label
+                >
+                <input
+                  name="PlayerMabBoostersOpened"
+                  id="mab-player-boosters-opened"
+                  class="current-data form-control text-center"
+                  type="number"
+                  required
+                  readonly
+                />
+              </div>
+
+              <div class="mb-3 d-flex flex-column w-50 justify-content-between">
+                <label for="mab-difficulty"><span>T</span>rophies:</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>

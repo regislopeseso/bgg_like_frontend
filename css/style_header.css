@@ -8,7 +8,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* overflow: hidden; */
   z-index: 100;
 }
 .logo {
@@ -112,7 +111,7 @@
     hue-rotate(146deg) brightness(101%) contrast(105%);
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1350px) {
   .header {
     padding: 0 5%;
   }
