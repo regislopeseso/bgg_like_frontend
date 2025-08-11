@@ -27,6 +27,9 @@ function medieval_auto_battler() {
       self.Buttons.CloseStartNewCampaign_Form = self.DOM.find(
         "#button-mab-start-new-campain-close-form"
       );
+    self.Buttons[self.Buttons.length] = self.Buttons.StartNewMabCampaign =
+      self.DOM.find("#confirm-mab-start-new-campaign");
+
     self.Buttons[self.Buttons.length] = self.Buttons.LoadCampaign =
       self.DOM.find("#button-mab-load-campaign");
 
@@ -44,8 +47,22 @@ function medieval_auto_battler() {
       self.DOM.find("#mab-campaign-difficulty-medium");
     self.Inputs[self.Inputs.length] = self.Inputs.MabCampaignDifficulty_Hard =
       self.DOM.find("#mab-campaign-difficulty-hard");
-    self.Inputs[self.Inputs.length] = self.Inputs.MabPlayer_NewNickName =
-      self.DOM.find("#mab-player-new-nickname");
+    self.Inputs[self.Inputs.length] = self.Inputs.Stats_NewNickName =
+      self.DOM.find("#mab-stats-player-new-nickname");
+    self.Inputs[self.Inputs.length] = self.Inputs.Stats_Level =
+      self.DOM.find("#mab-stats-level");
+    self.Inputs[self.Inputs.length] = self.Inputs.Stats_GoldStash =
+      self.DOM.find("#mab-stats-goldstash");
+    self.Inputs[self.Inputs.length] = self.Inputs.Stats_BattlesCount =
+      self.DOM.find("#mab-stats-battles-count");
+    self.Inputs[self.Inputs.length] = self.Inputs.Stats_BattlesWon =
+      self.DOM.find("#mab-stats-battles-won");
+    self.Inputs[self.Inputs.length] = self.Inputs.Stats_BattlesLost =
+      self.DOM.find("#mab-stats-battles-lost");
+    self.Inputs[self.Inputs.length] = self.Inputs.Stats_BoostersOpened =
+      self.DOM.find("#mab-stats-boosters-opened");
+    self.Inputs[self.Inputs.length] = self.Inputs.Stats_BoostersOpened =
+      self.DOM.find("#mab-stats-boosters-opened");
 
     self.DifficultyLabels = [];
     self.DifficultyLabels[self.DifficultyLabels.length] =
@@ -88,6 +105,12 @@ function medieval_auto_battler() {
       self.PaintLabel("hard");
     });
 
+    self.Buttons.StartNewMabCampaign.on("click", (e) => {
+      e.preventDefault();
+
+      self.StartMabCampaign();
+    });
+
     self.Buttons.LoadCampaign.on("click", (e) => {
       e.preventDefault();
 
@@ -109,6 +132,42 @@ function medieval_auto_battler() {
       self.MabMainMenu_Open();
     });
   };
+
+  function sweetAlertSuccess(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      confirmButtonText: "OK!",
+      icon: "success",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+  function sweetAlertError(title_text, message_text) {
+    Swal.fire({
+      position: "center",
+      cancelButtonText: "close",
+      icon: "error",
+      theme: "bulma",
+      title: title_text,
+      text: message_text || "",
+      showConfirmButton: false,
+      showCancelButton: true,
+      didOpen: () => {
+        // Attach keydown listener
+        document.addEventListener("keydown", closeOnAnyKey);
+      },
+      willClose: () => {
+        // Clean up listener when modal closes
+        document.removeEventListener("keydown", closeOnAnyKey);
+      },
+    });
+  }
+  function closeOnAnyKey() {
+    Swal.close();
+  }
 
   self.ToggleVisibility = (div) => {
     div.hasClass("show-div")
@@ -145,10 +204,37 @@ function medieval_auto_battler() {
         self.DifficultyLabels.Hard.addClass("paint-red");
         return;
       default:
-        self.DifficultyLabels.Hard.addClass("paint-red");
+        self.DifficultyLabels.Easy.addClass("paint-green");
         return;
     }
   };
+  self.StartMabCampaign = () => {
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/startmabcampaign",
+      data: self.StartNewMabCampaign_Form.serialize(),
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (response) => {
+        if (!response.content) {
+          sweetAlertError(response.message);
+          return;
+        }
+
+        self.TriggerMabBattle();
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+      complete: () => {
+        // Re-enable button
+        submitBtn.attr("disabled", true).text(originalBtnText);
+      },
+    });
+  };
+
+  self.TriggerMabBattle = () => {};
 
   self.LoadMabCampaign = () => {};
 

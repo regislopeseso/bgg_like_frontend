@@ -69,12 +69,13 @@
           <hr />
 
           <form id="form-mab-start-new-campaign" class="pt-3" action="">
+            <!-- Input MabPlayerNickName -->
             <div class="mb-3 d-flex flex-column w-100 justify-content-between">
               <label for="player-nickname"
                 ><span>P</span>layer <span>N</span>ickname</label
               >
               <input
-                name="PlayerNickName"
+                name="MabPlayerNickName"
                 id="mab-campaign-player-nickname"
                 class="new-data form-control text-center required mt-3"
                 type="text"
@@ -83,6 +84,7 @@
               />
             </div>
 
+            <!-- Input MabCampaignDifficulty -->
             <div
               class="mb-3 d-flex flex-column w-100 justify-content-between pt-3 pb-3"
             >
@@ -94,7 +96,7 @@
                   id="mab-campaign-difficulty-easy"
                   class="form-check-input"
                   type="radio"
-                  name="mab-difficulty"
+                  name="MabCampaignDifficulty"
                   value="easy"
                   checked
                 />
@@ -111,7 +113,7 @@
                   id="mab-campaign-difficulty-medium"
                   class="form-check-input"
                   type="radio"
-                  name="mab-difficulty"
+                  name="MabCampaignDifficulty"
                   value="medium"
                 />
                 <label
@@ -127,7 +129,7 @@
                   id="mab-campaign-difficulty-hard"
                   class="form-check-input"
                   type="radio"
-                  name="mab-difficulty"
+                  name="MabCampaignDifficulty"
                   value="hard"
                 />
                 <label
@@ -142,7 +144,11 @@
 
             <hr />
 
-            <button class="btn btn-outline-info w-100 mt-3" type="button">
+            <button
+              id="confirm-mab-start-new-campaign"
+              class="btn btn-outline-info w-100 mt-3"
+              type="button"
+            >
               Start
             </button>
           </form>
@@ -182,13 +188,13 @@
           >
             <form id="form-mab-start-new-campaign" action="">
               <div class="mb-3 d-flex flex-column w-75 justify-content-between">
-                <label for="mab-player-gold-stash"
+                <label for="mab-stats-player-new-nickname"
                   ><span>P</span>layer <span>N</span>ame</label
                 >
                 <div class="d-flex flex-row gap-3">
                   <input
                     name="MabPlayerNewNickName"
-                    id="mab-player-new-nickname"
+                    id="mab-stats-player-new-nickname"
                     class="current-data form-control text-center"
                     type="number"
                     required
@@ -211,105 +217,81 @@
                 </div>
               </div>
             </form>
-            <div class="d-flex flex-row gap-1 w-75">
-              <div
-                class="mb-3 d-flex flex-column w-100 justify-content-between"
-              >
-                <label for="mab-player-level"><span>L</span>evel</label>
-                <input
-                  name="MabPlayerLevel"
-                  id="mab-player-level"
-                  class="current-data form-control text-center"
-                  type="number"
-                  required
-                  readonly
-                />
+            <div class="d-flex flex-row gap-3">
+              <div class="mb-3 d-flex flex-row gap-1">
+                <div><span>L</span>evel:</div>
+                <div id="mab-stats-level">?</div>
               </div>
 
-              <div
-                class="mb-3 d-flex flex-column w-100 justify-content-between"
-              >
-                <label for="mab-player-gold-stash"
-                  ><span>G</span>old <span>S</span>tash</label
-                >
-                <input
-                  name="MabPlayerGoldStash"
-                  id="mab-player-gold-stash"
-                  class="current-data form-control text-center"
-                  type="number"
-                  required
-                  readonly
-                />
+              <div class="mb-3 d-flex flex-row gap-1">
+                <div class="d-flex fle-nowrap">
+                  <span>G</span>old&nbsp;<span>S</span>tash:
+                </div>
+                <div id="mab-stats-gold-stash">?</div>
               </div>
 
-              <div
-                class="mb-3 d-flex flex-column w-100 justify-content-between"
-              >
-                <label for="mab-difficulty"
-                  ><span>B</span>attles <span>C</span>ount</label
-                >
-                <input
-                  name="PlayerMabBattlesCount"
-                  id="mab-player-battles-count"
-                  class="current-data form-control text-center"
-                  type="number"
-                  required
-                  readonly
-                />
+              <div class="mb-3 d-flex flex-row gap-1">
+                <div class="d-flex fle-nowrap">
+                  <span>B</span>oosters&nbsp;<span>O</span>pened:
+                </div>
+                <div id="mab-stats-boosters-opened">?</div>
               </div>
             </div>
 
-            <div class="d-flex flex-row gap-1 w-75">
-              <div
-                class="mb-3 d-flex flex-column w-100 justify-content-between"
-              >
-                <label for="mab-difficulty"
-                  ><span>B</span>attles <span>W</span>on</label
-                >
-                <input
-                  name="PlayerMabBattlesWon"
-                  id="mab-player-battles-won"
-                  class="current-data form-control text-center"
-                  type="number"
-                  required
-                  readonly
-                />
+            <div class="d-flex flex-row gap-3">
+              <div class="mb-3 d-flex flex-row gap-1">
+                <div class="d-flex fle-nowrap">
+                  <span>B</span>attles&nbsp;<span>C</span>ount:
+                </div>
+                <div id="mab-stats-battles-count">?</div>
               </div>
 
-              <div
-                class="mb-3 d-flex flex-column w-100 justify-content-between"
-              >
-                <label for="mab-difficulty"
-                  ><span>B</span>attles <span>L</span>ost</label
-                >
-                <input
-                  name="PlayerMabBattlesLost"
-                  id="mab-player-battles-lost"
-                  class="current-data form-control text-center"
-                  type="number"
-                  required
-                  readonly
-                />
+              <div class="mb-3 d-flex flex-row gap-1">
+                <div class="d-flex fle-nowrap">
+                  <span>B</span>attles&nbsp;<span>W</span>on:
+                </div>
+                <div id="mab-stats-battles-won">?</div>
+              </div>
+
+              <div class="mb-3 d-flex flex-row gap-1">
+                <div class="d-flex fle-nowrap">
+                  <span>B</span>attles&nbsp;<span>L</span>ost:
+                </div>
+                <div id="mab-stats-battles-lost">?</div>
               </div>
             </div>
 
             <div class="d-flex flex-row gap-3 w-75">
-              <div class="mb-3 d-flex flex-column w-25 justify-content-between">
-                <label for="mab-difficulty"
-                  ><span>B</span>oosters <span>O</span>pened</label
-                >
-                <input
-                  name="PlayerMabBoostersOpened"
-                  id="mab-player-boosters-opened"
-                  class="current-data form-control text-center"
-                  type="number"
-                  required
-                  readonly
-                />
-              </div>
-
               <div class="mb-3 d-flex flex-column w-50 justify-content-between">
-                <label for="mab-difficulty"><span>T</span>rophies:</label>
+                <div><span>T</span>rophies:</div>
+
+                <div class="d-flex flex-row gap-3">
+                  <div class="d-flex flex-column">
+                    <div>
+                      <img
+                        id="allcardscollected-trophy"
+                        class="trophy-icon"
+                        src="/images/icons/trophy_allcardscollected.svg"
+                      />
+                    </div>
+                    <div class="d-none">
+                      <p>All Cards Collected!</p>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-column">
+                    <div class="trophy-icon">
+                      <img
+                        id="allnpcsdefeated-trophy"
+                        class="trophy-icon"
+                        src="/images/icons/trophy_allnpcsdefeated.svg"
+                      />
+                    </div>
+                    <div class="d-none">
+                      <p>All Npcs Defeated!</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

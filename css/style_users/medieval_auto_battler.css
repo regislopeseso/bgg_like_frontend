@@ -78,6 +78,19 @@ main {
   color: var(--reddish);
 }
 
+.trophy-icon {
+  width: 64px;
+  height: 64px;
+  transition: content 0.3s; /* smooth change */
+}
+
+#allcardscollected-trophy:hover {
+  content: url("/images/icons/trophy_allcardscollected_achieved.svg"); /* hover color */
+}
+#allnpcsdefeated-trophy:hover {
+  content: url("/images/icons/trophy_allnpcsdefeated_achieved.svg"); /* hover color */
+}
+
 @media screen and (max-width: 990px) {
   .game-title {
     top: 80px !important;
