@@ -6,7 +6,6 @@ function medieval_auto_battler() {
   self.CurrentDeckSize = 0;
   self.SelectedCardId = null;
   self.Deck_CardIds = [];
-  self.Deck_Cards = [];
 
   self.LoadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
@@ -27,6 +26,9 @@ function medieval_auto_battler() {
       );
     self.Containers.ManageMabPlayerDecks = self.DOM.find(
       "#container-manage-mab-player-decks"
+    );
+    self.Containers.ManageDecks_SelectNewMabCard = self.DOM.find(
+      "#div-select-manage-mab-deck"
     );
     self.Containers.CreateMabDeck = self.DOM.find("#container-add-mab-deck");
     self.Containers.MabCampaignStats = self.DOM.find(
@@ -82,6 +84,10 @@ function medieval_auto_battler() {
       self.Inputs.ManageDecks_ActiveDeck_DeckName = self.DOM.find(
         "#mab-active-deck-name"
       );
+    self.Inputs.ManageDecks_SelectNewMabCard = self.DOM.find(
+      "#input-select-manage-mab-deck-selectedcard"
+    );
+
     self.Inputs[self.Inputs.length] = self.Inputs.AddMabDeck_DeckName =
       self.DOM.find("#input-add-mab-deck-deckname");
 
@@ -354,12 +360,21 @@ function medieval_auto_battler() {
 
         self.Inputs.ManageDecks_ActiveDeck_DeckName.html();
         self.ActiveDeck_CardsList.empty();
+        self.Deck_CardIds = [];
+        self.CurrentDeckSize = 0;
+        self.DeckSizeLimit = null;
+        self.NewMabCardSelection_Hide();
+
+        self.DeckSizeLimit = response.content.deckSizeLimit;
+        self.CurrentDeckSize = activeMabCards.length;
 
         self.Inputs.ManageDecks_ActiveDeck_DeckName.html(
           `<h4 class="m-0 p-0">${activeMabDeckName}</h4>`
         );
 
         activeMabCards.forEach((card, Index) => {
+          self.Deck_CardIds.push(card.mabCardId);
+
           let cardId = card.mabCardId;
           let cardName = card.mabCardName;
           let cardLvl = card.mabCardLevel;
@@ -368,38 +383,48 @@ function medieval_auto_battler() {
           let cardUpperHand = card.mabCardUpperHand;
 
           let listItem = `
-            <li id="li-mab-${Index}" data-card-id="${cardId}">
-              <div class="d-flex flex-row align-items-center gap-2">
-                <button
-                  class="button-modal-mab-npcs-removecard btn btn-outline-danger p-0 m-0"
-                  type="button"
-                  data-card-id="${cardId}"
-                  data-index="${self.Index}"
-                >
-                  <i class="fa-solid fa-xmark p-1 m-0"></i>
-                </button>
+          <li id="li-mab-${Index}" data-card-id="${cardId}">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <button
+                class="button-mab-current-deck-removecard btn btn-outline-danger p-0 m-0"
+                type="button"
+                data-card-id="${cardId}"
+                data-index="${Index}"
+              >
+                <i class="fa-solid fa-xmark p-1 m-0"></i>
+              </button>
 
-                <strong class="mab-card-name p-0 m-0">${cardName}</strong>
+              <strong class="mab-card-name p-0 m-0">${cardName}</strong>
 
-                <img
-                  src="/images/icons/io_arrow_right.svg"
-                  class="bi bi-arrow p-0 m-0"
-                />
+              <img
+                src="/images/icons/io_arrow_right.svg"
+                class="bi bi-arrow p-0 m-0"
+              />
 
-                <div class="mab-card-data">
-
-                  <span>L</span>evel: <strong>${cardLvl}</strong>,
-                  <span>T</span>ype: <strong>${cardType}</strong>,
-                  <span>P</span>ower: <strong>${cardPower}</strong>,
-                  <span>U</span>pper <span>H</span>and:
-                  <strong>${cardUpperHand}</strong>
-                </div>
+              <div class="mab-card-data">
+                <span>L</span>evel: <strong>${cardLvl}</strong>,
+                <span>T</span>ype: <strong>${cardType}</strong>,
+                <span>P</span>ower: <strong>${cardPower}</strong>,
+                <span>U</span>pper <span>H</span>and:
+                <strong>${cardUpperHand}</strong>
               </div>
-            </li>
+            </div>
+          </li>
           `;
 
           self.ActiveDeck_CardsList.append(listItem);
         });
+        // Binding the event after inserting into DOM
+        $(document).on(
+          "click",
+          ".button-mab-current-deck-removecard",
+          function () {
+            let index = $(this).data("index");
+            let cardId = $(this).data("card-id");
+            self.RemoveCurrentMabCard(index, cardId);
+            self.NewMabCardSelection_Display();
+          }
+        );
       },
       error: function (xhr, status, error) {
         sweetAlertError(
@@ -409,6 +434,69 @@ function medieval_auto_battler() {
       complete: function () {},
     });
   };
+  self.RemoveCurrentMabCard = (index, cardId) => {
+    console.log("self.Deck_CardIds: ", self.Deck_CardIds);
+    self.Deck_CardIds.splice(index, 1);
+    self.ActiveDeck_CardsList.find(`#li-mab-${index}`).remove();
+  };
+  self.NewMabCardSelection_Display = () => {
+    if (
+      self.Inputs.ManageDecks_SelectNewMabCard.hasClass(
+        "select2-hidden-accessible"
+      )
+    ) {
+      self.Inputs.ManageDecks_SelectNewMabCard.select2("destroy");
+    }
+
+    // Fetch the mab player cards and their count from the backend
+    fetch("https://localhost:7081/users/listinactivemabcardcopies", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.content) {
+          sweetAlertError("Failed to load mab player cards:", data.message);
+          return;
+        }
+
+        const mabPlayerCards = data.content.map((item) => ({
+          id: item.mabCardId,
+          text: item.mabCardDescription,
+        }));
+
+        // Clear previous options and add empty one
+        self.Inputs.ManageDecks_SelectNewMabCard.empty().append(
+          `<option></option>`
+        );
+
+        self.Inputs.ManageDecks_SelectNewMabCard.select2({
+          data: mabPlayerCards,
+          dropdownParent: self.DOM,
+          placeholder: "Select a card",
+          allowClear: true,
+          theme: "classic",
+          width: "100%",
+          templateSelection: (data) => {
+            if (!data.id) return data.text;
+            return $("<strong>").text(data.text);
+          },
+        });
+      })
+      .catch((err) => {
+        sweetAlertError("Error fetching mab player cards:", err);
+      });
+
+    self.Containers.ManageDecks_SelectNewMabCard.removeClass(
+      "hide-div"
+    ).addClass("show-div");
+  };
+  self.NewMabCardSelection_Hide = () => {
+    self.Containers.ManageDecks_SelectNewMabCard.removeClass(
+      "show-div"
+    ).addClass("hide-div");
+  };
+
   self.AddMabDeckForm_Open = () => {
     self.ToggleVisibility(self.Containers.CreateMabDeck);
 

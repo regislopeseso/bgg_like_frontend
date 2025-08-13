@@ -179,6 +179,15 @@
                 <span>M</span>anage <span>P</span>layer <span>D</span>ecks
               </h3>
             </div>
+            <div>
+              <button class="btn btn-outline-info">Change Deck</button>
+              <button
+                id="button-open-add-mab-deck"
+                class="btn btn-outline-info"
+              >
+                New Deck
+              </button>
+            </div>
             <button
               id="button-close-manage-mab-player-decks"
               class="btn btn-outline-danger btn-sm"
@@ -199,14 +208,26 @@
               />
 
               <i><span id="mab-active-deck-name"></span></i>
+
+              <div
+                class="comboBox-wrapper d-flex flex-row gap-2 hide-div"
+                id="div-select-manage-mab-deck"
+              >
+                <div class="comboBox">
+                  <select
+                    name="MabCardId"
+                    id="input-select-manage-mab-deck-selectedcard"
+                    class="form-control form-select required"
+                  ></select>
+                </div>
+
+                <button class="btn btn-outline-success btn-sm">Add</button>
+              </div>
             </div>
             <ol id="ol-mab-player-cardsList"></ol>
           </div>
           <div>
-            <button class="btn btn-outline-info">Change Deck</button>
-            <button id="button-open-add-mab-deck" class="btn btn-outline-info">
-              New Deck
-            </button>
+            <canvas id="myChart"></canvas>
           </div>
         </div>
 
@@ -257,7 +278,7 @@
                 <span>S</span>elect <span>C</span>ards
               </label>
 
-              <div class="comboBox-wrapper">
+              <div class="comboBox-wrapper d-flex flex-row gap-2">
                 <div class="comboBox">
                   <select
                     name="MabCardId"
@@ -265,6 +286,9 @@
                     class="form-control form-select required"
                   ></select>
                 </div>
+
+                <button class="btn btn-outline-success btn-sm">Add</button>
+                <button class="btn btn-outline-warning btn-sm">Clear</button>
               </div>
             </div>
 
@@ -435,7 +459,7 @@
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/node_modules/select2/dist/js/select2.min.js"></script>
     <script src="/js/plugins/page_loader.js"></script>
     <script src="/js/plugins/content_loader.js"></script>
@@ -447,6 +471,31 @@
     <script>
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
         new bootstrap.Tooltip(el);
+      });
+    </script>
+
+    <script>
+      const ctx = document.getElementById("myChart");
+
+      new Chart(ctx, {
+        type: "polarArea",
+        data: {
+          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          datasets: [
+            {
+              label: "# of Votes",
+              data: [12, 19, 3, 5, 2, 3],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
       });
     </script>
   </body>
