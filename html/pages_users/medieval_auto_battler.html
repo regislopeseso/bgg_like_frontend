@@ -200,7 +200,7 @@
           <hr />
 
           <div>
-            <div class="d-flex flex-row align-items-center gap-2">
+            <div class="d-flex flex-row align-items-center gap-2 mb-3">
               <p class="p-0 m-0"><span>A</span>ctive <span>D</span>eck</p>
               <img
                 src="/images/icons/io_arrow_right.svg"
@@ -209,11 +209,39 @@
 
               <i><span id="mab-active-deck-name"></span></i>
 
+              <div id="container-mab-active-deck-edit-button" class="show-div">
+                <button
+                  id="button-mab-active-deck-edit-or-confirm"
+                  class="btn btn-outline-warning btn-sm"
+                >
+                  Edit
+                </button>
+              </div>
+
               <div
-                class="comboBox-wrapper d-flex flex-row gap-2 hide-div"
+                id="container-mab-active-deck-cancel-edit-button"
+                class="hide-div"
+              >
+                <button
+                  id="button-mab-active-deck-cancel-edit"
+                  class="btn btn-outline-danger btn-sm"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+
+            <div class="d-flex flex-row gap-5 w-100 align-items-center mb-4">
+              <div>
+                <span>D</span>eck <span>S</span>ize:&nbsp;
+                <span id="span-mab-deck-size"></span>
+              </div>
+
+              <div
+                class="d-flex flex-row gap-2 hide-div"
                 id="div-select-manage-mab-deck"
               >
-                <div class="comboBox">
+                <div>
                   <select
                     name="MabCardId"
                     id="input-select-manage-mab-deck-selectedcard"
@@ -221,13 +249,28 @@
                   ></select>
                 </div>
 
-                <button class="btn btn-outline-success btn-sm">Add</button>
+                <button
+                  id="button-activate-mabcardcopy"
+                  class="btn btn-outline-success btn-sm"
+                >
+                  Add
+                </button>
               </div>
             </div>
-            <ol id="ol-mab-player-cardsList"></ol>
-          </div>
-          <div>
-            <canvas id="myChart"></canvas>
+
+            <div class="d-flex flex-column gap-3 mb-3">
+              <div>
+                <span>D</span>eck <span>B</span>alance:&nbsp;
+                <span id="span-mab-deck-balance"></span>
+              </div>
+
+              <canvas id="myChart" class="d-none"></canvas>
+            </div>
+
+            <div>
+              <div><span>D</span>eck <span>C</span>ards:</div>
+              <ol id="ol-mab-player-cardsList"></ol>
+            </div>
           </div>
         </div>
 
