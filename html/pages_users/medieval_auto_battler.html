@@ -9,11 +9,16 @@
   </head>
   <body>
     <div class="game-title">
-      <h3>
-        <strong
-          ><span>M</span>edieval <span>A</span>uto <span>B</span>attler</strong
-        >
-      </h3>
+      <div class="d-flex flex-row align-items-center">
+        <img src="/images/icons/visored-helm.svg" id="mab-icon" />
+
+        <h3 class="p-0 m-0">
+          <strong
+            ><span>M</span>edieval <span>A</span>uto
+            <span>B</span>attler</strong
+          >
+        </h3>
+      </div>
     </div>
     <main id="dom-medieval-auto-battler">
       <section id="mab-content">
@@ -200,36 +205,46 @@
           <hr />
 
           <div>
-            <div class="d-flex flex-row align-items-center gap-2 mb-3">
-              <p class="p-0 m-0"><span>A</span>ctive <span>D</span>eck</p>
-              <img
-                src="/images/icons/io_arrow_right.svg"
-                class="bi bi-arrow p-0 m-0"
-              />
+            <form id="form-mab-active-deck">
+              <div class="d-flex flex-row align-items-center gap-2 mb-3">
+                <label><span>A</span>ctive <span>D</span>eck</label>
 
-              <i><span id="mab-active-deck-name"></span></i>
-
-              <div id="container-mab-active-deck-edit-button" class="show-div">
-                <button
-                  id="button-mab-active-deck-edit-or-confirm"
-                  class="btn btn-outline-warning btn-sm"
-                >
-                  Edit
-                </button>
+                <div class="d-flex flex-row gap-3">
+                  <input
+                    name="ActiveMabDeckNewName"
+                    id="mab-active-deck-name"
+                    class="current-data form-control text-center"
+                    type="text"
+                    readonly
+                  />
+                  <div class="d-flex flex-row gap-1">
+                    <button
+                      id="button-edit-active-mab-deck-name"
+                      class="btn btn-outline-warning btn-sm"
+                      type="button"
+                    >
+                      edit
+                    </button>
+                    <button
+                      id="button-confirm-active-mab-deck-new-name"
+                      class="btn btn-outline-success btn-sm"
+                      type="button"
+                      disabled
+                    >
+                      confirm
+                    </button>
+                    <button
+                      id="button-cancel-active-mab-deck-new-name"
+                      class="btn btn-outline-danger btn-sm"
+                      type="button"
+                      disabled
+                    >
+                      cancel
+                    </button>
+                  </div>
+                </div>
               </div>
-
-              <div
-                id="container-mab-active-deck-cancel-edit-button"
-                class="hide-div"
-              >
-                <button
-                  id="button-mab-active-deck-cancel-edit"
-                  class="btn btn-outline-danger btn-sm"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
+            </form>
 
             <div class="d-flex flex-row gap-5 w-100 align-items-center mb-4">
               <div>
@@ -264,7 +279,9 @@
                 <span id="span-mab-deck-balance"></span>
               </div>
 
-              <canvas id="myChart" class="d-none"></canvas>
+              <div class="deck-balance-chart-style">
+                <canvas id="chart-mab-deck-balance"></canvas>
+              </div>
             </div>
 
             <div>
@@ -383,9 +400,7 @@
                 <div
                   class="mb-3 d-flex flex-column w-75 justify-content-between"
                 >
-                  <label for="mab-stats-player-new-nickname"
-                    ><span>P</span>layer <span>N</span>ame</label
-                  >
+                  <label><span>P</span>layer <span>N</span>ame</label>
                   <div class="d-flex flex-row gap-3">
                     <input
                       name="MabPlayerNewNickName"
@@ -514,31 +529,6 @@
     <script>
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
         new bootstrap.Tooltip(el);
-      });
-    </script>
-
-    <script>
-      const ctx = document.getElementById("myChart");
-
-      new Chart(ctx, {
-        type: "polarArea",
-        data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-          datasets: [
-            {
-              label: "# of Votes",
-              data: [12, 19, 3, 5, 2, 3],
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
       });
     </script>
   </body>

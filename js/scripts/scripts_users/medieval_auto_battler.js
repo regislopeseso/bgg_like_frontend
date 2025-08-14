@@ -2,12 +2,13 @@ function medieval_auto_battler() {
   let self = this;
   self.IsBuilt = false;
 
-  self.DeckSizeLimit = null;
-  self.CurrentDeckSize = 0;
+  self.MabDeckSizeLimit = null;
+  self.ActiveMabDeckSize = 0;
   self.ActiveMabDeckId = null;
+  self.ActiveMabDeckName = "";
 
   self.SelectedMabCardCopyId = null;
-  self.Deck_CardIds = [];
+  self.MabDeck_CardIds = [];
 
   self.LoadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
@@ -19,7 +20,10 @@ function medieval_auto_battler() {
     self.StartNewMabCampaign_Form = self.DOM.find(
       "#form-mab-start-new-campaign"
     );
+
     self.ActiveDeck_CardsList = self.DOM.find("#ol-mab-player-cardsList");
+
+    self.MabDeckBalanceChart = self.DOM.find("#chart-mab-deck-balance");
 
     self.Containers = [];
     self.Containers[self.Containers.length] =
@@ -28,12 +32,6 @@ function medieval_auto_battler() {
       );
     self.Containers.ManageMabPlayerDecks = self.DOM.find(
       "#container-manage-mab-player-decks"
-    );
-    self.Containers.ManageDecks_EditActiveDeck = self.DOM.find(
-      "#container-mab-active-deck-edit-button"
-    );
-    self.Containers.ManageDecks_CancelEditActiveDeck = self.DOM.find(
-      "#container-mab-active-deck-cancel-edit-button"
     );
 
     self.Containers.ManageDecks_SelectNewMabCard = self.DOM.find(
@@ -59,12 +57,16 @@ function medieval_auto_battler() {
 
     self.Buttons[self.Buttons.length] = self.Buttons.OpenManageMabPlayerDecks =
       self.DOM.find("#button-open-manage-mab-player-decks");
+    self.Buttons[self.Buttons.length] = self.Buttons.EditActiveMabDeckName =
+      self.DOM.find("#button-edit-active-mab-deck-name");
     self.Buttons[self.Buttons.length] =
-      self.Buttons.EditOrConfirmActiveMabDeck = self.DOM.find(
-        "#button-mab-active-deck-edit-or-confirm"
+      self.Buttons.ConfirmActiveMabDeckNewName = self.DOM.find(
+        "#button-confirm-active-mab-deck-new-name"
       );
-    self.Buttons[self.Buttons.length] = self.Buttons.CancelEditActiveMabDeck =
-      self.DOM.find("#button-mab-active-deck-cancel-edit");
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.CancelActiveMabDeckNewName = self.DOM.find(
+        "#button-cancel-active-mab-deck-new-name"
+      );
     self.Buttons[self.Buttons.length] = self.Buttons.ActivateMabCardCopy =
       self.DOM.find("#button-activate-mabcardcopy");
     self.Buttons[self.Buttons.length] = self.Buttons.OpenAddMabDeck =
@@ -80,6 +82,10 @@ function medieval_auto_battler() {
     self.Buttons[self.Buttons.length] =
       self.Buttons.ConfirmEditMabPlayerNickName = self.DOM.find(
         "#button-confirm-edit-mab-player-nickname"
+      );
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.CancelEditMabPlayerNickName = self.DOM.find(
+        "#button-cancel-edit-mab-player-nickname"
       );
 
     self.Buttons[self.Buttons.length] = self.Buttons.OpenCampaignStats =
@@ -97,10 +103,8 @@ function medieval_auto_battler() {
     self.Inputs[self.Inputs.length] = self.Inputs.MabCampaignDifficulty_Hard =
       self.DOM.find("#mab-campaign-difficulty-hard");
 
-    self.Inputs[self.Inputs.length] =
-      self.Inputs.ManageDecks_ActiveDeck_DeckName = self.DOM.find(
-        "#mab-active-deck-name"
-      );
+    self.Inputs[self.Inputs.length] = self.Inputs.ManageDecks_ActiveDeckName =
+      self.DOM.find("#mab-active-deck-name");
     self.Inputs.ManageDecks_SelectNewMabCard = self.DOM.find(
       "#input-select-manage-mab-deck-selectedcard"
     );
@@ -195,33 +199,44 @@ function medieval_auto_battler() {
 
       self.ManageMabPlayerDecks_Open();
     });
+    self.Buttons.EditActiveMabDeckName.on("click", (e) => {
+      e.preventDefault();
+
+      self.Inputs.ManageDecks_ActiveDeckName.prop("readonly", false)
+        .removeClass("current-data")
+        .addClass("new-data")
+        .trigger("select");
+
+      self.Buttons.EditActiveMabDeckName.prop("disabled", true);
+      self.Buttons.CancelActiveMabDeckNewName.prop("disabled", false);
+      self.Buttons.ConfirmActiveMabDeckNewName.prop("disabled", false);
+    });
+    self.Buttons.ConfirmActiveMabDeckNewName.on("click", (e) => {
+      e.preventDefault();
+
+      self.EditActiveMabDeckName();
+    });
+    self.Buttons.CancelActiveMabDeckNewName.on("click", (e) => {
+      e.preventDefault();
+
+      self.Inputs.ManageDecks_ActiveDeckName.val("");
+      setTimeout((e) => {
+        self.Inputs.ManageDecks_ActiveDeckName.val(self.ActiveMabDeckName)
+          .prop("readonly", true)
+          .removeClass("new-data")
+          .addClass("current-data")
+          .blur();
+      }, 10);
+
+      self.Buttons.EditActiveMabDeckName.prop("disabled", false);
+      self.Buttons.ConfirmActiveMabDeckNewName.prop("disabled", true);
+      self.Buttons.CancelActiveMabDeckNewName.prop("disabled", true);
+    });
     // Binding the event after inserting into DOM
     $(document).on("click", ".button-mab-deactivate-cardcopy", function () {
       let index = $(this).data("index");
       let mabCardCopyId = $(this).data("mab-card-copy-id");
       self.DeactivateMabCardCopy(index, mabCardCopyId, self.ActiveMabDeckId);
-    });
-    self.Buttons.EditOrConfirmActiveMabDeck.on("click", (e) => {
-      e.preventDefault();
-
-      self.EditActiveMabDeckButton_Hide();
-
-      self.CancelEditActiveMabDeckButton_Display();
-
-      $(".button-mab-deactivate-cardcopy")
-        .removeClass("hide-div")
-        .addClass("show-div");
-    });
-    self.Buttons.CancelEditActiveMabDeck.on("click", (e) => {
-      e.preventDefault();
-
-      $(".button-mab-deactivate-cardcopy")
-        .removeClass("show-div")
-        .addClass("hide-div");
-
-      self.CancelEditActiveMabDeckButton_Hide();
-
-      self.EditActiveMabDeckButton_Display();
     });
 
     self.Inputs.ManageDecks_SelectNewMabCard.on("select2:select", function (e) {
@@ -269,6 +284,7 @@ function medieval_auto_battler() {
     });
     self.Buttons.EditMabPlayerNickname.on("click", (e) => {
       e.preventDefault();
+
       self.Inputs.Stats_NewNickname.prop("readonly", false)
         .removeClass("current-data")
         .addClass("new-data")
@@ -409,8 +425,6 @@ function medieval_auto_battler() {
     self.ShowActiveMabDeckDetails();
   };
   self.ShowActiveMabDeckDetails = () => {
-    self.EditActiveMabDeckButton_Display();
-
     $.ajax({
       type: "GET",
       url: "https://localhost:7081/users/showactivemabdeckdetails",
@@ -421,38 +435,39 @@ function medieval_auto_battler() {
           return;
         }
 
-        self.Inputs.ManageDecks_ActiveDeck_DeckName.html();
+        self.Inputs.ManageDecks_ActiveDeckName.val();
         self.Fields.ManageMabDecks_DeckSize.html();
         self.Fields.ManageMabDecks_DeckBalance.html();
         self.ActiveDeck_CardsList.empty();
-        self.Deck_CardIds = [];
-        self.CurrentDeckSize = 0;
-        self.DeckSizeLimit = null;
+        self.MabDeck_CardIds = [];
+        self.ActiveMabDeckSize = 0;
+        self.MabDeckSizeLimit = null;
         self.MabCardCopySelection_Hide();
 
         let activeMabDeck = response.content;
         self.ActiveMabDeckId = response.content.activeMabDeckId;
         self.ActiveMabDeckId;
-        let activeMabDeckName = activeMabDeck.activeMabDeckName;
+        self.ActiveMabDeckName = activeMabDeck.activeMabDeckName;
         let activeMabCardCopies = activeMabDeck.activeMabCardCopies;
         let countNeutralCardCopies = 0;
         let countRangedCardCopies = 0;
         let countCalvaryCardCopies = 0;
         let countInfantryCardCopies = 0;
         let mabDeckBalance = "";
-        self.DeckSizeLimit = response.content.mabDeckSizeLimit;
+        self.MabDeckSizeLimit = response.content.mabDeckSizeLimit;
 
-        self.CurrentDeckSize = activeMabCardCopies.length;
-        if (self.CurrentDeckSize < self.DeckSizeLimit) {
+        self.ActiveMabDeckSize = activeMabCardCopies.length;
+        if (self.ActiveMabDeckSize < self.MabDeckSizeLimit) {
           self.MabCardCopySelection_Display(self.ActiveMabDeckId);
         }
 
-        self.Inputs.ManageDecks_ActiveDeck_DeckName.html(
-          `<h4 class="m-0 p-0">${activeMabDeckName}</h4>`
+        self.Inputs.ManageDecks_ActiveDeckName.val(self.ActiveMabDeckName).css(
+          "color",
+          "var(--main-color)"
         );
 
         self.Fields.ManageMabDecks_DeckSize.html(
-          `${self.CurrentDeckSize}/${self.DeckSizeLimit}`
+          `${self.ActiveMabDeckSize}/${self.MabDeckSizeLimit}`
         );
 
         activeMabCardCopies.forEach((mabCard) => {
@@ -477,6 +492,13 @@ function medieval_auto_battler() {
         self.Fields.ManageMabDecks_DeckBalance.html(mabDeckBalance);
 
         self.buildActiveMabCardCopiesList(activeMabCardCopies);
+
+        self.buildMabDeckBalanceChart(
+          countNeutralCardCopies,
+          countRangedCardCopies,
+          countCalvaryCardCopies,
+          countInfantryCardCopies
+        );
       },
       error: function (xhr, status, error) {
         sweetAlertError(
@@ -486,9 +508,43 @@ function medieval_auto_battler() {
       complete: function () {},
     });
   };
+  self.EditActiveMabDeckName = () => {
+    let activeMabDeckNewName =
+      self.Inputs.ManageDecks_ActiveDeckName.val().trim();
+
+    if (!activeMabDeckNewName || activeMabDeckNewName.length < 1) {
+      sweetAlertError("Please fill the Nickname field!");
+
+      return;
+    }
+
+    $.ajax({
+      type: "PUT",
+      url: "https://localhost:7081/users/editactivemabdeckname",
+      data: JSON.stringify({
+        ActiveMabDeckNewName: activeMabDeckNewName,
+      }),
+      contentType: "application/json",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          sweetAlertError(resp.message);
+          return;
+        }
+
+        self.ShowActiveMabDeckDetails();
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+      complete: () => {},
+    });
+  };
   self.buildActiveMabCardCopiesList = (activeMabCardCopies) => {
     activeMabCardCopies.forEach((card, Index) => {
-      self.Deck_CardIds.push(card.mabCardId);
+      self.MabDeck_CardIds.push(card.mabCardId);
 
       let mabCardCopyId = card.mabCardCopyId;
       let mabCardName = card.mabCardName;
@@ -501,7 +557,7 @@ function medieval_auto_battler() {
           <li id="li-mab-${Index}" data-mab-card-copy-id="${mabCardCopyId}">
             <div class="d-flex flex-row align-items-center gap-2">
               <button
-                class="button-mab-deactivate-cardcopy btn btn-outline-danger p-0 m-0 hide-div"
+                class="button-mab-deactivate-cardcopy btn btn-outline-danger p-0 m-0"
                 type="button"
                 data-mab-card-copy-id="${mabCardCopyId}"
                 data-index="${Index}"
@@ -530,30 +586,8 @@ function medieval_auto_battler() {
       self.ActiveDeck_CardsList.append(listItem);
     });
   };
-  self.EditActiveMabDeckButton_Display = () => {
-    //self.ToggleVisibility(self.Containers.ManageDecks_EditActiveDeck);
-    self.Buttons.EditOrConfirmActiveMabDeck.removeClass("btn-outline-success")
-      .addClass("btn-outline-warning")
-      .html("Edit");
-
-    self.Containers.ManageDecks_CancelEditActiveDeck.removeClass(
-      "show-div"
-    ).addClass("hide-div");
-  };
-  self.EditActiveMabDeckButton_Hide = () => {
-    //self.ToggleVisibility(self.Containers.ManageDecks_EditActiveDeck);
-    self.Buttons.EditOrConfirmActiveMabDeck.removeClass("btn-outline-warning")
-      .addClass("btn-outline-success")
-      .html("Confirm");
-  };
-  self.CancelEditActiveMabDeckButton_Display = () => {
-    self.ToggleVisibility(self.Containers.ManageDecks_CancelEditActiveDeck);
-  };
-  self.CancelEditActiveMabDeckButton_Hide = () => {
-    self.ToggleVisibility(self.Containers.ManageDecks_CancelEditActiveDeck);
-  };
   self.DeactivateMabCardCopy = (index, mabCardCopyId) => {
-    self.Deck_CardIds.splice(index, 1);
+    self.MabDeck_CardIds.splice(index, 1);
 
     self.ActiveDeck_CardsList.find(`#li-mab-${index}`).remove();
 
@@ -607,7 +641,7 @@ function medieval_auto_battler() {
       complete: () => {},
     });
   };
-  self.MabCardCopySelection_Display = (activeMabDeckId) => {
+  self.MabCardCopySelection_Display = () => {
     if (
       self.Inputs.ManageDecks_SelectNewMabCard.hasClass(
         "select2-hidden-accessible"
@@ -667,6 +701,212 @@ function medieval_auto_battler() {
       "hide-div"
     ).addClass("show-div");
   };
+  self.buildMabDeckBalanceChart = (countNtl, countRng, countCav, countInf) => {
+    let dynamicLabel = [];
+    let countTypes = [];
+
+    if (countNtl > 0) {
+      dynamicLabel.push("Neutral");
+      countTypes.push(countNtl);
+    }
+    if (countRng > 0) {
+      dynamicLabel.push("Ranged");
+      countTypes.push(countRng);
+    }
+    if (countCav > 0) {
+      dynamicLabel.push("Cavalry");
+      countTypes.push(countCav);
+    }
+    if (countInf > 0) {
+      dynamicLabel.push("Infantry");
+      countTypes.push(countInf);
+    }
+
+    const rootStyles = getComputedStyle(document.documentElement);
+
+    const chartData = {
+      labels: [...dynamicLabel],
+      datasets: [
+        {
+          label: "Cards count",
+          data: [...countTypes],
+          borderWidth: 1,
+          backgroundColor: [
+            rootStyles.getPropertyValue("--main-color"),
+            rootStyles.getPropertyValue("--greenish"),
+            rootStyles.getPropertyValue("--yellowish"),
+            rootStyles.getPropertyValue("--reddish"),
+          ],
+          borderColor: rootStyles.getPropertyValue("--second-bg-color"),
+          borderWidth: 1,
+          hoverBorderColor: rootStyles.getPropertyValue("--text-color"),
+          hoverBorderWidth: 5,
+          hoverOffset: 60,
+        },
+      ],
+    };
+
+    const angleLines = {
+      id: "angleLines",
+      afterDatasetsDraw(chart) {
+        const {
+          ctx,
+          scales: { r },
+        } = chart;
+        const xCenter = r.xCenter;
+        const yCenter = r.yCenter;
+        const drawingArea = r.drawingArea;
+
+        chart.getDatasetMeta(0).data.forEach((dataPoint) => {
+          ctx.save();
+          ctx.translate(xCenter, yCenter);
+          ctx.rotate(dataPoint.endAngle + Math.PI * 0.5);
+          ctx.beginPath();
+          ctx.strokeStyle = rootStyles.getPropertyValue("--second-bg-color");
+          ctx.lineWidth = 15;
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0, -drawingArea - 50);
+          ctx.stroke();
+          ctx.restore();
+        });
+      },
+    };
+
+    const chartConfigs = {
+      type: "polarArea",
+      data: chartData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false, // hides default chart legend
+          },
+
+          tooltip: {
+            enabled: true,
+            position: "customTop",
+            backgroundColor: rootStyles.getPropertyValue("--second-bg-color"),
+            borderColor: rootStyles.getPropertyValue("--text-color"),
+            borderWidth: 1,
+            padding: 10,
+            caretSize: 0,
+            cornerRadius: 5,
+            titleFont: {
+              family: "Anta",
+              size: 16,
+              weight: "bold",
+            },
+            bodyColor: rootStyles.getPropertyValue("--text-color"),
+            bodyFont: {
+              family: "Anta",
+              size: 14,
+              weight: "normal",
+            },
+            callbacks: {
+              label: function (context) {
+                return `Cards count: ${context.formattedValue}`;
+              },
+
+              beforeTitle: function (tooltipItems) {
+                const colors = [
+                  rootStyles.getPropertyValue("--main-color"),
+                  rootStyles.getPropertyValue("--greenish"),
+                  rootStyles.getPropertyValue("--yellowish"),
+                  rootStyles.getPropertyValue("--reddish"),
+                ];
+                const index =
+                  tooltipItems[0].dataIndex !== undefined
+                    ? tooltipItems[0].dataIndex
+                    : 0;
+
+                // Set the titleColor dynamically
+                this.options.titleColor = colors[index] || colors[0];
+
+                return []; // Return empty array to prevent duplication
+              },
+            },
+          },
+        },
+        scales: {
+          r: {
+            afterTickToLabelConversion: (ctx) => {
+              ctx.ticks = ctx.ticks.filter((tick) => tick.value >= -1);
+            },
+            min: 0,
+            max: self.MabDeckSizeLimit,
+            grid: {
+              display: true,
+              color: rootStyles.getPropertyValue("--second-bg-color"),
+              lineWidth: 15,
+            },
+            ticks: {
+              display: true,
+              color: rootStyles.getPropertyValue("--text-color"),
+              stepSize: 1,
+              showLabelBackdrop: true,
+              backdropPadding: { x: 1, y: 1 },
+              backdropColor: "rgb( 51, 58, 72)",
+              backdropBorderColor: rootStyles.getPropertyValue("--text-color"),
+              tickBorderDash: 50,
+              z: 99,
+              font: {
+                family: "Anta",
+                size: 15,
+                weight: "bold",
+              },
+            },
+            border: {
+              dash: [50, 0], // dashed line pattern
+            },
+
+            pointLabels: {
+              display: true,
+              color: function (context) {
+                // context.index gives the label index
+                const colors = [
+                  rootStyles.getPropertyValue("--main-color"),
+                  rootStyles.getPropertyValue("--greenish"),
+                  rootStyles.getPropertyValue("--yellowish"),
+                  rootStyles.getPropertyValue("--reddish"),
+                ];
+                return colors[context.index % colors.length];
+              },
+              centerPointLabels: true,
+              font: {
+                family: "Anta",
+                size: 15,
+                weight: "bold",
+              },
+            },
+          },
+        },
+        layout: {
+          padding: 100,
+        },
+      },
+      plugins: [
+        angleLines,
+        {
+          id: "customTopTooltip",
+          beforeInit(chart, args, options) {
+            // Register a new positioner
+            Chart.Tooltip.positioners.customTop = function (
+              elements,
+              eventPosition
+            ) {
+              return {
+                x: chart.chartArea.left,
+                y: chart.chartArea.top + 15,
+              };
+            };
+          },
+        },
+      ],
+    };
+
+    var MabDeckBalanceChart = new Chart(self.MabDeckBalanceChart, chartConfigs);
+  };
   self.MabCardCopySelection_Hide = () => {
     self.Containers.ManageDecks_SelectNewMabCard.removeClass(
       "show-div"
@@ -688,7 +928,7 @@ function medieval_auto_battler() {
       contentType: "application/json",
       data: JSON.stringify({
         MabDeckName: self.Inputs.MabNpcName.val(),
-        MabCardIds: self.Deck_CardIds,
+        MabCardIds: self.MabDeck_CardIds,
       }),
       success: (resp) => {
         if (!resp.content) {

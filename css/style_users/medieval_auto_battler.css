@@ -1,6 +1,5 @@
 main {
-  height: calc(100vh - clamp(60px, 10vh, 90px));
-  margin-top: clamp(60px, 10vh, 90px);
+  margin-top: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,8 +9,12 @@ main {
   position: fixed;
   left: 15px;
   z-index: 9999;
-
   top: 100px;
+}
+
+#mab-icon {
+  width: 100px;
+  height: 100px;
 }
 
 #mab-content {
@@ -20,15 +23,6 @@ main {
   align-items: center;
   justify-content: start;
   gap: 1rem;
-
-  padding: 50px;
-
-  min-height: 600px !important;
-  min-width: 800px !important;
-
-  border-radius: 2.5rem;
-  box-shadow: 1px 1px 10px 10px var(--text-color);
-
   z-index: 1;
 }
 
@@ -90,13 +84,26 @@ main {
   min-width: 5rem !important;
 }
 
+.deck-balance-chart-style {
+  width: 650px !important;
+  height: 650px !important;
+}
+
 @media screen and (max-width: 990px) {
   .game-title {
-    top: 80px !important;
+    top: 90px !important;
+  }
+  #mab-icon {
+    width: 60px;
+    height: 60px;
   }
 }
 @media screen and (max-width: 575px) {
   .game-title {
-    top: 50px !important;
+    top: 60px !important;
+  }
+  #mab-icon {
+    width: 25px;
+    height: 25px;
   }
 }

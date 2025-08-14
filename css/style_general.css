@@ -6,9 +6,9 @@
   --second-bg-color: rgb(51, 58, 72);
   --text-color: rgb(255, 255, 255);
   --main-color: rgb(0, 238, 255);
-  --reddish: #ff3300;
+  --reddish: rgb(255, 51, 0);
   --yellowish: rgb(255, 230, 0);
-  --greenish: #00ff80;
+  --greenish: rgb(0, 255, 128);
 }
 
 * {
