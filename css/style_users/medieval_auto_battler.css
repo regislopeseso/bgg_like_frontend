@@ -7,14 +7,17 @@ main {
 
 .game-title {
   position: fixed;
-  left: 15px;
-  z-index: 9999;
-  top: 100px;
+  top: 10px;
+  left: 0px;
+  width: fit-content;
+  z-index: 101;
+  background-color: var(--second-bg-color);
 }
 
 #mab-icon {
-  width: 100px;
-  height: 100px;
+  margin: 20px 0px;
+  width: 30px;
+  height: 30px;
 }
 
 #mab-content {
@@ -44,6 +47,9 @@ main {
 #container-mab-load-campaign,
 #container-mab-campaign-stats {
   position: absolute;
+  width: fit-content;
+  left: 50vw;
+  transform: translateX(-50%);
 }
 
 .show-div {
@@ -96,21 +102,78 @@ main {
   min-width: 5rem !important;
 }
 
-@media screen and (max-width: 990px) {
+@media screen and (max-width: 1440px) {
   .game-title {
-    top: 90px !important;
-  }
-  #mab-icon {
-    width: 60px;
-    height: 60px;
+    top: 75px;
+    width: 100%;
+    z-index: 99;
+    background-color: var(--bg-color);
   }
 }
-@media screen and (max-width: 575px) {
+
+@media screen and (max-width: 1099px) {
+  main {
+    margin-top: 160px;
+  }
   .game-title {
-    top: 60px !important;
+    top: 85px;
+    width: 100%;
+    z-index: 99;
+    background-color: var(--bg-color);
+  }
+  #div-deck-data-content {
+    flex-direction: column !important;
+  }
+}
+
+@media screen and (max-width: 990px) {
+  main {
+    margin-top: 100px;
+  }
+  .game-title {
+    top: 20px;
+    left: 200px;
+    width: fit-content;
+    z-index: 101;
+    background-color: var(--second-bg-color);
   }
   #mab-icon {
-    width: 25px;
-    height: 25px;
+    margin: 0px 0px;
+    width: 30px;
+    height: 30px;
+  }
+  #container-manage-mab-player-decks {
+    width: 90vw;
+  }
+}
+@media screen and (max-width: 576px) {
+  main {
+    margin-top: 80px;
+  }
+  .game-title {
+    position: absolute; /* or fixed if you want it relative to viewport */
+    top: 5px;
+    left: 180px;
+    width: fit-content;
+    z-index: 101;
+    background-color: var(--second-bg-color);
+  }
+
+  #mab-icon {
+    margin: 0;
+    width: 30px;
+    height: 30px;
+  }
+
+  #container-mab-start-new-campaign-form,
+  #container-manage-mab-player-decks,
+  #container-add-mab-deck,
+  #container-mab-load-campaign,
+  #container-mab-campaign-stats {
+    width: 90vw;
+  }
+
+  .deck-balance-chart-style {
+    display: none;
   }
 }

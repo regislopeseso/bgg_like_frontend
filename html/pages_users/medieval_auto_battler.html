@@ -13,20 +13,18 @@
         <img src="/images/icons/visored-helm.svg" id="mab-icon" />
 
         <h3 class="p-0 m-0">
-          <strong
-            ><span>M</span>edieval <span>A</span>uto
-            <span>B</span>attler</strong
-          >
+          <strong><span>M</span>.<span>A</span>.<span>B</span>.</strong>
         </h3>
       </div>
     </div>
     <main id="dom-medieval-auto-battler">
       <section id="mab-content">
         <div id="mab-menu" class="show-div">
-          <h3>
-            <span>M</span>.<span>A</span>.<span>B</span>. <span>M</span>ain
-            <span>M</span>enu
-          </h3>
+          <div class="d-flex flex-column w-100 gap-0">
+            <h3 class="p-0 m-0"><span>M</span>ain <span>M</span>enu</h3>
+            <hr />
+          </div>
+
           <!-- Start New Mab Campaign -->
           <button
             id="button-mab-start-new-campaign"
@@ -71,11 +69,9 @@
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
             <div id="form-title-mab-start-new-campaign" class="p-0 m-0">
-              <h3 class="p-0 m-0">
-                <span>N</span>ew <span>M</span>.<span>A</span>.<span>B</span>.
-                <span>C</span>ampaign
-              </h3>
+              <h3 class="p-0 m-0"><span>N</span>ew <span>C</span>ampaign</h3>
             </div>
+
             <button
               id="button-mab-start-new-campain-close-form"
               class="btn btn-outline-danger btn-sm"
@@ -177,22 +173,27 @@
         <div id="container-manage-mab-player-decks" class="hide-div">
           <div
             id="header-manage-mab-player-decks"
-            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
+            class="d-flex flex-row flex-nowrap justify-content-between align-items-center gap-3"
           >
-            <div id="container-title-mab-start-new-campaign" class="p-0 m-0">
+            <div
+              id="container-title-mab-start-new-campaign"
+              class="d-flex flex-row p-0 m-0 gap-3"
+            >
               <h3 class="p-0 m-0">
                 <span>M</span>anage <span>P</span>layer <span>D</span>ecks
               </h3>
+
+              <div>
+                <button class="btn btn-outline-info btn-sm">Change Deck</button>
+                <button
+                  id="button-open-add-mab-deck"
+                  class="btn btn-outline-success btn-sm"
+                >
+                  New Deck
+                </button>
+              </div>
             </div>
-            <div>
-              <button class="btn btn-outline-info">Change Deck</button>
-              <button
-                id="button-open-add-mab-deck"
-                class="btn btn-outline-info"
-              >
-                New Deck
-              </button>
-            </div>
+
             <button
               id="button-close-manage-mab-player-decks"
               class="btn btn-outline-danger btn-sm"
@@ -204,117 +205,120 @@
 
           <hr />
 
-          <div>
-            <form id="form-mab-active-deck">
-              <div class="d-flex flex-row align-items-center gap-2 mt-3 mb-3">
-                <label><span>A</span>ctive <span>D</span>eck</label>
+          <div id="div-deck-data-content" class="d-flex flex-row">
+            <div class="d-flex flex-column gap-5">
+              <form id="form-mab-active-deck">
+                <div class="d-flex flex-row align-items-center gap-3">
+                  <label><span>A</span>ctive <span>D</span>eck:</label>
 
-                <div class="d-flex flex-row gap-3">
-                  <input
-                    name="ActiveMabDeckNewName"
-                    id="mab-active-deck-name"
-                    class="current-data form-control text-center"
-                    type="text"
-                    readonly
-                  />
-                  <div class="d-flex flex-row gap-1">
-                    <button
-                      id="button-edit-active-mab-deck-name"
-                      class="btn btn-outline-warning btn-sm"
-                      type="button"
-                    >
-                      edit
-                    </button>
-                    <button
-                      id="button-confirm-active-mab-deck-new-name"
-                      class="btn btn-outline-success btn-sm"
-                      type="button"
-                      disabled
-                    >
-                      confirm
-                    </button>
-                    <button
-                      id="button-cancel-active-mab-deck-new-name"
-                      class="btn btn-outline-danger btn-sm"
-                      type="button"
-                      disabled
-                    >
-                      cancel
-                    </button>
+                  <div class="d-flex flex-row gap-3">
+                    <input
+                      name="ActiveMabDeckNewName"
+                      id="mab-active-deck-name"
+                      class="current-data form-control text-center"
+                      type="text"
+                      readonly
+                    />
+                    <div class="d-flex flex-row gap-1">
+                      <button
+                        id="button-edit-active-mab-deck-name"
+                        class="btn btn-outline-warning btn-sm"
+                        type="button"
+                      >
+                        edit
+                      </button>
+                      <button
+                        id="button-confirm-active-mab-deck-new-name"
+                        class="btn btn-outline-success btn-sm"
+                        type="button"
+                        disabled
+                      >
+                        confirm
+                      </button>
+                      <button
+                        id="button-cancel-active-mab-deck-new-name"
+                        class="btn btn-outline-danger btn-sm"
+                        type="button"
+                        disabled
+                      >
+                        cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
 
-            <div class="d-flex flex-row gap-5 w-100 align-items-center mb-4">
-              <div>
-                <span>D</span>eck <span>S</span>ize:&nbsp;
-                <span id="span-mab-deck-size"></span>
+              <div class="d-flex flex-column mb-0 gap-2">
+                <div class="d-flex flex-row gap-2">
+                  <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
+
+                  <div id="span-mab-deck-balance" class="d-flex flex-row gap-1">
+                    <div>
+                      <strong>N</strong>eutral:
+                      <strong
+                        class="strong-mab-deck-neutral-type-count"
+                      ></strong>
+                    </div>
+                    &nbsp;|&nbsp;
+                    <div>
+                      <span style="color: var(--greenish)">R</span
+                      >anged:&nbsp;<span
+                        class="span-mab-deck-ranged-type-count"
+                        style="color: var(--greenish)"
+                      ></span>
+                    </div>
+                    &nbsp;|&nbsp;
+                    <div>
+                      <span style="color: var(--reddish)">C</span
+                      >avalry:&nbsp;<span
+                        class="span-mab-deck-cavalry-type-count"
+                        style="color: var(--reddish)"
+                      ></span>
+                    </div>
+                    &nbsp;|&nbsp;
+                    <div>
+                      <span style="color: var(--yellowish)">I</span
+                      >nfantry:&nbsp;<span
+                        class="span-mab-deck-infantry-type-count"
+                        style="color: var(--yellowish)"
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+
+                <ol id="ol-mab-player-cardsList" class="mab-cards-list"></ol>
               </div>
 
-              <div
-                class="d-flex flex-row gap-2 hide-div"
-                id="div-select-manage-mab-deck"
-              >
+              <div class="d-flex flex-row gap-5 w-100 align-items-center">
                 <div>
-                  <select
-                    name="MabCardId"
-                    id="input-select-manage-mab-deck-selectedcard"
-                    class="form-control form-select required"
-                  ></select>
+                  <span>D</span>eck <span>S</span>ize:&nbsp;
+                  <span id="span-mab-deck-size"></span>
                 </div>
 
-                <button
-                  id="button-activate-mabcardcopy"
-                  class="btn btn-outline-success btn-sm"
+                <div
+                  class="d-flex flex-row gap-2 hide-div"
+                  id="div-select-manage-mab-deck"
                 >
-                  Add
-                </button>
-              </div>
-            </div>
+                  <div>
+                    <select
+                      name="MabCardId"
+                      id="input-select-manage-mab-deck-selectedcard"
+                      class="form-control form-select required"
+                    ></select>
+                  </div>
 
-            <div class="d-flex flex-column mb-0 gap-2">
-              <div class="d-flex flex-row gap-2">
-                <div><span>D</span>eck <span>C</span>ards:</div>
-
-                <div id="span-mab-deck-balance" class="d-flex flex-row gap-1">
-                  <div>
-                    <strong>N</strong>eutral:&nbsp;
-                    <strong id="strong-mab-deck-neutral-type-count"></strong>
-                  </div>
-                  |
-                  <div>
-                    <span style="color: var(--greenish)">R</span
-                    >anged:&nbsp;<span
-                      id="span-mab-deck-ranged-type-count"
-                      style="color: var(--greenish)"
-                    ></span>
-                  </div>
-                  |
-                  <div>
-                    <span style="color: var(--reddish)">C</span
-                    >avalry:&nbsp;<span
-                      id="span-mab-deck-cavalry-type-count"
-                      style="color: var(--reddish)"
-                    ></span>
-                  </div>
-                  |
-                  <div>
-                    <span style="color: var(--yellowish)">I</span
-                    >nfantry:&nbsp;<span
-                      id="span-mab-deck-infantry-type-count"
-                      style="color: var(--yellowish)"
-                    ></span>
-                  </div>
+                  <button
+                    id="button-activate-mabcardcopy"
+                    class="btn btn-outline-success btn-sm"
+                  >
+                    Add
+                  </button>
                 </div>
               </div>
-              <ol id="ol-mab-player-cardsList" class="mab-cards-list"></ol>
             </div>
 
-            <div class="d-flex flex-column">
-              <div class="deck-balance-chart-style">
-                <canvas id="chart-mab-deck-balance"></canvas>
-              </div>
+            <div class="deck-balance-chart-style">
+              <canvas id="chart-mab-deck-balance"></canvas>
             </div>
           </div>
         </div>
@@ -342,7 +346,11 @@
 
           <hr />
 
-          <form id="form-add-mab-deck" class="pt-3" action="">
+          <form
+            id="form-add-mab-deck"
+            class="pt-3 d-flex flex-column gap-3"
+            action=""
+          >
             <!-- Input: Deckname -->
             <div class="mb-3 d-flex flex-column w-100 justify-content-between">
               <label for="player-nickname"
@@ -359,25 +367,73 @@
             </div>
 
             <!-- Input: Select Deck Cards -->
-            <div
-              class="mb-3 d-flex flex-column w-100 justify-content-between pt-3 pb-3"
-            >
-              <label class="form-label">
-                <span>S</span>elect <span>C</span>ards
-              </label>
+            <div class="d-flex flex-row gap-5 w-100 align-items-center mb-5">
+              <div>
+                <span>D</span>eck <span>S</span>ize:&nbsp;
+                <span id="span-mab-newdeck-deck-size"></span>
+              </div>
 
-              <div class="comboBox-wrapper d-flex flex-row gap-2">
-                <div class="comboBox">
+              <div class="d-flex flex-row gap-2" id="div-select-mab-newdeck">
+                <div>
                   <select
                     name="MabCardId"
-                    id="input-add-mab-deck-selectedcard"
+                    id="input-add-mab-deck-cardselection"
                     class="form-control form-select required"
                   ></select>
                 </div>
 
-                <button class="btn btn-outline-success btn-sm">Add</button>
-                <button class="btn btn-outline-warning btn-sm">Clear</button>
+                <button
+                  id="button-activate-mab-newdeck-cardcopy"
+                  class="btn btn-outline-success btn-sm"
+                >
+                  Add
+                </button>
               </div>
+            </div>
+
+            <div class="d-flex flex-column mb-0 gap-2 hide-div">
+              <div class="d-flex flex-row gap-2">
+                <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
+
+                <div id="span-mab-deck-balance" class="d-flex flex-row gap-1">
+                  <div>
+                    <strong>N</strong>eutral:
+                    <strong class="strong-mab-deck-neutral-type-count"></strong>
+                  </div>
+
+                  &nbsp;|&nbsp;
+
+                  <div>
+                    <span style="color: var(--greenish)">R</span
+                    >anged:&nbsp;<span
+                      id="span-mab-deck-ranged-type-count"
+                      style="color: var(--greenish)"
+                    ></span>
+                  </div>
+
+                  &nbsp;|&nbsp;
+
+                  <div>
+                    <span style="color: var(--reddish)">C</span
+                    >avalry:&nbsp;<span
+                      id="span-mab-deck-cavalry-type-count"
+                      style="color: var(--reddish)"
+                    ></span>
+                  </div>
+
+                  &nbsp;|&nbsp;
+
+                  <div>
+                    <span style="color: var(--yellowish)">I</span
+                    >nfantry:&nbsp;<span
+                      id="span-mab-deck-infantry-type-count"
+                      style="color: var(--yellowish)"
+                    ></span>
+                  </div>
+                </div>
+              </div>
+
+              <ol id="ol-mab-newdeck-cardsList" class="mab-cards-list"></ol>
             </div>
 
             <hr />
@@ -395,16 +451,15 @@
         <!-- 4.CONTAINER: MAB CAMPAIGN STATS -->
         <div id="container-mab-campaign-stats" class="hide-div">
           <div
-            class="d-flex flex-column justify-content-center align-items-center"
+            class="d-flex flex-column justify-content-center align-items-start w-100"
           >
             <!-- Title -->
             <div
               id="header-mab-campaign-stats"
-              class="d-flex flex-row justify-content-between align-items-center w-75 gap-3"
+              class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
             >
               <div id="title-mab-campaign-stats" class="p-0 m-0">
                 <h3 class="p-0 m-0">
-                  <span>M</span>.<span>A</span>.<span>B</span>.
                   <span>C</span>ampaign <span>S</span>tatistics
                 </h3>
               </div>
@@ -418,16 +473,14 @@
               </button>
             </div>
 
-            <hr class="w-75" />
+            <hr />
 
             <!-- Fields -->
             <div
-              class="d-flex flex-column justify-content-start align-items-start w-75 mt-3"
+              class="d-flex flex-column justify-content-start align-items-start mt-3"
             >
               <form id="form-mab-start-new-campaign" action="">
-                <div
-                  class="mb-3 d-flex flex-column w-75 justify-content-between"
-                >
+                <div class="mb-3 d-flex flex-column justify-content-between">
                   <label><span>P</span>layer <span>N</span>ame</label>
                   <div class="d-flex flex-row gap-3">
                     <input
@@ -464,14 +517,14 @@
                 </div>
 
                 <div class="mb-3 d-flex flex-row gap-1">
-                  <div class="d-flex fle-nowrap">
+                  <div class="d-flex flex-nowrap">
                     <span>G</span>old&nbsp;<span>S</span>tash:
                   </div>
                   <div id="mab-stats-gold-stash">?</div>
                 </div>
 
                 <div class="mb-3 d-flex flex-row gap-1">
-                  <div class="d-flex fle-nowrap">
+                  <div class="d-flex flex-nowrap">
                     <span>B</span>oosters&nbsp;<span>O</span>pened:
                   </div>
                   <div id="mab-stats-boosters-opened">?</div>
@@ -480,28 +533,28 @@
 
               <div class="d-flex flex-row gap-3">
                 <div class="mb-3 d-flex flex-row gap-1">
-                  <div class="d-flex fle-nowrap">
+                  <div class="d-flex flex-nowrap">
                     <span>B</span>attles&nbsp;<span>C</span>ount:
                   </div>
                   <div id="mab-stats-battles-count">?</div>
                 </div>
 
                 <div class="mb-3 d-flex flex-row gap-1">
-                  <div class="d-flex fle-nowrap">
+                  <div class="d-flex flex-nowrap">
                     <span>B</span>attles&nbsp;<span>W</span>on:
                   </div>
                   <div id="mab-stats-battles-won">?</div>
                 </div>
 
                 <div class="mb-3 d-flex flex-row gap-1">
-                  <div class="d-flex fle-nowrap">
+                  <div class="d-flex flex-nowrap">
                     <span>B</span>attles&nbsp;<span>L</span>ost:
                   </div>
                   <div id="mab-stats-battles-lost">?</div>
                 </div>
               </div>
 
-              <div class="d-flex flex-row gap-3 w-75">
+              <div class="d-flex flex-row gap-3">
                 <div
                   class="mb-3 d-flex flex-column w-50 justify-content-between"
                 >
