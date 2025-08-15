@@ -74,6 +74,18 @@ main {
   color: var(--reddish);
 }
 
+.mab-cards-list {
+  padding: 10px 10px 10px 10px;
+  border: 1px solid var(--text-color);
+  border-radius: 12px;
+  background-color: var(--second-bg-color);
+}
+
+.deck-balance-chart-style {
+  width: 650px !important;
+  height: 650px !important;
+}
+
 .trophy-icon {
   width: 64px;
   height: 64px;
@@ -82,11 +94,6 @@ main {
 
 .tooltip-inner {
   min-width: 5rem !important;
-}
-
-.deck-balance-chart-style {
-  width: 650px !important;
-  height: 650px !important;
 }
 
 @media screen and (max-width: 990px) {

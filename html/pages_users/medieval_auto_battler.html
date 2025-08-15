@@ -206,7 +206,7 @@
 
           <div>
             <form id="form-mab-active-deck">
-              <div class="d-flex flex-row align-items-center gap-2 mb-3">
+              <div class="d-flex flex-row align-items-center gap-2 mt-3 mb-3">
                 <label><span>A</span>ctive <span>D</span>eck</label>
 
                 <div class="d-flex flex-row gap-3">
@@ -273,20 +273,48 @@
               </div>
             </div>
 
-            <div class="d-flex flex-column gap-3 mb-3">
-              <div>
-                <span>D</span>eck <span>B</span>alance:&nbsp;
-                <span id="span-mab-deck-balance"></span>
-              </div>
+            <div class="d-flex flex-column mb-0 gap-2">
+              <div class="d-flex flex-row gap-2">
+                <div><span>D</span>eck <span>C</span>ards:</div>
 
+                <div id="span-mab-deck-balance" class="d-flex flex-row gap-1">
+                  <div>
+                    <strong>N</strong>eutral:&nbsp;
+                    <strong id="strong-mab-deck-neutral-type-count"></strong>
+                  </div>
+                  |
+                  <div>
+                    <span style="color: var(--greenish)">R</span
+                    >anged:&nbsp;<span
+                      id="span-mab-deck-ranged-type-count"
+                      style="color: var(--greenish)"
+                    ></span>
+                  </div>
+                  |
+                  <div>
+                    <span style="color: var(--reddish)">C</span
+                    >avalry:&nbsp;<span
+                      id="span-mab-deck-cavalry-type-count"
+                      style="color: var(--reddish)"
+                    ></span>
+                  </div>
+                  |
+                  <div>
+                    <span style="color: var(--yellowish)">I</span
+                    >nfantry:&nbsp;<span
+                      id="span-mab-deck-infantry-type-count"
+                      style="color: var(--yellowish)"
+                    ></span>
+                  </div>
+                </div>
+              </div>
+              <ol id="ol-mab-player-cardsList" class="mab-cards-list"></ol>
+            </div>
+
+            <div class="d-flex flex-column">
               <div class="deck-balance-chart-style">
                 <canvas id="chart-mab-deck-balance"></canvas>
               </div>
-            </div>
-
-            <div>
-              <div><span>D</span>eck <span>C</span>ards:</div>
-              <ol id="ol-mab-player-cardsList"></ol>
             </div>
           </div>
         </div>

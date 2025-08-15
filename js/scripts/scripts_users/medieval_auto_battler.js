@@ -135,6 +135,23 @@ function medieval_auto_battler() {
     self.Fields[self.Fields.length] = self.Fields.ManageMabDecks_DeckBalance =
       self.DOM.find("#span-mab-deck-balance");
 
+    self.Fields[self.Fields.length] =
+      self.Fields.ManageMabDecks_NeutralTypeCount = self.DOM.find(
+        "#strong-mab-deck-neutral-type-count"
+      );
+    self.Fields[self.Fields.length] =
+      self.Fields.ManageMabDecks_RangedTypeCount = self.DOM.find(
+        "#span-mab-deck-ranged-type-count"
+      );
+    self.Fields[self.Fields.length] =
+      self.Fields.ManageMabDecks_CavalryTypeCount = self.DOM.find(
+        "#span-mab-deck-cavalry-type-count"
+      );
+    self.Fields[self.Fields.length] =
+      self.Fields.ManageMabDecks_InfantryTypeCount = self.DOM.find(
+        "#span-mab-deck-infantry-type-count"
+      );
+
     self.Imgs = [];
     self.Imgs[self.Imgs.length] = self.Imgs.Trophy_AllCardsCollected =
       self.DOM.find("#allcardscollected-trophy");
@@ -219,18 +236,7 @@ function medieval_auto_battler() {
     self.Buttons.CancelActiveMabDeckNewName.on("click", (e) => {
       e.preventDefault();
 
-      self.Inputs.ManageDecks_ActiveDeckName.val("");
-      setTimeout((e) => {
-        self.Inputs.ManageDecks_ActiveDeckName.val(self.ActiveMabDeckName)
-          .prop("readonly", true)
-          .removeClass("new-data")
-          .addClass("current-data")
-          .blur();
-      }, 10);
-
-      self.Buttons.EditActiveMabDeckName.prop("disabled", false);
-      self.Buttons.ConfirmActiveMabDeckNewName.prop("disabled", true);
-      self.Buttons.CancelActiveMabDeckNewName.prop("disabled", true);
+      self.restoreMabDeckNameInput();
     });
     // Binding the event after inserting into DOM
     $(document).on("click", ".button-mab-deactivate-cardcopy", function () {
@@ -476,20 +482,17 @@ function medieval_auto_battler() {
           if (mabCard.mabCardType == "Cavalry") countCalvaryCardCopies++;
           if (mabCard.mabCardType == "Infantry") countInfantryCardCopies++;
         });
-        if (countNeutralCardCopies > 0) {
-          mabDeckBalance += "Neutral: " + countNeutralCardCopies;
-        }
-        if (countRangedCardCopies > 0) {
-          mabDeckBalance += " | Ranged : " + countRangedCardCopies;
-        }
-        if (countCalvaryCardCopies > 0) {
-          mabDeckBalance += " | Cavalry: " + countCalvaryCardCopies;
-        }
-        if (countInfantryCardCopies > 0) {
-          mabDeckBalance += " | Infantry: " + countInfantryCardCopies;
-        }
 
-        self.Fields.ManageMabDecks_DeckBalance.html(mabDeckBalance);
+        self.Fields.ManageMabDecks_NeutralTypeCount.html(
+          countNeutralCardCopies
+        );
+        self.Fields.ManageMabDecks_RangedTypeCount.html(countRangedCardCopies);
+        self.Fields.ManageMabDecks_CavalryTypeCount.html(
+          countCalvaryCardCopies
+        );
+        self.Fields.ManageMabDecks_InfantryTypeCount.html(
+          countInfantryCardCopies
+        );
 
         self.buildActiveMabCardCopiesList(activeMabCardCopies);
 
@@ -513,8 +516,16 @@ function medieval_auto_battler() {
       self.Inputs.ManageDecks_ActiveDeckName.val().trim();
 
     if (!activeMabDeckNewName || activeMabDeckNewName.length < 1) {
-      sweetAlertError("Please fill the Nickname field!");
+      sweetAlertError("Please fill the Mab Deck Name field!");
 
+      return self.Inputs.ManageDecks_ActiveDeckName.trigger("select");
+    }
+
+    if (
+      activeMabDeckNewName.toLowerCase().trim() ===
+      self.ActiveMabDeckName.toLowerCase().trim()
+    ) {
+      self.restoreMabDeckNameInput();
       return;
     }
 
@@ -534,13 +545,30 @@ function medieval_auto_battler() {
           return;
         }
 
-        self.ShowActiveMabDeckDetails();
+        sweetAlertSuccess(resp.message);
       },
       error: (err) => {
         sweetAlertError(err);
       },
       complete: () => {},
     });
+  };
+  self.restoreMabDeckNameInput = () => {
+    self.Inputs.ManageDecks_ActiveDeckName.val("");
+
+    setTimeout((e) => {
+      self.Inputs.ManageDecks_ActiveDeckName.val(self.ActiveMabDeckName)
+        .prop("readonly", true)
+        .removeClass("new-data")
+        .addClass("current-data")
+        .blur();
+    }, 10);
+
+    self.Buttons.EditActiveMabDeckName.prop("disabled", false);
+
+    self.Buttons.ConfirmActiveMabDeckNewName.prop("disabled", true);
+
+    self.Buttons.CancelActiveMabDeckNewName.prop("disabled", true);
   };
   self.buildActiveMabCardCopiesList = (activeMabCardCopies) => {
     activeMabCardCopies.forEach((card, Index) => {
@@ -732,7 +760,7 @@ function medieval_auto_battler() {
           data: [...countTypes],
           borderWidth: 1,
           backgroundColor: [
-            rootStyles.getPropertyValue("--main-color"),
+            rootStyles.getPropertyValue("--text-color"),
             rootStyles.getPropertyValue("--greenish"),
             rootStyles.getPropertyValue("--yellowish"),
             rootStyles.getPropertyValue("--reddish"),
@@ -740,7 +768,7 @@ function medieval_auto_battler() {
           borderColor: rootStyles.getPropertyValue("--second-bg-color"),
           borderWidth: 1,
           hoverBorderColor: rootStyles.getPropertyValue("--text-color"),
-          hoverBorderWidth: 5,
+          hoverBorderWidth: 3,
           hoverOffset: 60,
         },
       ],
@@ -810,7 +838,7 @@ function medieval_auto_battler() {
 
               beforeTitle: function (tooltipItems) {
                 const colors = [
-                  rootStyles.getPropertyValue("--main-color"),
+                  rootStyles.getPropertyValue("--text-color"),
                   rootStyles.getPropertyValue("--greenish"),
                   rootStyles.getPropertyValue("--yellowish"),
                   rootStyles.getPropertyValue("--reddish"),
@@ -865,7 +893,7 @@ function medieval_auto_battler() {
               color: function (context) {
                 // context.index gives the label index
                 const colors = [
-                  rootStyles.getPropertyValue("--main-color"),
+                  rootStyles.getPropertyValue("--text-color"),
                   rootStyles.getPropertyValue("--greenish"),
                   rootStyles.getPropertyValue("--yellowish"),
                   rootStyles.getPropertyValue("--reddish"),
@@ -905,7 +933,13 @@ function medieval_auto_battler() {
       ],
     };
 
-    var MabDeckBalanceChart = new Chart(self.MabDeckBalanceChart, chartConfigs);
+    if (self.MabDeckBalanceChartInstance) {
+      self.MabDeckBalanceChartInstance.destroy();
+    }
+    self.MabDeckBalanceChartInstance = new Chart(
+      self.MabDeckBalanceChart,
+      chartConfigs
+    );
   };
   self.MabCardCopySelection_Hide = () => {
     self.Containers.ManageDecks_SelectNewMabCard.removeClass(
