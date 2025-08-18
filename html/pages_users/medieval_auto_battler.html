@@ -252,18 +252,21 @@
                 <div class="d-flex flex-row gap-2">
                   <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
 
-                  <div id="span-mab-deck-balance" class="d-flex flex-row gap-1">
+                  <div
+                    id="span-active-mab-deck-deckbalance"
+                    class="d-flex flex-row gap-1"
+                  >
                     <div>
                       <strong>N</strong>eutral:
                       <strong
-                        class="strong-mab-deck-neutral-type-count"
+                        class="strong-manage-mab-decks-neutral-type-count"
                       ></strong>
                     </div>
                     &nbsp;|&nbsp;
                     <div>
                       <span style="color: var(--greenish)">R</span
                       >anged:&nbsp;<span
-                        class="span-mab-deck-ranged-type-count"
+                        class="span-manage-mab-decks-ranged-type-count"
                         style="color: var(--greenish)"
                       ></span>
                     </div>
@@ -271,7 +274,7 @@
                     <div>
                       <span style="color: var(--reddish)">C</span
                       >avalry:&nbsp;<span
-                        class="span-mab-deck-cavalry-type-count"
+                        class="span-manage-mab-decks-cavalry-type-count"
                         style="color: var(--reddish)"
                       ></span>
                     </div>
@@ -279,20 +282,23 @@
                     <div>
                       <span style="color: var(--yellowish)">I</span
                       >nfantry:&nbsp;<span
-                        class="span-mab-deck-infantry-type-count"
+                        class="span-manage-mab-decks-infantry-type-count"
                         style="color: var(--yellowish)"
                       ></span>
                     </div>
                   </div>
                 </div>
 
-                <ol id="ol-mab-player-cardsList" class="mab-cards-list"></ol>
+                <ol
+                  id="ol-active-mab-deck-cardcopieslist"
+                  class="mab-cards-list"
+                ></ol>
               </div>
 
               <div class="d-flex flex-row gap-5 w-100 align-items-center">
                 <div>
                   <span>D</span>eck <span>S</span>ize:&nbsp;
-                  <span id="span-mab-deck-size"></span>
+                  <span id="span-active-mab-deck-decksize"></span>
                 </div>
 
                 <div
@@ -318,7 +324,7 @@
             </div>
 
             <div class="deck-balance-chart-style">
-              <canvas id="chart-mab-deck-balance"></canvas>
+              <canvas id="canvas-active-mab-deck-deckbalancechart"></canvas>
             </div>
           </div>
         </div>
@@ -383,7 +389,7 @@
                 </div>
 
                 <button
-                  id="button-activate-mab-newdeck-cardcopy"
+                  id="button-add-mab-deck-addcardcopy"
                   class="btn btn-outline-success btn-sm"
                 >
                   Add
@@ -391,14 +397,22 @@
               </div>
             </div>
 
-            <div class="d-flex flex-column mb-0 gap-2 hide-div">
+            <div
+              id="span-add-mab-deck-decksize"
+              class="d-flex flex-column mb-0 gap-2 hide-div"
+            >
               <div class="d-flex flex-row gap-2">
                 <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
 
-                <div id="span-mab-deck-balance" class="d-flex flex-row gap-1">
+                <div
+                  id="span-add-mab-deck-deckbalance"
+                  class="d-flex flex-row gap-1"
+                >
                   <div>
                     <strong>N</strong>eutral:
-                    <strong class="strong-mab-deck-neutral-type-count"></strong>
+                    <strong
+                      class="strong-manage-mab-decks-neutral-type-count"
+                    ></strong>
                   </div>
 
                   &nbsp;|&nbsp;
@@ -406,7 +420,7 @@
                   <div>
                     <span style="color: var(--greenish)">R</span
                     >anged:&nbsp;<span
-                      id="span-mab-deck-ranged-type-count"
+                      id="span-manage-mab-decks-ranged-type-count"
                       style="color: var(--greenish)"
                     ></span>
                   </div>
@@ -416,7 +430,7 @@
                   <div>
                     <span style="color: var(--reddish)">C</span
                     >avalry:&nbsp;<span
-                      id="span-mab-deck-cavalry-type-count"
+                      id="span-manage-mab-decks-cavalry-type-count"
                       style="color: var(--reddish)"
                     ></span>
                   </div>
@@ -426,20 +440,23 @@
                   <div>
                     <span style="color: var(--yellowish)">I</span
                     >nfantry:&nbsp;<span
-                      id="span-mab-deck-infantry-type-count"
+                      id="span-manage-mab-decks-infantry-type-count"
                       style="color: var(--yellowish)"
                     ></span>
                   </div>
                 </div>
               </div>
 
-              <ol id="ol-mab-newdeck-cardsList" class="mab-cards-list"></ol>
+              <ol
+                id="ol-add-mab-deck-cardcopieslist"
+                class="mab-cards-list"
+              ></ol>
             </div>
 
             <hr />
 
             <button
-              id="confirm-mab-start-new-campaign"
+              id="button-add-mab-deck-confirmadddeck"
               class="btn btn-outline-info w-100 mt-3"
               type="button"
             >

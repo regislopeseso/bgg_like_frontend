@@ -280,7 +280,6 @@ function modal_BG_Add_Edit() {
       type: "POST",
       url: "https://localhost:7081/admins/addboardgame",
       data: self.Form.serialize(),
-
       xhrFields: {
         withCredentials: true,
       },
