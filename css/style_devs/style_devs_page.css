@@ -6,3 +6,8 @@
   box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2);
   max-width: 80rem;
 }
+@media screen and (max-width: 1550px) {
+  #developers-tools {
+    margin-top: 8rem;
+  }
+}
