@@ -321,6 +321,8 @@ function medieval_auto_battler() {
       self.SelectedMabCardCopyId = null;
 
       self.SelectedMabCardCopyId = selectedData.id;
+
+      console.log("oi");
     });
     self.Buttons.AddMabDeck_AddCardCopy.on("click", (e) => {
       self.ActivateMabCardCopy(self.SelectedMabCardCopyId);
@@ -629,53 +631,7 @@ function medieval_auto_battler() {
 
     self.Buttons.CancelActiveMabDeckNewName.prop("disabled", true);
   };
-  self.buildMabCardCopiesList = (playerMabCardCopies, olDiv) => {
-    self.ActiveMabDeck_CardCopiesList.html("");
-    self.AddMabDeck_CardCopiesList.html("");
 
-    playerMabCardCopies.forEach((card, Index) => {
-      self.MabDeck_CardIds.push(card.mabCardId);
-
-      let mabCardCopyId = card.mabCardCopyId;
-      let mabCardName = card.mabCardName;
-      let mabCardLvl = card.mabCardLevel;
-      let mabCardType = card.mabCardType;
-      let mabCardPower = card.mabCardPower;
-      let mabCardUpperHand = card.mabCardUpperHand;
-
-      let listItem = `
-          <li id="li-mab-${Index}" data-mab-card-copy-id="${mabCardCopyId}">
-            <div class="d-flex flex-row align-items-center gap-2">
-              <button
-                class="button-mab-deactivate-cardcopy btn btn-outline-danger p-0 m-0"
-                type="button"
-                data-mab-card-copy-id="${mabCardCopyId}"
-                data-index="${Index}"
-              >
-                <i class="fa-solid fa-xmark p-1 m-0"></i>
-              </button>
-
-              <strong class="mab-card-name p-0 m-0">${mabCardName}</strong>
-
-              <img
-                src="/images/icons/io_arrow_right.svg"
-                class="bi bi-arrow p-0 m-0"
-              />
-
-              <div class="mab-card-data">
-                <span>L</span>evel: <strong>${mabCardLvl}</strong>,
-                <span>T</span>ype: <strong>${mabCardType}</strong>,
-                <span>P</span>ower: <strong>${mabCardPower}</strong>,
-                <span>U</span>pper <span>H</span>and:
-                <strong>${mabCardUpperHand}</strong>
-              </div>
-            </div>
-          </li>
-          `;
-
-      olDiv.append(listItem);
-    });
-  };
   self.DeactivateMabCardCopy = (index, mabCardCopyId) => {
     self.MabDeck_CardIds.splice(index, 1);
 
@@ -708,10 +664,10 @@ function medieval_auto_battler() {
   self.ActivateMabCardCopy = (mabCardCopyId) => {
     $.ajax({
       type: "PUT",
-      url: "https://localhost:7081/users/activatemabcardcopy",
+      url: "https://localhost:7081/users/addmabcardcopytoDeck",
       data: JSON.stringify({
+        MabDeckId: self.MabPlayer_ActiveDeck_DeckId,
         MabCardCopyId: mabCardCopyId,
-        ActiveMabDeckId: self.MabPlayer_ActiveDeck_DeckId,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -1009,6 +965,9 @@ function medieval_auto_battler() {
       "show-div"
     ).addClass("hide-div");
   };
+  self.manageMabPlayerDecks_Close = () => {
+    self.toggleVisibility(self.Containers.ManageMabPlayerDecks);
+  };
 
   self.addMabDeckForm_Open = () => {
     self.toggleVisibility(self.Containers.AddMabPlayerDeck);
@@ -1049,7 +1008,6 @@ function medieval_auto_battler() {
     });
   };
   self.ShowMabPlayer_DeckDetails = (mabDeckId) => {
-    //! Corrigir este endpoint!
     $.ajax({
       type: "GET",
       url: `https://localhost:7081/users/showmabplayerdeckdetails?MabDeckId=${mabDeckId}`,
@@ -1102,10 +1060,16 @@ function medieval_auto_battler() {
         self.Fields.AddMabDeck_CavalryTypeCount.html(countCalvaryCardCopies);
         self.Fields.AddMabDeck_InfantryTypeCount.html(countInfantryCardCopies);
 
-        self.buildMabCardCopiesList(
-          playerMabCardCopies,
-          self.AddMabDeck_CardCopiesList
-        );
+        if (mabPlayerDeckSize <= 0) {
+          self.AddMabDeck_CardCopiesList.html(
+            `Add up to <span>${self.MabDeck_DeckSizeLimit}</span> cards...`
+          );
+        } else {
+          self.buildMabCardCopiesList(
+            playerMabCardCopies,
+            self.AddMabDeck_CardCopiesList
+          );
+        }
       },
       error: function (xhr, status, error) {
         sweetAlertError(
@@ -1116,14 +1080,6 @@ function medieval_auto_battler() {
     });
   };
   self.MabCardCopySelection_DisplayForNewDeck = () => {
-    if (
-      self.Inputs.ActiveMabDeck_SelectCardCopy.hasClass(
-        "select2-hidden-accessible"
-      )
-    ) {
-      self.Inputs.ActiveMabDeck_SelectCardCopy.select2("destroy");
-    }
-
     if (
       self.Inputs.AddMabDeck_SelectCardCopy.hasClass(
         "select2-hidden-accessible"
@@ -1172,12 +1128,56 @@ function medieval_auto_battler() {
         sweetAlertError("Error fetching mab player cards:", err);
       });
   };
-
   self.addMabDeckForm_Close = () => {
     self.toggleVisibility(self.Containers.AddMabPlayerDeck);
   };
-  self.manageMabPlayerDecks_Close = () => {
-    self.toggleVisibility(self.Containers.ManageMabPlayerDecks);
+
+  self.buildMabCardCopiesList = (playerMabCardCopies, olDiv) => {
+    self.ActiveMabDeck_CardCopiesList.html("");
+    self.AddMabDeck_CardCopiesList.html("");
+
+    playerMabCardCopies.forEach((card, Index) => {
+      self.MabDeck_CardIds.push(card.mabCardId);
+
+      let mabCardCopyId = card.mabCardCopyId;
+      let mabCardName = card.mabCardName;
+      let mabCardLvl = card.mabCardLevel;
+      let mabCardType = card.mabCardType;
+      let mabCardPower = card.mabCardPower;
+      let mabCardUpperHand = card.mabCardUpperHand;
+
+      let listItem = `
+          <li id="li-mab-${Index}" data-mab-card-copy-id="${mabCardCopyId}">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <button
+                class="button-mab-deactivate-cardcopy btn btn-outline-danger p-0 m-0"
+                type="button"
+                data-mab-card-copy-id="${mabCardCopyId}"
+                data-index="${Index}"
+              >
+                <i class="fa-solid fa-xmark p-1 m-0"></i>
+              </button>
+
+              <strong class="mab-card-name p-0 m-0">${mabCardName}</strong>
+
+              <img
+                src="/images/icons/io_arrow_right.svg"
+                class="bi bi-arrow p-0 m-0"
+              />
+
+              <div class="mab-card-data">
+                <span>L</span>evel: <strong>${mabCardLvl}</strong>,
+                <span>T</span>ype: <strong>${mabCardType}</strong>,
+                <span>P</span>ower: <strong>${mabCardPower}</strong>,
+                <span>U</span>pper <span>H</span>and:
+                <strong>${mabCardUpperHand}</strong>
+              </div>
+            </div>
+          </li>
+          `;
+
+      olDiv.append(listItem);
+    });
   };
 
   self.ContinueMabCampaign = () => {};
