@@ -2,8 +2,13 @@ function medieval_auto_battler() {
   let self = this;
   self.IsBuilt = false;
 
-  self.MabPlayer_ActiveDeck_DeckSize = 0;
-  self.MabPlayer_MabDeck = {};
+  self.isActiveDeckMode = true;
+
+  self.MabDeck_CurrentDeckSize = 0;
+  self.MabPlayer_MabDeck = {
+    MabDeckId: null,
+    MabDeckName: "",
+  };
 
   self.MabDeck_DeckSizeLimit = null;
 
@@ -13,7 +18,7 @@ function medieval_auto_battler() {
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
-    self.MabContent = self.DOM.find("#mab-content");
+    self.MabContent = self.DOM.find("#mab-content-containers");
 
     self.MabMenu = self.DOM.find("#mab-menu");
 
@@ -28,7 +33,7 @@ function medieval_auto_battler() {
       "#ol-add-mab-deck-cardcopieslist"
     );
 
-    self.ActoveMabDeck_DeckBalanceChart = self.DOM.find(
+    self.ActiveMabDeck_DeckBalanceChart = self.DOM.find(
       "#canvas-active-mab-deck-deckbalancechart"
     );
 
@@ -37,16 +42,17 @@ function medieval_auto_battler() {
       self.Containers.StartNewMabCampaign = self.DOM.find(
         "#container-mab-start-new-campaign-form"
       );
-    self.Containers.ManageMabPlayerDecks = self.DOM.find(
-      "#container-manage-mab-player-decks"
-    );
-
-    self.Containers.ManageDecks_SelectNewMabCard = self.DOM.find(
-      "#div-select-manage-mab-deck"
+    self.Containers.ActiveMabDeck = self.DOM.find("#container-active-mab-deck");
+    self.Containers.ActiveMabDeck_CardCopiesSelect2 = self.DOM.find(
+      "#div-active-mab-deck-select-container"
     );
     self.Containers.AddMabPlayerDeck = self.DOM.find("#container-add-mab-deck");
     self.Containers.MabCampaignStats = self.DOM.find(
       "#container-mab-campaign-stats"
+    );
+
+    self.Containers.AddMabDeck_CardCopiesSelect2 = self.DOM.find(
+      "#container-add-mab-selectcard"
     );
 
     self.Buttons = [];
@@ -62,29 +68,33 @@ function medieval_auto_battler() {
     self.Buttons[self.Buttons.length] = self.Buttons.ContinueMabCampaign =
       self.DOM.find("#button-continue-mab-campaign");
 
-    self.Buttons[self.Buttons.length] = self.Buttons.OpenManageMabPlayerDecks =
-      self.DOM.find("#button-open-manage-mab-player-decks");
-    self.Buttons[self.Buttons.length] = self.Buttons.EditActiveMabDeckName =
-      self.DOM.find("#button-edit-active-mab-deck-name");
     self.Buttons[self.Buttons.length] =
-      self.Buttons.ConfirmActiveMabDeckNewName = self.DOM.find(
-        "#button-confirm-active-mab-deck-new-name"
+      self.Buttons.ActiveMabDeck_ShowContainer = self.DOM.find(
+        "#button-active-mab-deck-show-container"
       );
     self.Buttons[self.Buttons.length] =
-      self.Buttons.CancelActiveMabDeckNewName = self.DOM.find(
-        "#button-cancel-active-mab-deck-new-name"
+      self.Buttons.ActiveMabDeck_EditDeckName = self.DOM.find(
+        "#button-active-mab-deck-editdeckname"
       );
     self.Buttons[self.Buttons.length] =
-      self.Buttons.ActiveMabDeck_AssignMabCardCopy = self.DOM.find(
-        "#button-activate-mabcardcopy"
+      self.Buttons.ActiveMabDeck_ConfirmNewDeckName = self.DOM.find(
+        "#button-active-mab-deck-confirmnewdeckname"
       );
-    self.Buttons[self.Buttons.length] = self.Buttons.OpenAddMabDeck =
-      self.DOM.find("#button-open-add-mab-deck");
-    self.Buttons[self.Buttons.length] = self.Buttons.CloseAddMabDeck =
-      self.DOM.find("#button-add-mab-deck-close-form");
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.ActiveMabDeck_UndoDeckNameChange = self.DOM.find(
+        "#button-active-mab-deck-undo-deck-name-change"
+      );
+    self.Buttons[self.Buttons.length] =
+      self.Buttons.ActiveMabDeck_AssignCardCopy = self.DOM.find(
+        "#button-active-mab-deck-hide-container"
+      );
+    self.Buttons[self.Buttons.length] = self.Buttons.ActiveDeck_HideContainer =
+      self.DOM.find("#button-active-mab-deck-hide-container");
 
-    self.Buttons[self.Buttons.length] = self.Buttons.CloseManageMabPlayerDecks =
-      self.DOM.find("#button-close-manage-mab-player-decks");
+    self.Buttons[self.Buttons.length] = self.Buttons.AddMabDeck_ShowContainer =
+      self.DOM.find("#button-add-mab-deck-show-container");
+    self.Buttons[self.Buttons.length] = self.Buttons.AddMabDeck_HideContainer =
+      self.DOM.find("#button-add-mab-deck-close-form");
 
     self.Buttons[self.Buttons.length] = self.Buttons.EditMabPlayerNickname =
       self.DOM.find("#button-edit-mab-player-nickname");
@@ -249,14 +259,14 @@ function medieval_auto_battler() {
       self.ContinueMabCampaign();
     });
 
-    self.Buttons.OpenManageMabPlayerDecks.on("click", (e) => {
+    self.Buttons.ActiveMabDeck_ShowContainer.on("click", (e) => {
       e.preventDefault();
 
       self.mabMainMenu_Close();
 
-      self.manageMabPlayerDecks_Open();
+      self.activeMabDeck_ShowContainer();
     });
-    self.Buttons.EditActiveMabDeckName.on("click", (e) => {
+    self.Buttons.ActiveMabDeck_EditDeckName.on("click", (e) => {
       e.preventDefault();
 
       self.Inputs.ActiveDeck_DeckName.prop("readonly", false)
@@ -264,19 +274,19 @@ function medieval_auto_battler() {
         .addClass("new-data")
         .trigger("select");
 
-      self.Buttons.EditActiveMabDeckName.prop("disabled", true);
-      self.Buttons.CancelActiveMabDeckNewName.prop("disabled", false);
-      self.Buttons.ConfirmActiveMabDeckNewName.prop("disabled", false);
+      self.Buttons.ActiveMabDeck_EditDeckName.prop("disabled", true);
+      self.Buttons.ActiveMabDeck_UndoDeckNameChange.prop("disabled", false);
+      self.Buttons.ActiveMabDeck_ConfirmNewDeckName.prop("disabled", false);
     });
-    self.Buttons.ConfirmActiveMabDeckNewName.on("click", (e) => {
+    self.Buttons.ActiveMabDeck_ConfirmNewDeckName.on("click", (e) => {
       e.preventDefault();
 
-      self.EditActiveMabDeckName();
+      self.ActiveMabDeck_EditDeckName();
     });
-    self.Buttons.CancelActiveMabDeckNewName.on("click", (e) => {
+    self.Buttons.ActiveMabDeck_UndoDeckNameChange.on("click", (e) => {
       e.preventDefault();
 
-      self.restoreMabDeckNameInput();
+      self.activeMabDeck_RestoreDeckName();
     });
     // Binding the event after inserting into DOM
     $(document).on("click", ".button-unassign-mab-card-copy", function () {
@@ -294,27 +304,29 @@ function medieval_auto_battler() {
 
       self.SelectedMabCardCopyId = selectedData.id;
     });
-    self.Buttons.ActiveMabDeck_AssignMabCardCopy.on("click", (e) => {
+    self.Buttons.ActiveMabDeck_AssignCardCopy.on("click", (e) => {
       e.preventDefault();
 
-      self.AssignMabCardCopy(self.SelectedMabCardCopyId);
+      const mabDeckId = self.MabPlayer_MabDeck.MabDeckId;
+      const mabCardCopyId = self.SelectedMabCardCopyId;
+
+      self.AssignMabCardCopy(mabDeckId, mabCardCopyId, true);
     });
-    self.Buttons.CloseManageMabPlayerDecks.on("click", (e) => {
+    self.Buttons.ActiveDeck_HideContainer.on("click", (e) => {
       e.preventDefault();
 
-      self.manageMabPlayerDecks_Close();
+      self.activeMabDeck_HideContainer();
 
       self.mabMainMenu_Open();
     });
 
-    self.Buttons.OpenAddMabDeck.on("click", (e) => {
+    self.Buttons.AddMabDeck_ShowContainer.on("click", (e) => {
       e.preventDefault();
 
-      self.manageMabPlayerDecks_Close();
+      self.activeMabDeck_HideContainer();
 
-      self.AddMabPlayerDeck();
+      self.AddMabDeck_AddNewDeck();
     });
-
     self.Inputs.AddMabDeck_SelectCardCopy.on("select2:select", function (e) {
       const selectedData = e.params.data;
 
@@ -327,14 +339,14 @@ function medieval_auto_battler() {
 
       const mabDeckId = self.MabPlayer_MabDeck.MabDeckId;
 
-      self.AssignMabCardCopy(mabDeckId, self.SelectedMabCardCopyId);
+      self.AddMabDeck_AssignCardCopy(mabDeckId, self.SelectedMabCardCopyId);
     });
-    self.Buttons.CloseAddMabDeck.on("click", (e) => {
+    self.Buttons.AddMabDeck_HideContainer.on("click", (e) => {
       e.preventDefault();
 
-      self.addMabDeckForm_Close();
+      self.addMabDeck_CloseForm();
 
-      self.manageMabPlayerDecks_Open();
+      self.activeMabDeck_ShowContainer();
     });
 
     self.Buttons.OpenCampaignStats.on("click", (e) => {
@@ -483,12 +495,14 @@ function medieval_auto_battler() {
     self.toggleVisibility(self.Containers.StartNewMabCampaign);
   };
 
-  self.manageMabPlayerDecks_Open = () => {
-    self.toggleVisibility(self.Containers.ManageMabPlayerDecks);
+  //*ACTIVE MAB DECK SESSION
 
-    self.ShowMabPlayer_ActiveDeckDetails();
+  self.activeMabDeck_ShowContainer = () => {
+    self.toggleVisibility(self.Containers.ActiveMabDeck);
+
+    self.ActiveMabDeck_ShowDeckDetails();
   };
-  self.ShowMabPlayer_ActiveDeckDetails = () => {
+  self.ActiveMabDeck_ShowDeckDetails = () => {
     $.ajax({
       type: "GET",
       url: `https://localhost:7081/users/showmabplayerdeckdetails`,
@@ -504,7 +518,7 @@ function medieval_auto_battler() {
         self.Fields.ActiveMabDeck_DeckBalance.html();
         self.ActiveMabDeck_CardCopiesList.empty();
         self.MabDeck_CardIds = [];
-        self.MabPlayer_ActiveDeck_DeckSize = 0;
+        self.MabDeck_CurrentDeckSize = 0;
         self.MabDeck_DeckSizeLimit = null;
         self.MabCardCopySelection_Hide();
 
@@ -524,9 +538,9 @@ function medieval_auto_battler() {
         let mabDeckBalance = "";
         self.MabDeck_DeckSizeLimit = activeMabDeck.mabDeckSizeLimit;
 
-        self.MabPlayer_ActiveDeck_DeckSize = activeMabCardCopies.length;
-        if (self.MabPlayer_ActiveDeck_DeckSize < self.MabDeck_DeckSizeLimit) {
-          self.MabCardCopySelection_DisplayForEditDeck();
+        self.MabDeck_CurrentDeckSize = activeMabCardCopies.length;
+        if (self.MabDeck_CurrentDeckSize < self.MabDeck_DeckSizeLimit) {
+          self.AddMabDeck_LoadUnassignedCardCopies();
         }
 
         self.Inputs.ActiveDeck_DeckName.val(mabDeckName).css(
@@ -535,7 +549,7 @@ function medieval_auto_battler() {
         );
 
         self.Fields.ActiveMabDeck_DeckSize.html(
-          `${self.MabPlayer_ActiveDeck_DeckSize}/${self.MabDeck_DeckSizeLimit}`
+          `${self.MabDeck_CurrentDeckSize}/${self.MabDeck_DeckSizeLimit}`
         );
 
         activeMabCardCopies.forEach((mabCard) => {
@@ -554,12 +568,12 @@ function medieval_auto_battler() {
           countInfantryCardCopies
         );
 
-        self.buildMabCardCopiesList(
+        self.addMabDeck_buildCardCopiesList(
           activeMabCardCopies,
           self.ActiveMabDeck_CardCopiesList
         );
 
-        self.buildMabDeckBalanceChart(
+        self.activeMabDeck_buildDeckBalanceChart(
           countNeutralCardCopies,
           countRangedCardCopies,
           countCalvaryCardCopies,
@@ -574,7 +588,7 @@ function medieval_auto_battler() {
       complete: function () {},
     });
   };
-  self.EditActiveMabDeckName = () => {
+  self.ActiveMabDeck_EditDeckName = () => {
     let activeMabDeckNewName = self.Inputs.ActiveDeck_DeckName.val().trim();
 
     let mabDeckName = self.MabPlayer_MabDeck.MabDeckName;
@@ -589,7 +603,7 @@ function medieval_auto_battler() {
       activeMabDeckNewName.toLowerCase().trim() ===
       mabDeckName.toLowerCase().trim()
     ) {
-      self.restoreMabDeckNameInput();
+      self.activeMabDeck_RestoreDeckName();
       return;
     }
 
@@ -614,7 +628,7 @@ function medieval_auto_battler() {
 
         sweetAlertSuccess(resp.message);
 
-        self.restoreMabDeckNameInput();
+        self.activeMabDeck_RestoreDeckName();
       },
       error: (err) => {
         sweetAlertError(err);
@@ -622,7 +636,7 @@ function medieval_auto_battler() {
       complete: () => {},
     });
   };
-  self.restoreMabDeckNameInput = () => {
+  self.activeMabDeck_RestoreDeckName = () => {
     self.Inputs.ActiveDeck_DeckName.val("");
 
     let mabDeckName = self.MabPlayer_MabDeck.MabDeckName;
@@ -635,14 +649,40 @@ function medieval_auto_battler() {
         .blur();
     }, 10);
 
-    self.Buttons.EditActiveMabDeckName.prop("disabled", false);
+    self.Buttons.ActiveMabDeck_EditDeckName.prop("disabled", false);
 
-    self.Buttons.ConfirmActiveMabDeckNewName.prop("disabled", true);
+    self.Buttons.ActiveMabDeck_ConfirmNewDeckName.prop("disabled", true);
 
-    self.Buttons.CancelActiveMabDeckNewName.prop("disabled", true);
+    self.Buttons.ActiveMabDeck_UndoDeckNameChange.prop("disabled", true);
   };
 
-  self.UnassignMabCardCopy = (index, assignedMabCardCopyId) => {
+  self.ActiveMabDeck_AssignCardCopy = (mabDeckId, mabCardCopyId) => {
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/assignmabcardcopy",
+      data: JSON.stringify({
+        MabDeckId: mabDeckId,
+        MabCardCopyId: mabCardCopyId,
+      }),
+      contentType: "application/json",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          sweetAlertError("Failed to activated card", resp.message);
+          return;
+        }
+
+        self.ActiveMabDeck_ShowDeckDetails();
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+      complete: () => {},
+    });
+  };
+  self.ActiveMabDeck_UnassignCardCopy = (index, assignedMabCardCopyId) => {
     self.MabDeck_CardIds.splice(index, 1);
 
     self.ActiveMabDeck_CardCopiesList.find(`#li-mab-${index}`).remove();
@@ -663,7 +703,7 @@ function medieval_auto_battler() {
           return;
         }
 
-        self.ShowMabPlayer_ActiveDeckDetails();
+        self.ActiveMabDeck_ShowDeckDetails();
       },
       error: (err) => {
         sweetAlertError(err);
@@ -671,112 +711,28 @@ function medieval_auto_battler() {
       complete: () => {},
     });
   };
-  self.AssignMabCardCopy = (mabDeckId, mabCardCopyId) => {
-    $.ajax({
-      type: "POST",
-      url: "https://localhost:7081/users/assignmabcardcopy",
-      data: JSON.stringify({
-        MabDeckId: mabDeckId,
-        MabCardCopyId: mabCardCopyId,
-      }),
-      contentType: "application/json",
-      xhrFields: {
-        withCredentials: true,
-      },
-      success: (resp) => {
-        if (!resp.content) {
-          sweetAlertError("Failed to activated card", resp.message);
-          return;
-        }
-
-        self.ShowMabPlayer_ActiveDeckDetails();
-      },
-      error: (err) => {
-        sweetAlertError(err);
-      },
-      complete: () => {},
-    });
-  };
-  self.MabCardCopySelection_DisplayForEditDeck = () => {
-    if (
-      self.Inputs.ActiveMabDeck_SelectCardCopy.hasClass(
-        "select2-hidden-accessible"
-      )
-    ) {
-      self.Inputs.ActiveMabDeck_SelectCardCopy.select2("destroy");
-    }
-
-    const mabDeckId = self.MabPlayer_MabDeck.MabDeckId;
-
-    // Fetch the mab player cards and their count from the backend
-    fetch(
-      `https://localhost:7081/users/listinactivemabcardcopies?ActiveMabDeckId=${mabDeckId}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.content) {
-          sweetAlertError("Failed to load mab player cards:", data.message);
-          return;
-        }
-
-        const mabPlayerCards = data.content.map((item) => ({
-          id: item.mabCardCopyId,
-          text: item.mabCardDescription,
-        }));
-
-        // Clear previous options and add empty one
-        self.Inputs.ActiveMabDeck_SelectCardCopy.empty().append(
-          `<option></option>`
-        );
-
-        // Builds select2
-        self.Inputs.ActiveMabDeck_SelectCardCopy.select2({
-          data: mabPlayerCards,
-          dropdownParent: self.DOM,
-          placeholder: "Select a card",
-          allowClear: true,
-          theme: "classic",
-          width: "100%",
-          templateSelection: (data) => {
-            if (!data.id) return data.text;
-            return $("<strong>").text(data.text);
-          },
-        });
-
-        // Opens select2
-        self.Inputs.ActiveMabDeck_SelectCardCopy.trigger("change").select2(
-          "open"
-        );
-      })
-      .catch((err) => {
-        sweetAlertError("Error fetching mab player cards:", err);
-      });
-
-    self.Containers.ManageDecks_SelectNewMabCard.removeClass(
-      "hide-div"
-    ).addClass("show-div");
-  };
-  self.buildMabDeckBalanceChart = (countNtl, countRng, countCav, countInf) => {
+  self.activeMabDeck_buildDeckBalanceChart = (
+    countNtl,
+    countRng,
+    countCav,
+    countInf
+  ) => {
     let dynamicLabel = [];
     let countTypes = [];
 
-    if (countNtl > 0) {
+    if (countNtl >= 0) {
       dynamicLabel.push("Neutral");
       countTypes.push(countNtl);
     }
-    if (countRng > 0) {
+    if (countRng >= 0) {
       dynamicLabel.push("Ranged");
       countTypes.push(countRng);
     }
-    if (countCav > 0) {
+    if (countCav >= 0) {
       dynamicLabel.push("Cavalry");
       countTypes.push(countCav);
     }
-    if (countInf > 0) {
+    if (countInf >= 0) {
       dynamicLabel.push("Infantry");
       countTypes.push(countInf);
     }
@@ -968,29 +924,29 @@ function medieval_auto_battler() {
       self.MabDeckBalanceChartInstance.destroy();
     }
     self.MabDeckBalanceChartInstance = new Chart(
-      self.ActoveMabDeck_DeckBalanceChart,
+      self.ActiveMabDeck_DeckBalanceChart,
       chartConfigs
     );
   };
-  self.MabCardCopySelection_Hide = () => {
-    self.Containers.ManageDecks_SelectNewMabCard.removeClass(
-      "show-div"
-    ).addClass("hide-div");
-  };
-  self.manageMabPlayerDecks_Close = () => {
-    self.toggleVisibility(self.Containers.ManageMabPlayerDecks);
+  self.activeMabDeck_HideContainer = () => {
+    self.toggleVisibility(self.Containers.ActiveMabDeck);
   };
 
-  self.addMabDeckForm_Open = () => {
+  //* END OF ACTIVE MAB SESSION
+  //?
+  //?
+  //*ADD MAB DECK SESSION
+
+  self.addMabDeck_OpenForm = () => {
     self.toggleVisibility(self.Containers.AddMabPlayerDeck);
 
     self.Inputs.AddMabDeck_DeckName.val(self.MabPlayer_MabDeck.MabDeckName)
       .trigger("focus")
       .trigger("select");
 
-    self.MabCardCopySelection_DisplayForNewDeck();
+    self.AddMabDeck_CardCopySelect2_Show();
   };
-  self.AddMabPlayerDeck = () => {
+  self.AddMabDeck_AddNewDeck = () => {
     $.ajax({
       type: "POST",
       url: "https://localhost:7081/users/addmabplayerdeck",
@@ -1009,9 +965,9 @@ function medieval_auto_battler() {
           MabDeckName: resp.content.newMabDeckName,
         };
 
-        self.ShowMabPlayer_DeckDetails(self.MabPlayer_MabDeck.MabDeckId);
+        self.AddMabDeck_ShowDeckDetails(self.MabPlayer_MabDeck.MabDeckId);
 
-        self.addMabDeckForm_Open();
+        self.addMabDeck_OpenForm();
       },
       error: (err) => {
         sweetAlertError(err);
@@ -1019,95 +975,25 @@ function medieval_auto_battler() {
       complete: () => {},
     });
   };
-  self.ShowMabPlayer_DeckDetails = (mabDeckId) => {
-    $.ajax({
-      type: "GET",
-      url: `https://localhost:7081/users/showmabplayerdeckdetails?MabDeckId=${mabDeckId}`,
-      xhrFields: { withCredentials: true },
-      success: function (response) {
-        if (response.content == null) {
-          sweetAlertError("Error", response.message);
-          return;
-        }
-
-        self.Inputs.AddMabDeck_DeckName.val();
-        self.Fields.AddMabDeck_DeckSize.html();
-        self.Fields.AddMabDeck_DeckBalance.html();
-        self.AddMabDeck_CardCopiesList.empty();
-        self.MabDeck_CardIds = [];
-        self.MabDeck_DeckSizeLimit = null;
-
-        let playerMabDeck = response.content;
-
-        self.MabPlayer_MabDeck = {
-          MabDeckId: playerMabDeck.activeMabDeckId,
-          MabDeckName: playerMabDeck.activeMabDeckName,
-        };
-
-        let mabDeckName = self.MabPlayer_MabDeck.MabDeckName;
-        let playerMabCardCopies = playerMabDeck.mabCardCopies;
-        let countNeutralCardCopies = 0;
-        let countRangedCardCopies = 0;
-        let countCalvaryCardCopies = 0;
-        let countInfantryCardCopies = 0;
-        let mabDeckBalance = "";
-        let mabPlayerDeckSize = playerMabCardCopies.length;
-        self.MabDeck_DeckSizeLimit = playerMabDeck.mabDeckSizeLimit;
-
-        self.Inputs.ActiveDeck_DeckName.val(mabDeckName).css(
-          "color",
-          "var(--main-color)"
-        );
-
-        self.Fields.AddMabDeck_DeckSize.html(
-          `${mabPlayerDeckSize}/${self.MabDeck_DeckSizeLimit}`
-        );
-
-        playerMabCardCopies.forEach((mabCard) => {
-          if (mabCard.mabCardType == "Neutral") countNeutralCardCopies++;
-          if (mabCard.mabCardType == "Ranged") countRangedCardCopies++;
-          if (mabCard.mabCardType == "Cavalry") countCalvaryCardCopies++;
-          if (mabCard.mabCardType == "Infantry") countInfantryCardCopies++;
-        });
-
-        self.Fields.AddMabDeck_NeutralTypeCount.html(countNeutralCardCopies);
-        self.Fields.AddMabDeck_RangedTypeCount.html(countRangedCardCopies);
-        self.Fields.AddMabDeck_CavalryTypeCount.html(countCalvaryCardCopies);
-        self.Fields.AddMabDeck_InfantryTypeCount.html(countInfantryCardCopies);
-
-        if (mabPlayerDeckSize <= 0) {
-          self.AddMabDeck_CardCopiesList.html(
-            `Add up to <span>${self.MabDeck_DeckSizeLimit}</span> cards...`
-          );
-        } else {
-          self.buildMabCardCopiesList(
-            playerMabCardCopies,
-            self.AddMabDeck_CardCopiesList
-          );
-        }
-      },
-      error: function (xhr, status, error) {
-        sweetAlertError(
-          "Failed to fetch active deck details. Try again later."
-        );
-      },
-      complete: function () {},
-    });
-  };
-  self.MabCardCopySelection_DisplayForNewDeck = () => {
+  self.AddMabDeck_LoadUnassignedCardCopies = () => {
     if (
-      self.Inputs.AddMabDeck_SelectCardCopy.hasClass(
+      self.Inputs.ActiveMabDeck_SelectCardCopy.hasClass(
         "select2-hidden-accessible"
       )
     ) {
-      self.Inputs.AddMabDeck_SelectCardCopy.select2("destroy");
+      self.Inputs.ActiveMabDeck_SelectCardCopy.select2("destroy");
     }
 
+    const mabDeckId = self.MabPlayer_MabDeck.MabDeckId;
+
     // Fetch the mab player cards and their count from the backend
-    fetch(`https://localhost:7081/users/listmabplayercardcopies`, {
-      method: "GET",
-      credentials: "include",
-    })
+    fetch(
+      `https://localhost:7081/users/listunassignedmabcardcopies?MabDeckId=${mabDeckId}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (!data.content) {
@@ -1121,12 +1007,12 @@ function medieval_auto_battler() {
         }));
 
         // Clear previous options and add empty one
-        self.Inputs.AddMabDeck_SelectCardCopy.empty().append(
+        self.Inputs.ActiveMabDeck_SelectCardCopy.empty().append(
           `<option></option>`
         );
 
         // Builds select2
-        self.Inputs.AddMabDeck_SelectCardCopy.select2({
+        self.Inputs.ActiveMabDeck_SelectCardCopy.select2({
           data: mabPlayerCards,
           dropdownParent: self.DOM,
           placeholder: "Select a card",
@@ -1138,19 +1024,22 @@ function medieval_auto_battler() {
             return $("<strong>").text(data.text);
           },
         });
+
+        // Opens select2
+        self.Inputs.ActiveMabDeck_SelectCardCopy.trigger("change").select2(
+          "open"
+        );
       })
       .catch((err) => {
         sweetAlertError("Error fetching mab player cards:", err);
       });
-  };
-  self.addMabDeckForm_Close = () => {
-    self.toggleVisibility(self.Containers.AddMabPlayerDeck);
+
+    self.Containers.ActiveMabDeck_CardCopiesSelect2.removeClass(
+      "hide-div"
+    ).addClass("show-div");
   };
 
-  self.buildMabCardCopiesList = (playerMabCardCopies, olDiv) => {
-    self.ActiveMabDeck_CardCopiesList.html("");
-    self.AddMabDeck_CardCopiesList.html("");
-
+  self.addMabDeck_buildCardCopiesList = (playerMabCardCopies, olDiv) => {
     playerMabCardCopies.forEach((card, Index) => {
       self.MabDeck_CardIds.push(card.mabCardId);
 
@@ -1194,6 +1083,226 @@ function medieval_auto_battler() {
       olDiv.append(listItem);
     });
   };
+  self.MabCardCopySelection_Hide = () => {
+    self.Containers.ActiveMabDeck_CardCopiesSelect2.removeClass(
+      "show-div"
+    ).addClass("hide-div");
+  };
+
+  self.AddMabDeck_ShowDeckDetails = (mabDeckId) => {
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/showmabplayerdeckdetails?MabDeckId=${mabDeckId}`,
+      xhrFields: { withCredentials: true },
+      success: function (response) {
+        if (response.content == null) {
+          sweetAlertError("Error", response.message);
+          return;
+        }
+
+        self.Inputs.AddMabDeck_DeckName.val();
+        self.Fields.AddMabDeck_DeckSize.html();
+        self.Fields.AddMabDeck_DeckBalance.html();
+        self.AddMabDeck_CardCopiesList.empty();
+        self.MabDeck_CardIds = [];
+        self.MabDeck_DeckSizeLimit = null;
+        self.AddMabDeck_CardCopySelect2_Hide();
+
+        let playerMabDeck = response.content;
+
+        self.MabPlayer_MabDeck = {
+          MabDeckId: playerMabDeck.activeMabDeckId,
+          MabDeckName: playerMabDeck.activeMabDeckName,
+        };
+
+        let mabDeckName = self.MabPlayer_MabDeck.MabDeckName;
+        let playerMabCardCopies = playerMabDeck.mabCardCopies;
+        let countNeutralCardCopies = 0;
+        let countRangedCardCopies = 0;
+        let countCalvaryCardCopies = 0;
+        let countInfantryCardCopies = 0;
+        let mabDeckBalance = "";
+        let mabPlayerDeckSize = playerMabCardCopies.length;
+        self.MabDeck_DeckSizeLimit = playerMabDeck.mabDeckSizeLimit;
+
+        self.MabDeck_CurrentDeckSize = mabPlayerDeckSize;
+        if (self.MabDeck_CurrentDeckSize < self.MabDeck_DeckSizeLimit) {
+          self.AddMabDeck_CardCopySelect2_Show();
+        }
+
+        self.Inputs.AddMabDeck_DeckName.val(mabDeckName);
+
+        self.Fields.AddMabDeck_DeckSize.html(
+          `${mabPlayerDeckSize}/${self.MabDeck_DeckSizeLimit}`
+        );
+
+        playerMabCardCopies.forEach((mabCard) => {
+          if (mabCard.mabCardType == "Neutral") countNeutralCardCopies++;
+          if (mabCard.mabCardType == "Ranged") countRangedCardCopies++;
+          if (mabCard.mabCardType == "Cavalry") countCalvaryCardCopies++;
+          if (mabCard.mabCardType == "Infantry") countInfantryCardCopies++;
+        });
+
+        self.Fields.AddMabDeck_NeutralTypeCount.html(countNeutralCardCopies);
+        self.Fields.AddMabDeck_RangedTypeCount.html(countRangedCardCopies);
+        self.Fields.AddMabDeck_CavalryTypeCount.html(countCalvaryCardCopies);
+        self.Fields.AddMabDeck_InfantryTypeCount.html(countInfantryCardCopies);
+
+        if (mabPlayerDeckSize <= 0) {
+          self.AddMabDeck_CardCopiesList.html(
+            `Add up to <span>${self.MabDeck_DeckSizeLimit}</span> cards...`
+          );
+        } else {
+          self.addMabDeck_buildCardCopiesList(
+            playerMabCardCopies,
+            self.AddMabDeck_CardCopiesList
+          );
+        }
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError(
+          "Failed to fetch active deck details. Try again later."
+        );
+      },
+      complete: function () {},
+    });
+  };
+  self.AddMabDeck_AssignCardCopy = (mabDeckId, mabCardCopyId) => {
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/assignmabcardcopy",
+      data: JSON.stringify({
+        MabDeckId: mabDeckId,
+        MabCardCopyId: mabCardCopyId,
+      }),
+      contentType: "application/json",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          sweetAlertError("Failed to activated card", resp.message);
+          return;
+        }
+
+        self.AddMabDeck_ShowDeckDetails(mabDeckId);
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+      complete: () => {},
+    });
+  };
+  self.addMabDeck_buildCardCopiesList = (playerMabCardCopies, olDiv) => {
+    playerMabCardCopies.forEach((card, Index) => {
+      self.MabDeck_CardIds.push(card.mabCardId);
+
+      let assignedMabCardCopyId = card.assignedMabCardCopyId;
+      let mabCardName = card.mabCardName;
+      let mabCardLvl = card.mabCardLevel;
+      let mabCardType = card.mabCardType;
+      let mabCardPower = card.mabCardPower;
+      let mabCardUpperHand = card.mabCardUpperHand;
+
+      let listItem = `
+          <li id="li-mab-${Index}" data-assigned-mab-card-copy-id="${assignedMabCardCopyId}">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <button
+                class="button-unassign-mab-card-copy btn btn-outline-danger p-0 m-0"
+                type="button"
+                data-assigned-mab-card-copy-id="${assignedMabCardCopyId}"
+                data-index="${Index}"
+              >
+                <i class="fa-solid fa-xmark p-1 m-0"></i>
+              </button>
+
+              <strong class="mab-card-name p-0 m-0">${mabCardName}</strong>
+
+              <img
+                src="/images/icons/io_arrow_right.svg"
+                class="bi bi-arrow p-0 m-0"
+              />
+
+              <div class="mab-card-data">
+                <span>L</span>evel: <strong>${mabCardLvl}</strong>,
+                <span>T</span>ype: <strong>${mabCardType}</strong>,
+                <span>P</span>ower: <strong>${mabCardPower}</strong>,
+                <span>U</span>pper <span>H</span>and:
+                <strong>${mabCardUpperHand}</strong>
+              </div>
+            </div>
+          </li>
+          `;
+
+      olDiv.append(listItem);
+    });
+  };
+  self.AddMabDeck_CardCopySelect2_Show = () => {
+    if (
+      self.Inputs.AddMabDeck_SelectCardCopy.hasClass(
+        "select2-hidden-accessible"
+      )
+    ) {
+      self.Inputs.AddMabDeck_SelectCardCopy.select2("destroy");
+    }
+
+    self.Containers.AddMabDeck_CardCopiesSelect2.removeClass(
+      "hide-div"
+    ).addClass("show-div");
+
+    // Fetch the mab player cards and their count from the backend
+    fetch(`https://localhost:7081/users/listmabplayercardcopies`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.content) {
+          sweetAlertError("Failed to load mab player cards:", data.message);
+          return;
+        }
+
+        const mabPlayerCards = data.content.map((item) => ({
+          id: item.mabCardCopyId,
+          text: item.mabCardDescription,
+        }));
+
+        // Clear previous options and add empty one
+        self.Inputs.AddMabDeck_SelectCardCopy.empty().append(
+          `<option></option>`
+        );
+
+        // Builds select2
+        self.Inputs.AddMabDeck_SelectCardCopy.select2({
+          data: mabPlayerCards,
+          dropdownParent: self.DOM,
+          placeholder: "Select a card",
+          allowClear: true,
+          theme: "classic",
+          width: "100%",
+          templateSelection: (data) => {
+            if (!data.id) return data.text;
+            return $("<strong>").text(data.text);
+          },
+        });
+      })
+      .catch((err) => {
+        sweetAlertError("Error fetching mab player cards:", err);
+      });
+  };
+  self.AddMabDeck_CardCopySelect2_Hide = () => {
+    self.Containers.AddMabDeck_CardCopiesSelect2.removeClass(
+      "show-div"
+    ).addClass("hide-div");
+  };
+  self.addMabDeck_CloseForm = () => {
+    self.toggleVisibility(self.Containers.AddMabPlayerDeck);
+  };
+
+  //* END OF ADD MAB SESSION
+  //?
+  //?
+  //* CONTINUE MAB CAMPAIGN
 
   self.ContinueMabCampaign = () => {};
 
@@ -1234,10 +1343,6 @@ function medieval_auto_battler() {
           `<span>${mabCampaignDB.countBoosters}</span>`
         );
 
-        console.log(
-          "mabCampaignDB.allCardsCollectedTrophy: ",
-          mabCampaignDB.allCardsCollectedTrophy
-        );
         if (mabCampaignDB.allCardsCollectedTrophy == true) {
           self.Imgs.Trophy_AllCardsCollected.attr(
             "src",
@@ -1245,10 +1350,6 @@ function medieval_auto_battler() {
           );
         }
 
-        console.log(
-          "mabCampaignDB.allNpcsDefeatedTrophy: ",
-          mabCampaignDB.allNpcsDefeatedTrophy
-        );
         if (mabCampaignDB.allNpcsDefeatedTrophy == true) {
           self.Imgs.Trophy_AllNpcsDefeated.attr(
             "src",

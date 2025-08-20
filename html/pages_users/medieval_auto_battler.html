@@ -8,26 +8,28 @@
     <link rel="stylesheet" href="/css/style_users/medieval_auto_battler.css" />
   </head>
   <body>
-    <div class="game-title">
-      <div class="d-flex flex-row align-items-center">
-        <img src="/images/icons/visored-helm.svg" id="mab-icon" />
-
-        <h3 class="p-0 m-0">
-          <strong><span>M</span>.<span>A</span>.<span>B</span>.</strong>
-        </h3>
-      </div>
-    </div>
     <main id="dom-medieval-auto-battler">
-      <section id="mab-content">
-        <div id="mab-menu" class="show-div">
+      <section id="game-logo">
+        <div class="d-flex flex-row align-items-center">
+          <img src="/images/icons/visored-helm.svg" id="img-mab-icon" />
+
+          <h3 class="p-0 m-0">
+            <strong><span>M</span>.<span>A</span>.<span>B</span>.</strong>
+          </h3>
+        </div>
+      </section>
+
+      <section id="mab-content-containers">
+        <!-- 1.CONTAINER: MAB MAIN MENU -->
+        <div id="container-mab-main-menu" class="show-div">
           <div class="d-flex flex-column w-100 gap-0">
             <h3 class="p-0 m-0"><span>M</span>ain <span>M</span>enu</h3>
             <hr />
           </div>
 
-          <!-- Start New Mab Campaign -->
+          <!-- Start Mab Campaign -->
           <button
-            id="button-mab-start-new-campaign"
+            id="button-mab-new-campaign-show-container"
             class="btn btn-outline-info"
             type="button"
           >
@@ -45,7 +47,7 @@
 
           <!-- Open Manage Mab Player Decks -->
           <button
-            id="button-open-manage-mab-player-decks"
+            id="button-mab-active-deck-show-container"
             class="btn btn-outline-info"
             type="button"
           >
@@ -54,7 +56,7 @@
 
           <!-- Open Open Mab Campaign Statistics-->
           <button
-            id="button-mab-show-campaign-stats"
+            id="button-mab-campaign-statistics-show-container"
             class="btn btn-outline-info"
             type="button"
           >
@@ -62,18 +64,18 @@
           </button>
         </div>
 
-        <!-- 1.CONTAINER: START NEW MAB CAMPAIGN -->
-        <div id="container-mab-start-new-campaign-form" class="hide-div">
+        <!-- 2.CONTAINER: NEW MAB CAMPAIGN -->
+        <div id="container-mab-new-campaign" class="hide-div">
           <div
             id="header-mab-start-new-campaign"
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
-            <div id="form-title-mab-start-new-campaign" class="p-0 m-0">
+            <div class="p-0 m-0">
               <h3 class="p-0 m-0"><span>N</span>ew <span>C</span>ampaign</h3>
             </div>
 
             <button
-              id="button-mab-start-new-campain-close-form"
+              id="button-mab-new-campaign-hide-container"
               class="btn btn-outline-danger btn-sm"
               type="button"
             >
@@ -83,7 +85,7 @@
 
           <hr />
 
-          <form id="form-mab-start-new-campaign" class="pt-3" action="">
+          <form id="form-mab-new-campaign" class="pt-3" action="">
             <!-- Input MabPlayerNickName -->
             <div class="mb-3 d-flex flex-column w-100 justify-content-between">
               <label for="player-nickname"
@@ -91,9 +93,10 @@
               >
               <input
                 name="MabPlayerNickName"
-                id="mab-campaign-player-nickname"
+                id="input-mab-new-campaign-player-nickname"
                 class="new-data form-control text-center required mt-3"
                 type="text"
+                value="Player"
                 required
                 autofocus
               />
@@ -108,7 +111,7 @@
               >
               <div class="form-check mt-2">
                 <input
-                  id="mab-campaign-difficulty-easy"
+                  id="input-mab-new-campaign-difficulty-easy"
                   class="form-check-input"
                   type="radio"
                   name="MabCampaignDifficulty"
@@ -116,7 +119,7 @@
                   checked
                 />
                 <label
-                  id="text-mab-campaign-difficulty-easy"
+                  id="label-mab-new-campaign-difficulty-easy"
                   class="form-check-label paint-green"
                   for="mab-difficulty-level-easy"
                 >
@@ -125,14 +128,14 @@
               </div>
               <div class="form-check pt-1">
                 <input
-                  id="mab-campaign-difficulty-medium"
+                  id="input-mab-new-campaign-difficulty-medium"
                   class="form-check-input"
                   type="radio"
                   name="MabCampaignDifficulty"
                   value="medium"
                 />
                 <label
-                  id="text-mab-campaign-difficulty-medium"
+                  id="label-mab-new-campaign-difficulty-medium"
                   class="form-check-label"
                   for="mab-difficulty-level-medium"
                 >
@@ -141,14 +144,14 @@
               </div>
               <div class="form-check pt-1">
                 <input
-                  id="mab-campaign-difficulty-hard"
+                  id="input-mab-new-campaign-difficulty-hard"
                   class="form-check-input"
                   type="radio"
                   name="MabCampaignDifficulty"
                   value="hard"
                 />
                 <label
-                  id="text-mab-campaign-difficulty-hard"
+                  id="label-mab-new-campaign-difficulty-hard"
                   class="form-check-label"
                   for="mab-difficulty-level-hard"
                 >
@@ -160,7 +163,7 @@
             <hr />
 
             <button
-              id="confirm-mab-start-new-campaign"
+              id="button-mab-new-campaign-start"
               class="btn btn-outline-info w-100 mt-3"
               type="button"
             >
@@ -169,8 +172,11 @@
           </form>
         </div>
 
-        <!-- 2.CONTAINER: MANAGE MAB DECKS PLAYER -->
-        <div id="container-manage-mab-player-decks" class="hide-div">
+        <!-- 3.CONTAINER: LOAD MAB CAMPAIGN -->
+        <div id="container-mab-load-campaign" class="hide-div"></div>
+
+        <!-- 4.CONTAINER: ACTIVE MAB DECK -->
+        <div id="container-mab-active-deck" class="hide-div">
           <div
             id="header-manage-mab-player-decks"
             class="d-flex flex-row flex-nowrap justify-content-between align-items-center gap-3"
@@ -186,7 +192,7 @@
               <div>
                 <button class="btn btn-outline-info btn-sm">Change Deck</button>
                 <button
-                  id="button-open-add-mab-deck"
+                  id="button-mab-new-deck-show-container"
                   class="btn btn-outline-success btn-sm"
                 >
                   New Deck
@@ -195,7 +201,7 @@
             </div>
 
             <button
-              id="button-close-manage-mab-player-decks"
+              id="button-mab-active-deck-hide-container"
               class="btn btn-outline-danger btn-sm"
               type="button"
             >
@@ -214,21 +220,21 @@
                   <div class="d-flex flex-row gap-3">
                     <input
                       name="ActiveMabDeckNewName"
-                      id="mab-active-deck-name"
+                      id="input-mab-active-deck-name"
                       class="current-data form-control text-center"
                       type="text"
                       readonly
                     />
                     <div class="d-flex flex-row gap-1">
                       <button
-                        id="button-edit-active-mab-deck-name"
+                        id="button-mab-active-deck-edit-deck-name"
                         class="btn btn-outline-warning btn-sm"
                         type="button"
                       >
                         edit
                       </button>
                       <button
-                        id="button-confirm-active-mab-deck-new-name"
+                        id="button-active-mab-deck-confirm-new-deck-name"
                         class="btn btn-outline-success btn-sm"
                         type="button"
                         disabled
@@ -236,7 +242,7 @@
                         confirm
                       </button>
                       <button
-                        id="button-cancel-active-mab-deck-new-name"
+                        id="button-mab-active-deck-cancel-deck-name-change"
                         class="btn btn-outline-danger btn-sm"
                         type="button"
                         disabled
@@ -253,20 +259,20 @@
                   <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
 
                   <div
-                    id="span-active-mab-deck-deckbalance"
+                    id="span-mab-active-deck-deckbalance"
                     class="d-flex flex-row gap-1"
                   >
                     <div>
                       <strong>N</strong>eutral:
                       <strong
-                        class="strong-manage-mab-decks-neutral-type-count"
+                        class="strong-mab-decks-neutral-type-count"
                       ></strong>
                     </div>
                     &nbsp;|&nbsp;
                     <div>
                       <span style="color: var(--greenish)">R</span
                       >anged:&nbsp;<span
-                        class="span-manage-mab-decks-ranged-type-count"
+                        class="span-mab-decks-ranged-type-count"
                         style="color: var(--greenish)"
                       ></span>
                     </div>
@@ -274,7 +280,7 @@
                     <div>
                       <span style="color: var(--reddish)">C</span
                       >avalry:&nbsp;<span
-                        class="span-manage-mab-decks-cavalry-type-count"
+                        class="span-mab-decks-cavalry-type-count"
                         style="color: var(--reddish)"
                       ></span>
                     </div>
@@ -282,7 +288,7 @@
                     <div>
                       <span style="color: var(--yellowish)">I</span
                       >nfantry:&nbsp;<span
-                        class="span-manage-mab-decks-infantry-type-count"
+                        class="span-mab-decks-infantry-type-count"
                         style="color: var(--yellowish)"
                       ></span>
                     </div>
@@ -290,7 +296,7 @@
                 </div>
 
                 <ol
-                  id="ol-active-mab-deck-cardcopieslist"
+                  id="ol-active-mab-deck-card-copies-list"
                   class="mab-cards-list"
                 ></ol>
               </div>
@@ -298,23 +304,23 @@
               <div class="d-flex flex-row gap-5 w-100 align-items-center">
                 <div>
                   <span>D</span>eck <span>S</span>ize:&nbsp;
-                  <span id="span-active-mab-deck-decksize"></span>
+                  <span id="span-mab-active-deck-decksize"></span>
                 </div>
 
                 <div
                   class="d-flex flex-row gap-2 hide-div"
-                  id="div-select-manage-mab-deck"
+                  id="div-active-mab-deck-select-container"
                 >
                   <div>
                     <select
                       name="AssignedMabCardId"
-                      id="input-select-manage-mab-deck-selectedcard"
+                      id="select-mab-active-deck-card-copies-list"
                       class="form-control form-select required"
                     ></select>
                   </div>
 
                   <button
-                    id="button-activate-mabcardcopy"
+                    id="button-mab-active-deck-assign-card-copy"
                     class="btn btn-outline-success btn-sm"
                   >
                     Add
@@ -324,13 +330,13 @@
             </div>
 
             <div class="deck-balance-chart-style">
-              <canvas id="canvas-active-mab-deck-deckbalancechart"></canvas>
+              <canvas id="canvas-active-mab-deck-deckbalance-chart"></canvas>
             </div>
           </div>
         </div>
 
-        <!-- 3.CONTAINER: ADD MAB DECK -->
-        <div id="container-add-mab-deck" class="hide-div">
+        <!-- 5.CONTAINER: CREATE MAB DECK -->
+        <div id="container-mab-new-deck" class="hide-div">
           <div
             id="header-add-mab-deck"
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
@@ -342,7 +348,7 @@
               </h3>
             </div>
             <button
-              id="button-add-mab-deck-close-form"
+              id="button-mab-new-deck-hide-container"
               class="btn btn-outline-danger btn-sm"
               type="button"
             >
@@ -364,7 +370,7 @@
               >
               <input
                 name="MabDeckName"
-                id="input-add-mab-deck-deckname"
+                id="input-mab-new-deck-deck-name"
                 class="new-data form-control text-center required mt-3"
                 type="text"
                 required
@@ -376,20 +382,23 @@
             <div class="d-flex flex-row gap-5 w-100 align-items-center mb-5">
               <div>
                 <span>D</span>eck <span>S</span>ize:&nbsp;
-                <span id="span-add-mab-deck-decksize"></span>
+                <span id="span-mab-new-deck-decksize"></span>
               </div>
 
-              <div class="d-flex flex-row gap-2" id="div-select-mab-newdeck">
+              <div
+                class="d-flex flex-row gap-2"
+                id="container-add-mab-selectcard"
+              >
                 <div>
                   <select
                     name="MabCardId"
-                    id="input-add-mab-deck-cardselection"
+                    id="select-mab-new-deck-card-copies-list"
                     class="form-control form-select required"
                   ></select>
                 </div>
 
                 <button
-                  id="button-add-mab-deck-addcardcopy"
+                  id="button-mab-new-deck-assign-card-copy"
                   class="btn btn-outline-success btn-sm"
                 >
                   Add
@@ -398,20 +407,20 @@
             </div>
 
             <div
-              id="span-add-mab-deck-decksize"
+              id="how-should-i-name-this"
               class="d-flex flex-column mb-0 gap-2"
             >
               <div class="d-flex flex-row gap-2">
                 <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
 
                 <div
-                  id="span-add-mab-deck-deckbalance"
+                  id="span-mab-new-deck-deckbalance"
                   class="d-flex flex-row gap-1"
                 >
                   <div>
                     <strong>N</strong>eutral:
                     <strong
-                      class="strong-manage-mab-decks-neutral-type-count"
+                      class="strong-mab-decks-neutral-type-count"
                     ></strong>
                   </div>
 
@@ -420,7 +429,7 @@
                   <div>
                     <span style="color: var(--greenish)">R</span
                     >anged:&nbsp;<span
-                      class="span-manage-mab-decks-ranged-type-count"
+                      class="span-mab-decks-ranged-type-count"
                       style="color: var(--greenish)"
                     ></span>
                   </div>
@@ -430,7 +439,7 @@
                   <div>
                     <span style="color: var(--reddish)">C</span
                     >avalry:&nbsp;<span
-                      class="span-manage-mab-decks-cavalry-type-count"
+                      class="span-mab-decks-cavalry-type-count"
                       style="color: var(--reddish)"
                     ></span>
                   </div>
@@ -440,7 +449,7 @@
                   <div>
                     <span style="color: var(--yellowish)">I</span
                     >nfantry:&nbsp;<span
-                      class="span-manage-mab-decks-infantry-type-count"
+                      class="span-mab-decks-infantry-type-count"
                       style="color: var(--yellowish)"
                     ></span>
                   </div>
@@ -448,7 +457,7 @@
               </div>
 
               <ol
-                id="ol-add-mab-deck-cardcopieslist"
+                id="ol-add-mab-deck-card-copieslist"
                 class="mab-cards-list"
               ></ol>
             </div>
@@ -465,8 +474,8 @@
           </form>
         </div>
 
-        <!-- 4.CONTAINER: MAB CAMPAIGN STATS -->
-        <div id="container-mab-campaign-stats" class="hide-div">
+        <!-- 6.CONTAINER: MAB CAMPAIGN STATS -->
+        <div id="container-mab-campaign-statistics" class="hide-div">
           <div
             class="d-flex flex-column justify-content-center align-items-start w-100"
           >
@@ -482,7 +491,7 @@
               </div>
 
               <button
-                id="button-mab-close-campaign-stats"
+                id="button-mab-campaign-statistics-hide-container"
                 class="btn btn-outline-danger btn-sm"
                 type="button"
               >
@@ -496,55 +505,60 @@
             <div
               class="d-flex flex-column justify-content-start align-items-start mt-3"
             >
-              <form id="form-mab-start-new-campaign" action="">
-                <div class="mb-3 d-flex flex-column justify-content-between">
-                  <label><span>P</span>layer <span>N</span>ame</label>
-                  <div class="d-flex flex-row gap-3">
-                    <input
-                      name="MabPlayerNewNickName"
-                      id="mab-stats-player-new-nickname"
-                      class="current-data form-control text-center"
-                      type="text"
-                      readonly
-                    />
-                    <div class="d-flex flex-row gap-1">
-                      <button
-                        id="button-edit-mab-player-nickname"
-                        class="btn btn-outline-warning btn-sm"
-                        type="button"
-                      >
-                        edit
-                      </button>
-                      <button
-                        id="button-confirm-edit-mab-player-nickname"
-                        class="current-data btn btn-outline-success btn-sm"
-                        type="button"
-                        disabled
-                      >
-                        confirm
-                      </button>
-                    </div>
+              <form
+                id="form-mab-campaign-statistics"
+                class="mb-3 d-flex flex-column justify-content-between"
+              >
+                <label for="input-mab-campaign-statistics-new-player-nickname"
+                  ><span>P</span>layer <span>N</span>ame</label
+                >
+                <div class="d-flex flex-row gap-3">
+                  <input
+                    name="MabPlayerNewNickName"
+                    id="input-mab-campaign-statistics-new-player-nickname"
+                    class="current-data form-control text-center"
+                    type="text"
+                    readonly
+                  />
+                  <div class="d-flex flex-row gap-1">
+                    <button
+                      id="button-mab-campaign-statistics-edit-player-nickname"
+                      class="btn btn-outline-warning btn-sm"
+                      type="button"
+                    >
+                      edit
+                    </button>
+                    <button
+                      id="button-mab-campaign-statistics-confirm-new-player-nickname"
+                      class="btn btn-outline-success btn-sm"
+                      type="button"
+                      disabled
+                    >
+                      confirm
+                    </button>
                   </div>
                 </div>
               </form>
               <div class="d-flex flex-row gap-3">
                 <div class="mb-3 d-flex flex-row gap-1">
                   <div><span>L</span>evel:</div>
-                  <div id="mab-stats-level">?</div>
+                  <span id="field-mab-campaign-statistics-player-level">?</span>
                 </div>
 
                 <div class="mb-3 d-flex flex-row gap-1">
                   <div class="d-flex flex-nowrap">
                     <span>G</span>old&nbsp;<span>S</span>tash:
                   </div>
-                  <div id="mab-stats-gold-stash">?</div>
+                  <span id="field-mab-campaign-statistics-gold-stash">?</span>
                 </div>
 
                 <div class="mb-3 d-flex flex-row gap-1">
                   <div class="d-flex flex-nowrap">
                     <span>B</span>oosters&nbsp;<span>O</span>pened:
                   </div>
-                  <div id="mab-stats-boosters-opened">?</div>
+                  <span id="field-mab-campaign-statistics-boosters-opened">
+                    ?
+                  </span>
                 </div>
               </div>
 
@@ -553,21 +567,23 @@
                   <div class="d-flex flex-nowrap">
                     <span>B</span>attles&nbsp;<span>C</span>ount:
                   </div>
-                  <div id="mab-stats-battles-count">?</div>
+                  <span id="field-mab-campaign-statistics-battles-count"
+                    >?</span
+                  >
                 </div>
 
                 <div class="mb-3 d-flex flex-row gap-1">
                   <div class="d-flex flex-nowrap">
                     <span>B</span>attles&nbsp;<span>W</span>on:
                   </div>
-                  <div id="mab-stats-battles-won">?</div>
+                  <span id="field-mab-campaign-statistics-battles-won">?</span>
                 </div>
 
                 <div class="mb-3 d-flex flex-row gap-1">
                   <div class="d-flex flex-nowrap">
                     <span>B</span>attles&nbsp;<span>L</span>ost:
                   </div>
-                  <div id="mab-stats-battles-lost">?</div>
+                  <span id="field-mab-campaign-statistics-battles-lost">?</span>
                 </div>
               </div>
 
@@ -585,7 +601,7 @@
                       data-bs-title="All Cards Collected!"
                     >
                       <img
-                        id="allcardscollected-trophy"
+                        id="img-mab-campaign-statistics-all-cards-collected-trophy"
                         class="trophy-icon"
                         src="/images/icons/trophy_allcardscollected.svg"
                       />
@@ -598,7 +614,7 @@
                       data-bs-title="All Npcs Defeated!"
                     >
                       <img
-                        id="allnpcsdefeated-trophy"
+                        id="img-mab-campaign-statistics-all-npcs-defeated-trophy"
                         class="trophy-icon"
                         src="/images/icons/trophy_allnpcsdefeated.svg"
                       />
@@ -622,7 +638,11 @@
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
     <script src="/js/components/header.js"></script>
-    <script src="/js/scripts/scripts_users/medieval_auto_battler.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_new_campaign.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_campaign_statistics.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_active_deck.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_new_deck.js"></script>
+    <!-- <script src="/js/scripts/scripts_users/medieval_auto_battler.js"></script> -->
 
     <script>
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
