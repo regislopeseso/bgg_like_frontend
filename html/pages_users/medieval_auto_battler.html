@@ -189,14 +189,30 @@
                 <span>M</span>anage <span>P</span>layer <span>D</span>ecks
               </h3>
 
-              <div>
-                <button class="btn btn-outline-info btn-sm">Change Deck</button>
+              <div class="d-flex flex-row gap-2">
                 <button
                   id="button-mab-new-deck-show-container"
                   class="btn btn-outline-success btn-sm"
                 >
                   New Deck
                 </button>
+                <button
+                  id="button-mab-active-deck-change-deck"
+                  class="btn btn-outline-info btn-sm"
+                >
+                  Change Deck
+                </button>
+
+                <div
+                  class="d-flex flex-row gap-2 hide-div"
+                  id="div-active-mab-deck-select2-decks"
+                >
+                  <select
+                    name="AssignedMabCardId"
+                    id="select-mab-active-deck-decks-list"
+                    class="form-control form-select required"
+                  ></select>
+                </div>
               </div>
             </div>
 
@@ -214,7 +230,9 @@
           <div id="div-deck-data-content" class="d-flex flex-row">
             <div class="d-flex flex-column gap-5">
               <form id="form-mab-active-deck">
-                <div class="d-flex flex-row align-items-center gap-3">
+                <div
+                  class="d-flex flex-row align-items-center justify-content-start gap-3 w-100"
+                >
                   <label><span>A</span>ctive <span>D</span>eck:</label>
 
                   <div class="d-flex flex-row gap-3">
@@ -225,13 +243,14 @@
                       type="text"
                       readonly
                     />
+
                     <div class="d-flex flex-row gap-1">
                       <button
                         id="button-mab-active-deck-edit-deck-name"
                         class="btn btn-outline-warning btn-sm"
                         type="button"
                       >
-                        edit
+                        Edit
                       </button>
 
                       <button
@@ -240,7 +259,7 @@
                         type="button"
                         disabled
                       >
-                        confirm
+                        Confirm
                       </button>
 
                       <button
@@ -249,7 +268,7 @@
                         type="button"
                         disabled
                       >
-                        cancel
+                        Cancel
                       </button>
                     </div>
                   </div>
@@ -257,6 +276,11 @@
               </form>
 
               <div class="d-flex flex-column mb-0 gap-2">
+                <div class="d-flex flex-row gap-2">
+                  <div><span>D</span>eck <span>L</span>evel:&nbsp;</div>
+                  <span id="span-mab-active-deck-decklevel"></span>
+                </div>
+
                 <div class="d-flex flex-row gap-2">
                   <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
 
@@ -334,6 +358,15 @@
             <div class="deck-balance-chart-style">
               <canvas id="canvas-active-mab-deck-deckbalance-chart"></canvas>
             </div>
+
+            <div>
+              <button
+                id="button-mab-active-deck-delete-deck"
+                class="btn btn-outline-danger btn-sm"
+              >
+                Delete Deck
+              </button>
+            </div>
           </div>
         </div>
 
@@ -408,10 +441,7 @@
               </div>
             </div>
 
-            <div
-              id="how-should-i-name-this"
-              class="d-flex flex-column mb-0 gap-2"
-            >
+            <div class="d-flex flex-column mb-0 gap-2">
               <div class="d-flex flex-row gap-2">
                 <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
 
@@ -464,11 +494,11 @@
             <hr />
 
             <button
-              id="button-mab-new-deck-confirm-new-deck"
+              id="button-mab-new-deck-activate-new-deck"
               class="btn btn-outline-info w-100 mt-3"
               type="button"
             >
-              Create
+              Set as Active
             </button>
           </form>
         </div>

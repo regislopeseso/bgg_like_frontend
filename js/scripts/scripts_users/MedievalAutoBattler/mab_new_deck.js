@@ -7,6 +7,8 @@ function mab_new_deck() {
 
   self.NewDeckName = "";
 
+  self.EditedDeckName = "";
+
   self.NewDeckSize = null;
 
   self.NewDeckSizeLimit = null;
@@ -43,22 +45,20 @@ function mab_new_deck() {
       self.Containers.NewDeck.find("#button-mab-new-deck-hide-container");
     self.Buttons[self.Buttons.length] = self.Buttons.AssignCardCopy =
       self.Containers.NewDeck.find("#button-mab-new-deck-assign-card-copy");
-    self.Buttons[self.Buttons.length] = self.Buttons.ConfirmNewDeck =
-      self.Containers.NewDeck.find("#button-mab-new-deck-confirm-new-deck");
+    self.Buttons[self.Buttons.length] = self.Buttons.NewDeck_ActivateDeck =
+      self.Containers.NewDeck.find("#button-mab-new-deck-activate-new-deck");
 
     self.Inputs = [];
-    self.Inputs[self.Inputs.length] = self.Inputs.NewDeckName = self.DOM.find(
-      "#input-mab-new-deck-deck-name"
-    );
+    self.Inputs[self.Inputs.length] = self.Inputs.NewDeckName =
+      self.Containers.NewDeck.find("#input-mab-new-deck-deck-name");
     self.Inputs[self.Inputs.length] = self.Inputs.Select_NewDeckCardCopies =
-      self.DOM.find("#select-mab-new-deck-card-copies-list");
+      self.Containers.NewDeck.find("#select-mab-new-deck-card-copies-list");
 
     self.Fields = [];
-    self.Fields[self.Fields.length] = self.Fields.NewDeckSize = self.DOM.find(
-      "#span-mab-new-deck-deck-decksize"
-    );
+    self.Fields[self.Fields.length] = self.Fields.NewDeckSize =
+      self.Containers.NewDeck.find("#span-mab-new-deck-decksize");
     self.Fields[self.Fields.length] = self.Fields.NewDeckBalance =
-      self.DOM.find("#span-mab-new-deck-deckbalance");
+      self.Containers.NewDeck.find("#span-mab-new-deck-deckbalance");
     self.Fields[self.Fields.length] = self.Fields.NewDeck_NeutralTypeCount =
       self.Fields.NewDeckBalance.find(".strong-mab-decks-neutral-type-count");
     self.Fields[self.Fields.length] = self.Fields.NewDeck_RangedTypeCount =
@@ -77,6 +77,10 @@ function mab_new_deck() {
 
       self.NewDeck_Create();
     });
+    self.Buttons.HideNewDeckContainer.on("click", (e) => {
+      self.NewDeck_DeleteDeck();
+    });
+
     self.Inputs.Select_NewDeckCardCopies.on("select2:select", function (e) {
       const selectedData = e.params.data;
 
@@ -86,7 +90,7 @@ function mab_new_deck() {
     });
 
     self.Inputs.NewDeckName.on("blur", function () {
-      self.NewDeckName = $(this).val();
+      self.EditedDeckName = $(this).val();
 
       self.NewDeck_EditDeckName();
     });
@@ -113,23 +117,10 @@ function mab_new_deck() {
         self.NewDeck_SelectedCardCopyId
       );
     });
-    self.Buttons.ConfirmNewDeck.on("click", (e) => {
+    self.Buttons.NewDeck_ActivateDeck.on("click", (e) => {
       e.preventDefault();
 
-      self.NewDeck_EditDeckName();
-    });
-    self.Buttons.HideNewDeckContainer.on("click", (e) => {
-      e.preventDefault();
-
-      self.newDeck_HideContainer();
-
-      setTimeout(() => {
-        self.newDeck_Refresh_InputsAndFieldsAndVariables();
-
-        //self.reset_EditDeckName_ButtonsAndInput();
-      }, 300);
-
-      self.activeMabDeck_ShowContainer();
+      self.NewDeck_ActivateDeck();
     });
   };
 
@@ -237,7 +228,7 @@ function mab_new_deck() {
 
     self.Inputs.NewDeckName.val();
 
-    self.Fields.NewDeckSize.html();
+    //self.Fields.NewDeckSize.html();
 
     self.Fields.NewDeckBalance.html();
 
@@ -248,7 +239,7 @@ function mab_new_deck() {
   self.NewDeck_ShowDeckDetails = () => {
     $.ajax({
       type: "GET",
-      url: `https://localhost:7081/users/showmabplayerdeckdetails?MabDeckId=${self.NewDeckId}`,
+      url: `https://localhost:7081/users/showmabdeckdetails?MabDeckId=${self.NewDeckId}`,
       xhrFields: { withCredentials: true },
       success: function (response) {
         if (response.content == null) {
@@ -314,12 +305,17 @@ function mab_new_deck() {
     });
   };
   self.NewDeck_EditDeckName = () => {
-    let deckNewName = self.Inputs.NewDeckName.val().trim();
+    let deckNewName = self.NewDeckName.trim().toLocaleLowerCase();
+    let editedDeckNewDeckName = self.EditedDeckName.trim().toLocaleLowerCase();
 
-    if (!deckNewName || deckNewName.length < 1) {
+    if (!editedDeckNewDeckName || editedDeckNewDeckName.length < 1) {
       self.sweetAlertError("Please fill the Mab Deck Name field!");
 
       return self.Inputs.NewDeckName.trigger("select");
+    }
+
+    if (editedDeckNewDeckName === deckNewName) {
+      return;
     }
 
     $.ajax({
@@ -327,7 +323,7 @@ function mab_new_deck() {
       url: "https://localhost:7081/users/editmabdeckname",
       data: JSON.stringify({
         MabDeckId: self.NewDeckId,
-        MabDeckName: deckNewName,
+        MabDeckName: editedDeckNewDeckName,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -339,11 +335,55 @@ function mab_new_deck() {
           return;
         }
 
-        self.ActiveDeckName = self.Inputs.ActiveDeckName.val();
+        self.ActiveDeckName = self.Inputs.NewDeckName.val();
+      },
+      error: (err) => {
+        self.sweetAlertError(err);
+      },
+      complete: () => {},
+    });
+  };
+  self.NewDeck_DeleteDeck = () => {
+    $.ajax({
+      type: "DELETE",
+      url: "https://localhost:7081/users/deletemabdeck",
+      data: JSON.stringify({
+        MabDeckId: self.NewDeckId,
+      }),
+      contentType: "application/json",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          sweetAlertError(resp.message);
 
-        self.sweetAlertSuccess(resp.message);
+          return;
+        }
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+    });
+  };
+  self.NewDeck_ActivateDeck = () => {
+    $.ajax({
+      type: "PUT",
+      url: "https://localhost:7081/users/activatemabdeck",
+      data: JSON.stringify({
+        MabDeckId: self.NewDeckId,
+      }),
+      contentType: "application/json",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          self.sweetAlertError(resp.message);
+          return;
+        }
 
-        //self.reset_EditDeckName_ButtonsAndInput();
+        self.sweetAlertSuccess(resp.message, "is now the active deck!");
       },
       error: (err) => {
         self.sweetAlertError(err);
@@ -519,13 +559,6 @@ function mab_new_deck() {
     self.Containers.AddMabDeck_CardCopiesSelect2.removeClass(
       "show-div"
     ).addClass("hide-div");
-  };
-
-  self.mabMainMenu_Open = () => {
-    self.toggleContainerVisibility(self.Containers.MainMenu);
-  };
-  self.mabMainMenu_Close = () => {
-    self.toggleContainerVisibility(self.Containers.MainMenu);
   };
 
   self.activeDeck_HideContainer = () => {

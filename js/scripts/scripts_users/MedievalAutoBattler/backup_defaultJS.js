@@ -505,7 +505,7 @@ function medieval_auto_battler() {
   self.ActiveMabDeck_ShowDeckDetails = () => {
     $.ajax({
       type: "GET",
-      url: `https://localhost:7081/users/showmabplayerdeckdetails`,
+      url: `https://localhost:7081/users/showmabdeckdetails`,
       xhrFields: { withCredentials: true },
       success: function (response) {
         if (response.content == null) {
@@ -1092,7 +1092,7 @@ function medieval_auto_battler() {
   self.AddMabDeck_ShowDeckDetails = (mabDeckId) => {
     $.ajax({
       type: "GET",
-      url: `https://localhost:7081/users/showmabplayerdeckdetails?MabDeckId=${mabDeckId}`,
+      url: `https://localhost:7081/users/showmabdeckdetails?MabDeckId=${mabDeckId}`,
       xhrFields: { withCredentials: true },
       success: function (response) {
         if (response.content == null) {
