@@ -15,8 +15,8 @@ function mab_active_deck() {
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
-    self.CardCopies_OrderedList = self.DOM.find(
-      "#ol-active-mab-deck-card-copies-list"
+    self.ActiveDeck_CardCopies_OrderedList = self.DOM.find(
+      "#ol-mab-active-deck-card-copies"
     );
 
     self.DeckBalanceChart = self.DOM.find(
@@ -75,7 +75,7 @@ function mab_active_deck() {
       self.Containers.ActiveDeck.find(".strong-mab-decks-neutral-type-count");
     self.Fields[self.Fields.length] = self.Fields.ActiveDeck_RangedTypeCount =
       self.Containers.ActiveDeck.find(".span-mab-decks-ranged-type-count");
-    self.Fields[self.Fields.length] = self.Fields.ActiveDeck_InfantryTypeCount =
+    self.Fields[self.Fields.length] = self.Fields.ActiveDeck_CavalryTypeCount =
       self.Containers.ActiveDeck.find(".span-mab-decks-cavalry-type-count");
     self.Fields[self.Fields.length] = self.Fields.ActiveDeck_InfantryTypeCount =
       self.Containers.ActiveDeck.find(".span-mab-decks-infantry-type-count");
@@ -97,7 +97,7 @@ function mab_active_deck() {
       self.mainMenu_ShowContainer();
 
       setTimeout(() => {
-        self.refresh_InputsAndFieldsAndVariables();
+        self.activeDeck_Refresh_InputsAndFieldsAndVariables();
 
         self.reset_EditDeckName_ButtonsAndInput();
       }, 300);
@@ -131,14 +131,18 @@ function mab_active_deck() {
     });
 
     // Binding the event after inserting into DOM
-    $(document).on("click", ".button-unassign-mab-card-copy", function () {
-      let index = $(this).data("index");
-      let assignedMabCardCopyId = $(this).data("assigned-mab-card-copy-id");
+    $(document).on(
+      "click",
+      "#button-mab-active-deck-unassign-card-copy",
+      function () {
+        let index = $(this).data("index");
+        let assignedMabCardCopyId = $(this).data(
+          "mab-active-deck-assigned-card-copy-id"
+        );
 
-      let mabDeckId = self.ActiveDeckId;
-
-      self.ActiveDeck_UnassignCardCopy(index, assignedMabCardCopyId, mabDeckId);
-    });
+        self.ActiveDeck_UnassignCardCopy(index, assignedMabCardCopyId);
+      }
+    );
     self.Inputs.Select_ActiveDeckCardCopies.on("select2:select", function (e) {
       const selectedData = e.params.data;
 
@@ -149,10 +153,10 @@ function mab_active_deck() {
     self.Buttons.AssignCardCopy_ToActiveDeck.on("click", (e) => {
       e.preventDefault();
 
-      const mabDeckId = self.ActiveDeckId;
-      const mabCardCopyId = self.ActiveDeck_SelectedCardCopyId;
-
-      self.ActiveDeck_AssignCardCopy(mabDeckId, mabCardCopyId, true);
+      self.ActiveDeck_AssignCardCopy(
+        self.ActiveDeckId,
+        self.ActiveDeck_SelectedCardCopyId
+      );
     });
   };
 
@@ -211,11 +215,12 @@ function mab_active_deck() {
     self.toggleContainerVisibility(self.Containers.ActiveDeck);
   };
 
-  self.refresh_InputsAndFieldsAndVariables = () => {
+  self.activeDeck_Refresh_InputsAndFieldsAndVariables = () => {
     self.ActiveDeckId = null;
+
     self.ActiveDeckName = "";
 
-    self.ActiveDeckSize = 0;
+    self.ActiveDeckSize = null;
 
     self.ActiveDeckSizeLimit = null;
 
@@ -229,7 +234,7 @@ function mab_active_deck() {
 
     self.Fields.ActiveDeckBalance.html();
 
-    self.CardCopies_OrderedList.empty();
+    self.ActiveDeck_CardCopies_OrderedList.empty();
 
     self.CardCopyList_Select2_Hide();
   };
@@ -245,14 +250,15 @@ function mab_active_deck() {
           return;
         }
 
-        self.refresh_InputsAndFieldsAndVariables();
+        self.activeDeck_Refresh_InputsAndFieldsAndVariables();
 
         let activeDeck = response.content;
         let activeDeckId = activeDeck.activeMabDeckId;
         let activeDeckName = activeDeck.activeMabDeckName;
         let activeDeckSizeLimit = activeDeck.mabDeckSizeLimit;
-        let activeMabCardCopies = activeDeck.mabCardCopies;
-        let activeDeckCurrentSize = activeMabCardCopies.length;
+        let cardCopies = activeDeck.mabCardCopies;
+        let activeDeckCurrentSize = cardCopies.length;
+
         let countNeutralCardCopies = 0;
         let countRangedCardCopies = 0;
         let countCalvaryCardCopies = 0;
@@ -273,7 +279,7 @@ function mab_active_deck() {
           `${activeDeckCurrentSize}/${activeDeckSizeLimit}`
         );
 
-        activeMabCardCopies.forEach((mabCard) => {
+        cardCopies.forEach((mabCard) => {
           let cardType = mabCard.mabCardType;
 
           switch (cardType) {
@@ -297,13 +303,10 @@ function mab_active_deck() {
 
         self.Fields.ActiveDeck_NeutralTypeCount.html(countNeutralCardCopies);
         self.Fields.ActiveDeck_RangedTypeCount.html(countRangedCardCopies);
-        self.Fields.ActiveDeck_InfantryTypeCount.html(countCalvaryCardCopies);
+        self.Fields.ActiveDeck_CavalryTypeCount.html(countCalvaryCardCopies);
         self.Fields.ActiveDeck_InfantryTypeCount.html(countInfantryCardCopies);
 
-        self.activeDeck_buildCardCopiesList(
-          activeMabCardCopies,
-          self.CardCopies_OrderedList
-        );
+        self.activeDeck_Build_CardCopiesList(cardCopies);
 
         self.activeDeck_buildChart(
           countNeutralCardCopies,
@@ -320,16 +323,16 @@ function mab_active_deck() {
     });
   };
   self.ActiveDeck_EditDeckName = () => {
-    let activeMabDeckNewName = self.Inputs.ActiveDeckName.val().trim();
+    let activeDeckNewName = self.Inputs.ActiveDeckName.val().trim();
 
-    if (!activeMabDeckNewName || activeMabDeckNewName.length < 1) {
+    if (!activeDeckNewName || activeDeckNewName.length < 1) {
       self.sweetAlertError("Please fill the Mab Deck Name field!");
 
       return self.Inputs.ActiveDeckName.trigger("select");
     }
 
     if (
-      activeMabDeckNewName.toLowerCase().trim() ===
+      activeDeckNewName.toLowerCase().trim() ===
       self.ActiveDeckName.toLowerCase().trim()
     ) {
       self.reset_EditDeckName_ButtonsAndInput();
@@ -338,9 +341,10 @@ function mab_active_deck() {
 
     $.ajax({
       type: "PUT",
-      url: "https://localhost:7081/users/editactivemabdeckname",
+      url: "https://localhost:7081/users/editmabdeckname",
       data: JSON.stringify({
-        ActiveMabDeckNewName: activeMabDeckNewName,
+        MabDeckId: self.ActiveDeckId,
+        MabDeckName: activeDeckNewName,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -393,48 +397,49 @@ function mab_active_deck() {
     self.Buttons.EditActiveDeckName_Cancel.prop("disabled", true);
   };
 
-  self.activeDeck_buildCardCopiesList = (playerMabCardCopies, olDiv) => {
-    playerMabCardCopies.forEach((card, Index) => {
+  self.activeDeck_Build_CardCopiesList = (playerCardCopies) => {
+    playerCardCopies.forEach((card, index) => {
       self.ActiveDeck_CardIds.push(card.mabCardId);
 
-      let assignedMabCardCopyId = card.assignedMabCardCopyId;
-      let mabCardName = card.mabCardName;
-      let mabCardLvl = card.mabCardLevel;
-      let mabCardType = card.mabCardType;
-      let mabCardPower = card.mabCardPower;
-      let mabCardUpperHand = card.mabCardUpperHand;
+      let assignedCardCopyId = card.assignedMabCardCopyId;
+      let cardName = card.mabCardName;
+      let cardLvl = card.mabCardLevel;
+      let cardType = card.mabCardType;
+      let cardPower = card.mabCardPower;
+      let cardUpperHand = card.mabCardUpperHand;
 
       let listItem = `
-          <li id="li-mab-${Index}" data-assigned-mab-card-copy-id="${assignedMabCardCopyId}">
+          <li id="li-mab-active-deck-${index}" data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}">
             <div class="d-flex flex-row align-items-center gap-2">
               <button
-                class="button-unassign-mab-card-copy btn btn-outline-danger p-0 m-0"
+                id="button-mab-active-deck-unassign-card-copy"
+                class="btn btn-outline-danger p-0 m-0"
                 type="button"
-                data-assigned-mab-card-copy-id="${assignedMabCardCopyId}"
-                data-index="${Index}"
+                data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}"
+                data-index="${index}"
               >
                 <i class="fa-solid fa-xmark p-1 m-0"></i>
               </button>
 
-              <strong class="mab-card-name p-0 m-0">${mabCardName}</strong>
+              <strong class="mab-card-name p-0 m-0">${cardName}</strong>
 
               <img
                 src="/images/icons/io_arrow_right.svg"
                 class="bi bi-arrow p-0 m-0"
               />
 
-              <div class="mab-card-data">
-                <span>L</span>evel: <strong>${mabCardLvl}</strong>,
-                <span>T</span>ype: <strong>${mabCardType}</strong>,
-                <span>P</span>ower: <strong>${mabCardPower}</strong>,
+              <div>
+                <span>L</span>evel: <strong>${cardLvl}</strong>,
+                <span>T</span>ype: <strong>${cardType}</strong>,
+                <span>P</span>ower: <strong>${cardPower}</strong>,
                 <span>U</span>pper <span>H</span>and:
-                <strong>${mabCardUpperHand}</strong>
+                <strong>${cardUpperHand}</strong>
               </div>
             </div>
           </li>
           `;
 
-      olDiv.append(listItem);
+      self.ActiveDeck_CardCopies_OrderedList.append(listItem);
     });
   };
   self.CardCopyList_Select2_Hide = () => {
@@ -470,7 +475,9 @@ function mab_active_deck() {
   self.ActiveDeck_UnassignCardCopy = (index, assignedCardCopyId) => {
     self.ActiveDeck_CardIds.splice(index, 1);
 
-    self.CardCopies_OrderedList.find(`#li-mab-${index}`).remove();
+    self.ActiveDeck_CardCopies_OrderedList.find(
+      `#li-mab-active-deck-${index}`
+    ).remove();
 
     $.ajax({
       type: "DELETE",
@@ -529,8 +536,8 @@ function mab_active_deck() {
           backgroundColor: [
             rootStyles.getPropertyValue("--text-color"),
             rootStyles.getPropertyValue("--greenish"),
-            rootStyles.getPropertyValue("--yellowish"),
             rootStyles.getPropertyValue("--reddish"),
+            rootStyles.getPropertyValue("--yellowish"),
           ],
           borderColor: rootStyles.getPropertyValue("--second-bg-color"),
           borderWidth: 1,
@@ -607,8 +614,8 @@ function mab_active_deck() {
                 const colors = [
                   rootStyles.getPropertyValue("--text-color"),
                   rootStyles.getPropertyValue("--greenish"),
-                  rootStyles.getPropertyValue("--yellowish"),
                   rootStyles.getPropertyValue("--reddish"),
+                  rootStyles.getPropertyValue("--yellowish"),
                 ];
                 const index =
                   tooltipItems[0].dataIndex !== undefined
@@ -662,8 +669,8 @@ function mab_active_deck() {
                 const colors = [
                   rootStyles.getPropertyValue("--text-color"),
                   rootStyles.getPropertyValue("--greenish"),
-                  rootStyles.getPropertyValue("--yellowish"),
                   rootStyles.getPropertyValue("--reddish"),
+                  rootStyles.getPropertyValue("--yellowish"),
                 ];
                 return colors[context.index % colors.length];
               },

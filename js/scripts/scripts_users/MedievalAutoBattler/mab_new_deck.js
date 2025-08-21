@@ -1,27 +1,27 @@
 function mab_new_deck() {
   let self = this;
+
   self.IsBuilt = false;
 
-  self.isActiveDeckMode = true;
+  self.NewDeckId = null;
 
-  self.MabDeck_CurrentDeckSize = 0;
-  self.MabPlayer_MabDeck = {
-    MabDeckId: null,
-    MabDeckName: "",
-  };
+  self.NewDeckName = "";
 
-  self.MabDeck_DeckSizeLimit = null;
+  self.NewDeckSize = null;
 
-  self.SelectedMabCardCopyId = null;
-  self.MabDeck_CardIds = [];
+  self.NewDeckSizeLimit = null;
+
+  self.NewDeck_SelectedCardCopyId = null;
+
+  self.NewDeck_CardIds = [];
 
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
     self.MabContent = self.DOM.find("#mab-content-containers");
 
-    self.AddMabDeck_CardCopiesList = self.DOM.find(
-      "#ol-add-mab-deck-cardcopieslist"
+    self.NewDeck_CardCopies_OrderedList = self.DOM.find(
+      "#ol-mab-new-deck-card-copies"
     );
 
     self.Containers = [];
@@ -42,7 +42,7 @@ function mab_new_deck() {
     self.Buttons[self.Buttons.length] = self.Buttons.HideNewDeckContainer =
       self.Containers.NewDeck.find("#button-mab-new-deck-hide-container");
     self.Buttons[self.Buttons.length] = self.Buttons.AssignCardCopy =
-      self.Containers.NewDeck.find("#button-mab-new-deck-assign-card-copyy");
+      self.Containers.NewDeck.find("#button-mab-new-deck-assign-card-copy");
     self.Buttons[self.Buttons.length] = self.Buttons.ConfirmNewDeck =
       self.Containers.NewDeck.find("#button-mab-new-deck-confirm-new-deck");
 
@@ -70,166 +70,66 @@ function mab_new_deck() {
   };
 
   self.loadEvents = () => {
-    self.Buttons.OpenStartNewCampaign_Form.on("click", (e) => {
-      e.preventDefault();
-
-      self.mabMainMenu_Close();
-
-      self.startNewMabCampaign_OpenForm();
-    });
-    self.Inputs.MabCampaignDifficulty_Easy.on("click", (e) => {
-      self.paintLabel("easy");
-    });
-    self.Inputs.MabCampaignDifficulty_Medium.on("click", (e) => {
-      self.paintLabel("medium");
-    });
-    self.Inputs.MabCampaignDifficulty_Hard.on("click", (e) => {
-      self.paintLabel("hard");
-    });
-    self.Buttons.StartNewMabCampaign.on("click", (e) => {
-      e.preventDefault();
-
-      self.StartMabCampaign();
-    });
-    self.Buttons.CloseStartNewCampaign_Form.on("click", (e) => {
-      e.preventDefault();
-
-      self.startNewMabCampaign_CloseForm();
-
-      self.mabMainMenu_Open();
-    });
-
-    self.Buttons.ContinueMabCampaign.on("click", (e) => {
-      e.preventDefault();
-
-      self.ContinueMabCampaign();
-    });
-
-    self.Buttons.ActiveMabDeck_ShowContainer.on("click", (e) => {
-      e.preventDefault();
-
-      self.mabMainMenu_Close();
-
-      self.activeMabDeck_ShowContainer();
-    });
-    self.Buttons.ActiveMabDeck_EditDeckName.on("click", (e) => {
-      e.preventDefault();
-
-      self.Inputs.ActiveDeck_DeckName.prop("readonly", false)
-        .removeClass("current-data")
-        .addClass("new-data")
-        .trigger("select");
-
-      self.Buttons.ActiveMabDeck_EditDeckName.prop("disabled", true);
-      self.Buttons.ActiveMabDeck_UndoDeckNameChange.prop("disabled", false);
-      self.Buttons.ActiveMabDeck_ConfirmNewDeckName.prop("disabled", false);
-    });
-    self.Buttons.ActiveMabDeck_ConfirmNewDeckName.on("click", (e) => {
-      e.preventDefault();
-
-      self.ActiveMabDeck_EditDeckName();
-    });
-    self.Buttons.ActiveMabDeck_UndoDeckNameChange.on("click", (e) => {
-      e.preventDefault();
-
-      self.activeMabDeck_RestoreDeckName();
-    });
-    // Binding the event after inserting into DOM
-    $(document).on("click", ".button-unassign-mab-card-copy", function () {
-      let index = $(this).data("index");
-      let assignedMabCardCopyId = $(this).data("assigned-mab-card-copy-id");
-
-      let mabDeckId = self.MabPlayer_MabDeck.MabDeckId;
-
-      self.UnassignMabCardCopy(index, assignedMabCardCopyId, mabDeckId);
-    });
-    self.Inputs.ActiveMabDeck_SelectCardCopy.on("select2:select", function (e) {
-      const selectedData = e.params.data;
-
-      self.SelectedMabCardCopyId = null;
-
-      self.SelectedMabCardCopyId = selectedData.id;
-    });
-    self.Buttons.ActiveMabDeck_AssignCardCopy.on("click", (e) => {
-      e.preventDefault();
-
-      const mabDeckId = self.MabPlayer_MabDeck.MabDeckId;
-      const mabCardCopyId = self.SelectedMabCardCopyId;
-
-      self.AssignMabCardCopy(mabDeckId, mabCardCopyId, true);
-    });
-    self.Buttons.ActiveDeck_HideContainer.on("click", (e) => {
-      e.preventDefault();
-
-      self.activeMabDeck_HideContainer();
-
-      self.mabMainMenu_Open();
-    });
-
     self.Buttons.ShowNewDeckContainer.on("click", (e) => {
       e.preventDefault();
 
-      self.activeMabDeck_HideContainer();
+      self.activeDeck_HideContainer();
 
-      self.AddMabDeck_AddNewDeck();
+      self.NewDeck_Create();
     });
     self.Inputs.Select_NewDeckCardCopies.on("select2:select", function (e) {
       const selectedData = e.params.data;
 
-      self.SelectedMabCardCopyId = null;
+      self.NewDeck_SelectedCardCopyId = null;
 
-      self.SelectedMabCardCopyId = selectedData.id;
+      self.NewDeck_SelectedCardCopyId = selectedData.id;
     });
+
+    self.Inputs.NewDeckName.on("blur", function () {
+      self.NewDeckName = $(this).val();
+
+      self.NewDeck_EditDeckName();
+    });
+
+    // Binding the event after inserting into DOM
+    $(document).on(
+      "click",
+      "#button-mab-new-deck-unassign-card-copy",
+      function () {
+        let index = $(this).data("index");
+        let assignedMabCardCopyId = $(this).data(
+          "mab-new-deck-assigned-card-copy-id"
+        );
+
+        self.NewDeck_UnassignCardCopy(index, assignedMabCardCopyId);
+      }
+    );
+
     self.Buttons.AssignCardCopy.on("click", (e) => {
       e.preventDefault();
 
-      const mabDeckId = self.MabPlayer_MabDeck.MabDeckId;
+      self.NewDeck_AssignCardCopy(
+        self.NewDeckId,
+        self.NewDeck_SelectedCardCopyId
+      );
+    });
+    self.Buttons.ConfirmNewDeck.on("click", (e) => {
+      e.preventDefault();
 
-      self.AddMabDeck_AssignCardCopy(mabDeckId, self.SelectedMabCardCopyId);
+      self.NewDeck_EditDeckName();
     });
     self.Buttons.HideNewDeckContainer.on("click", (e) => {
       e.preventDefault();
 
-      self.addMabDeck_CloseForm();
+      self.newDeck_HideContainer();
+
+      setTimeout(() => {
+        self.newDeck_Refresh_InputsAndFieldsAndVariables();
+
+        //self.reset_EditDeckName_ButtonsAndInput();
+      }, 300);
 
       self.activeMabDeck_ShowContainer();
-    });
-
-    self.Buttons.OpenCampaignStats.on("click", (e) => {
-      e.preventDefault();
-
-      self.mabMainMenu_Close();
-
-      self.MabCampaignStats_Open();
-    });
-    self.Buttons.EditMabPlayerNickname.on("click", (e) => {
-      e.preventDefault();
-
-      self.Inputs.Stats_NewNickname.prop("readonly", false)
-        .removeClass("current-data")
-        .addClass("new-data")
-        .trigger("select");
-
-      self.Buttons.EditMabPlayerNickname.prop("disabled", true).addClass(
-        "current-data"
-      );
-
-      self.Buttons.ConfirmEditMabPlayerNickName.prop(
-        "disabled",
-        false
-      ).removeClass("current-data");
-    });
-    self.Buttons.ConfirmEditMabPlayerNickName.on("click", (e) => {
-      e.preventDefault();
-
-      self.EditMabPlayerNickName();
-    });
-    self.Buttons.CloseCampaignStats.on("click", (e) => {
-      e.preventDefault();
-
-      self.mabCampaignStats_Close();
-
-      self.mabMainMenu_Open();
     });
   };
 
@@ -279,16 +179,18 @@ function mab_new_deck() {
       : div.removeClass("hide-div").addClass("show-div");
   };
 
-  self.addMabDeck_OpenForm = () => {
+  self.newDeck_ShowContainer = () => {
     self.toggleContainerVisibility(self.Containers.NewDeck);
 
-    self.Inputs.NewDeckName.val(self.MabPlayer_MabDeck.MabDeckName)
+    self.Inputs.NewDeckName.val(self.NewDeckName)
       .trigger("focus")
       .trigger("select");
-
-    self.AddMabDeck_CardCopySelect2_Show();
   };
-  self.AddMabDeck_AddNewDeck = () => {
+  self.newDeck_HideContainer = () => {
+    self.toggleContainerVisibility(self.Containers.NewDeck);
+  };
+
+  self.NewDeck_Create = () => {
     $.ajax({
       type: "POST",
       url: "https://localhost:7081/users/addmabplayerdeck",
@@ -302,14 +204,12 @@ function mab_new_deck() {
           return;
         }
 
-        self.MabPlayer_MabDeck = {
-          MabDeckId: resp.content.newMabDeckId,
-          MabDeckName: resp.content.newMabDeckName,
-        };
+        self.NewDeckId = resp.content.newMabDeckId;
+        self.NewDeckName = resp.content.newMabDeckName;
 
-        self.AddMabDeck_ShowDeckDetails(self.MabPlayer_MabDeck.MabDeckId);
+        self.NewDeck_ShowDeckDetails(self.NewDeckId);
 
-        self.addMabDeck_OpenForm();
+        self.newDeck_ShowContainer();
       },
       error: (err) => {
         self.sweetAlertError(err);
@@ -317,127 +217,38 @@ function mab_new_deck() {
       complete: () => {},
     });
   };
-  self.AddMabDeck_LoadUnassignedCardCopies = () => {
-    if (
-      self.Inputs.ActiveMabDeck_SelectCardCopy.hasClass(
-        "select2-hidden-accessible"
-      )
-    ) {
-      self.Inputs.ActiveMabDeck_SelectCardCopy.select2("destroy");
-    }
 
-    const mabDeckId = self.MabPlayer_MabDeck.MabDeckId;
-
-    // Fetch the mab player cards and their count from the backend
-    fetch(
-      `https://localhost:7081/users/listunassignedmabcardcopies?MabDeckId=${mabDeckId}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.content) {
-          self.sweetAlertError(
-            "Failed to load mab player cards:",
-            data.message
-          );
-          return;
-        }
-
-        const mabPlayerCards = data.content.map((item) => ({
-          id: item.mabCardCopyId,
-          text: item.mabCardDescription,
-        }));
-
-        // Clear previous options and add empty one
-        self.Inputs.ActiveMabDeck_SelectCardCopy.empty().append(
-          `<option></option>`
-        );
-
-        // Builds select2
-        self.Inputs.ActiveMabDeck_SelectCardCopy.select2({
-          data: mabPlayerCards,
-          dropdownParent: self.DOM,
-          placeholder: "Select a card",
-          allowClear: true,
-          theme: "classic",
-          width: "100%",
-          templateSelection: (data) => {
-            if (!data.id) return data.text;
-            return $("<strong>").text(data.text);
-          },
-        });
-
-        // Opens select2
-        self.Inputs.ActiveMabDeck_SelectCardCopy.trigger("change").select2(
-          "open"
-        );
-      })
-      .catch((err) => {
-        self.sweetAlertError("Error fetching mab player cards:", err);
-      });
-
-    self.Containers.ActiveMabDeck_CardCopiesSelect2.removeClass(
-      "hide-div"
-    ).addClass("show-div");
-  };
-
-  self.addMabDeck_buildCardCopiesList = (playerMabCardCopies, olDiv) => {
-    playerMabCardCopies.forEach((card, Index) => {
-      self.MabDeck_CardIds.push(card.mabCardId);
-
-      let assignedMabCardCopyId = card.assignedMabCardCopyId;
-      let mabCardName = card.mabCardName;
-      let mabCardLvl = card.mabCardLevel;
-      let mabCardType = card.mabCardType;
-      let mabCardPower = card.mabCardPower;
-      let mabCardUpperHand = card.mabCardUpperHand;
-
-      let listItem = `
-          <li id="li-mab-${Index}" data-assigned-mab-card-copy-id="${assignedMabCardCopyId}">
-            <div class="d-flex flex-row align-items-center gap-2">
-              <button
-                class="button-unassign-mab-card-copy btn btn-outline-danger p-0 m-0"
-                type="button"
-                data-assigned-mab-card-copy-id="${assignedMabCardCopyId}"
-                data-index="${Index}"
-              >
-                <i class="fa-solid fa-xmark p-1 m-0"></i>
-              </button>
-
-              <strong class="mab-card-name p-0 m-0">${mabCardName}</strong>
-
-              <img
-                src="/images/icons/io_arrow_right.svg"
-                class="bi bi-arrow p-0 m-0"
-              />
-
-              <div class="mab-card-data">
-                <span>L</span>evel: <strong>${mabCardLvl}</strong>,
-                <span>T</span>ype: <strong>${mabCardType}</strong>,
-                <span>P</span>ower: <strong>${mabCardPower}</strong>,
-                <span>U</span>pper <span>H</span>and:
-                <strong>${mabCardUpperHand}</strong>
-              </div>
-            </div>
-          </li>
-          `;
-
-      olDiv.append(listItem);
-    });
-  };
-  self.MabCardCopySelection_Hide = () => {
+  self.cardCopy_Select2_Hide = () => {
     self.Containers.ActiveMabDeck_CardCopiesSelect2.removeClass(
       "show-div"
     ).addClass("hide-div");
   };
 
-  self.AddMabDeck_ShowDeckDetails = (mabDeckId) => {
+  self.newDeck_Refresh_InputsAndFieldsAndVariables = () => {
+    self.NewDeckName = "";
+
+    self.NewDeckSize = null;
+
+    self.NewDeckSizeLimit = null;
+
+    self.NewDeck_SelectedCardCopyId = null;
+
+    self.NewDeck_CardIds = [];
+
+    self.Inputs.NewDeckName.val();
+
+    self.Fields.NewDeckSize.html();
+
+    self.Fields.NewDeckBalance.html();
+
+    self.NewDeck_CardCopies_OrderedList.empty();
+
+    self.newDeck_CardCopy_Select2_Hide();
+  };
+  self.NewDeck_ShowDeckDetails = () => {
     $.ajax({
       type: "GET",
-      url: `https://localhost:7081/users/showmabplayerdeckdetails?MabDeckId=${mabDeckId}`,
+      url: `https://localhost:7081/users/showmabplayerdeckdetails?MabDeckId=${self.NewDeckId}`,
       xhrFields: { withCredentials: true },
       success: function (response) {
         if (response.content == null) {
@@ -445,43 +256,36 @@ function mab_new_deck() {
           return;
         }
 
-        self.Inputs.NewDeckName.val();
-        self.Fields.NewDeckSize.html();
-        self.Fields.NewDeckBalance.html();
-        self.AddMabDeck_CardCopiesList.empty();
-        self.MabDeck_CardIds = [];
-        self.MabDeck_DeckSizeLimit = null;
-        self.AddMabDeck_CardCopySelect2_Hide();
+        self.newDeck_Refresh_InputsAndFieldsAndVariables();
 
-        let playerMabDeck = response.content;
+        let newDeck = response.content;
+        let newDeckId = newDeck.activeMabDeckId;
+        let newDeckName = newDeck.activeMabDeckName;
+        let newDeckSizeLimit = newDeck.mabDeckSizeLimit;
+        let cardCopies = newDeck.mabCardCopies;
+        let newDeckCurrentSize = cardCopies.length;
 
-        self.MabPlayer_MabDeck = {
-          MabDeckId: playerMabDeck.activeMabDeckId,
-          MabDeckName: playerMabDeck.activeMabDeckName,
-        };
-
-        let mabDeckName = self.MabPlayer_MabDeck.MabDeckName;
-        let playerMabCardCopies = playerMabDeck.mabCardCopies;
         let countNeutralCardCopies = 0;
         let countRangedCardCopies = 0;
         let countCalvaryCardCopies = 0;
         let countInfantryCardCopies = 0;
-        let mabDeckBalance = "";
-        let mabPlayerDeckSize = playerMabCardCopies.length;
-        self.MabDeck_DeckSizeLimit = playerMabDeck.mabDeckSizeLimit;
 
-        self.MabDeck_CurrentDeckSize = mabPlayerDeckSize;
-        if (self.MabDeck_CurrentDeckSize < self.MabDeck_DeckSizeLimit) {
-          self.AddMabDeck_CardCopySelect2_Show();
+        self.NewDeckId = newDeckId;
+        self.NewDeckName = newDeckName;
+        self.NewDeckSize = newDeckCurrentSize;
+        self.NewDeckSizeLimit = newDeckSizeLimit;
+
+        if (newDeckCurrentSize < newDeckSizeLimit) {
+          self.NewDeck_LoadUnassignedCardCopies();
         }
 
-        self.Inputs.NewDeckName.val(mabDeckName);
+        self.Inputs.NewDeckName.val(newDeckName);
 
         self.Fields.NewDeckSize.html(
-          `${mabPlayerDeckSize}/${self.MabDeck_DeckSizeLimit}`
+          `${newDeckCurrentSize}/${newDeckSizeLimit}`
         );
 
-        playerMabCardCopies.forEach((mabCard) => {
+        cardCopies.forEach((mabCard) => {
           if (mabCard.mabCardType == "Neutral") countNeutralCardCopies++;
           if (mabCard.mabCardType == "Ranged") countRangedCardCopies++;
           if (mabCard.mabCardType == "Cavalry") countCalvaryCardCopies++;
@@ -493,15 +297,12 @@ function mab_new_deck() {
         self.Fields.NewDeck_CavalryTypeCount.html(countCalvaryCardCopies);
         self.Fields.NewDeck_InfantryTypeCount.html(countInfantryCardCopies);
 
-        if (mabPlayerDeckSize <= 0) {
-          self.AddMabDeck_CardCopiesList.html(
-            `Add up to <span>${self.MabDeck_DeckSizeLimit}</span> cards...`
+        if (newDeckCurrentSize <= 0) {
+          self.NewDeck_CardCopies_OrderedList.html(
+            `Add up to <span>${newDeckSizeLimit}</span> cards...`
           );
         } else {
-          self.addMabDeck_buildCardCopiesList(
-            playerMabCardCopies,
-            self.AddMabDeck_CardCopiesList
-          );
+          self.newDeck_Build_CardCopiesList(cardCopies);
         }
       },
       error: function (xhr, status, error) {
@@ -512,7 +313,46 @@ function mab_new_deck() {
       complete: function () {},
     });
   };
-  self.AddMabDeck_AssignCardCopy = (mabDeckId, mabCardCopyId) => {
+  self.NewDeck_EditDeckName = () => {
+    let deckNewName = self.Inputs.NewDeckName.val().trim();
+
+    if (!deckNewName || deckNewName.length < 1) {
+      self.sweetAlertError("Please fill the Mab Deck Name field!");
+
+      return self.Inputs.NewDeckName.trigger("select");
+    }
+
+    $.ajax({
+      type: "PUT",
+      url: "https://localhost:7081/users/editmabdeckname",
+      data: JSON.stringify({
+        MabDeckId: self.NewDeckId,
+        MabDeckName: deckNewName,
+      }),
+      contentType: "application/json",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          self.sweetAlertError(resp.message);
+          return;
+        }
+
+        self.ActiveDeckName = self.Inputs.ActiveDeckName.val();
+
+        self.sweetAlertSuccess(resp.message);
+
+        //self.reset_EditDeckName_ButtonsAndInput();
+      },
+      error: (err) => {
+        self.sweetAlertError(err);
+      },
+      complete: () => {},
+    });
+  };
+
+  self.NewDeck_AssignCardCopy = (mabDeckId, mabCardCopyId) => {
     $.ajax({
       type: "POST",
       url: "https://localhost:7081/users/assignmabcardcopy",
@@ -530,7 +370,7 @@ function mab_new_deck() {
           return;
         }
 
-        self.AddMabDeck_ShowDeckDetails(mabDeckId);
+        self.NewDeck_ShowDeckDetails(mabDeckId);
       },
       error: (err) => {
         self.sweetAlertError(err);
@@ -538,51 +378,85 @@ function mab_new_deck() {
       complete: () => {},
     });
   };
-  self.addMabDeck_buildCardCopiesList = (playerMabCardCopies, olDiv) => {
-    playerMabCardCopies.forEach((card, Index) => {
-      self.MabDeck_CardIds.push(card.mabCardId);
+  self.NewDeck_UnassignCardCopy = (index, assignedCardCopyId) => {
+    self.NewDeck_CardIds.splice(index, 1);
 
-      let assignedMabCardCopyId = card.assignedMabCardCopyId;
-      let mabCardName = card.mabCardName;
-      let mabCardLvl = card.mabCardLevel;
-      let mabCardType = card.mabCardType;
-      let mabCardPower = card.mabCardPower;
-      let mabCardUpperHand = card.mabCardUpperHand;
+    self.NewDeck_CardCopies_OrderedList.find(
+      `#li-mab-new-deck-${index}`
+    ).remove();
+
+    $.ajax({
+      type: "DELETE",
+      url: "https://localhost:7081/users/unassignmabcardcopy",
+      data: JSON.stringify({
+        AssignedMabCardCopyId: assignedCardCopyId,
+      }),
+      contentType: "application/json",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          self.sweetAlertError("Failed to deactivated card", resp.message);
+          return;
+        }
+
+        self.NewDeck_ShowDeckDetails();
+      },
+      error: (err) => {
+        self.sweetAlertError(err);
+      },
+      complete: () => {},
+    });
+  };
+
+  self.newDeck_Build_CardCopiesList = (playerCardCopies) => {
+    playerCardCopies.forEach((card, Index) => {
+      self.NewDeck_CardIds.push(card.mabCardId);
+
+      let assignedCardCopyId = card.assignedMabCardCopyId;
+      let cardName = card.mabCardName;
+      let cardLvl = card.mabCardLevel;
+      let cardType = card.mabCardType;
+      let cardPower = card.mabCardPower;
+      let cardUpperHand = card.mabCardUpperHand;
 
       let listItem = `
-          <li id="li-mab-${Index}" data-assigned-mab-card-copy-id="${assignedMabCardCopyId}">
+          <li id="li-mab-new-deck-${Index}" data-mab-new-deck-assigned-card-copy-id="${assignedCardCopyId}">
             <div class="d-flex flex-row align-items-center gap-2">
               <button
-                class="button-unassign-mab-card-copy btn btn-outline-danger p-0 m-0"
+                id="button-mab-new-deck-unassign-card-copy"
+                class="btn btn-outline-danger p-0 m-0"
                 type="button"
-                data-assigned-mab-card-copy-id="${assignedMabCardCopyId}"
+                data-mab-new-deck-assigned-card-copy-id="${assignedCardCopyId}"
                 data-index="${Index}"
               >
                 <i class="fa-solid fa-xmark p-1 m-0"></i>
               </button>
 
-              <strong class="mab-card-name p-0 m-0">${mabCardName}</strong>
+              <strong class="p-0 m-0">${cardName}</strong>
 
               <img
                 src="/images/icons/io_arrow_right.svg"
                 class="bi bi-arrow p-0 m-0"
               />
 
-              <div class="mab-card-data">
-                <span>L</span>evel: <strong>${mabCardLvl}</strong>,
-                <span>T</span>ype: <strong>${mabCardType}</strong>,
-                <span>P</span>ower: <strong>${mabCardPower}</strong>,
+              <div>
+                <span>L</span>evel: <strong>${cardLvl}</strong>,
+                <span>T</span>ype: <strong>${cardType}</strong>,
+                <span>P</span>ower: <strong>${cardPower}</strong>,
                 <span>U</span>pper <span>H</span>and:
-                <strong>${mabCardUpperHand}</strong>
+                <strong>${cardUpperHand}</strong>
               </div>
             </div>
           </li>
           `;
 
-      olDiv.append(listItem);
+      self.NewDeck_CardCopies_OrderedList.append(listItem);
     });
   };
-  self.AddMabDeck_CardCopySelect2_Show = () => {
+
+  self.NewDeck_LoadUnassignedCardCopies = () => {
     if (
       self.Inputs.Select_NewDeckCardCopies.hasClass("select2-hidden-accessible")
     ) {
@@ -593,11 +467,16 @@ function mab_new_deck() {
       "hide-div"
     ).addClass("show-div");
 
+    const mabDeckId = self.NewDeckId;
+
     // Fetch the mab player cards and their count from the backend
-    fetch(`https://localhost:7081/users/listmabplayercardcopies`, {
-      method: "GET",
-      credentials: "include",
-    })
+    fetch(
+      `https://localhost:7081/users/listunassignedmabcardcopies?MabDeckId=${mabDeckId}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (!data.content) {
@@ -636,13 +515,10 @@ function mab_new_deck() {
         self.sweetAlertError("Error fetching mab player cards:", err);
       });
   };
-  self.AddMabDeck_CardCopySelect2_Hide = () => {
+  self.newDeck_CardCopy_Select2_Hide = () => {
     self.Containers.AddMabDeck_CardCopiesSelect2.removeClass(
       "show-div"
     ).addClass("hide-div");
-  };
-  self.addMabDeck_CloseForm = () => {
-    self.toggleContainerVisibility(self.Containers.NewDeck);
   };
 
   self.mabMainMenu_Open = () => {
@@ -652,7 +528,15 @@ function mab_new_deck() {
     self.toggleContainerVisibility(self.Containers.MainMenu);
   };
 
+  self.activeDeck_HideContainer = () => {
+    self.toggleContainerVisibility(self.Containers.ActiveDeck);
+  };
+
   self.build = () => {
+    if (self.IsBuilt === false) {
+      self.NewDeckId = null;
+      self.IsBuilt = true;
+    }
     self.loadReferences();
     self.loadEvents();
   };
