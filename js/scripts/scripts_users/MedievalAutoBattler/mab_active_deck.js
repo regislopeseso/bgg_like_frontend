@@ -1,9 +1,12 @@
 function mab_active_deck() {
   let self = this;
+
   self.IsBuilt = false;
 
   self.ActiveDeckId = null;
+
   self.ActiveDeckName = "";
+
   self.ActiveDeckSize = null;
 
   self.ActiveDeckSizeLimit = null;
@@ -488,7 +491,7 @@ function mab_active_deck() {
       .then((res) => res.json())
       .then((data) => {
         if (!data.content) {
-          sweetAlertError("Failed to load mab player cards:", data.message);
+          sweetAlertError("Failed to load mab player decks:", data.message);
           return;
         }
 
@@ -626,7 +629,7 @@ function mab_active_deck() {
         self.Inputs.Select_UnassignedCardCopies.select2({
           data: mabPlayerCards,
           dropdownParent: self.DOM,
-          placeholder: "Select a card",
+          placeholder: "Select a card corpy for your deck...",
           allowClear: true,
           theme: "classic",
           width: "100%",

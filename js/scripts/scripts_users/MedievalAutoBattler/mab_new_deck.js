@@ -289,7 +289,7 @@ function mab_new_deck() {
 
         if (newDeckCurrentSize <= 0) {
           self.NewDeck_CardCopies_OrderedList.html(
-            `Add up to <span>${newDeckSizeLimit}</span> cards...`
+            `<div>Add up to <span>${newDeckSizeLimit}</span> cards...</div> `
           );
         } else {
           self.newDeck_CardCopies_BuildOrderedList(cardCopies);
@@ -431,7 +431,7 @@ function mab_new_deck() {
         self.Inputs.Select_NewDeckCardCopies.select2({
           data: mabPlayerCards,
           dropdownParent: self.DOM,
-          placeholder: "Select a card",
+          placeholder: "Select a card copy for your deck...",
           allowClear: true,
           theme: "classic",
           width: "100%",
