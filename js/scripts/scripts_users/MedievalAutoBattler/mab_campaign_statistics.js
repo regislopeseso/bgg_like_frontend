@@ -50,6 +50,10 @@ function mab_campaign_statistics() {
       self.Containers.CampaignStatistics.find(
         "#field-mab-campaign-statistics-boosters-opened"
       );
+    self.Fields[self.Fields.length] = self.Fields.DecksOwned =
+      self.Containers.CampaignStatistics.find(
+        "#field-mab-campaign-statistics-decks-owned"
+      );
     self.Fields[self.Fields.length] = self.Fields.BattlesCount =
       self.Containers.CampaignStatistics.find(
         "#field-mab-campaign-statistics-battles-count"
@@ -208,6 +212,10 @@ function mab_campaign_statistics() {
         );
         self.Fields.BattlesLost.html(
           `<strong>${mabCampaignDB.countDefeats}</strong>`
+        );
+
+        self.Fields.DecksOwned.html(
+          `<strong>${mabCampaignDB.decksOwned}</strong>`
         );
 
         if (mabCampaignDB.allCardsCollectedTrophy == true) {

@@ -228,8 +228,8 @@
           <hr />
 
           <div id="div-deck-data-content" class="d-flex flex-row">
-            <div class="d-flex flex-column gap-5">
-              <form id="form-mab-active-deck">
+            <div class="d-flex flex-column gap-3">
+              <form id="form-mab-active-deck" class="pt-3">
                 <div
                   class="d-flex flex-row align-items-center justify-content-start gap-3 w-100"
                 >
@@ -275,12 +275,14 @@
                 </div>
               </form>
 
-              <div class="d-flex flex-column mb-0 gap-2">
-                <div class="d-flex flex-row gap-2">
-                  <div><span>D</span>eck <span>L</span>evel:&nbsp;</div>
-                  <span id="span-mab-active-deck-decklevel"></span>
-                </div>
+              <div class="d-flex flex-row gap-2">
+                <div><span>D</span>eck <span>L</span>evel:&nbsp;</div>
+                <span id="span-mab-active-deck-decklevel"></span>
+              </div>
 
+              <div
+                class="d-flex flex-column p-0 m-0 gap-2 align-items-start justify-content-center"
+              >
                 <div class="d-flex flex-row gap-2">
                   <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
 
@@ -323,34 +325,34 @@
 
                 <ol
                   id="ol-mab-active-deck-card-copies"
-                  class="mab-cards-list"
+                  class="mab-cards-list d-flex flex-column w-100 gap-3 m-0 p-3"
                 ></ol>
-              </div>
 
-              <div class="d-flex flex-row gap-5 w-100 align-items-center">
-                <div>
-                  <span>D</span>eck <span>S</span>ize:&nbsp;
-                  <span id="span-mab-active-deck-decksize"></span>
-                </div>
-
-                <div
-                  class="d-flex flex-row gap-2 hide-div"
-                  id="div-active-mab-deck-select-container"
-                >
+                <div class="d-flex flex-row gap-3 w-100 align-items-center">
                   <div>
-                    <select
-                      name="AssignedMabCardId"
-                      id="select-mab-active-deck-card-copies-list"
-                      class="form-control form-select required"
-                    ></select>
+                    <span>D</span>eck <span>S</span>ize:&nbsp;
+                    <span id="span-mab-active-deck-decksize"></span>
                   </div>
 
-                  <button
-                    id="button-mab-active-deck-assign-card-copy"
-                    class="btn btn-outline-success btn-sm"
+                  <div
+                    class="d-flex flex-row gap-2 hide-div"
+                    id="div-active-mab-deck-select-container"
                   >
-                    Add
-                  </button>
+                    <div>
+                      <select
+                        name="AssignedMabCardId"
+                        id="select-mab-active-deck-card-copies-list"
+                        class="form-control form-select required"
+                      ></select>
+                    </div>
+
+                    <button
+                      id="button-mab-active-deck-assign-card-copy"
+                      class="btn btn-outline-success btn-sm"
+                    >
+                      Add
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -406,7 +408,7 @@
               <input
                 name="MabDeckName"
                 id="input-mab-new-deck-deck-name"
-                class="new-data form-control text-center required mt-3"
+                class="new-data form-control text-center required mt-2"
                 type="text"
                 required
                 autofocus
@@ -414,31 +416,9 @@
             </div>
 
             <!-- Input: Select Deck Cards -->
-            <div class="d-flex flex-row gap-5 w-100 align-items-center mb-5">
-              <div>
-                <span>D</span>eck <span>S</span>ize:&nbsp;
-                <span id="span-mab-new-deck-decksize"></span>
-              </div>
-
-              <div
-                class="d-flex flex-row gap-2"
-                id="container-add-mab-selectcard"
-              >
-                <div>
-                  <select
-                    name="MabCardId"
-                    id="select-mab-new-deck-card-copies-list"
-                    class="form-control form-select required"
-                  ></select>
-                </div>
-
-                <button
-                  id="button-mab-new-deck-assign-card-copy"
-                  class="btn btn-outline-success btn-sm"
-                >
-                  Add
-                </button>
-              </div>
+            <div class="d-flex flex-row gap-2">
+              <div><span>D</span>eck <span>L</span>evel:&nbsp;</div>
+              <span id="span-mab-new-deck-decklevel"></span>
             </div>
 
             <div class="d-flex flex-column mb-0 gap-2">
@@ -488,7 +468,37 @@
                 </div>
               </div>
 
-              <ol id="ol-mab-new-deck-card-copies" class="mab-cards-list"></ol>
+              <ol
+                id="ol-mab-new-deck-card-copies"
+                class="mab-cards-list d-flex flex-column gap-3 m-0 p-3"
+              ></ol>
+            </div>
+
+            <div class="d-flex flex-row gap-5 w-100 align-items-center mb-2">
+              <div>
+                <span>D</span>eck <span>S</span>ize:&nbsp;
+                <span id="span-mab-new-deck-decksize"></span>
+              </div>
+
+              <div
+                class="d-flex flex-row gap-2"
+                id="container-add-mab-selectcard"
+              >
+                <div>
+                  <select
+                    name="MabCardId"
+                    id="select-mab-new-deck-card-copies-list"
+                    class="form-control form-select required"
+                  ></select>
+                </div>
+
+                <button
+                  id="button-mab-new-deck-assign-card-copy"
+                  class="btn btn-outline-success btn-sm"
+                >
+                  Add
+                </button>
+              </div>
             </div>
 
             <hr />
@@ -532,7 +542,7 @@
 
             <!-- Fields -->
             <div
-              class="d-flex flex-column justify-content-start align-items-start mt-3"
+              class="d-flex flex-column justify-content-start align-items-start mt-3 gap-3"
             >
               <form
                 id="form-mab-campaign-statistics"
@@ -568,20 +578,23 @@
                   </div>
                 </div>
               </form>
-              <div class="d-flex flex-row gap-3">
-                <div class="mb-3 d-flex flex-row gap-1">
+
+              <div
+                class="d-flex flex-row gap-3 align-items-center justify-content-center"
+              >
+                <div class="d-flex flex-row gap-1 m-0 p-0">
                   <div><span>L</span>evel:</div>
                   <span id="field-mab-campaign-statistics-player-level">?</span>
                 </div>
-
-                <div class="mb-3 d-flex flex-row gap-1">
+                |
+                <div class="d-flex flex-row gap-1 m-0 p-0">
                   <div class="d-flex flex-nowrap">
                     <span>G</span>old&nbsp;<span>S</span>tash:
                   </div>
                   <span id="field-mab-campaign-statistics-gold-stash">?</span>
                 </div>
-
-                <div class="mb-3 d-flex flex-row gap-1">
+                |
+                <div class="d-flex flex-row gap-1 m-0 p-0">
                   <div class="d-flex flex-nowrap">
                     <span>B</span>oosters&nbsp;<span>O</span>pened:
                   </div>
@@ -591,8 +604,10 @@
                 </div>
               </div>
 
-              <div class="d-flex flex-row gap-3">
-                <div class="mb-3 d-flex flex-row gap-1">
+              <div
+                class="d-flex flex-row align-items-center justify-content-center gap-3"
+              >
+                <div class="d-flex flex-row gap-1 m-0 p-0">
                   <div class="d-flex flex-nowrap">
                     <span>B</span>attles&nbsp;<span>C</span>ount:
                   </div>
@@ -600,15 +615,15 @@
                     >?</span
                   >
                 </div>
-
-                <div class="mb-3 d-flex flex-row gap-1">
+                |
+                <div class="d-flex flex-row gap-1 m-0 p-0">
                   <div class="d-flex flex-nowrap">
                     <span>B</span>attles&nbsp;<span>W</span>on:
                   </div>
                   <span id="field-mab-campaign-statistics-battles-won">?</span>
                 </div>
-
-                <div class="mb-3 d-flex flex-row gap-1">
+                |
+                <div class="d-flex flex-row gap-1 m-0 p-0">
                   <div class="d-flex flex-nowrap">
                     <span>B</span>attles&nbsp;<span>L</span>ost:
                   </div>
@@ -616,7 +631,20 @@
                 </div>
               </div>
 
-              <div class="d-flex flex-row gap-3">
+              <div
+                class="d-flex flex-row gap-3 align-items-center justify-content-center"
+              >
+                <div class="d-flex flex-row gap-1">
+                  <div class="d-flex flex-nowrap">
+                    <span>D</span>ecks&nbsp;<span>O</span>wned:
+                  </div>
+                  <span id="field-mab-campaign-statistics-decks-owned">?</span>
+                </div>
+              </div>
+
+              <div
+                class="d-flex flex-row gap-3 align-items-center justify-content-start"
+              >
                 <div
                   class="mb-3 d-flex flex-column w-50 justify-content-between"
                 >
@@ -652,6 +680,7 @@
                 </div>
               </div>
             </div>
+            <hr />
           </div>
         </div>
       </section>

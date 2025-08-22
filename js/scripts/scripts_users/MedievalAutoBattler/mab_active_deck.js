@@ -30,13 +30,12 @@ function mab_active_deck() {
       self.DOM.find("#container-mab-active-deck");
     self.Containers[self.Containers.length] = self.Containers.NewDeck =
       self.DOM.find("#container-mab-new-deck");
-
-    self.DivSelect2_Decks = self.Containers.ActiveDeck.find(
-      "#div-active-mab-deck-select2-decks"
-    );
-    self.DivSelect2_CardCopies = self.Containers.ActiveDeck.find(
-      "#div-active-mab-deck-select-container"
-    );
+    self.Containers[self.Containers.length] = self.ActiveDeck_DecksSelect2 =
+      self.Containers.ActiveDeck.find("#div-active-mab-deck-select2-decks");
+    self.Containers[self.Containers.length] =
+      self.ActiveDeck_CardCopiesSelect2 = self.Containers.ActiveDeck.find(
+        "#div-active-mab-deck-select-container"
+      );
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.ShowActiveDeckContainer =
@@ -312,7 +311,7 @@ function mab_active_deck() {
 
     self.ActiveDeck_CardCopies_OrderedList.empty();
 
-    self.cardCopyList_Select2_Hide();
+    self.activeDeck_cardCopiesList_Select2_Hide();
   };
   self.ActiveDeck_ShowDeckDetails = () => {
     $.ajax({
@@ -385,7 +384,7 @@ function mab_active_deck() {
         self.Fields.ActiveDeck_CavalryTypeCount.html(countCalvaryCardCopies);
         self.Fields.ActiveDeck_InfantryTypeCount.html(countInfantryCardCopies);
 
-        self.activeDeck_Build_CardCopiesList(cardCopies);
+        self.activeDeck_CardCopies_BuildOrderedList(cardCopies);
 
         self.activeDeck_buildChart(
           countNeutralCardCopies,
@@ -476,55 +475,6 @@ function mab_active_deck() {
     self.Buttons.EditActiveDeckName_Cancel.prop("disabled", true);
   };
 
-  self.activeDeck_Build_CardCopiesList = (playerCardCopies) => {
-    playerCardCopies.forEach((card, index) => {
-      self.ActiveDeck_CardIds.push(card.mabCardId);
-
-      let assignedCardCopyId = card.assignedMabCardCopyId;
-      let cardName = card.mabCardName;
-      let cardLvl = card.mabCardLevel;
-      let cardType = card.mabCardType;
-      let cardPower = card.mabCardPower;
-      let cardUpperHand = card.mabCardUpperHand;
-
-      let listItem = `
-          <li id="li-mab-active-deck-${index}" data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}">
-            <div class="d-flex flex-row align-items-center gap-2">
-              <button
-                id="button-mab-active-deck-unassign-card-copy"
-                class="btn btn-outline-danger p-0 m-0"
-                type="button"
-                data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}"
-                data-index="${index}"
-              >
-                <i class="fa-solid fa-xmark p-1 m-0"></i>
-              </button>
-
-              <strong class="mab-card-name p-0 m-0">${cardName}</strong>
-
-              <img
-                src="/images/icons/io_arrow_right.svg"
-                class="bi bi-arrow p-0 m-0"
-              />
-
-              <div>
-                <span>L</span>evel: <strong>${cardLvl}</strong>,
-                <span>T</span>ype: <strong>${cardType}</strong>,
-                <span>P</span>ower: <strong>${cardPower}</strong>,
-                <span>U</span>pper <span>H</span>and:
-                <strong>${cardUpperHand}</strong>
-              </div>
-            </div>
-          </li>
-          `;
-
-      self.ActiveDeck_CardCopies_OrderedList.append(listItem);
-    });
-  };
-  self.cardCopyList_Select2_Hide = () => {
-    self.DivSelect2_CardCopies.removeClass("show-div").addClass("hide-div");
-  };
-
   self.ActiveDeck_LoadPlayerDecks = () => {
     if (self.Inputs.Select_Decks.hasClass("select2-hidden-accessible")) {
       self.Inputs.Select_Decks.select2("destroy");
@@ -564,7 +514,9 @@ function mab_active_deck() {
           },
         });
 
-        self.DivSelect2_Decks.removeClass("hide-div").addClass("show-div");
+        self.ActiveDeck_DecksSelect2.removeClass("hide-div").addClass(
+          "show-div"
+        );
 
         // Opens select2
         setTimeout(() => {
@@ -579,7 +531,7 @@ function mab_active_deck() {
     self.ActiveDeck_LoadPlayerDecks();
   };
   self.activeDeck_DecksDivSelect2_Hide = () => {
-    self.DivSelect2_Decks.removeClass("show-div").addClass("hide-div");
+    self.ActiveDeck_DecksSelect2.removeClass("show-div").addClass("hide-div");
   };
   self.ActiveDeck_ActivateDeck = () => {
     $.ajax({
@@ -634,6 +586,77 @@ function mab_active_deck() {
     });
   };
 
+  self.ActiveDeck_LoadUnassignedCardCopies = () => {
+    if (
+      self.Inputs.Select_UnassignedCardCopies.hasClass(
+        "select2-hidden-accessible"
+      )
+    ) {
+      self.Inputs.Select_UnassignedCardCopies.select2("destroy");
+    }
+
+    const mabDeckId = self.ActiveDeckId;
+
+    // Fetch the mab player cards and their count from the backend
+    fetch(
+      `https://localhost:7081/users/listunassignedmabcardcopies?MabDeckId=${mabDeckId}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.content) {
+          sweetAlertError("Failed to load mab player cards:", data.message);
+          return;
+        }
+
+        const mabPlayerCards = data.content.map((item) => ({
+          id: item.mabCardCopyId,
+          text: item.mabCardDescription,
+        }));
+
+        // Clear previous options and add empty one
+        self.Inputs.Select_UnassignedCardCopies.empty().append(
+          `<option></option>`
+        );
+
+        // Builds select2
+        self.Inputs.Select_UnassignedCardCopies.select2({
+          data: mabPlayerCards,
+          dropdownParent: self.DOM,
+          placeholder: "Select a card",
+          allowClear: true,
+          theme: "classic",
+          width: "100%",
+          templateSelection: (data) => {
+            if (!data.id) return data.text;
+            return $("<strong>").text(data.text);
+          },
+        });
+
+        // Opens select2
+        self.Inputs.Select_UnassignedCardCopies.trigger("change").select2(
+          "open"
+        );
+      })
+      .catch((err) => {
+        sweetAlertError("Error fetching mab player cards:", err);
+      });
+
+    self.activeDeck_cardCopiesList_Select2_Show();
+  };
+  self.activeDeck_cardCopiesList_Select2_Show = () => {
+    self.ActiveDeck_CardCopiesSelect2.removeClass("hide-div").addClass(
+      "show-div"
+    );
+  };
+  self.activeDeck_cardCopiesList_Select2_Hide = () => {
+    self.ActiveDeck_CardCopiesSelect2.removeClass("show-div").addClass(
+      "hide-div"
+    );
+  };
   self.ActiveDeck_AssignCardCopy = (mabDeckId, mabCardCopyId) => {
     $.ajax({
       type: "POST",
@@ -903,66 +926,50 @@ function mab_active_deck() {
       chartConfigs
     );
   };
-  self.ActiveDeck_LoadUnassignedCardCopies = () => {
-    if (
-      self.Inputs.Select_UnassignedCardCopies.hasClass(
-        "select2-hidden-accessible"
-      )
-    ) {
-      self.Inputs.Select_UnassignedCardCopies.select2("destroy");
-    }
+  self.activeDeck_CardCopies_BuildOrderedList = (playerCardCopies) => {
+    playerCardCopies.forEach((card, index) => {
+      self.ActiveDeck_CardIds.push(card.mabCardId);
 
-    const mabDeckId = self.ActiveDeckId;
+      let assignedCardCopyId = card.assignedMabCardCopyId;
+      let cardName = card.mabCardName;
+      let cardLvl = card.mabCardLevel;
+      let cardType = card.mabCardType;
+      let cardPower = card.mabCardPower;
+      let cardUpperHand = card.mabCardUpperHand;
 
-    // Fetch the mab player cards and their count from the backend
-    fetch(
-      `https://localhost:7081/users/listunassignedmabcardcopies?MabDeckId=${mabDeckId}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.content) {
-          sweetAlertError("Failed to load mab player cards:", data.message);
-          return;
-        }
+      let listItem = `
+          <li id="li-mab-active-deck-${index}" data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <button
+                id="button-mab-active-deck-unassign-card-copy"
+                class="btn btn-outline-danger p-0 m-0"
+                type="button"
+                data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}"
+                data-index="${index}"
+              >
+                <i class="fa-solid fa-xmark p-1 m-0"></i>
+              </button>
 
-        const mabPlayerCards = data.content.map((item) => ({
-          id: item.mabCardCopyId,
-          text: item.mabCardDescription,
-        }));
+              <strong class="mab-card-name p-0 m-0">${cardName}</strong>
 
-        // Clear previous options and add empty one
-        self.Inputs.Select_UnassignedCardCopies.empty().append(
-          `<option></option>`
-        );
+              <img
+                src="/images/icons/io_arrow_right.svg"
+                class="bi bi-arrow p-0 m-0"
+              />
 
-        // Builds select2
-        self.Inputs.Select_UnassignedCardCopies.select2({
-          data: mabPlayerCards,
-          dropdownParent: self.DOM,
-          placeholder: "Select a card",
-          allowClear: true,
-          theme: "classic",
-          width: "100%",
-          templateSelection: (data) => {
-            if (!data.id) return data.text;
-            return $("<strong>").text(data.text);
-          },
-        });
+              <div>
+                <span>L</span>evel: <strong>${cardLvl}</strong>,
+                <span>T</span>ype: <strong>${cardType}</strong>,
+                <span>P</span>ower: <strong>${cardPower}</strong>,
+                <span>U</span>pper <span>H</span>and:
+                <strong>${cardUpperHand}</strong>
+              </div>
+            </div>
+          </li>
+          `;
 
-        // Opens select2
-        self.Inputs.Select_UnassignedCardCopies.trigger("change").select2(
-          "open"
-        );
-      })
-      .catch((err) => {
-        sweetAlertError("Error fetching mab player cards:", err);
-      });
-
-    self.DivSelect2_CardCopies.removeClass("hide-div").addClass("show-div");
+      self.ActiveDeck_CardCopies_OrderedList.append(listItem);
+    });
   };
 
   self.mainMenu_ShowContainer = () => {
