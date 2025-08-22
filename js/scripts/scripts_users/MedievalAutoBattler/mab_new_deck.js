@@ -20,7 +20,7 @@ function mab_new_deck() {
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
-    self.MabContent = self.DOM.find("#mab-content-containers");
+    self.MabContent = self.DOM.find("#mab-containers-content");
 
     self.NewDeck_CardCopies_OrderedList = self.DOM.find(
       "#ol-mab-new-deck-card-copies"

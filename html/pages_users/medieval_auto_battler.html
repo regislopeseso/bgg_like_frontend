@@ -19,7 +19,7 @@
         </div>
       </section>
 
-      <section id="mab-content-containers">
+      <section id="mab-containers-content">
         <!-- 1.CONTAINER: MAB MAIN MENU -->
         <div id="container-mab-main-menu" class="show-div">
           <div class="d-flex flex-column w-100 gap-0">
@@ -38,7 +38,7 @@
 
           <!-- Continue Mab Campaign -->
           <button
-            id="button-continue-mab-campaign"
+            id="button-mab-continue-campaign-show-container"
             class="btn btn-outline-info"
             type="button"
           >
@@ -52,6 +52,15 @@
             type="button"
           >
             Manage Decks
+          </button>
+
+          <!-- Open Open MAB STORE -->
+          <button
+            id="button-mab-market-show-container"
+            class="btn btn-outline-info"
+            type="button"
+          >
+            Market
           </button>
 
           <!-- Open Open Mab Campaign Statistics-->
@@ -172,10 +181,57 @@
           </form>
         </div>
 
-        <!-- 3.CONTAINER: LOAD MAB CAMPAIGN -->
-        <div id="container-mab-load-campaign" class="hide-div"></div>
+        <!-- 3.CONTAINER: CONTINUE MAB CAMPAIGN -->
+        <div id="container-mab-continue-campaign" class="hide-div">
+          <div
+            id="header-mab-continue-campaign"
+            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
+          >
+            <div class="p-0 m-0">
+              <h3 class="p-0 m-0"><span>C</span>ampaign</h3>
+            </div>
 
-        <!-- 4.CONTAINER: ACTIVE MAB DECK -->
+            <button
+              id="button-mab-continue-campaign-hide-container"
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <hr />
+          <button
+            id="button-mab-battle-show-container"
+            class="btn btn-outline-info"
+          >
+            Battle
+          </button>
+        </div>
+
+        <!-- 4.CONTAINER: MAB BATTLE -->
+        <div id="container-mab-battle" class="hide-div">
+          <div
+            id="header-mab-battle"
+            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
+          >
+            <div class="p-0 m-0">
+              <h3 class="p-0 m-0"><span>B</span>attle</h3>
+            </div>
+
+            <button
+              id="button-mab-battle-hide-container"
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <hr />
+        </div>
+
+        <!-- 5.CONTAINER: ACTIVE MAB DECK -->
         <div id="container-mab-active-deck" class="hide-div">
           <div
             id="header-manage-mab-player-decks"
@@ -372,7 +428,7 @@
           </div>
         </div>
 
-        <!-- 5.CONTAINER: CREATE MAB DECK -->
+        <!-- 6.CONTAINER: CREATE MAB DECK -->
         <div id="container-mab-new-deck" class="hide-div">
           <div
             id="header-add-mab-deck"
@@ -513,7 +569,114 @@
           </form>
         </div>
 
-        <!-- 6.CONTAINER: MAB CAMPAIGN STATS -->
+        <!-- 7.CONTAINER: OPEN MAB MARKET -->
+        <div id="container-mab-market" class="hide-div">
+          <div
+            id="header-mab-market"
+            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
+          >
+            <div id="form-title-mab-market" class="p-0 m-0">
+              <h3 class="p-0 m-0"><span>M</span>arket <span>P</span>lace</h3>
+            </div>
+            <button
+              id="button-mab-market-hide-container"
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <hr />
+
+          <div
+            id="block-mab-market-data"
+            class="d-flex flex-column align-items-start justify-content-start gap-4"
+          >
+            <div
+              class="d-flex flex-row gap-3 align-items-center justify-content-start"
+            >
+              <div class="d-flex flex-row gap-1 m-0 p-0">
+                <div>
+                  <span>C</span
+                  >urrent&nbsp;<span>G</span>old&nbsp;<span>V</span>alue:
+                </div>
+                <span id="span-field-mab-market-current-gold-value">?</span>
+              </div>
+              |
+              <div class="d-flex flex-row gap-1 m-0 p-0">
+                <div class="d-flex flex-nowrap">
+                  <span>G</span>old&nbsp;<span>S</span>tash:
+                </div>
+                <span id="span-field-mab-market-gold-stash">?</span>
+              </div>
+            </div>
+
+            <div
+              class="d-flex flex-column gap-0 align-items-start justify-content-center"
+            >
+              <div class="d-flex flex-nowrap">
+                <span>E</span
+                >xpendable&nbsp;<span>C</span>ard&nbsp;<span>C</span>opies:
+              </div>
+
+              <div
+                class="d-flex flex-row gap-3 align-items-start justify-content-start"
+              >
+                <div class="d-flex flex-row gap-1 m-0 p-0">
+                  <div class="d-flex flex-nowrap"><span>C</span>ount:</div>
+                  <span id="span-field-mab-market-expendable-card-copies-count">
+                    ?
+                  </span>
+                </div>
+                |
+                <div class="d-flex flex-row gap-1 m-0 p-0">
+                  <div class="d-flex flex-nowrap"><span>V</span>alue:</div>
+                  <span id="span-field-mab-market-expendable-card-copies-value">
+                    ?
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="block-mab-market-actions"
+            class="d-flex flex-column gap-3 pt-4 w-100 align-items-start justify-content-start"
+          >
+            <div>
+              <button class="btn btn-outline-success btn-sm">Buy a card</button>
+            </div>
+
+            <div>
+              <button class="btn btn-outline-success btn-sm">
+                Trade a card
+              </button>
+            </div>
+
+            <div>
+              <button class="btn btn-outline-info btn-sm">
+                Buy deck boosters
+              </button>
+            </div>
+
+            <div>
+              <button class="btn btn-outline-danger btn-sm">
+                Sell a card copy
+              </button>
+            </div>
+
+            <div>
+              <button class="btn btn-outline-danger btn-sm">
+                Sell all expendable card copies
+              </button>
+            </div>
+          </div>
+
+          <hr />
+        </div>
+
+        <!-- 8.CONTAINER: MAB CAMPAIGN STATS -->
         <div id="container-mab-campaign-statistics" class="hide-div">
           <div
             class="d-flex flex-column justify-content-center align-items-start w-100"
@@ -700,6 +863,9 @@
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_campaign_statistics.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_active_deck.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_new_deck.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_continue_campaign.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_battle.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_market.js"></script>
     <!-- <script src="/js/scripts/scripts_users/medieval_auto_battler.js"></script> -->
 
     <script>

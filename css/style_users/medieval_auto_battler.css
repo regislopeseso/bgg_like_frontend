@@ -20,7 +20,7 @@ main {
   height: 30px;
 }
 
-#mab-content-containers {
+#mab-containers-content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,9 +41,11 @@ main {
 
 #container-mab-main-menu,
 #container-mab-new-campaign,
-#container-mab-load-campaign,
+#container-mab-continue-campaign,
+#container-mab-battle,
 #container-mab-active-deck,
 #container-mab-new-deck,
+#container-mab-store,
 #container-mab-campaign-statistics {
   position: absolute;
   width: fit-content;
@@ -166,9 +168,11 @@ main {
 
   #container-mab-main-menu,
   #container-mab-new-campaign,
-  #container-mab-load-campaign,
+  #container-mab-continue-campaign,
+  #container-mab-battle,
   #container-mab-active-deck,
   #container-mab-new-deck,
+  #container-mab-store,
   #container-mab-campaign-statistics {
     width: 90vw;
   }

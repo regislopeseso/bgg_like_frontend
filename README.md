@@ -23,3 +23,17 @@ border: 2px solid transparent;
 .primary-table::-webkit-scrollbar-thumb:hover {
 background-color: darken(var(--main-color), 10%); /_ Cor ao passar o mouse _/
 }
+
+Battle Locations:
+Recruits School
+Abanddoned Cave
+Dark Forest
+Valley of Decision
+
+Main Quest:
+Ambush missions
+Skirmish missions
+
+Side Quests
+Enlisting in the recruts school
+Final Battle

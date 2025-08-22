@@ -279,7 +279,6 @@ function mab_active_deck() {
       ? div.removeClass("show-div").addClass("hide-div")
       : div.removeClass("hide-div").addClass("show-div");
   };
-
   self.activeDeck_ShowContainer = () => {
     self.toggleContainerVisibility(self.Containers.ActiveDeck);
 
@@ -287,6 +286,15 @@ function mab_active_deck() {
   };
   self.activeDeck_HideContainer = () => {
     self.toggleContainerVisibility(self.Containers.ActiveDeck);
+  };
+  self.mainMenu_ShowContainer = () => {
+    self.toggleContainerVisibility(self.Containers.MainMenu);
+  };
+  self.mainMenu_HideContainer = () => {
+    self.toggleContainerVisibility(self.Containers.MainMenu);
+  };
+  self.newDeck_HideContainer = () => {
+    self.toggleContainerVisibility(self.Containers.NewDeck);
   };
 
   self.activeDeck_Refresh_InputsAndFieldsAndVariables = () => {
@@ -629,7 +637,7 @@ function mab_active_deck() {
         self.Inputs.Select_UnassignedCardCopies.select2({
           data: mabPlayerCards,
           dropdownParent: self.DOM,
-          placeholder: "Select a card corpy for your deck...",
+          placeholder: "Select a card copy for your deck...",
           allowClear: true,
           theme: "classic",
           width: "100%",
@@ -975,21 +983,14 @@ function mab_active_deck() {
     });
   };
 
-  self.mainMenu_ShowContainer = () => {
-    self.toggleContainerVisibility(self.Containers.MainMenu);
-  };
-  self.mainMenu_HideContainer = () => {
-    self.toggleContainerVisibility(self.Containers.MainMenu);
-  };
-
-  self.newDeck_HideContainer = () => {
-    self.toggleContainerVisibility(self.Containers.NewDeck);
-  };
   self.NewDeck_ActivateDeck = () => {
     self.toggleContainerVisibility(self.Containers.NewDeck);
   };
 
   self.build = () => {
+    if (!self.IsBuilt) {
+      self.IsBuilt = true;
+    }
     self.loadReferences();
     self.loadEvents();
   };

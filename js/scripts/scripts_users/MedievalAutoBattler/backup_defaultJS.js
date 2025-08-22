@@ -18,7 +18,7 @@ function medieval_auto_battler() {
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
-    self.MabContent = self.DOM.find("#mab-content-containers");
+    self.MabContent = self.DOM.find("#mab-containers-content");
 
     self.MabMenu = self.DOM.find("#mab-menu");
 
