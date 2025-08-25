@@ -103,6 +103,16 @@ main {
   min-width: 5rem !important;
 }
 
+.npc-card,
+.player-card {
+  border: 1px solid var(--text-color);
+  border-radius: 12px;
+  background-color: var(--second-bg-color);
+  width: 50px;
+  height: 70px;
+  padding: 5px;
+}
+
 @media screen and (max-width: 1440px) {
   #game-logo {
     top: 75px;
