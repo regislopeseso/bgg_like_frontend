@@ -45,7 +45,7 @@ main {
 #container-mab-battle,
 #container-mab-active-deck,
 #container-mab-new-deck,
-#container-mab-store,
+#container-mab-market,
 #container-mab-campaign-statistics {
   position: absolute;
   width: fit-content;
@@ -103,14 +103,66 @@ main {
   min-width: 5rem !important;
 }
 
-.npc-card,
-.player-card {
+#div-mab-arena-npc-duelling-card,
+#div-mab-arena-player-duelling-card {
+  content: none;
+  opacity: 0;
+  width: 200px;
+  height: 150px;
+  border: 1px solid var(--yellowish);
+  border-radius: 12px;
+  background-color: var(--second-bg-color);
+  transition: all 1s ease-in-out;
+}
+
+.npc-card {
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
   border: 1px solid var(--text-color);
   border-radius: 12px;
   background-color: var(--second-bg-color);
   width: 50px;
-  height: 70px;
+  height: 100px;
   padding: 5px;
+  margin: 10px;
+}
+.player-card {
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--second-bg-color);
+  width: 200px;
+  height: 150px;
+  padding: 5px;
+}
+
+.frozen-card {
+  pointer-events: none !important;
+}
+.active-card {
+  pointer-events: all !important;
+  border: 2px solid var(--greenish);
+  box-shadow: 0 0 10px var(--greenish);
+}
+.chosen-card {
+  opacity: 1 !important;
+  pointer-events: none !important;
+  border: 2px solid var(--yellowish);
+  box-shadow: 0 0 5px 5px var(--yellowish) !important;
+}
+.duelling-card {
+  opacity: 1 !important;
+  border: 2px solid var(--yellowish) !important;
+  box-shadow: 0 0 1px 5px var(--yellowish) !important;
+  transition: opacity 0.3s ease-in-out !important;
+}
+
+#button-mab-arena-confirm-card-choice,
+#button-mab-arena-cancel-card-choice {
+  transition: opacity 0.3s ease-in-out;
 }
 
 @media screen and (max-width: 1440px) {
@@ -182,7 +234,7 @@ main {
   #container-mab-battle,
   #container-mab-active-deck,
   #container-mab-new-deck,
-  #container-mab-store,
+  #container-mab-market,
   #container-mab-campaign-statistics {
     width: 90vw;
   }

@@ -3,6 +3,20 @@ function mab_battle() {
 
   self.IsBuilt = false;
 
+  self.IsPlayersTurn = true;
+
+  self.BattleRound = null;
+  self.BattleRoundsCount = null;
+
+  self.PlayerCardCopies = [];
+  self.PlayerChosenCard_CardCopyId = null;
+  self.PlayerChosenCard_CardName = null;
+  self.PlayerChosenCard_CardLevel = null;
+  self.PlayerChosenCard_CardType = null;
+  self.PlayerChosenCard_CardPower = null;
+  self.PlayerChosenCard_CardUpperHand = null;
+  self.PlayerChosenCard_CardTotalPower = null;
+
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
@@ -24,101 +38,29 @@ function mab_battle() {
     self.Buttons[self.Buttons.length] = self.Buttons.HideBattleContainer =
       self.Containers.Battle.find("#button-mab-battle-hide-container");
     self.Buttons[self.Buttons.length] = self.Buttons.HideArenaContainer =
-      self.Containers.Battle.find("#button-mab-arena--hide-container");
+      self.Containers.Arena.find("#button-mab-arena-hide-container");
+    self.Buttons[self.Buttons.length] = self.Buttons.RetreatFromBattle =
+      self.Containers.Arena.find("#button-mab-arena-retreat");
+    self.Buttons[self.Buttons.length] = self.Buttons.TurnOnAutoMode =
+      self.Containers.Arena.find("#button-mab-arena-auto-mode");
+    self.Buttons[self.Buttons.length] = self.Buttons.ConfirmDuellingCardChoice =
+      self.Containers.Arena.find("#button-mab-arena-confirm-card-choice");
+    self.Buttons[self.Buttons.length] = self.Buttons.CancelDuellingCardChoice =
+      self.Containers.Arena.find("#button-mab-arena-cancel-card-choice");
 
     self.Fields = [];
     self.Fields[self.Fields.length] = self.Fields.NpcName =
       self.Containers.Arena.find("#span-mab-arena-npc-name");
-    self.Fields[self.Fields.length] = self.Fields.NpcChosenCard_Name =
-      self.Containers.Arena.find("#span-mab-arena-npc-chosen-card-name");
-    self.Fields[self.Fields.length] = self.Fields.NpcChosenCard_Level =
-      self.Containers.Arena.find("#span-mab-arena-npc-chosen-card-level");
-    self.Fields[self.Fields.length] = self.Fields.NpcChosenCard_Type =
-      self.Containers.Arena.find("#span-mab-arena-npc-chosen-card-type");
-    self.Fields[self.Fields.length] = self.Fields.NpcChosenCard_Power =
-      self.Containers.Arena.find("#span-mab-arena-npc-chosen-card-power");
-    self.Fields[self.Fields.length] = self.Fields.NpcChosenCard_UpperHand =
-      self.Containers.Arena.find("#span-mab-arena-npc-chosen-card-upper-hand");
+    self.Fields[self.Fields.length] = self.Fields.PlayerNickname =
+      self.Containers.Arena.find("#span-mab-arena-player-nickname");
+    self.Fields[self.Fields.length] = self.Fields.ArenaMessages =
+      self.Containers.Arena.find("#div-mab-arena-announcements");
+    self.Fields[self.Fields.length] = self.Fields.PlayerChosenCardCopy =
+      self.Containers.Arena.find("#div-mab-arena-player-duelling-card");
 
-    self.Fields[self.Fields.length] = self.Fields.PlayerName =
-      self.Containers.Arena.find("#span-mab-arena-player-name");
-    self.Fields[self.Fields.length] = self.Fields.PlayerChosenCard_Name =
-      self.Containers.Arena.find("#span-mab-arena-player-chosen-card-name");
-    self.Fields[self.Fields.length] = self.Fields.PlayerChosenCard_Level =
-      self.Containers.Arena.find("#span-mab-arena-player-chosen-card-level");
-    self.Fields[self.Fields.length] = self.Fields.PlayerChosenCard_Type =
-      self.Containers.Arena.find("#span-mab-arena-player-chosen-card-type");
-    self.Fields[self.Fields.length] = self.Fields.PlayerChosenCard_Power =
-      self.Containers.Arena.find("#span-mab-arena-player-chosen-card-power");
-    self.Fields[self.Fields.length] = self.Fields.PlayerChosenCard_UpperHand =
-      self.Containers.Arena.find(
-        "#span-mab-arena-player-chosen-card-upper-hand"
-      );
-
-    self.Fields[self.Fields.length] = self.Fields.PlayerFirstCard_Name =
-      self.Containers.Arena.find("#span-mab-arena-player-first-card-name");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFirstCard_Level =
-      self.Containers.Arena.find("#span-mab-arena-player-first-card-level");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFirstCard_Type =
-      self.Containers.Arena.find("#span-mab-arena-player-first-card-type");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFirstCard_Power =
-      self.Containers.Arena.find("#span-mab-arena-player-first-card-power");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFirstCard_UpperHand =
-      self.Containers.Arena.find(
-        "#span-mab-arena-player-first-card-upper-hand"
-      );
-
-    self.Fields[self.Fields.length] = self.Fields.PlayerSecondCard_Name =
-      self.Containers.Arena.find("#span-mab-arena-player-second-card-name");
-    self.Fields[self.Fields.length] = self.Fields.PlayerSecondCard_Level =
-      self.Containers.Arena.find("#span-mab-arena-player-second-card-level");
-    self.Fields[self.Fields.length] = self.Fields.PlayerSecondCard_Type =
-      self.Containers.Arena.find("#span-mab-arena-player-second-card-type");
-    self.Fields[self.Fields.length] = self.Fields.PlayerSecondCard_Power =
-      self.Containers.Arena.find("#span-mab-arena-player-second-card-power");
-    self.Fields[self.Fields.length] = self.Fields.PlayerSecondCard_UpperHand =
-      self.Containers.Arena.find(
-        "#span-mab-arena-player-second-card-upper-hand"
-      );
-
-    self.Fields[self.Fields.length] = self.Fields.PlayerThirdCard_Name =
-      self.Containers.Arena.find("#span-mab-arena-player-third-card-name");
-    self.Fields[self.Fields.length] = self.Fields.PlayerThirdCard_Level =
-      self.Containers.Arena.find("#span-mab-arena-player-third-card-level");
-    self.Fields[self.Fields.length] = self.Fields.PlayerThirdCard_Type =
-      self.Containers.Arena.find("#span-mab-arena-player-third-card-type");
-    self.Fields[self.Fields.length] = self.Fields.PlayerThirdCard_Power =
-      self.Containers.Arena.find("#span-mab-arena-player-third-card-power");
-    self.Fields[self.Fields.length] = self.Fields.PlayerThirdCard_UpperHand =
-      self.Containers.Arena.find(
-        "#span-mab-arena-player-third-card-upper-hand"
-      );
-
-    self.Fields[self.Fields.length] = self.Fields.PlayerFourthCard_Name =
-      self.Containers.Arena.find("#span-mab-arena-player-fourth-card-name");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFourthCard_Level =
-      self.Containers.Arena.find("#span-mab-arena-player-fourth-card-level");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFourthCard_Type =
-      self.Containers.Arena.find("#span-mab-arena-player-fourth-card-type");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFourthCard_Power =
-      self.Containers.Arena.find("#span-mab-arena-player-fourth-card-power");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFourthCard_UpperHand =
-      self.Containers.Arena.find(
-        "#span-mab-arena-player-fourth-card-upper-hand"
-      );
-
-    self.Fields[self.Fields.length] = self.Fields.PlayerFifthCard_Name =
-      self.Containers.Arena.find("#span-mab-arena-player-fifth-card-name");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFifthCard_Level =
-      self.Containers.Arena.find("#span-mab-arena-player-fifth-card-level");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFifthCard_Type =
-      self.Containers.Arena.find("#span-mab-arena-player-fifth-card-type");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFifthCard_Power =
-      self.Containers.Arena.find("#span-mab-arena-player-fifth-card-power");
-    self.Fields[self.Fields.length] = self.Fields.PlayerFifthCard_UpperHand =
-      self.Containers.Arena.find(
-        "#span-mab-arena-player-fifth-card-upper-hand"
-      );
+    self.Blocks = [];
+    self.Blocks[self.Blocks.length] = self.Blocks.PlayerCardCopies =
+      self.Containers.Arena.find("#block-mab-arena-player-cards");
   };
 
   self.loadEvents = () => {
@@ -127,12 +69,53 @@ function mab_battle() {
 
       self.Battle_TriggerStart();
     });
+
     self.Buttons.HideBattleContainer.on("click", (e) => {
       e.preventDefault();
 
       self.battle_HideContainer();
 
       self.mainMenu_ShowContainer();
+    });
+
+    // Binding the event after inserting into DOM
+    $(document).on("click", ".button-mab-arena-player-cards", function () {
+      let cardCopyId = $(this).data("card-copy-id");
+
+      $(".button-mab-arena-player-cards")
+        .removeClass("active-card")
+        .addClass("frozen-card");
+
+      $(this).removeClass("frozen-card").addClass("chosen-card");
+
+      let card = self.PlayerCardCopies.filter(
+        (card) => card.mabCardCopyId === cardCopyId
+      )[0];
+
+      self.PlayerChosenCard_CardCopyId = cardCopyId;
+      self.PlayerChosenCard_CardName = card.mabCardName;
+      self.PlayerChosenCard_CardLevel = card.mabCardLevel;
+      self.PlayerChosenCard_CardType = card.mabCardType;
+      self.PlayerChosenCard_CardPower = card.mabCardPower;
+      self.PlayerChosenCard_CardUpperHand = card.mabCardUpperHand;
+
+      self.arena_PlayerDuellingCard_Add();
+    });
+
+    self.Buttons.ConfirmDuellingCardChoice.on("click", (e) => {
+      e.preventDefault();
+
+      self.Arena_ResolvePlayerTurn();
+    });
+
+    self.Buttons.CancelDuellingCardChoice.on("click", (e) => {
+      e.preventDefault();
+
+      self.arena_buttons_SetUpForChosenCard_Off();
+
+      self.arena_PlayerDuellingCard_Remove();
+
+      self.clear_PlayerDuelCard();
     });
   };
 
@@ -145,7 +128,7 @@ function mab_battle() {
       title: title_text,
       text: message_text || "",
       showConfirmButton: false,
-      timer: 1500,
+      timer: 300,
     });
   };
   self.sweetAlertError = (title_text, message_text) => {
@@ -217,9 +200,10 @@ function mab_battle() {
           return;
         }
 
-        self.Fields.NpcName = resp.content.mabNpcName;
+        self.Fields.PlayerNickname.html(resp.content.mabPlayerNickName);
+        self.Fields.NpcName.html(resp.content.mabNpcName);
 
-        self.continueCampaign_HideContainer();
+        self.IsPlayersTurn = resp.content.doesPlayerGoFirst;
 
         self.battle_ShowContainer();
 
@@ -234,6 +218,8 @@ function mab_battle() {
     });
   };
   self.Battle_ListPlayerAvailableAssignedCardCopies = () => {
+    self.Blocks.PlayerCardCopies.empty();
+
     $.ajax({
       type: "GET",
       url: "https://localhost:7081/users/listmabavailableroundcardcopies",
@@ -247,49 +233,44 @@ function mab_battle() {
         self.battle_HideContainer();
         self.arena_ShowContainer();
 
-        let playerCards = response.content;
+        self.PlayerCardCopies = response.content;
 
-        console.log("playerCards[1]:", playerCards[1]);
+        self.PlayerCardCopies.forEach((card, index) => {
+          let cardHtml = `
+              <button 
+                class="btn d-flex flex-column player-card button-mab-arena-player-cards frozen-card"
+                type="button"
+                data-card-copy-id="${card.mabCardCopyId}"
+                > 
+                
+                <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                  <span>${card.mabCardName}</span>
+                  <span>${card.mabCardLevel}</span>
+                </div>
 
-        self.Fields.PlayerFirstCard_Name.html(playerCards[0].mabCardName);
-        self.Fields.PlayerFirstCard_Level.html(playerCards[0].mabCardLevel);
-        self.Fields.PlayerFirstCard_Type.html(playerCards[0].mabCardType);
-        self.Fields.PlayerFirstCard_Power.html(playerCards[0].mabCardPower);
-        self.Fields.PlayerFirstCard_UpperHand.html(
-          playerCards[0].mabCardUpperHand
-        );
+                <div class="d-flex flex-row justify-content-center align-items-center">
+                  <span>${card.mabCardType}</span>
+                  
+                </div>
 
-        self.Fields.PlayerSecondCard_Name.html(playerCards[1].mabCardName);
-        self.Fields.PlayerSecondCard_Level.html(playerCards[1].mabCardLevel);
-        self.Fields.PlayerSecondCard_Type.html(playerCards[1].mabCardType);
-        self.Fields.PlayerSecondCard_Power.html(playerCards[1].mabCardPower);
-        self.Fields.PlayerSecondCard_UpperHand.html(
-          playerCards[1].mabCardUpperHand
-        );
+                <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                  <div>
+                    <span>${card.mabCardPower}</span>
 
-        self.Fields.PlayerThirdCard_Name.html(playerCards[2].mabCardName);
-        self.Fields.PlayerThirdCard_Level.html(playerCards[2].mabCardLevel);
-        self.Fields.PlayerThirdCard_Type.html(playerCards[2].mabCardType);
-        self.Fields.PlayerThirdCard_Power.html(playerCards[2].mabCardPower);
-        self.Fields.PlayerThirdCard_UpperHand.html(
-          playerCards[2].mabCardUpperHand
-        );
+                    |
 
-        self.Fields.PlayerFourthCard_Name.html(playerCards[3].mabCardName);
-        self.Fields.PlayerFourthCard_Level.html(playerCards[3].mabCardLevel);
-        self.Fields.PlayerFourthCard_Type.html(playerCards[3].mabCardType);
-        self.Fields.PlayerFourthCard_Power.html(playerCards[3].mabCardPower);
-        self.Fields.PlayerFourthCard_UpperHand.html(
-          playerCards[3].mabCardUpperHand
-        );
+                    <span>${card.mabCardUpperHand}</span>
+                  </div>
 
-        self.Fields.PlayerFifthCard_Name.html(playerCards[4].mabCardName);
-        self.Fields.PlayerFifthCard_Level.html(playerCards[4].mabCardLevel);
-        self.Fields.PlayerFifthCard_Type.html(playerCards[4].mabCardType);
-        self.Fields.PlayerFifthCard_Power.html(playerCards[4].mabCardPower);
-        self.Fields.PlayerFifthCard_UpperHand.html(
-          playerCards[4].mabCardUpperHand
-        );
+                  <span id="span-mab-arena-player-${index}-card-total-power">?</span>
+                </div>
+              </button>   
+            `;
+
+          self.Blocks.PlayerCardCopies.append(cardHtml);
+        });
+
+        self.arena_ResolveTurn();
       },
       error: function (xhr, status, error) {
         sweetAlertError(
@@ -297,6 +278,152 @@ function mab_battle() {
         );
       },
     });
+  };
+  self.arena_buttons_SetUpForChosenCard_On = () => {
+    self.Buttons.ConfirmDuellingCardChoice.css("opacity", "0");
+
+    setTimeout(() => {
+      self.Buttons.ConfirmDuellingCardChoice.css("opacity", "1")
+        .text("Confirm")
+        .prop("disabled", false);
+    }, 300);
+
+    self.Buttons.CancelDuellingCardChoice.prop("disabled", false);
+  };
+  self.arena_buttons_SetUpForChosenCard_Off = () => {
+    self.Buttons.ConfirmDuellingCardChoice.css("opacity", "0");
+
+    setTimeout(() => {
+      self.Buttons.ConfirmDuellingCardChoice.css("opacity", "1")
+        .text("Pass")
+        .prop("disabled", false);
+    }, 300);
+
+    self.Buttons.CancelDuellingCardChoice.prop("disabled", true);
+  };
+  self.arena_ResolveTurn = () => {
+    self.Fields.ArenaMessages.empty();
+
+    if (self.IsPlayersTurn === true) {
+      self.Fields.ArenaMessages.html(
+        `Round #${(self.BattleRound = null)} Player's Turn: pick a card...`
+      );
+
+      $(".button-mab-arena-player-cards")
+        .removeClass("frozen-card")
+        .addClass("active-card");
+
+      self.Buttons.ConfirmDuellingCardChoice.prop("disabled", false);
+
+      return;
+    }
+
+    self.Fields.ArenaMessages.html(
+      `Round #${(self.BattleRound = null)} NPC's Turn: picking a card...`
+    );
+    self.Arena_ResolveNpcTurn();
+  };
+  self.arena_PlayerDuellingCard_Add = () => {
+    self.Fields.PlayerChosenCardCopy.empty();
+
+    let totalPower =
+      self.PlayerChosenCard_CardTotalPower === null
+        ? "?"
+        : self.PlayerChosenCard_CardTotalPower;
+
+    let playerChosenCardCopyHtml = `
+        <div class="d-flex flex-column justify-content-center align-items-center w-100 player-card" >
+          <div class="d-flex flex-row justify-content-between align-items-center w-100">
+            <span>${self.PlayerChosenCard_CardName}</span>
+            <span>${self.PlayerChosenCard_CardLevel}</span>
+          </div>
+          <div class="d-flex flex-row justify-content-center align-items-center">
+            <span>${self.PlayerChosenCard_CardType}</span>
+          </div>
+          <div class="d-flex flex-row justify-content-between align-items-center w-100">
+            <div>
+              <span>${self.PlayerChosenCard_CardPower}</span>
+              |
+              <span>${self.PlayerChosenCard_CardUpperHand}</span>
+            </div>
+            <span>${totalPower}</span>
+          </div>
+        </div>
+      `;
+
+    setTimeout(() => {
+      self.Fields.PlayerChosenCardCopy.addClass("duelling-card");
+
+      setTimeout(() => {
+        self.arena_buttons_SetUpForChosenCard_On();
+
+        self.Fields.PlayerChosenCardCopy.html(playerChosenCardCopyHtml);
+      }, 100);
+    }, 50);
+  };
+  self.arena_PlayerDuellingCard_Remove = () => {
+    self.Fields.PlayerChosenCardCopy.empty().removeClass("duelling-card");
+
+    $(".button-mab-arena-player-cards")
+      .removeClass("chosen-card frozen-card")
+      .addClass("active-card");
+  };
+  self.clear_PlayerDuelCard = () => {
+    self.PlayerChosenCard_CardCopyId = null;
+    self.PlayerChosenCard_CardName = null;
+    self.PlayerChosenCard_CardLevel = null;
+    self.PlayerChosenCard_CardType = null;
+    self.PlayerChosenCard_CardPower = null;
+    self.PlayerChosenCard_CardUpperHand = null;
+    self.PlayerChosenCard_CardTotalPower = null;
+  };
+  self.Arena_ResolvePlayerTurn = () => {
+    const formData = new FormData();
+    formData.append("MabCardCopyId", self.PlayerChosenCard_CardCopyId);
+
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/mabplayerturn",
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          self.sweetAlertError(resp.message);
+          return;
+        }
+
+        self.arena_buttons_SetUpForChosenCard_Off();
+      },
+      error: (err) => {
+        self.sweetAlertError(err);
+      },
+      complete: () => {},
+    });
+  };
+  self.Arena_ResolveNpcTurn = () => {
+    // let npcChosenCardCopyHtml = `
+    //     <div id="div-mab-arena-player-chosen-card" class="d-flex flex-column player-card" >
+    //       <div class="d-flex flex-row justify-content-between align-items-center w-100">
+    //         <span>${card.mabCardName}</span>
+    //         <span>${card.mabCardLevel}</span>
+    //       </div>
+    //       <div class="d-flex flex-row justify-content-center align-items-center">
+    //         <span>${card.mabCardType}</span>
+    //       </div>
+    //       <div class="d-flex flex-row justify-content-between align-items-center w-100">
+    //         <div>
+    //           <span>${card.mabCardPower}</span>
+    //           |
+    //           <span>${card.mabCardUpperHand}</span>
+    //         </div>
+    //         <span>${card.mabCardTotalPower}</span>
+    //       </div>
+    //     </div>
+    //   `;
   };
 
   self.build = () => {

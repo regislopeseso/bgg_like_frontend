@@ -148,9 +148,10 @@ function mab_active_deck() {
     // Binding the event after inserting into DOM
     $(document).on(
       "click",
-      "#button-mab-active-deck-unassign-card-copy",
+      ".button-mab-active-deck-unassign-card-copy",
       function () {
         let index = $(this).data("index");
+
         let assignedMabCardCopyId = $(this).data(
           "mab-active-deck-assigned-card-copy-id"
         );
@@ -951,9 +952,8 @@ function mab_active_deck() {
       let listItem = `
           <li id="li-mab-active-deck-${index}" data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}">
             <div class="d-flex flex-row align-items-center gap-2">
-              <button
-                id="button-mab-active-deck-unassign-card-copy"
-                class="btn btn-outline-danger p-0 m-0"
+              <button               
+                class="btn btn-outline-danger p-0 m-0 button-mab-active-deck-unassign-card-copy"
                 type="button"
                 data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}"
                 data-index="${index}"
