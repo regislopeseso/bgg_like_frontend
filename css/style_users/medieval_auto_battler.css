@@ -115,7 +115,7 @@ main {
   transition: all 1s ease-in-out;
 }
 
-.npc-card {
+.mab-card-back {
   justify-content: center;
   align-items: center;
   gap: 25px;
@@ -127,7 +127,7 @@ main {
   padding: 5px;
   margin: 10px;
 }
-.player-card {
+.mab-card-front {
   justify-content: center;
   align-items: center;
   gap: 25px;
@@ -155,9 +155,14 @@ main {
 }
 .duelling-card {
   opacity: 1 !important;
-  border: 2px solid var(--yellowish) !important;
-  box-shadow: 0 0 1px 5px var(--yellowish) !important;
+  border: 2px solid var(--main-color) !important;
+  box-shadow: 0 0 5px 5px var(--main-color) !important;
   transition: opacity 0.3s ease-in-out !important;
+}
+#div-mab-arena-announcements-block {
+  border: 1px solid var(--main-color);
+  border-radius: 12px;
+  padding: 10px;
 }
 
 #button-mab-arena-confirm-card-choice,

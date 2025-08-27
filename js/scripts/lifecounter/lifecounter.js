@@ -2862,8 +2862,7 @@ function lifecounter_manager() {
     const manager = self.Current_LifeCounter_Manager;
     const players = self.Current_LifeCounter_Players;
 
-    const player = players[playerId];
-    console.log("player", player);
+    const player = players[playerId];   
 
     const playerName = player.PlayerName;
 

@@ -50,8 +50,6 @@ function mab_continue_campaign() {
 
       self.mainMenu_HideContainer();
 
-      console.log("oi");
-
       self.continueCampaign_ShowContainer();
     });
     self.Buttons.HideContinueCampaignContainer.on("click", (e) => {

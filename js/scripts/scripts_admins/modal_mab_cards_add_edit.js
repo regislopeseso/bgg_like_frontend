@@ -220,7 +220,6 @@ function modal_Mab_Cards_Add_Edit() {
 
     // Get form values
     const mabCardId = self.currentMabCardId;
-    console.log("mabCardId: ", mabCardId);
 
     const mabCardName = self.Inputs.MabCardName.val();
     const mabCardPower = self.Inputs.MabCardPower.val();
