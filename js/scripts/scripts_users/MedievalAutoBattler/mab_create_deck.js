@@ -1,4 +1,4 @@
-function mab_new_deck() {
+function mab_create_deck() {
   let self = this;
 
   self.IsBuilt = false;
@@ -29,38 +29,45 @@ function mab_new_deck() {
     self.Containers = [];
     self.Containers[self.Containers.length] = self.Containers.MainMenu =
       self.DOM.find("#container-mab-main-menu");
-    self.Containers[self.Containers.length] = self.Containers.NewDeck =
-      self.DOM.find("#container-mab-new-deck");
+    self.Containers[self.Containers.length] = self.Containers.CreateDeck =
+      self.DOM.find("#container-mab-create-deck");
     self.Containers[self.Containers.length] = self.Containers.ActiveDeck =
       self.DOM.find("#container-mab-active-deck");
-    self.Containers[self.Containers.length] =
-      self.Containers.NewDeck_CardCopiesSelect2 = self.Containers.NewDeck.find(
-        "#container-add-mab-selectcard"
-      );
+
+    self.Blocks = [];
+    self.Blocks[self.Blocks.length] =
+      self.Blocks.CreateDeck_PlayerCardstSelect =
+        self.Containers.CreateDeck.find(
+          "#block-select-mab-create-deck-player-cards-list"
+        );
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.ShowNewDeckContainer =
-      self.Containers.ActiveDeck.find("#button-mab-new-deck-show-container");
+      self.Containers.ActiveDeck.find("#button-mab-create-deck-show-container");
     self.Buttons[self.Buttons.length] = self.Buttons.HideNewDeckContainer =
-      self.Containers.NewDeck.find("#button-mab-new-deck-hide-container");
+      self.Containers.CreateDeck.find("#button-mab-create-deck-hide-container");
     self.Buttons[self.Buttons.length] = self.Buttons.AssignCardCopy =
-      self.Containers.NewDeck.find("#button-mab-new-deck-assign-card-copy");
+      self.Containers.CreateDeck.find(
+        "#button-mab-create-deck-assign-player-card"
+      );
     self.Buttons[self.Buttons.length] = self.Buttons.NewDeck_ActivateDeck =
-      self.Containers.NewDeck.find("#button-mab-new-deck-activate-new-deck");
+      self.Containers.CreateDeck.find("#button-mab-create-deck-activate-deck");
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.NewDeckName =
-      self.Containers.NewDeck.find("#input-mab-new-deck-deck-name");
+      self.Containers.CreateDeck.find("#input-mab-create-deck-deckname");
     self.Inputs[self.Inputs.length] = self.Inputs.Select_NewDeckCardCopies =
-      self.Containers.NewDeck.find("#select-mab-new-deck-card-copies-list");
+      self.Containers.CreateDeck.find(
+        "#select-mab-create-deck-player-cards-list"
+      );
 
     self.Fields = [];
     self.Fields[self.Fields.length] = self.Fields.NewDeckLevel =
-      self.Containers.NewDeck.find("#span-mab-new-deck-decklevel");
+      self.Containers.CreateDeck.find("#span-mab-create-deck-decklevel");
     self.Fields[self.Fields.length] = self.Fields.NewDeckSize =
-      self.Containers.NewDeck.find("#span-mab-new-deck-decksize");
+      self.Containers.CreateDeck.find("#span-mab-create-deck-decksize");
     self.Fields[self.Fields.length] = self.Fields.NewDeckBalance =
-      self.Containers.NewDeck.find("#span-mab-new-deck-deckbalance");
+      self.Containers.CreateDeck.find("#span-mab-create-deck-deckbalance");
     self.Fields[self.Fields.length] = self.Fields.NewDeck_NeutralTypeCount =
       self.Fields.NewDeckBalance.find(".strong-mab-decks-neutral-type-count");
     self.Fields[self.Fields.length] = self.Fields.NewDeck_RangedTypeCount =
@@ -100,11 +107,11 @@ function mab_new_deck() {
     // Binding the event after inserting into DOM
     $(document).on(
       "click",
-      "#button-mab-new-deck-unassign-card-copy",
+      "#button-mab-create-deck-unassign-player-card",
       function () {
         let index = $(this).data("index");
         let assignedMabCardCopyId = $(this).data(
-          "mab-new-deck-assigned-card-copy-id"
+          "mab-create-deck-assigned-card-id"
         );
 
         self.NewDeck_UnassignCardCopy(index, assignedMabCardCopyId);
@@ -173,20 +180,20 @@ function mab_new_deck() {
   };
 
   self.newDeck_ShowContainer = () => {
-    self.toggleContainerVisibility(self.Containers.NewDeck);
+    self.toggleContainerVisibility(self.Containers.CreateDeck);
 
     self.Inputs.NewDeckName.val(self.NewDeckName)
       .trigger("focus")
       .trigger("select");
   };
   self.newDeck_HideContainer = () => {
-    self.toggleContainerVisibility(self.Containers.NewDeck);
+    self.toggleContainerVisibility(self.Containers.CreateDeck);
   };
 
   self.NewDeck_Create = () => {
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/users/addmabplayerdeck",
+      url: "https://localhost:7081/users/mabcreatedeck",
       xhrFields: {
         withCredentials: true,
       },
@@ -235,7 +242,7 @@ function mab_new_deck() {
   self.NewDeck_ShowDeckDetails = () => {
     $.ajax({
       type: "GET",
-      url: `https://localhost:7081/users/showmabdeckdetails?MabDeckId=${self.NewDeckId}`,
+      url: `https://localhost:7081/users/mabshowdeckdetails?Mab_DeckId=${self.NewDeckId}`,
       xhrFields: { withCredentials: true },
       success: function (response) {
         if (response.content == null) {
@@ -246,12 +253,12 @@ function mab_new_deck() {
         self.newDeck_Refresh_InputsAndFieldsAndVariables();
 
         let newDeck = response.content;
-        let newDeckId = newDeck.activeMabDeckId;
-        let newDeckName = newDeck.activeMabDeckName;
-        let newDeckLevel = newDeck.deckLevel;
-        let newDeckSizeLimit = newDeck.mabDeckSizeLimit;
-        let cardCopies = newDeck.mabCardCopies;
-        let newDeckCurrentSize = cardCopies.length;
+        let newDeckId = newDeck.mab_DeckId;
+        let newDeckName = newDeck.mab_DeckName;
+        let newDeckLevel = newDeck.mab_DeckLevel;
+        let newDeckSizeLimit = newDeck.mab_DeckSizeLimit;
+        let assignedCards = newDeck.mab_AssignedCards;
+        let newDeckCurrentSize = assignedCards.length;
 
         let countNeutralCardCopies = 0;
         let countRangedCardCopies = 0;
@@ -275,11 +282,12 @@ function mab_new_deck() {
           `${newDeckCurrentSize}/${newDeckSizeLimit}`
         );
 
-        cardCopies.forEach((mabCard) => {
-          if (mabCard.mabCardType == "Neutral") countNeutralCardCopies++;
-          if (mabCard.mabCardType == "Ranged") countRangedCardCopies++;
-          if (mabCard.mabCardType == "Cavalry") countCalvaryCardCopies++;
-          if (mabCard.mabCardType == "Infantry") countInfantryCardCopies++;
+        assignedCards.forEach((assignedCard) => {
+          if (assignedCard.mab_CardType == "Neutral") countNeutralCardCopies++;
+          if (assignedCard.mab_CardType == "Ranged") countRangedCardCopies++;
+          if (assignedCard.mab_CardType == "Cavalry") countCalvaryCardCopies++;
+          if (assignedCard.mab_CardType == "Infantry")
+            countInfantryCardCopies++;
         });
 
         self.Fields.NewDeck_NeutralTypeCount.html(countNeutralCardCopies);
@@ -292,7 +300,7 @@ function mab_new_deck() {
             `<div>Add up to <span>${newDeckSizeLimit}</span> cards...</div> `
           );
         } else {
-          self.newDeck_CardCopies_BuildOrderedList(cardCopies);
+          self.newDeck_PlayerCards_BuildOrderedList(assignedCards);
         }
       },
       error: function (xhr, status, error) {
@@ -319,10 +327,10 @@ function mab_new_deck() {
 
     $.ajax({
       type: "PUT",
-      url: "https://localhost:7081/users/editmabdeckname",
+      url: "https://localhost:7081/users/mabeditdeckname",
       data: JSON.stringify({
-        MabDeckId: self.NewDeckId,
-        MabDeckName: editedDeckNewDeckName,
+        Mab_DeckId: self.NewDeckId,
+        Mab_DeckName: editedDeckNewDeckName,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -345,9 +353,9 @@ function mab_new_deck() {
   self.NewDeck_DeleteDeck = () => {
     $.ajax({
       type: "DELETE",
-      url: "https://localhost:7081/users/deletemabdeck",
+      url: "https://localhost:7081/users/mab_deletedeck",
       data: JSON.stringify({
-        MabDeckId: self.NewDeckId,
+        Mab_DeckId: self.NewDeckId,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -368,9 +376,9 @@ function mab_new_deck() {
   self.NewDeck_ActivateDeck = () => {
     $.ajax({
       type: "PUT",
-      url: "https://localhost:7081/users/activatemabdeck",
+      url: "https://localhost:7081/users/mabactivatedeck",
       data: JSON.stringify({
-        MabDeckId: self.NewDeckId,
+        Mab_DeckId: self.NewDeckId,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -401,7 +409,7 @@ function mab_new_deck() {
     const mabDeckId = self.NewDeckId;
 
     fetch(
-      `https://localhost:7081/users/listunassignedmabcardcopies?MabDeckId=${mabDeckId}`,
+      `https://localhost:7081/users/mablistunassignedplayercards?Mab_DeckId=${mabDeckId}`,
       {
         method: "GET",
         credentials: "include",
@@ -418,8 +426,8 @@ function mab_new_deck() {
         }
 
         const mabPlayerCards = data.content.map((item) => ({
-          id: item.mabCardCopyId,
-          text: item.mabCardDescription,
+          id: item.mab_PlayerCardId,
+          text: item.mab_CardDescription,
         }));
 
         // Clear previous options and add empty one
@@ -431,7 +439,7 @@ function mab_new_deck() {
         self.Inputs.Select_NewDeckCardCopies.select2({
           data: mabPlayerCards,
           dropdownParent: self.DOM,
-          placeholder: "Select a card copy for your deck...",
+          placeholder: "Select a card for your deck...",
           allowClear: true,
           theme: "classic",
           width: "100%",
@@ -448,22 +456,22 @@ function mab_new_deck() {
     self.newDeck_CardCopiesList_Select2_Show();
   };
   self.newDeck_CardCopiesList_Select2_Show = () => {
-    self.Containers.NewDeck_CardCopiesSelect2.removeClass("hide-div").addClass(
+    self.Blocks.CreateDeck_PlayerCardstSelect.removeClass("hide-div").addClass(
       "show-div"
     );
   };
   self.newDeck_CardCopiesList_Select2_Hide = () => {
-    self.Containers.NewDeck_CardCopiesSelect2.removeClass("show-div").addClass(
+    self.Blocks.CreateDeck_PlayerCardstSelect.removeClass("show-div").addClass(
       "hide-div"
     );
   };
-  self.NewDeck_AssignCardCopy = (mabDeckId, mabCardCopyId) => {
+  self.NewDeck_AssignCardCopy = (mabDeckId, mabPlayerCardId) => {
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/users/assignmabcardcopy",
+      url: "https://localhost:7081/users/mabassignplayercard",
       data: JSON.stringify({
-        MabDeckId: mabDeckId,
-        MabCardCopyId: mabCardCopyId,
+        Mab_DeckId: mabDeckId,
+        Mab_PlayerCardId: mabPlayerCardId,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -471,7 +479,7 @@ function mab_new_deck() {
       },
       success: (resp) => {
         if (!resp.content) {
-          self.sweetAlertError("Failed to activated card", resp.message);
+          self.sweetAlertError("Failed to assign player card", resp.message);
           return;
         }
 
@@ -483,7 +491,7 @@ function mab_new_deck() {
       complete: () => {},
     });
   };
-  self.NewDeck_UnassignCardCopy = (index, assignedCardCopyId) => {
+  self.NewDeck_UnassignCardCopy = (index, assignedCardId) => {
     self.NewDeck_CardIds.splice(index, 1);
 
     self.NewDeck_CardCopies_OrderedList.find(
@@ -492,9 +500,9 @@ function mab_new_deck() {
 
     $.ajax({
       type: "DELETE",
-      url: "https://localhost:7081/users/unassignmabcardcopy",
+      url: "https://localhost:7081/users/mabunassignplayercard",
       data: JSON.stringify({
-        AssignedMabCardCopyId: assignedCardCopyId,
+        Mab_AssignedMabCardId: assignedCardId,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -514,25 +522,25 @@ function mab_new_deck() {
       complete: () => {},
     });
   };
-  self.newDeck_CardCopies_BuildOrderedList = (playerCardCopies) => {
-    playerCardCopies.forEach((card, Index) => {
+  self.newDeck_PlayerCards_BuildOrderedList = (playerCards) => {
+    playerCards.forEach((card, Index) => {
       self.NewDeck_CardIds.push(card.mabCardId);
 
-      let assignedCardCopyId = card.assignedMabCardCopyId;
-      let cardName = card.mabCardName;
-      let cardLvl = card.mabCardLevel;
-      let cardType = card.mabCardType;
-      let cardPower = card.mabCardPower;
-      let cardUpperHand = card.mabCardUpperHand;
+      let assignedCardId = card.mab_AssignedCardId;
+      let cardName = card.mab_CardName;
+      let cardLvl = card.mab_CardLevel;
+      let cardType = card.mab_CardType;
+      let cardPower = card.mab_CardPower;
+      let cardUpperHand = card.mab_CardUpperHand;
 
       let listItem = `
-          <li id="li-mab-new-deck-${Index}" data-mab-new-deck-assigned-card-copy-id="${assignedCardCopyId}">
+          <li id="li-mab-create-deck-${Index}" data-mab-create-deck-assigned-card-id="${assignedCardId}">
             <div class="d-flex flex-row align-items-center gap-2">
               <button
-                id="button-mab-new-deck-unassign-card-copy"
+                id="button-mab-create-deck-unassign-player-card"
                 class="btn btn-outline-danger p-0 m-0"
                 type="button"
-                data-mab-new-deck-assigned-card-copy-id="${assignedCardCopyId}"
+                data-mab-create-deck-assigned-card-id="${assignedCardId}"
                 data-index="${Index}"
               >
                 <i class="fa-solid fa-xmark p-1 m-0"></i>
@@ -577,5 +585,5 @@ function mab_new_deck() {
 }
 
 $(function () {
-  new mab_new_deck();
+  new mab_create_deck();
 });

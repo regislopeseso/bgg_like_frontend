@@ -13,7 +13,7 @@ function sweetAlertSuccess(text) {
     showConfirmButton: false,
     timer: 1000,
   }).then((result) => {
-    redirectToIndexPage();
+    //redirectToIndexPage();
   });
 }
 function sweetAlertError(text) {
@@ -282,8 +282,10 @@ function loadHeader(userData, roleData) {
         localStorage.clear();
 
         // Successfully logged out
+        debugger;
         sweetAlertSuccess("Bye Bye!");
       } else {
+        debugger;
         sweetAlertError("Failed to log out.");
       }
     });
@@ -320,6 +322,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.log(userData.message);
     }
   } catch (err) {
+    debugger;
     sweetAlertError("Failed to fetch authentication status or role", err);
   }
 

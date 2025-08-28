@@ -11,15 +11,15 @@ function mab_active_deck() {
 
   self.ActiveDeckSizeLimit = null;
 
-  self.ActiveDeck_SelectedCardCopyId = null;
+  self.ActiveDeck_SelectedPlayerCardId = null;
 
-  self.ActiveDeck_CardIds = [];
+  self.ActiveDeck_AssignedCardIds = [];
 
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
-    self.ActiveDeck_CardCopies_OrderedList = self.DOM.find(
-      "#ol-mab-active-deck-card-copies"
+    self.ActiveDeck_AssignedCards_OrderedList = self.DOM.find(
+      "#ol-mab-active-deck-assigned-cards"
     );
 
     self.DeckBalanceChart = self.DOM.find(
@@ -31,14 +31,17 @@ function mab_active_deck() {
       self.DOM.find("#container-mab-main-menu");
     self.Containers[self.Containers.length] = self.Containers.ActiveDeck =
       self.DOM.find("#container-mab-active-deck");
-    self.Containers[self.Containers.length] = self.Containers.NewDeck =
-      self.DOM.find("#container-mab-new-deck");
-    self.Containers[self.Containers.length] = self.ActiveDeck_DecksSelect2 =
-      self.Containers.ActiveDeck.find("#div-active-mab-deck-select2-decks");
-    self.Containers[self.Containers.length] =
-      self.ActiveDeck_CardCopiesSelect2 = self.Containers.ActiveDeck.find(
-        "#div-active-mab-deck-select-container"
-      );
+    self.Containers[self.Containers.length] = self.Containers.CreateDeck =
+      self.DOM.find("#container-mab-create-deck");
+
+    self.Blocks = [];
+    self.Blocks[self.Blocks.length] = self.Blocks.ActiveDeck_Select_Decks =
+      self.Containers.ActiveDeck.find("#block-select-mab-active-deck-decks");
+    self.Blocks[self.Blocks.length] =
+      self.Blocks.ActiveDeck_Select_UnassignedCards =
+        self.Containers.ActiveDeck.find(
+          "#block-select-mab-active-deck-unassigned-cards"
+        );
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.ShowActiveDeckContainer =
@@ -49,21 +52,22 @@ function mab_active_deck() {
       self.Containers.ActiveDeck.find("#button-mab-active-deck-edit-deck-name");
     self.Buttons[self.Buttons.length] =
       self.Buttons.EditActiveDeckName_Confirm = self.Containers.ActiveDeck.find(
-        "#button-active-mab-deck-confirm-new-deck-name"
+        "#button-mab-active-deck-confirm-deck-new-name"
       );
     self.Buttons[self.Buttons.length] = self.Buttons.EditActiveDeckName_Cancel =
       self.Containers.ActiveDeck.find(
         "#button-mab-active-deck-cancel-deck-name-change"
       );
-    self.Buttons[self.Buttons.length] =
-      self.Buttons.AssignCardCopy_ToActiveDeck =
-        self.Containers.ActiveDeck.find(
-          "#button-mab-active-deck-assign-card-copy"
-        );
-    self.Buttons[self.Buttons.length] = self.Buttons.HideNewDeckContainer =
-      self.Containers.NewDeck.find("#button-mab-new-deck-hide-container");
-    self.Buttons[self.Buttons.length] = self.Buttons.NewDeck_ActivateDeck =
-      self.Containers.NewDeck.find("#button-mab-new-deck-activate-new-deck");
+    self.Buttons[self.Buttons.length] = self.Buttons.AssignPlayerCard =
+      self.Containers.ActiveDeck.find(
+        "#button-mab-active-deck-assign-player-card"
+      );
+    self.Buttons[self.Buttons.length] = self.Buttons.HideCreateDeckContainer =
+      self.Containers.CreateDeck.find("#button-mab-create-deck-hide-container");
+    self.Buttons[self.Buttons.length] = self.Buttons.CreateDeck_ActivateDeck =
+      self.Containers.CreateDeck.find(
+        "#button-mab-create-deck-activate-new-deck"
+      );
     self.Buttons[self.Buttons.length] = self.Buttons.ActiveDeck_ChangeDeck =
       self.Containers.ActiveDeck.find("#button-mab-active-deck-change-deck");
     self.Buttons[self.Buttons.length] = self.Buttons.ActiveDeck_DeleteDeck =
@@ -71,13 +75,13 @@ function mab_active_deck() {
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.ActiveDeckName =
-      self.Containers.ActiveDeck.find("#input-mab-active-deck-name");
-    self.Inputs[self.Inputs.length] = self.Inputs.Select_UnassignedCardCopies =
+      self.Containers.ActiveDeck.find("#input-mab-active-deck-decknewname");
+    self.Inputs[self.Inputs.length] = self.Inputs.Select_UnassignedPlayerCards =
       self.Containers.ActiveDeck.find(
-        "#select-mab-active-deck-card-copies-list"
+        "#select-mab-active-deck-unassigned-player-cards"
       );
     self.Inputs[self.Inputs.length] = self.Inputs.Select_Decks =
-      self.Containers.ActiveDeck.find("#select-mab-active-deck-decks-list");
+      self.Containers.ActiveDeck.find("#select-mab-active-deck-decks");
 
     self.Fields = [];
     self.Fields[self.Fields.length] = self.Fields.ActiveDeckLevel =
@@ -148,41 +152,39 @@ function mab_active_deck() {
     // Binding the event after inserting into DOM
     $(document).on(
       "click",
-      ".button-mab-active-deck-unassign-card-copy",
+      ".button-mab-active-deck-unassign-player-card",
       function () {
         let index = $(this).data("index");
 
-        let assignedMabCardCopyId = $(this).data(
-          "mab-active-deck-assigned-card-copy-id"
-        );
+        let assignedCardId = $(this).data("mab-active-deck-assigned-card-id");
 
-        self.ActiveDeck_UnassignCardCopy(index, assignedMabCardCopyId);
+        self.ActiveDeck_UnassignPlayerCard(index, assignedCardId);
       }
     );
-    self.Inputs.Select_UnassignedCardCopies.on("select2:select", (e) => {
+    self.Inputs.Select_UnassignedPlayerCards.on("select2:select", (e) => {
       const selectedData = e.params.data;
 
-      self.ActiveDeck_SelectedCardCopyId = null;
+      self.ActiveDeck_SelectedPlayerCardId = null;
 
-      self.ActiveDeck_SelectedCardCopyId = selectedData.id;
+      self.ActiveDeck_SelectedPlayerCardId = selectedData.id;
     });
-    self.Buttons.AssignCardCopy_ToActiveDeck.on("click", (e) => {
+    self.Buttons.AssignPlayerCard.on("click", (e) => {
       e.preventDefault();
 
-      self.ActiveDeck_AssignCardCopy(
+      self.ActiveDeck_AssignPlayerCard(
         self.ActiveDeckId,
-        self.ActiveDeck_SelectedCardCopyId
+        self.ActiveDeck_SelectedPlayerCardId
       );
     });
 
-    self.Buttons.HideNewDeckContainer.on("click", (e) => {
+    self.Buttons.HideCreateDeckContainer.on("click", (e) => {
       e.preventDefault();
 
       self.newDeck_HideContainer();
 
       self.activeDeck_ShowContainer();
     });
-    self.Buttons.NewDeck_ActivateDeck.on("click", (e) => {
+    self.Buttons.CreateDeck_ActivateDeck.on("click", (e) => {
       e.preventDefault();
 
       self.newDeck_HideContainer();
@@ -295,7 +297,7 @@ function mab_active_deck() {
     self.toggleContainerVisibility(self.Containers.MainMenu);
   };
   self.newDeck_HideContainer = () => {
-    self.toggleContainerVisibility(self.Containers.NewDeck);
+    self.toggleContainerVisibility(self.Containers.CreateDeck);
   };
 
   self.activeDeck_Refresh_InputsAndFieldsAndVariables = () => {
@@ -307,9 +309,9 @@ function mab_active_deck() {
 
     self.ActiveDeckSizeLimit = null;
 
-    self.ActiveDeck_SelectedCardCopyId = null;
+    self.ActiveDeck_SelectedPlayerCardId = null;
 
-    self.ActiveDeck_CardIds = [];
+    self.ActiveDeck_AssignedCardIds = [];
 
     self.Inputs.ActiveDeckName.val();
 
@@ -319,11 +321,11 @@ function mab_active_deck() {
 
     self.Fields.ActiveDeckBalance.html();
 
-    self.activeDeck_DecksDivSelect2_Hide();
+    self.activeDeck_DecksBlockSelect_Hide();
 
-    self.ActiveDeck_CardCopies_OrderedList.empty();
+    self.ActiveDeck_AssignedCards_OrderedList.empty();
 
-    self.activeDeck_cardCopiesList_Select2_Hide();
+    self.activeDeck_playerCardsList_Select2_Hide();
   };
   self.ActiveDeck_ShowDeckDetails = () => {
     $.ajax({
@@ -340,12 +342,12 @@ function mab_active_deck() {
         self.activeDeck_Refresh_InputsAndFieldsAndVariables();
 
         let activeDeck = response.content;
-        let activeDeckId = activeDeck.activeMabDeckId;
-        let activeDeckName = activeDeck.activeMabDeckName;
-        let activeDeckLevel = activeDeck.deckLevel;
-        let activeDeckSizeLimit = activeDeck.mabDeckSizeLimit;
-        let cardCopies = activeDeck.mabCardCopies;
-        let activeDeckCurrentSize = cardCopies.length;
+        let activeDeckId = activeDeck.mab_DeckId;
+        let activeDeckName = activeDeck.mab_DeckName;
+        let activeDeckLevel = activeDeck.mab_DeckLevel;
+        let activeDeckSizeLimit = activeDeck.mab_DeckSizeLimit;
+        let assignedCards = activeDeck.mab_AssignedCards;
+        let activeDeckCurrentSize = assignedCards.length;
 
         let countNeutralCardCopies = 0;
         let countRangedCardCopies = 0;
@@ -358,7 +360,7 @@ function mab_active_deck() {
         self.ActiveDeckSizeLimit = activeDeckSizeLimit;
 
         if (activeDeckCurrentSize < activeDeckSizeLimit) {
-          self.ActiveDeck_LoadUnassignedCardCopies();
+          self.ActiveDeck_LoadUnassignedCards();
         }
 
         self.Inputs.ActiveDeckName.val(activeDeckName);
@@ -369,8 +371,8 @@ function mab_active_deck() {
           `${activeDeckCurrentSize}/${activeDeckSizeLimit}`
         );
 
-        cardCopies.forEach((mabCard) => {
-          let cardType = mabCard.mabCardType;
+        assignedCards.forEach((mabCard) => {
+          let cardType = mabCard.mab_CardType;
 
           switch (cardType) {
             case "Neutral":
@@ -386,7 +388,7 @@ function mab_active_deck() {
               countInfantryCardCopies++;
               break;
             default:
-              sweetAlertError("Inform a valid action");
+              self.sweetAlertError("Inform a valid action");
               break;
           }
         });
@@ -396,7 +398,7 @@ function mab_active_deck() {
         self.Fields.ActiveDeck_CavalryTypeCount.html(countCalvaryCardCopies);
         self.Fields.ActiveDeck_InfantryTypeCount.html(countInfantryCardCopies);
 
-        self.activeDeck_CardCopies_BuildOrderedList(cardCopies);
+        self.activeDeck_AssignedCards_BuildOrderedList(assignedCards);
 
         self.activeDeck_buildChart(
           countNeutralCardCopies,
@@ -431,10 +433,10 @@ function mab_active_deck() {
 
     $.ajax({
       type: "PUT",
-      url: "https://localhost:7081/users/editmabdeckname",
+      url: "https://localhost:7081/users/mabeditdeckname",
       data: JSON.stringify({
-        MabDeckId: self.ActiveDeckId,
-        MabDeckName: activeDeckNewName,
+        Mab_DeckId: self.ActiveDeckId,
+        Mab_DeckNewName: activeDeckNewName,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -493,7 +495,7 @@ function mab_active_deck() {
     }
 
     // Fetch the mab player cards and their count from the backend
-    fetch(`https://localhost:7081/users/listmabplayerdecks`, {
+    fetch(`https://localhost:7081/users/mablistdecks`, {
       method: "GET",
       credentials: "include",
     })
@@ -505,8 +507,8 @@ function mab_active_deck() {
         }
 
         const mabDeck = data.content.map((item) => ({
-          id: item.mabDeckId,
-          text: item.mabDeckDescription,
+          id: item.mab_DeckId,
+          text: item.mab_DeckDescription,
         }));
 
         // Clear previous options and add empty one
@@ -526,7 +528,7 @@ function mab_active_deck() {
           },
         });
 
-        self.ActiveDeck_DecksSelect2.removeClass("hide-div").addClass(
+        self.Blocks.ActiveDeck_Select_Decks.removeClass("hide-div").addClass(
           "show-div"
         );
 
@@ -542,13 +544,15 @@ function mab_active_deck() {
   self.activeDeck_DecksDivSelect2_Show = () => {
     self.ActiveDeck_LoadPlayerDecks();
   };
-  self.activeDeck_DecksDivSelect2_Hide = () => {
-    self.ActiveDeck_DecksSelect2.removeClass("show-div").addClass("hide-div");
+  self.activeDeck_DecksBlockSelect_Hide = () => {
+    self.Blocks.ActiveDeck_Select_Decks.removeClass("show-div").addClass(
+      "hide-div"
+    );
   };
   self.ActiveDeck_ActivateDeck = () => {
     $.ajax({
       type: "PUT",
-      url: "https://localhost:7081/users/activatemabdeck",
+      url: "https://localhost:7081/users/mabactivatedeck",
       data: JSON.stringify({
         MabDeckId: self.ActiveDeckId,
       }),
@@ -575,9 +579,9 @@ function mab_active_deck() {
   self.ActiveDeck_DeleteDeck = () => {
     $.ajax({
       type: "DELETE",
-      url: "https://localhost:7081/users/deletemabdeck",
+      url: "https://localhost:7081/users/mabdeletedeck",
       data: JSON.stringify({
-        MabDeckId: self.ActiveDeckId,
+        Mab_DeckId: self.ActiveDeckId,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -598,20 +602,20 @@ function mab_active_deck() {
     });
   };
 
-  self.ActiveDeck_LoadUnassignedCardCopies = () => {
+  self.ActiveDeck_LoadUnassignedCards = () => {
     if (
-      self.Inputs.Select_UnassignedCardCopies.hasClass(
+      self.Inputs.Select_UnassignedPlayerCards.hasClass(
         "select2-hidden-accessible"
       )
     ) {
-      self.Inputs.Select_UnassignedCardCopies.select2("destroy");
+      self.Inputs.Select_UnassignedPlayerCards.select2("destroy");
     }
 
     const mabDeckId = self.ActiveDeckId;
 
     // Fetch the mab player cards and their count from the backend
     fetch(
-      `https://localhost:7081/users/listunassignedmabcardcopies?MabDeckId=${mabDeckId}`,
+      `https://localhost:7081/users/mablistunassignedplayercards?Mab_DeckId=${mabDeckId}`,
       {
         method: "GET",
         credentials: "include",
@@ -624,19 +628,19 @@ function mab_active_deck() {
           return;
         }
 
-        const mabPlayerCards = data.content.map((item) => ({
-          id: item.mabCardCopyId,
-          text: item.mabCardDescription,
+        const mabUnassignedCards = data.content.map((item) => ({
+          id: item.mab_PlayerCardId,
+          text: item.mab_CardDescription,
         }));
 
         // Clear previous options and add empty one
-        self.Inputs.Select_UnassignedCardCopies.empty().append(
+        self.Inputs.Select_UnassignedPlayerCards.empty().append(
           `<option></option>`
         );
 
         // Builds select2
-        self.Inputs.Select_UnassignedCardCopies.select2({
-          data: mabPlayerCards,
+        self.Inputs.Select_UnassignedPlayerCards.select2({
+          data: mabUnassignedCards,
           dropdownParent: self.DOM,
           placeholder: "Select a card copy for your deck...",
           allowClear: true,
@@ -649,33 +653,33 @@ function mab_active_deck() {
         });
 
         // Opens select2
-        self.Inputs.Select_UnassignedCardCopies.trigger("change").select2(
+        self.Inputs.Select_UnassignedPlayerCards.trigger("change").select2(
           "open"
         );
       })
       .catch((err) => {
-        sweetAlertError("Error fetching mab player cards:", err);
+        sweetAlertError("Error fetching mab unassigned cards:", err);
       });
 
-    self.activeDeck_cardCopiesList_Select2_Show();
+    self.activeDeck_playerCardsList_Select2_Show();
   };
-  self.activeDeck_cardCopiesList_Select2_Show = () => {
-    self.ActiveDeck_CardCopiesSelect2.removeClass("hide-div").addClass(
-      "show-div"
-    );
-  };
-  self.activeDeck_cardCopiesList_Select2_Hide = () => {
-    self.ActiveDeck_CardCopiesSelect2.removeClass("show-div").addClass(
+  self.activeDeck_playerCardsList_Select2_Show = () => {
+    self.Blocks.ActiveDeck_Select_UnassignedCards.removeClass(
       "hide-div"
-    );
+    ).addClass("show-div");
   };
-  self.ActiveDeck_AssignCardCopy = (mabDeckId, mabCardCopyId) => {
+  self.activeDeck_playerCardsList_Select2_Hide = () => {
+    self.Blocks.ActiveDeck_Select_UnassignedCards.removeClass(
+      "show-div"
+    ).addClass("hide-div");
+  };
+  self.ActiveDeck_AssignPlayerCard = (mabDeckId, mabPlayerCardId) => {
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/users/assignmabcardcopy",
+      url: "https://localhost:7081/users/mabassignplayercard",
       data: JSON.stringify({
-        MabDeckId: mabDeckId,
-        MabCardCopyId: mabCardCopyId,
+        Mab_DeckId: mabDeckId,
+        Mab_PlayerCardId: mabPlayerCardId,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -695,18 +699,18 @@ function mab_active_deck() {
       complete: () => {},
     });
   };
-  self.ActiveDeck_UnassignCardCopy = (index, assignedCardCopyId) => {
-    self.ActiveDeck_CardIds.splice(index, 1);
+  self.ActiveDeck_UnassignPlayerCard = (index, assignedCardId) => {
+    self.ActiveDeck_AssignedCardIds.splice(index, 1);
 
-    self.ActiveDeck_CardCopies_OrderedList.find(
+    self.ActiveDeck_AssignedCards_OrderedList.find(
       `#li-mab-active-deck-${index}`
     ).remove();
 
     $.ajax({
       type: "DELETE",
-      url: "https://localhost:7081/users/unassignmabcardcopy",
+      url: "https://localhost:7081/users/mabunassignplayercard",
       data: JSON.stringify({
-        AssignedMabCardCopyId: assignedCardCopyId,
+        Mab_AssignedCardId: assignedCardId,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -724,6 +728,50 @@ function mab_active_deck() {
         self.sweetAlertError(err);
       },
       complete: () => {},
+    });
+  };
+  self.activeDeck_AssignedCards_BuildOrderedList = (assignedCards) => {
+    assignedCards.forEach((card, index) => {
+      self.ActiveDeck_AssignedCardIds.push(card.mab_AssignedCardId);
+
+      let assignedCardId = card.mab_AssignedCardId;
+      let cardName = card.mab_CardName;
+      let cardLvl = card.mab_CardLevel;
+      let cardType = card.mab_CardType;
+      let cardPower = card.mab_CardPower;
+      let cardUpperHand = card.mab_CardUpperHand;
+
+      let listItem = `
+          <li id="li-mab-active-deck-${index}"">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <button               
+                class="btn btn-outline-danger p-0 m-0 button-mab-active-deck-unassign-player-card"
+                type="button"
+                data-mab-active-deck-assigned-card-id="${assignedCardId}"
+                data-index="${index}"
+              >
+                <i class="fa-solid fa-xmark p-1 m-0"></i>
+              </button>
+
+              <strong class="mab-card-name p-0 m-0">${cardName}</strong>
+
+              <img
+                src="/images/icons/io_arrow_right.svg"
+                class="bi bi-arrow p-0 m-0"
+              />
+
+              <div>
+                <span>L</span>evel: <strong>${cardLvl}</strong>,
+                <span>T</span>ype: <strong>${cardType}</strong>,
+                <span>P</span>ower: <strong>${cardPower}</strong>,
+                <span>U</span>pper <span>H</span>and:
+                <strong>${cardUpperHand}</strong>
+              </div>
+            </div>
+          </li>
+          `;
+
+      self.ActiveDeck_AssignedCards_OrderedList.append(listItem);
     });
   };
   self.activeDeck_buildChart = (countNtl, countRng, countCav, countInf) => {
@@ -938,53 +986,9 @@ function mab_active_deck() {
       chartConfigs
     );
   };
-  self.activeDeck_CardCopies_BuildOrderedList = (playerCardCopies) => {
-    playerCardCopies.forEach((card, index) => {
-      self.ActiveDeck_CardIds.push(card.mabCardId);
-
-      let assignedCardCopyId = card.assignedMabCardCopyId;
-      let cardName = card.mabCardName;
-      let cardLvl = card.mabCardLevel;
-      let cardType = card.mabCardType;
-      let cardPower = card.mabCardPower;
-      let cardUpperHand = card.mabCardUpperHand;
-
-      let listItem = `
-          <li id="li-mab-active-deck-${index}" data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}">
-            <div class="d-flex flex-row align-items-center gap-2">
-              <button               
-                class="btn btn-outline-danger p-0 m-0 button-mab-active-deck-unassign-card-copy"
-                type="button"
-                data-mab-active-deck-assigned-card-copy-id="${assignedCardCopyId}"
-                data-index="${index}"
-              >
-                <i class="fa-solid fa-xmark p-1 m-0"></i>
-              </button>
-
-              <strong class="mab-card-name p-0 m-0">${cardName}</strong>
-
-              <img
-                src="/images/icons/io_arrow_right.svg"
-                class="bi bi-arrow p-0 m-0"
-              />
-
-              <div>
-                <span>L</span>evel: <strong>${cardLvl}</strong>,
-                <span>T</span>ype: <strong>${cardType}</strong>,
-                <span>P</span>ower: <strong>${cardPower}</strong>,
-                <span>U</span>pper <span>H</span>and:
-                <strong>${cardUpperHand}</strong>
-              </div>
-            </div>
-          </li>
-          `;
-
-      self.ActiveDeck_CardCopies_OrderedList.append(listItem);
-    });
-  };
 
   self.NewDeck_ActivateDeck = () => {
-    self.toggleContainerVisibility(self.Containers.NewDeck);
+    self.toggleContainerVisibility(self.Containers.CreateDeck);
   };
 
   self.build = () => {

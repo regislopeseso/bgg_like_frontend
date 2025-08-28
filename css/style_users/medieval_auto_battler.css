@@ -44,7 +44,7 @@ main {
 #container-mab-continue-campaign,
 #container-mab-battle,
 #container-mab-active-deck,
-#container-mab-new-deck,
+#container-mab-create-deck,
 #container-mab-market,
 #container-mab-campaign-statistics {
   position: absolute;
@@ -238,7 +238,7 @@ main {
   #container-mab-continue-campaign,
   #container-mab-battle,
   #container-mab-active-deck,
-  #container-mab-new-deck,
+  #container-mab-create-deck,
   #container-mab-market,
   #container-mab-campaign-statistics {
     width: 90vw;

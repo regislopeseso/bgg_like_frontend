@@ -404,10 +404,10 @@
 
               <div class="d-flex flex-row gap-2">
                 <button
-                  id="button-mab-new-deck-show-container"
+                  id="button-mab-create-deck-show-container"
                   class="btn btn-outline-success btn-sm"
                 >
-                  New Deck
+                  Create Deck
                 </button>
                 <button
                   id="button-mab-active-deck-change-deck"
@@ -418,11 +418,11 @@
 
                 <div
                   class="d-flex flex-row gap-2 hide-div"
-                  id="div-active-mab-deck-select2-decks"
+                  id="block-select-mab-active-deck-decks"
                 >
                   <select
                     name="AssignedMabCardId"
-                    id="select-mab-active-deck-decks-list"
+                    id="select-mab-active-deck-decks"
                     class="form-control form-select required"
                   ></select>
                 </div>
@@ -450,8 +450,8 @@
 
                   <div class="d-flex flex-row gap-3">
                     <input
-                      name="ActiveMabDeckNewName"
-                      id="input-mab-active-deck-name"
+                      name="Mab_DeckNewName"
+                      id="input-mab-active-deck-decknewname"
                       class="current-data form-control text-center"
                       type="text"
                       readonly
@@ -467,7 +467,7 @@
                       </button>
 
                       <button
-                        id="button-active-mab-deck-confirm-new-deck-name"
+                        id="button-mab-active-deck-confirm-deck-new-name"
                         class="btn btn-outline-success btn-sm"
                         type="button"
                         disabled
@@ -537,7 +537,7 @@
                 </div>
 
                 <ol
-                  id="ol-mab-active-deck-card-copies"
+                  id="ol-mab-active-deck-assigned-cards"
                   class="mab-cards-list d-flex flex-column w-100 gap-3 m-0 p-3"
                 ></ol>
 
@@ -549,18 +549,18 @@
 
                   <div
                     class="d-flex flex-row gap-2 hide-div"
-                    id="div-active-mab-deck-select-container"
+                    id="block-select-mab-active-deck-unassigned-cards"
                   >
                     <div>
                       <select
-                        name="AssignedMabCardId"
-                        id="select-mab-active-deck-card-copies-list"
+                        name="Mab_PlayerCardId"
+                        id="select-mab-active-deck-unassigned-player-cards"
                         class="form-control form-select required"
                       ></select>
                     </div>
 
                     <button
-                      id="button-mab-active-deck-assign-card-copy"
+                      id="button-mab-active-deck-assign-player-card"
                       class="btn btn-outline-success btn-sm"
                     >
                       Add
@@ -586,19 +586,19 @@
         </div>
 
         <!-- 6.CONTAINER: CREATE MAB DECK -->
-        <div id="container-mab-new-deck" class="hide-div">
+        <div id="container-mab-create-deck" class="hide-div">
           <div
-            id="header-add-mab-deck"
+            id="header-mab-create-deck"
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
-            <div id="form-title-add-mab-deck" class="p-0 m-0">
+            <div id="form-title-mab-create-deck" class="p-0 m-0">
               <h3 class="p-0 m-0">
                 <span>N</span>ew <span>M</span>.<span>A</span>.<span>B</span>.
                 <span>D</span>eck
               </h3>
             </div>
             <button
-              id="button-mab-new-deck-hide-container"
+              id="button-mab-create-deck-hide-container"
               class="btn btn-outline-danger btn-sm"
               type="button"
             >
@@ -609,7 +609,7 @@
           <hr />
 
           <form
-            id="form-add-mab-deck"
+            id="form-mab-create-deck"
             class="pt-3 d-flex flex-column gap-3"
             action=""
           >
@@ -619,8 +619,8 @@
                 ><span>D</span>eck <span>N</span>ame</label
               >
               <input
-                name="MabDeckName"
-                id="input-mab-new-deck-deck-name"
+                name="Mab_DeckName"
+                id="input-mab-create-deck-deckname"
                 class="new-data form-control text-center required mt-2"
                 type="text"
                 required
@@ -631,7 +631,7 @@
             <!-- Input: Select Deck Cards -->
             <div class="d-flex flex-row gap-2">
               <div><span>D</span>eck <span>L</span>evel:&nbsp;</div>
-              <span id="span-mab-new-deck-decklevel"></span>
+              <span id="span-mab-create-deck-decklevel"></span>
             </div>
 
             <div class="d-flex flex-column mb-0 gap-2">
@@ -639,7 +639,7 @@
                 <div><span>D</span>eck <span>C</span>ards:&nbsp;</div>
 
                 <div
-                  id="span-mab-new-deck-deckbalance"
+                  id="span-mab-create-deck-deckbalance"
                   class="d-flex flex-row gap-1"
                 >
                   <div>
@@ -682,7 +682,7 @@
               </div>
 
               <ol
-                id="ol-mab-new-deck-card-copies"
+                id="ol-mab-create-deck-player-cards"
                 class="mab-cards-list d-flex flex-column gap-3 m-0 p-3"
               ></ol>
             </div>
@@ -690,23 +690,23 @@
             <div class="d-flex flex-row gap-5 w-100 align-items-center mb-2">
               <div>
                 <span>D</span>eck <span>S</span>ize:&nbsp;
-                <span id="span-mab-new-deck-decksize"></span>
+                <span id="span-mab-create-deck-decksize"></span>
               </div>
 
               <div
                 class="d-flex flex-row gap-2"
-                id="container-add-mab-selectcard"
+                id="block-select-mab-create-deck-player-cards-list"
               >
                 <div>
                   <select
                     name="MabCardId"
-                    id="select-mab-new-deck-card-copies-list"
+                    id="select-mab-create-deck-player-cards-list"
                     class="form-control form-select required"
                   ></select>
                 </div>
 
                 <button
-                  id="button-mab-new-deck-assign-card-copy"
+                  id="button-mab-create-deck-assign-player-card"
                   class="btn btn-outline-success btn-sm"
                 >
                   Add
@@ -717,7 +717,7 @@
             <hr />
 
             <button
-              id="button-mab-new-deck-activate-new-deck"
+              id="button-mab-create-deck-activate-deck"
               class="btn btn-outline-info w-100 mt-3"
               type="button"
             >
@@ -1019,7 +1019,7 @@
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_new_campaign.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_campaign_statistics.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_active_deck.js"></script>
-    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_new_deck.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_create_deck.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_continue_campaign.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_battle.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_market.js"></script>
