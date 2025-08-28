@@ -328,7 +328,7 @@ function mab_active_deck() {
   self.ActiveDeck_ShowDeckDetails = () => {
     $.ajax({
       type: "GET",
-      url: `https://localhost:7081/users/showmabdeckdetails`,
+      url: `https://localhost:7081/users/mabshowdeckdetails`,
       xhrFields: { withCredentials: true },
       success: function (response) {
         if (!response.content) {

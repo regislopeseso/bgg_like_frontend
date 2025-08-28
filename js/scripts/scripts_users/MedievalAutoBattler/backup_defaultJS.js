@@ -1320,7 +1320,7 @@ function medieval_auto_battler() {
         }
 
         let mabCampaignDB = response.content;
-        self.Inputs.Stats_NewNickname.val(mabCampaignDB.mabPlayerNickName).css(
+        self.Inputs.Stats_NewNickname.val(mabCampaignDB.playerNickName).css(
           "color",
           "var(--main-color)"
         );

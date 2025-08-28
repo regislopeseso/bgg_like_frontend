@@ -226,7 +226,7 @@ function mab_battle() {
           return;
         }
 
-        self.Fields.PlayerNickname.html(resp.content.mabPlayerNickName);
+        self.Fields.PlayerNickname.html(resp.content.playerNickName);
         self.Fields.NpcName.html(resp.content.mabNpcName);
         self.Fields.ArenaRoundCounter.html(resp.content.mabBattleRoundNumber);
 
@@ -280,7 +280,7 @@ function mab_battle() {
         self.IsPlayerTurn = battle.isPlayerTurn;
 
         self.Fields.BattlePoints.html(battle.mabBattlePoints);
-        self.Fields.PlayerNickname.html(battle.mabPlayerNickName);
+        self.Fields.PlayerNickname.html(battle.playerNickName);
         self.Fields.NpcName.html(battle.mabNpcName);
         self.Fields.ArenaRoundCounter.html(resp.content.mabBattleRoundNumber);
 

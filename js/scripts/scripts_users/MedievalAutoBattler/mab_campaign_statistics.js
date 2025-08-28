@@ -182,7 +182,7 @@ function mab_campaign_statistics() {
   self.LoadCampaignStatistics = () => {
     $.ajax({
       type: "GET",
-      url: `https://localhost:7081/users/showmabcampaignstatistics`,
+      url: `https://localhost:7081/users/mabshowcampaignstatistics`,
       xhrFields: { withCredentials: true },
       success: function (response) {
         if (!response.content) {
@@ -191,41 +191,41 @@ function mab_campaign_statistics() {
         }
 
         let mabCampaignDB = response.content;
-        self.CurrentPlayerNickName = mabCampaignDB.mabPlayerNickName;
+        self.CurrentPlayerNickName = mabCampaignDB.mab_PlayerNickName;
 
         self.Inputs.NewPlayerNickname.val(self.CurrentPlayerNickName);
 
         self.Fields.PlayerLevel.html(
-          `<strong>${mabCampaignDB.playerLevel}</strong>`
+          `<strong>${mabCampaignDB.mab_PlayerLevel}</strong>`
         );
         self.Fields.GoldStash.html(
-          `<strong>${mabCampaignDB.goldstash}</strong>`
+          `<strong>${mabCampaignDB.mab_Goldstash}</strong>`
         );
         self.Fields.BoostersOpened.html(
-          `<strong>${mabCampaignDB.countBoosters}</strong>`
+          `<strong>${mabCampaignDB.mab_OpenedBoostersCount}</strong>`
         );
         self.Fields.BattlesCount.html(
-          `<strong>${mabCampaignDB.countMatches}</strong>`
+          `<strong>${mabCampaignDB.mab_BattlesCount}</strong>`
         );
         self.Fields.BattlesWon.html(
-          `<strong>${mabCampaignDB.countVictories}</strong>`
+          `<strong>${mabCampaignDB.mab_BattleVictoriesCount}</strong>`
         );
         self.Fields.BattlesLost.html(
-          `<strong>${mabCampaignDB.countDefeats}</strong>`
+          `<strong>${mabCampaignDB.mab_BattleDefeatsCount}</strong>`
         );
 
         self.Fields.DecksOwned.html(
-          `<strong>${mabCampaignDB.decksOwned}</strong>`
+          `<strong>${mabCampaignDB.mab_CreatedDecksCount}</strong>`
         );
 
-        if (mabCampaignDB.allCardsCollectedTrophy == true) {
+        if (mabCampaignDB.mab_AllCardsCollectedTrophy == true) {
           self.Imgs.Trophy_AllCardsCollected.attr(
             "src",
             "/images/icons/trophy_allcardscollected_achieved.svg"
           );
         }
 
-        if (mabCampaignDB.allNpcsDefeatedTrophy == true) {
+        if (mabCampaignDB.mab_AllNpcsDefeatedTrophy == true) {
           self.Imgs.Trophy_AllNpcsDefeated.attr(
             "src",
             "/images/icons/trophy_allnpcsdefeated_achieved.svg"
@@ -233,16 +233,17 @@ function mab_campaign_statistics() {
         }
       },
       error: function (xhr, status, error) {
-        self.sweetAlertError("Could not load life counter");
+        self.sweetAlertError("Failed to fetch campaign statistics");
       },
     });
   };
 
   self.EditPlayerNickname = () => {
-    let newMabPlayerNickname = self.Inputs.NewPlayerNickname.val().trim();
+    let mab_PlayerNewNicknameNickname =
+      self.Inputs.NewPlayerNickname.val().trim();
 
     if (
-      newMabPlayerNickname.toLocaleLowerCase() ===
+      mab_PlayerNewNicknameNickname.toLocaleLowerCase() ===
       self.CurrentPlayerNickName.toLocaleLowerCase()
     ) {
       self.reset_EditPlayerNickname_ButtonAndInput();
@@ -250,7 +251,10 @@ function mab_campaign_statistics() {
       return;
     }
 
-    if (!newMabPlayerNickname || newMabPlayerNickname.length < 1) {
+    if (
+      !mab_PlayerNewNicknameNickname ||
+      mab_PlayerNewNicknameNickname.length < 1
+    ) {
       self.sweetAlertError("Please fill the Nickname field!");
 
       return;
@@ -258,9 +262,9 @@ function mab_campaign_statistics() {
 
     $.ajax({
       type: "PUT",
-      url: "https://localhost:7081/users/editmabplayernickname",
+      url: "https://localhost:7081/users/mabeditplayernickname",
       data: JSON.stringify({
-        NewMabPlayerNickname: newMabPlayerNickname,
+        Mab_PlayerNewNickname: mab_PlayerNewNicknameNickname,
       }),
       contentType: "application/json",
       xhrFields: {
@@ -272,7 +276,7 @@ function mab_campaign_statistics() {
           return;
         }
 
-        self.CurrentPlayerNickName = newMabPlayerNickname;
+        self.CurrentPlayerNickName = mab_PlayerNewNicknameNickname;
 
         self.sweetAlertSuccess(resp.message);
       },

@@ -124,11 +124,11 @@ function mab_new_campaign() {
       showCancelButton: true,
       didOpen: () => {
         // Attach keydown listener
-        document.addEventListener("keydown", self.self.closeOnAnyKey);
+        document.addEventListener("keydown", self.closeOnAnyKey);
       },
       willClose: () => {
         // Clean up listener when modal closes
-        document.removeEventListener("keydown", self.self.closeOnAnyKey);
+        document.removeEventListener("keydown", self.closeOnAnyKey);
       },
     });
   };
@@ -164,7 +164,7 @@ function mab_new_campaign() {
 
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/users/startmabcampaign",
+      url: "https://localhost:7081/users/mabstartcampaign",
       data: self.NewCampaign_Form.serialize(),
       xhrFields: {
         withCredentials: true,
