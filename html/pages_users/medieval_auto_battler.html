@@ -407,25 +407,15 @@
                   id="button-mab-create-deck-show-container"
                   class="btn btn-outline-success btn-sm"
                 >
-                  Create Deck
-                </button>
-                <button
-                  id="button-mab-active-deck-change-deck"
-                  class="btn btn-outline-info btn-sm"
-                >
-                  Change Deck
+                  Create New Deck
                 </button>
 
-                <div
-                  class="d-flex flex-row gap-2 hide-div"
-                  id="block-select-mab-active-deck-decks"
+                <button
+                  id="button-mab-active-deck-delete-deck"
+                  class="btn btn-outline-danger btn-sm"
                 >
-                  <select
-                    name="AssignedMabCardId"
-                    id="select-mab-active-deck-decks"
-                    class="form-control form-select required"
-                  ></select>
-                </div>
+                  Delete Active Deck
+                </button>
               </div>
             </div>
 
@@ -440,51 +430,51 @@
 
           <hr />
 
-          <div id="div-deck-data-content" class="d-flex flex-row">
-            <div class="d-flex flex-column gap-3">
-              <form id="form-mab-active-deck" class="pt-3">
+          <div
+            id="div-deck-data-content"
+            class="d-flex flex-row justify-content-center w-100"
+          >
+            <div class="d-flex flex-column gap-3 pt-3">
+              <div
+                class="d-flex flex-row gap-2 align-items-center justify-content-start w-100"
+              >
+                <div><span>A</span>ctive <span>D</span>eck:</div>
+
+                <div
+                  id="select-mab-active-deck-decks"
+                  class="d-flex flex-row gap-2"
+                >
+                  <select
+                    name="AssignedMabCardId"
+                    id="select-mab-active-deck-decks"
+                    class="form-control form-select"
+                  ></select>
+                </div>
+              </div>
+
+              <form id="form-mab-active-deck">
                 <div
                   class="d-flex flex-row align-items-center justify-content-start gap-3 w-100"
                 >
-                  <label><span>A</span>ctive <span>D</span>eck:</label>
+                  <label for="input-mab-active-deck-deckname"
+                    ><span>D</span>eck <span>N</span>ame:</label
+                  >
 
-                  <div class="d-flex flex-row gap-3">
-                    <input
-                      name="Mab_DeckNewName"
-                      id="input-mab-active-deck-decknewname"
-                      class="current-data form-control text-center"
-                      type="text"
-                      readonly
-                    />
+                  <input
+                    name="Mab_DeckNewName"
+                    id="input-mab-active-deck-deckname"
+                    class="new-data form-control text-center w-50"
+                    type="text"
+                    focus
+                  />
 
-                    <div class="d-flex flex-row gap-1">
-                      <button
-                        id="button-mab-active-deck-edit-deck-name"
-                        class="btn btn-outline-warning btn-sm"
-                        type="button"
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        id="button-mab-active-deck-confirm-deck-new-name"
-                        class="btn btn-outline-success btn-sm"
-                        type="button"
-                        disabled
-                      >
-                        Confirm
-                      </button>
-
-                      <button
-                        id="button-mab-active-deck-cancel-deck-name-change"
-                        class="btn btn-outline-danger btn-sm"
-                        type="button"
-                        disabled
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
+                  <button
+                    id="button-mab-active-deck-change-name"
+                    class="btn btn-outline-warning btn-sm p-2"
+                    type="button"
+                  >
+                    Change Name
+                  </button>
                 </div>
               </form>
 
@@ -549,7 +539,7 @@
 
                   <div
                     class="d-flex flex-row gap-2 hide-div"
-                    id="block-select-mab-active-deck-unassigned-cards"
+                    id="block-select-mab-active-deck-unassigned-player-cards"
                   >
                     <div>
                       <select
@@ -558,13 +548,6 @@
                         class="form-control form-select required"
                       ></select>
                     </div>
-
-                    <button
-                      id="button-mab-active-deck-assign-player-card"
-                      class="btn btn-outline-success btn-sm"
-                    >
-                      Add
-                    </button>
                   </div>
                 </div>
               </div>
@@ -572,15 +555,6 @@
 
             <div class="deck-balance-chart-style">
               <canvas id="canvas-active-mab-deck-deckbalance-chart"></canvas>
-            </div>
-
-            <div>
-              <button
-                id="button-mab-active-deck-delete-deck"
-                class="btn btn-outline-danger btn-sm"
-              >
-                Delete Deck
-              </button>
             </div>
           </div>
         </div>
@@ -592,10 +566,7 @@
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
             <div id="form-title-mab-create-deck" class="p-0 m-0">
-              <h3 class="p-0 m-0">
-                <span>N</span>ew <span>M</span>.<span>A</span>.<span>B</span>.
-                <span>D</span>eck
-              </h3>
+              <h3 class="p-0 m-0"><span>C</span>reate <span>D</span>eck</h3>
             </div>
             <button
               id="button-mab-create-deck-hide-container"
@@ -694,8 +665,8 @@
               </div>
 
               <div
-                class="d-flex flex-row gap-2"
-                id="block-select-mab-create-deck-player-cards-list"
+                class="d-flex flex-row gap-2 hide-div"
+                id="block-select-mab-create-deck-unassigned-player-cards"
               >
                 <div>
                   <select
@@ -704,25 +675,30 @@
                     class="form-control form-select required"
                   ></select>
                 </div>
-
-                <button
-                  id="button-mab-create-deck-assign-player-card"
-                  class="btn btn-outline-success btn-sm"
-                >
-                  Add
-                </button>
               </div>
             </div>
 
             <hr />
 
-            <button
-              id="button-mab-create-deck-activate-deck"
-              class="btn btn-outline-info w-100 mt-3"
-              type="button"
+            <div
+              class="d-flex flex-column w-100 align-items-center justify-content-center mt-1 gap-3"
             >
-              Set as Active
-            </button>
+              <button
+                id="button-mab-create-deck-confirm"
+                class="btn btn-outline-info w-100"
+                type="button"
+              >
+                Confirm
+              </button>
+
+              <button
+                id="button-mab-create-deck-activate-deck"
+                class="btn btn-outline-info w-100"
+                type="button"
+              >
+                Confirm and Set as Active
+              </button>
+            </div>
           </form>
         </div>
 
@@ -1018,8 +994,7 @@
     <script src="/js/components/header.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_new_campaign.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_campaign_statistics.js"></script>
-    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_active_deck.js"></script>
-    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_create_deck.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_manage_decks.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_continue_campaign.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_battle.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_market.js"></script>
