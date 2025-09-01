@@ -90,10 +90,11 @@ function mab_battle() {
 
       self.Battle_Start();
     });
+
     self.Buttons.ShowBattleContainer_ContinueBattle.on("click", (e) => {
       e.preventDefault();
 
-      self.Arena_ContinueBattle();
+      self.Battle_Continue();
     });
 
     self.Buttons.HideBattleContainer.on("click", (e) => {
@@ -105,33 +106,35 @@ function mab_battle() {
     });
 
     // Binding the event after inserting into DOM
-    $(document).on("click", ".button-mab-arena-player-cards", function () {
-      let cardCopyId = $(this).data("card-copy-id");
+    $(document).on(
+      "click",
+      ".button-mab-arena-assigned-player-cards",
+      function () {
+        let cardCopyId = $(this).data("card-copy-id");
 
-      $(".button-mab-arena-mab-card-fronts")
-        .removeClass("active-card")
-        .addClass("frozen-card");
+        $(".mab-card-front").removeClass("active-card").addClass("frozen-card");
 
-      $(this).removeClass("frozen-card").addClass("chosen-card");
+        $(this).removeClass("frozen-card").addClass("chosen-card");
 
-      let card = self.PlayerCards.filter(
-        (card) => card.mabCardCopyId === cardCopyId
-      )[0];
+        let card = self.PlayerCards.filter(
+          (card) => card.mab_PlayerCardId === cardCopyId
+        )[0];
 
-      self.PlayerDuellingCard_CardCopyId = cardCopyId;
-      self.PlayerDuellingCard_CardName = card.mabCardName;
-      self.PlayerDuellingCard_CardLevel = card.mabCardLevel;
-      self.PlayerDuellingCard_CardType = card.mabCardType;
-      self.PlayerDuellingCard_CardPower = card.mabCardPower;
-      self.PlayerDuellingCard_CardUpperHand = card.mabCardUpperHand;
+        self.PlayerDuellingCard_CardCopyId = card.mab_PlayerCardId;
+        self.PlayerDuellingCard_CardName = card.mab_CardName;
+        self.PlayerDuellingCard_CardLevel = card.mab_CardLevel;
+        self.PlayerDuellingCard_CardType = card.mab_CardType;
+        self.PlayerDuellingCard_CardPower = card.mab_CardPower;
+        self.PlayerDuellingCard_CardUpperHand = card.mab_CardUpperHand;
 
-      self.arena_PlayerDuellingCard_Add();
-    });
+        self.arena_PlayerDuellingCard_Add();
+      }
+    );
 
     self.Buttons.ConfirmDuellingCardChoice.on("click", (e) => {
       e.preventDefault();
 
-      self.Duel_TriggerManager();
+      self.Battle_OrganizeDuel();
     });
 
     self.Buttons.CancelDuellingCardChoice.on("click", (e) => {
@@ -230,15 +233,13 @@ function mab_battle() {
         self.Fields.NpcName.html(resp.content.mab_NpcName);
         self.Fields.DuelNumber.html(resp.content.mab_DuelNumber);
 
-        self.IsPlayerTurn = resp.content.mab_DoesPlayerGoFirst;
+        self.IsPlayerTurn = resp.content.mab_IsPlayerTurn;
 
         self.battle_ShowContainer();
 
         self.sweetAlertSuccess("Battle started!");
 
         self.Battle_ListUnusedCards();
-
-        self.Duel_TriggerManager();
       },
       error: (err) => {
         self.sweetAlertError("Failed to start mab battle!");
@@ -246,10 +247,10 @@ function mab_battle() {
       complete: () => {},
     });
   };
-  self.Arena_ContinueBattle = () => {
+  self.Battle_Continue = () => {
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/users/continuemabbattle",
+      url: "https://localhost:7081/users/mabcontinuebattle",
       xhrFields: {
         withCredentials: true, // Only if you're using cookies; otherwise can be removed
       },
@@ -261,8 +262,8 @@ function mab_battle() {
 
         let battle = resp.content;
 
-        self.BattleRound = battle.mabBattleRoundNumber;
-        self.IsPlayerTurn = battle.isPlayerTurn;
+        self.BattleRound = battle.mab_BattleRoundNumber;
+        self.IsPlayerTurn = battle.mab_IsPlayerTurn;
 
         self.Fields.BattlePoints.html(battle.mabBattlePoints);
         self.Fields.PlayerNickname.html(battle.playerNickName);
@@ -288,7 +289,13 @@ function mab_battle() {
           return;
         }
 
-        self.Duel_TriggerManager();
+        self.battle_ShowContainer();
+
+        self.Battle_ListUnusedCards();
+
+        self.sweetAlertSuccess("Continuing Battle...");
+
+        //self.Battle_OrganizeDuel();
       },
       error: (err) => {
         self.sweetAlertError(err);
@@ -296,7 +303,6 @@ function mab_battle() {
       complete: () => {},
     });
   };
-
   self.Battle_ListUnusedCards = () => {
     self.Blocks.PlayerCardCopies.empty();
 
@@ -319,7 +325,7 @@ function mab_battle() {
         self.PlayerCards.forEach((card, index) => {
           let cardHtml = `
               <button 
-                class="btn d-flex flex-column mab-card-front button-mab-arena-player-cards frozen-card"
+                class="btn d-flex flex-column mab-card-front button-mab-arena-assigned-player-cards frozen-card"
                 type="button"
                 data-card-copy-id="${card.mab_PlayerCardId}"
                 > 
@@ -351,7 +357,7 @@ function mab_battle() {
           self.Blocks.PlayerCardCopies.append(cardHtml);
         });
 
-        self.arena_ResolveTurn();
+        self.battle_RenderDuel();
       },
       error: function (xhr, status, error) {
         sweetAlertError(
@@ -361,8 +367,7 @@ function mab_battle() {
     });
   };
 
-  //! CONTINUAR A PARTIR DAQUI NA SEGUNDA-FEIRA 01/10
-  self.Duel_TriggerManager = () => {
+  self.Battle_OrganizeDuel = () => {
     const formData = new FormData();
     if (!self.PlayerDuellingCard_CardCopyId) {
       self.PlayerDuellingCard_CardCopyId = null;
@@ -383,7 +388,7 @@ function mab_battle() {
           sweetAlertError(resp.message);
         }
 
-        console.log("resp.content: ", resp.content);
+        self.battle_ResolveDuel();
 
         if (self.IsPlayerTurn === false) {
           let npcDuellingCard = resp.content.mab_NpcCard;
@@ -396,9 +401,15 @@ function mab_battle() {
             npcDuellingCard.mab_CardUpperHand;
 
           self.arena_NpcDuellingCard_Add();
+
+          return;
         }
 
         self.arena_buttons_SetUpForChosenCard_Off();
+
+        self.IsPlayerTurn = false;
+        self.battle_RenderDuel();
+        self.Battle_OrganizeDuel();
       },
       error: (err) => {
         sweetAlertError(err);
@@ -428,16 +439,15 @@ function mab_battle() {
 
     self.Buttons.CancelDuellingCardChoice.prop("disabled", true);
   };
-  self.arena_ResolveTurn = () => {
+  self.battle_RenderDuel = () => {
     self.Fields.ArenaMessages.empty();
 
     if (self.IsPlayerTurn === true) {
       self.Fields.ArenaMessages.html(`Player's Turn: please choose a card...`);
 
-      let playerCardsClass = $(".button-mab-arena-player-cards");
-      console.log("playerCardsClass: ", playerCardsClass);
+      let playerCardsClass = $(".button-mab-arena-assigned-player-cards");
 
-      $(".button-mab-arena-player-cards")
+      $(".button-mab-arena-assigned-player-cards")
         .removeClass("frozen-card")
         .addClass("active-card");
 
@@ -448,6 +458,35 @@ function mab_battle() {
 
     self.Fields.ArenaMessages.html(`NPC's Turn: a card is being chosen...`);
   };
+  self.battle_ResolveDuel = () => {
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/mabresolveduel",
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          sweetAlertError(resp.message);
+        }
+
+        let duelResult = resp.content;
+        let playerCardFullPower = duelResult.mab_PlayerCardFullPower;
+        let npcCardFullPower = duelResult.mab_NpcCardFullPower;
+        let duelPoints = duelResult.Mab_battleDuelPoints;
+        let nextDuelNumber = duelResult.mab_NextDuelNumber;
+
+        $("#span-player-card-full-power").html(playerCardFullPower);
+        $("#span-npc-card-full-power").html(npcCardFullPower);
+        self.Fields.BattlePoints.html(duelPoints);
+        self.Fields.DuelNumber.html(nextDuelNumber);
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+    });
+  };
+
   self.arena_PlayerDuellingCard_Add = () => {
     self.Fields.PlayerDuellingCard.empty();
 
@@ -464,7 +503,7 @@ function mab_battle() {
             <div>
               <span>${self.PlayerDuellingCard_CardPower}</span>
               |
-              <span>${self.PlayerDuellingCard_CardUpperHand}</span>
+              <span id="span-player-card-full-power">${self.PlayerDuellingCard_CardUpperHand}</span>
             </div>
             <span>?</span>
           </div>
@@ -484,7 +523,7 @@ function mab_battle() {
   self.arena_PlayerDuellingCard_Remove = () => {
     self.Fields.PlayerDuellingCard.empty().removeClass("duelling-card");
 
-    $(".button-mab-arena-player-cards")
+    $(".button-mab-arena-assigned-player-cards")
       .removeClass("chosen-card frozen-card")
       .addClass("active-card");
   };
@@ -504,7 +543,7 @@ function mab_battle() {
             <div>
               <span>${self.NpcDuellingCard_CardPower}</span>
               |
-              <span>${self.NpcDuellingCard_CardUpperHand}</span>
+              <span id="span-npc-card-full-power">${self.NpcDuellingCard_CardUpperHand}</span>
             </div>
             <span>?</span>
           </div>
