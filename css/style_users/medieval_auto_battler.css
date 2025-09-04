@@ -159,6 +159,11 @@ main {
   box-shadow: 0 0 5px 5px var(--main-color) !important;
   transition: opacity 0.3s ease-in-out !important;
 }
+.used-card {
+  content: none;
+  background-color: var(--second-bg-color);
+}
+
 #div-mab-arena-announcements-block {
   border: 1px solid var(--main-color);
   border-radius: 12px;
