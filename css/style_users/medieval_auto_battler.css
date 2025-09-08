@@ -152,6 +152,7 @@ main {
   pointer-events: none !important;
   border: 2px solid var(--yellowish);
   box-shadow: 0 0 5px 5px var(--yellowish) !important;
+  z-index: 1;
 }
 .duelling-card {
   opacity: 1 !important;
