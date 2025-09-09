@@ -171,9 +171,14 @@ main {
   padding: 10px;
 }
 
-#button-mab-arena-confirm-card-choice,
-#button-mab-arena-cancel-card-choice {
-  transition: opacity 0.3s ease-in-out;
+.mab-arena-button-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.mab-arena-button-display {
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 1s ease-in-out;
 }
 
 @media screen and (max-width: 1440px) {
