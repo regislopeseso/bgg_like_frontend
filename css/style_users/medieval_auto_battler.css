@@ -115,6 +115,12 @@ main {
   transition: all 1s ease-in-out;
 }
 
+#span-player-card-full-power,
+#span-npc-card-full-power {
+  font-size: larger !important;
+  font-weight: bolder !important;
+}
+
 .mab-card-back {
   justify-content: center;
   align-items: center;

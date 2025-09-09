@@ -239,17 +239,22 @@
 
         <!-- 5.CONTAINER: MAB ARENA -->
         <div id="container-mab-arena" class="hide-div">
+          <!-- Arena header -->
           <div
             id="header-mab-arena"
-            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
+            class="d-flex flex-row justify-content-between align-items-start w-100 gap-3"
           >
             <div
               class="p-0 m-0 d-flex flex-column align-items-start justify-content-center"
             >
               <h3 class="p-0 m-0"><span>A</span>rena</h3>
               <div>
-                Battle Points: <span id="span-mab-arena-battle-points">?</span>
+                Battle Points: <span id="span-mab-battle-points">?</span>
               </div>
+              <div>
+                Earned Xp: <span id="span-mab-battle-earned-xp">?</span>
+              </div>
+              <div>Bonus Xp: <span id="span-mab-battle-bonus-xp">?</span></div>
             </div>
 
             <div>
@@ -281,10 +286,16 @@
 
           <hr />
 
+          <!-- NPC's Field -->
           <div
             class="d-flex flex-column align-items-center justify-content-center"
           >
-            <span id="span-mab-arena-npc-name"></span>
+            <div
+              class="d-flex flex-row align-items-center justify-content-center gap-3"
+            >
+              <span id="span-mab-arena-npc-name"></span>
+              <div>(Level: <span id="span-mab-arena-npc-level"></span>)</div>
+            </div>
 
             <div id="block-mab-arena-npc-cards" class="d-flex flex-row">
               <div
@@ -316,6 +327,7 @@
 
           <hr />
 
+          <!-- DUELLING Field -->
           <div
             id="block-mab-arena-duelling-zone"
             class="d-flex flex-column w-100 align-items-center justify-content-center pt-3 pb-3 gap-3"
@@ -338,8 +350,8 @@
                 class="d-flex flex-column justify-content-center align-items-center border-round"
               >
                 <h4>
-                  <span>Round: #</span
-                  ><span id="span-mab-arena-round-counter">1</span>
+                  <span id="span-mab-arena-round-counter">1#</span>
+                  <span> Duel</span>
                 </h4>
 
                 <div id="div-mab-arena-announcements" class="p-0 m-0"></div>
@@ -374,10 +386,17 @@
 
           <hr />
 
+          <!-- PLAYERS's Field -->
           <div
             class="d-flex flex-column align-items-center justify-content-center gap-3"
           >
-            <span id="span-mab-arena-player-nickname"></span>
+            <div
+              class="d-flex flex-row align-items-center justify-content-center gap-3"
+            >
+              <span id="span-mab-arena-player-nickname"></span>
+
+              <div>(Level:<span id="span-mab-arena-player-level"></span>)</div>
+            </div>
 
             <div
               id="block-mab-arena-player-cards"
