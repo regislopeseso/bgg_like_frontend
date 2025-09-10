@@ -36,6 +36,7 @@ function mab_battle() {
   self.PlayerDuellingCard_CardFullPower = null;
 
   self.NpcCards = [];
+  self.NpcCardFullPowerSequence = [];
   self.NpcWinningStreak = [];
   self.NpcDuellingCard_NpcCardId = null;
   self.NpcDuellingCard_CardName = null;
@@ -187,15 +188,7 @@ function mab_battle() {
 
       self.arena_DisableButtons();
 
-      if (self.IsPlayerTurn === true && self.AreTurnsFinished == false) {
-        self.Duel_PlayerAttacks();
-
-        self.Buttons.CancelDuellingCardChoice.removeClass(
-          "mab-arena-button-display"
-        ).addClass("mab-arena-button-hidden");
-
-        return;
-      }
+      self.Duel_PlayerAttacks();
     });
 
     self.Buttons.CancelDuellingCardChoice.on("click", (e) => {
@@ -314,9 +307,6 @@ function mab_battle() {
 
         self.Duel_Start();
 
-        self.battle_ListNpcCards();
-        self.Battle_ListPlayerCards();
-
         self.sweetAlertSuccess("Battle started!");
       },
       error: (err) => {
@@ -430,7 +420,7 @@ function mab_battle() {
     });
   };
 
-  self.battle_ListNpcCards = (npcCardFullPower, hasPlayerWon) => {
+  self.battle_ListNpcCards = () => {
     self.Blocks.NpcCards.empty();
 
     self.NpcCards.forEach((card, index) => {
@@ -465,7 +455,7 @@ function mab_battle() {
                   </div>
 
                   <div>
-                    F.Pwr.:<span>${npcCardFullPower}</span>
+                    F.Pwr.:<span>${self.NpcCardFullPowerSequence[index]}</span>
                   </div>
                 </div>                                                          
               </div>
@@ -593,9 +583,15 @@ function mab_battle() {
           }
         });
 
-        $(".button-mab-arena-assigned-player-cards")
-          .removeClass("frozen-card")
-          .addClass("active-card");
+        if (self.IsPlayerTurn === true) {
+          $(".button-mab-arena-assigned-player-cards")
+            .removeClass("frozen-card")
+            .addClass("active-card");
+        } else {
+          $(".button-mab-arena-assigned-player-cards")
+            .removeClass("active-card")
+            .addClass("frozen-card");
+        }
       },
       error: function (xhr, status, error) {
         sweetAlertError(
@@ -633,10 +629,9 @@ function mab_battle() {
         setTimeout(() => {
           self.arena_PlayerDuellingCard_Remove();
 
-          self.battle_ListNpcCards(
-            self.NpcDuellingCard_CardFullPower,
-            self.Duel_HasPlayerWon
-          );
+          //self.battle_ListNpcCards();
+
+          //self.Battle_ListPlayerCards();
 
           self.Duel_CheckStatus();
         }, self.Duel_AnimationsTime);
@@ -665,6 +660,9 @@ function mab_battle() {
         self.IsBattleFinished = resp.content.mab_IsBattleFinished;
 
         self.Fields.DuelNumber.html(`${self.DuelsCount}#`);
+
+        self.battle_ListNpcCards();
+        self.Battle_ListPlayerCards();
 
         self.battle_RenderDuel();
       },
@@ -732,18 +730,12 @@ function mab_battle() {
 
         self.NpcWinningStreak.push(!self.Duel_HasPlayerWon);
 
+        self.NpcCardFullPowerSequence.push(self.NpcDuellingCard_CardFullPower);
+
         self.NewDuelBegins = true;
 
         self.arena_PlayerDuellingCard_Remove();
-        // setTimeout(() => {
 
-        //   self.battle_ListNpcCards(
-        //     self.NpcDuellingCard_CardFullPower,
-        //     self.Duel_HasPlayerWon
-        //   );
-        //   self.Battle_ListPlayerCards();
-
-        // }, self.Duel_AnimationsTime);
         self.Duel_CheckStatus();
       },
       error: (err) => {
@@ -772,6 +764,10 @@ function mab_battle() {
 
           return;
         }
+
+        $(".button-mab-arena-assigned-player-cards")
+          .removeClass("active-card")
+          .addClass("frozen-card");
 
         self.Duel_ManageTurn();
       },
@@ -903,10 +899,6 @@ function mab_battle() {
     if (self.AreTurnsFinished === true && self.IsDuelResolved === false) {
       self.arena_DisableButtons();
 
-      $(".button-mab-arena-assigned-player-cards")
-        .removeClass("active-card")
-        .addClass("frozen-card");
-
       self.Duel_Resolve();
 
       return;
@@ -918,8 +910,6 @@ function mab_battle() {
       self.Fields.ArenaMessages.html(
         `Players's Turn: a card must be chosen...`
       );
-
-      self.Battle_ListPlayerCards();
 
       setTimeout(() => {}, self.Duel_AnimationsTime);
 
@@ -992,10 +982,6 @@ function mab_battle() {
   };
   self.arena_PlayerDuellingCard_Remove = () => {
     self.Fields.PlayerDuellingCard.empty().removeClass("duelling-card");
-
-    $(".button-mab-arena-assigned-player-cards")
-      .removeClass("chosen-card frozen-card")
-      .addClass("active-card");
 
     self.Buttons.CancelDuellingCardChoice.removeClass(
       "mab-arena-button-display"
