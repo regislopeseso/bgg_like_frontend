@@ -128,8 +128,8 @@ main {
   border: 1px solid var(--text-color);
   border-radius: 12px;
   background-color: var(--second-bg-color);
-  width: 50px;
-  height: 100px;
+  width: 200px;
+  height: 150px;
   padding: 5px;
   margin: 10px;
 }
@@ -150,13 +150,13 @@ main {
   justify-content: space-between;
   pointer-events: none;
   border: 1px solid var(--greenish);
-  box-shadow: 0 0 10px 1px var(--greenish) !important;
+  box-shadow: 0 0 0px 1px var(--greenish) !important;
 }
 .mab-used-card-lost {
   justify-content: space-between;
   pointer-events: none;
   border: 1px solid var(--reddish);
-  box-shadow: 0 0 10px 1px var(--reddish) !important;
+  box-shadow: 0 0 0px 1px var(--reddish) !important;
 }
 
 .frozen-card {
