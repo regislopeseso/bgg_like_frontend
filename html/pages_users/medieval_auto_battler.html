@@ -248,13 +248,21 @@
               class="p-0 m-0 d-flex flex-column align-items-start justify-content-center"
             >
               <h3 class="p-0 m-0"><span>A</span>rena</h3>
-              <div>
-                Battle Points: <span id="span-mab-battle-points">?</span>
+              <div
+                class="d-flex flex-row gap-2 justify-content-start align-items-center"
+              >
+                <div>
+                  Battle Points:
+                  <span id="span-mab-battle-points">?</span>,&nbsp;
+                </div>
+                <div>
+                  Earned Xp:
+                  <span id="span-mab-battle-earned-xp">?</span>,&nbsp;
+                </div>
+                <div>
+                  Bonus Xp: <span id="span-mab-battle-bonus-xp">?</span>
+                </div>
               </div>
-              <div>
-                Earned Xp: <span id="span-mab-battle-earned-xp">?</span>
-              </div>
-              <div>Bonus Xp: <span id="span-mab-battle-bonus-xp">?</span></div>
             </div>
 
             <div>
@@ -288,7 +296,7 @@
 
           <!-- NPC's Field -->
           <div
-            class="d-flex flex-column align-items-center justify-content-center"
+            class="d-flex flex-column align-items-center justify-content-center gap-3"
           >
             <div
               id="block-mab-arena-npc-cards"
@@ -339,11 +347,11 @@
                     id="button-mab-arena-confirm-card-choice"
                     class="btn btn-outline-warning mab-arena-button-hidden"
                   >
-                    Pass
+                    Duel !
                   </button>
                   <button
                     id="button-mab-arena-cancel-card-choice"
-                    class="btn btn-outline-danger"
+                    class="btn btn-outline-danger mab-arena-button-hidden"
                   >
                     Cancel
                   </button>

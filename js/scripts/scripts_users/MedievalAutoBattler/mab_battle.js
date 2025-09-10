@@ -8,7 +8,7 @@ function mab_battle() {
   self.AreTurnsFinished = null;
   self.IsDuelResolved = null;
   self.PlayerState = null;
-  self.IsBattleFinished = null;
+  self.IsBattleFinished = false;
   self.DeckSize = null;
 
   self.NewDuelBegins = null;
@@ -23,6 +23,8 @@ function mab_battle() {
   self.Duel_EarnedXp = null;
   self.Duel_BonusXp = null;
   self.Duel_HasPlayerWon = null;
+
+  self.Duel_AnimationsTime = 1600;
 
   self.PlayerCards = [];
   self.PlayerDuellingCard_PlayerCardId = null;
@@ -194,27 +196,11 @@ function mab_battle() {
 
         return;
       }
-
-      if (
-        self.Buttons.ConfirmDuellingCardChoice.hasClass("mab-resolve-duel-mode")
-      ) {
-        self.Duel_Resolve();
-
-        return;
-      }
-
-      if (
-        self.Buttons.ConfirmDuellingCardChoice.hasClass("mab-next-duel-mode")
-      ) {
-        self.NewDuelBegins = true;
-
-        self.battle_RenderDuel();
-      }
     });
 
     self.Buttons.CancelDuellingCardChoice.on("click", (e) => {
       e.preventDefault();
-
+      self.arena_DisableButtons();
       self.clear_PlayerDuellingCard();
     });
   };
@@ -607,10 +593,6 @@ function mab_battle() {
           }
         });
 
-        self.Fields.ArenaMessages.html(
-          `Player's Turn: please choose a card or pass...`
-        );
-
         $(".button-mab-arena-assigned-player-cards")
           .removeClass("frozen-card")
           .addClass("active-card");
@@ -648,7 +630,16 @@ function mab_battle() {
 
         self.sweetAlertNewRound();
 
-        self.Duel_CheckStatus();
+        setTimeout(() => {
+          self.arena_PlayerDuellingCard_Remove();
+
+          self.battle_ListNpcCards(
+            self.NpcDuellingCard_CardFullPower,
+            self.Duel_HasPlayerWon
+          );
+
+          self.Duel_CheckStatus();
+        }, self.Duel_AnimationsTime);
       },
       error: (err) => {
         self.sweetAlertError("Failed to start mab battle!");
@@ -686,6 +677,10 @@ function mab_battle() {
     });
   };
   self.Duel_Resolve = () => {
+    self.Fields.ArenaMessages.html(
+      `Both turns are finished! Resolving this duel...`
+    );
+
     $.ajax({
       type: "POST",
       url: "https://localhost:7081/users/mabresolveduel",
@@ -698,6 +693,8 @@ function mab_battle() {
 
           return;
         }
+
+        self.Fields.ArenaMessages.empty();
 
         self.PlayerDuellingCard_CardFullPower =
           resp.content.mab_PlayerCardFullPower;
@@ -735,12 +732,18 @@ function mab_battle() {
 
         self.NpcWinningStreak.push(!self.Duel_HasPlayerWon);
 
-        self.battle_ListNpcCards(
-          self.NpcDuellingCard_CardFullPower,
-          self.Duel_HasPlayerWon
-        );
-        self.Battle_ListPlayerCards();
+        self.NewDuelBegins = true;
 
+        self.arena_PlayerDuellingCard_Remove();
+        // setTimeout(() => {
+
+        //   self.battle_ListNpcCards(
+        //     self.NpcDuellingCard_CardFullPower,
+        //     self.Duel_HasPlayerWon
+        //   );
+        //   self.Battle_ListPlayerCards();
+
+        // }, self.Duel_AnimationsTime);
         self.Duel_CheckStatus();
       },
       error: (err) => {
@@ -863,95 +866,15 @@ function mab_battle() {
     self.Buttons.ConfirmDuellingCardChoice.removeClass(
       "mab-arena-button-hidden"
     ).addClass("mab-arena-button-display");
-
-    self.Buttons.ConfirmDuellingCardChoice.prop("disable", false);
   };
   self.arena_DisableButtons = () => {
     self.Buttons.ConfirmDuellingCardChoice.removeClass(
       "mab-arena-button-display"
     ).addClass("mab-arena-button-hidden");
 
-    setTimeout(() => {
-      self.Buttons.ConfirmDuellingCardChoice.prop("disable", true);
-    }, 300);
-  };
-
-  self.arena_Button_ConfirmDuellingCardMode = () => {
-    if (self.Buttons.ConfirmDuellingCardChoice.hasClass("mab-pass-turn-mode")) {
-      self.Buttons.ConfirmDuellingCardChoice.removeClass("mab-pass-turn-mode");
-    }
-
-    if (
-      self.Buttons.ConfirmDuellingCardChoice.hasClass("mab-resolve-duel-mode")
-    ) {
-      self.Buttons.ConfirmDuellingCardChoice.removeClass(
-        "mab-resolve-duel-mode"
-      );
-    }
-
-    if (self.Buttons.ConfirmDuellingCardChoice.hasClass("mab-next-duel-mode")) {
-      self.Buttons.ConfirmDuellingCardChoice.removeClass("mab-next-duel-mode");
-    }
-
-    self.Buttons.ConfirmDuellingCardChoice.text("Confirm").addClass(
-      "mab-confirm-duelling-card-mode"
-    );
-
-    self.arena_EnableButtons();
-  };
-  self.arena_Button_ResolveDuelMode = () => {
-    if (self.Buttons.ConfirmDuellingCardChoice.hasClass("mab-pass-turn-mode")) {
-      self.Buttons.ConfirmDuellingCardChoice.removeClass("mab-pass-turn-mode");
-    }
-
-    if (
-      self.Buttons.ConfirmDuellingCardChoice.hasClass(
-        "mab-confirm-duelling-card-mode"
-      )
-    ) {
-      self.Buttons.ConfirmDuellingCardChoice.removeClass(
-        "mab-confirm-duelling-card-mode"
-      );
-    }
-
-    if (self.Buttons.ConfirmDuellingCardChoice.hasClass("mab-next-duel-mode")) {
-      self.Buttons.ConfirmDuellingCardChoice.removeClass("mab-next-duel-mode");
-    }
-
-    self.Buttons.ConfirmDuellingCardChoice.text("Resolve Duel").addClass(
-      "mab-resolve-duel-mode"
-    );
-
-    self.arena_EnableButtons();
-  };
-  self.arena_Button_NextDuelMode = () => {
-    if (self.Buttons.ConfirmDuellingCardChoice.hasClass("mab-pass-turn-mode")) {
-      self.Buttons.ConfirmDuellingCardChoice.removeClass("mab-pass-turn-mode");
-    }
-
-    if (
-      self.Buttons.ConfirmDuellingCardChoice.hasClass(
-        "mab-confirm-duelling-card-mode"
-      )
-    ) {
-      self.Buttons.ConfirmDuellingCardChoice.removeClass(
-        "mab-confirm-duelling-card-mode"
-      );
-    }
-
-    if (
-      self.Buttons.ConfirmDuellingCardChoice.hasClass("mab-resolve-duel-mode")
-    ) {
-      self.Buttons.ConfirmDuellingCardChoice.removeClass(
-        "mab-resolve-duel-mode"
-      );
-    }
-
-    self.Buttons.ConfirmDuellingCardChoice.text("Next Duel").addClass(
-      "mab-next-duel-mode"
-    );
-
-    self.arena_EnableButtons();
+    self.Buttons.CancelDuellingCardChoice.removeClass(
+      "mab-arena-button-display"
+    ).addClass("mab-arena-button-hidden");
   };
 
   self.battle_RenderDuel = () => {
@@ -970,7 +893,7 @@ function mab_battle() {
 
       setTimeout(() => {
         self.Duel_Start();
-      }, 300);
+      }, self.Duel_AnimationsTime);
 
       self.NewDuelBegins = null;
 
@@ -980,36 +903,26 @@ function mab_battle() {
     if (self.AreTurnsFinished === true && self.IsDuelResolved === false) {
       self.arena_DisableButtons();
 
-      self.Fields.ArenaMessages.html(
-        `Both turns are finished, to continue press the button to resolve this duel`
-      );
-
       $(".button-mab-arena-assigned-player-cards")
         .removeClass("active-card")
         .addClass("frozen-card");
 
-      self.arena_Button_ResolveDuelMode();
-
-      return;
-    }
-
-    if (self.IsDuelResolved === true && self.IsBattleFinished === false) {
-      self.Fields.ArenaMessages.html(
-        `Duel resolved, to continue press the button`
-      );
-
-      $(".button-mab-arena-assigned-player-cards")
-        .removeClass("active-card")
-        .addClass("frozen-card");
-
-      self.arena_Button_NextDuelMode();
+      self.Duel_Resolve();
 
       return;
     }
 
     if (self.IsPlayerTurn === true && self.AreTurnsFinished == false) {
-      self.Fields.ArenaMessages.html(`Player's Turn: you must chose a card...`);
-      //self.Battle_ListPlayerCards();
+      self.arena_DisableButtons();
+
+      self.Fields.ArenaMessages.html(
+        `Players's Turn: a card must be chosen...`
+      );
+
+      self.Battle_ListPlayerCards();
+
+      setTimeout(() => {}, self.Duel_AnimationsTime);
+
       return;
     }
 
@@ -1018,14 +931,14 @@ function mab_battle() {
 
       self.Fields.ArenaMessages.html(`NPC's Turn: a card is being chosen...`);
 
-      self.Duel_NpcAttacks();
+      setTimeout(() => {
+        self.Duel_NpcAttacks();
+      }, self.Duel_AnimationsTime);
 
       return;
     }
 
     if (self.IsBattleFinished === true) {
-      self.Fields.ArenaMessages.html(`Battle is finished!`);
-
       self.Battle_Finish();
     }
   };
@@ -1060,17 +973,19 @@ function mab_battle() {
         </div>
       `;
 
-    self.Buttons.CancelDuellingCardChoice.removeClass(
-      "mab-arena-button-hidden"
-    ).addClass("mab-arena-button-display");
-
     setTimeout(() => {
       self.Fields.PlayerDuellingCard.addClass("duelling-card");
 
       setTimeout(() => {
         if (!cardFullPower && cardFullPower != 0) {
-          self.arena_Button_ConfirmDuellingCardMode();
+          self.Buttons.ConfirmDuellingCardChoice.removeClass(
+            "mab-arena-button-hidden"
+          ).addClass("mab-arena-button-display");
+          self.Buttons.CancelDuellingCardChoice.removeClass(
+            "mab-arena-button-hidden"
+          ).addClass("mab-arena-button-display");
         }
+
         self.Fields.PlayerDuellingCard.html(playerChosenCardCopyHtml);
       }, 100);
     }, 50);

@@ -190,11 +190,12 @@ main {
 .mab-arena-button-hidden {
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
 }
 .mab-arena-button-display {
   opacity: 1;
   pointer-events: all;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 
 @media screen and (max-width: 1440px) {
