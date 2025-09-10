@@ -441,7 +441,7 @@ function mab_battle() {
     });
   };
 
-  self.Battle_ListUnusedCards = () => {
+  self.Battle_ListPlayerCards = () => {
     self.Blocks.PlayerCards.empty();
 
     $.ajax({
@@ -457,9 +457,10 @@ function mab_battle() {
         self.PlayerCards = response.content;
 
         self.PlayerCards.forEach((card, index) => {
-          let cardHtml = `
+          if (card.mab_IsCardAvailable === true) {
+            let available_cardHtml = `
               <button
-                class="btn d-flex flex-column mab-card-front button-mab-arena-assigned-player-cards frozen-card"
+                class="btn d-flex flex-column mab-card-front mab-available-card button-mab-arena-assigned-player-cards frozen-card"
                 type="button"
                 data-card-copy-id="${card.mab_PlayerCardId}"
                 >
@@ -488,7 +489,64 @@ function mab_battle() {
               </button>
             `;
 
-          self.Blocks.PlayerCards.append(cardHtml);
+            self.Blocks.PlayerCards.append(available_cardHtml);
+          } else {
+            let usedCardClass =
+              card.mab_HasPlayerWon === true
+                ? "mab-used-card-won"
+                : "mab-used-card-lost";
+
+            let used_cardHtml = `
+              <div class="d-flex flex-column mab-card-front ${usedCardClass}" data-card-copy-id="${card.mab_PlayerCardId}">                    
+                <div class="d-flex flex-row justify-content-start align-items-center w-100">
+                  Card:<span>${card.mab_CardName}</span>
+                </div>
+
+                <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                  <div>
+                    Type:<span>${card.mab_CardType}</span>
+                  </div>  
+
+                  <div>
+                    Lvl:<span>${card.mab_CardLevel}</span>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                  <div>
+                    Pwr.:<span>${card.mab_CardPower}</span>
+                  </div>
+
+                  <div>
+                    UpH.:<span>${card.mab_CardUpperHand}</span>
+                  </div>
+
+                  <div>
+                    F.Pwr.:<span id="span-mab-arena-player-${index}-card-total-power">${card.mab_CardFullPower}</span>
+                  </div>
+                </div>                                  
+                                            
+                <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                  <div>
+                    Points:<span>${card.mab_DuelPoints}</span>                                                  
+                  </div>  
+
+                  <div class="d-flex flex-row justify-content-between align-items-center">  
+                    <div>  
+                      Xp:<span>${card.mab_EarnedXp}</span>   
+                    </div> 
+                    (
+                    <div>
+                      +<span>${card.mab_BonusXp}</span>  
+                    </div> 
+                    )
+                  </div>
+                </div>                 
+              </div>
+            `;
+
+            self.Blocks.PlayerCards.append(used_cardHtml);
+          }
         });
 
         self.Fields.ArenaMessages.html(
@@ -934,7 +992,7 @@ function mab_battle() {
     if (self.IsPlayerTurn === true && self.AreTurnsFinished == false) {
       self.arena_Button_PassTurnMode();
 
-      self.Battle_ListUnusedCards();
+      self.Battle_ListPlayerCards();
       return;
     }
 

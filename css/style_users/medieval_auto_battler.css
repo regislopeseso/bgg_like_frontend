@@ -134,15 +134,29 @@ main {
   margin: 10px;
 }
 .mab-card-front {
-  justify-content: center;
   align-items: center;
-  gap: 25px;
-  border: none;
   border-radius: 12px;
   background-color: var(--second-bg-color);
   width: 200px;
   height: 150px;
   padding: 5px;
+}
+.mab-available-card {
+  border: none;
+  justify-content: center;
+  gap: 25px;
+}
+.mab-used-card-won {
+  justify-content: space-between;
+  pointer-events: none;
+  border: 1px solid var(--greenish);
+  box-shadow: 0 0 10px 1px var(--greenish) !important;
+}
+.mab-used-card-lost {
+  justify-content: space-between;
+  pointer-events: none;
+  border: 1px solid var(--reddish);
+  box-shadow: 0 0 10px 1px var(--reddish) !important;
 }
 
 .frozen-card {
@@ -150,8 +164,8 @@ main {
 }
 .active-card {
   pointer-events: all !important;
-  border: 2px solid var(--greenish);
-  box-shadow: 0 0 10px var(--greenish);
+  border: 2px solid var(--main-color);
+  box-shadow: 0 0 10px var(--main-color);
 }
 .chosen-card {
   opacity: 1 !important;
@@ -165,10 +179,6 @@ main {
   border: 2px solid var(--main-color) !important;
   box-shadow: 0 0 5px 5px var(--main-color) !important;
   transition: opacity 0.3s ease-in-out !important;
-}
-.used-card {
-  content: none;
-  background-color: var(--second-bg-color);
 }
 
 #div-mab-arena-announcements-block {
