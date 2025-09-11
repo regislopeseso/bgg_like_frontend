@@ -129,7 +129,7 @@ main {
   border-radius: 12px;
   background-color: var(--second-bg-color);
   width: 200px;
-  height: 150px;
+  height: 250px;
   padding: 5px;
   margin: 10px;
 }
@@ -138,7 +138,7 @@ main {
   border-radius: 12px;
   background-color: var(--second-bg-color);
   width: 200px;
-  height: 150px;
+  height: 250px;
   padding: 5px;
 }
 .mab-available-card {
