@@ -68,11 +68,7 @@ function mab_battle() {
         self.Containers.ContinueCampaign.find(
           "#button-mab-battle-show-container-new"
         );
-    self.Buttons[self.Buttons.length] =
-      self.Buttons.ShowBattleContainer_ContinueBattle =
-        self.Containers.ContinueCampaign.find(
-          "#button-mab-battle-show-container-continue"
-        );
+
     self.Buttons[self.Buttons.length] = self.Buttons.HideBattleContainer =
       self.Containers.Battle.find("#button-mab-battle-hide-container");
     self.Buttons[self.Buttons.length] = self.Buttons.HideArenaContainer =
@@ -124,15 +120,6 @@ function mab_battle() {
       self.continueCampaign_HideContainer();
 
       self.Battle_Start();
-    });
-
-    self.Buttons.ShowBattleContainer_ContinueBattle.on("click", (e) => {
-      e.preventDefault();
-
-      self.battle_HideContainer();
-      self.continueCampaign_HideContainer();
-
-      self.Battle_Continue();
     });
 
     self.Buttons.HideBattleContainer.on("click", (e) => {
@@ -337,182 +324,7 @@ function mab_battle() {
       complete: () => {},
     });
   };
-  self.Battle_Continue = () => {
-    $.ajax({
-      type: "GET",
-      url: "https://localhost:7081/users/mabcontinuebattle",
-      xhrFields: {
-        withCredentials: true, // Only if you're using cookies; otherwise can be removed
-      },
-      success: (resp) => {
-        if (!resp.content) {
-          self.sweetAlertError(resp.message);
-          return;
-        }
 
-        let battle = resp.content;
-
-        let playerName = battle.mab_PlayerNickName;
-        let playerLevel = battle.mab_PlayerLevel;
-        self.PlayerState = resp.content.mab_PlayerState;
-
-        self.Fields.PlayerState.empty();
-
-        self.Fields.PlayerState.html(self.PlayerState);
-
-        self.Blocks.PlayerCards.empty();
-        self.PlayerCards = battle.mab_PlayerCards;
-        self.PlayerCards.forEach((card, index) => {
-          if (card.mab_IsCardAvailable === true) {
-            let available_cardHtml = `
-              <button
-                class="btn d-flex flex-column mab-card-front mab-available-card button-mab-arena-assigned-player-cards frozen-card"
-                type="button"
-                data-card-copy-id="${card.mab_PlayerCardId}"
-                >
-
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <span>${card.mab_CardName}</span>
-                  <span>${card.mab_CardLevel}</span>
-                </div>
-
-                <div class="d-flex flex-row justify-content-center align-items-center">
-                  <span>${card.mab_CardType}</span>
-
-                </div>
-
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <div>
-                    <span>${card.mab_CardPower}</span>
-
-                    |
-
-                    <span>${card.mab_CardUpperHand}</span>
-                  </div>
-
-                  <span id="span-mab-arena-player-${index}-card-total-power">?</span>
-                </div>
-              </button>
-            `;
-
-            self.Blocks.PlayerCards.append(available_cardHtml);
-          } else {
-            let usedCardClass =
-              card.mab_HasPlayerWon === true
-                ? "mab-used-card-won"
-                : "mab-used-card-lost";
-
-            let used_cardHtml = `
-              <div class="d-flex flex-column mab-card-front ${usedCardClass}" data-card-copy-id="${card.mab_PlayerCardId}">                    
-                <div class="d-flex flex-row justify-content-start align-items-center w-100">
-                  Card:<span>${card.mab_CardName}</span>
-                </div>
-
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <div>
-                    Type:<span>${card.mab_CardType}</span>
-                  </div>  
-
-                  <div>
-                    Lvl:<span>${card.mab_CardLevel}</span>
-                  </div>
-                </div>
-
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <div>
-                    Pwr.:<span>${card.mab_CardPower}</span>
-                  </div>
-
-                  <div>
-                    UpH.:<span>${card.mab_CardUpperHand}</span>
-                  </div>
-
-                  <div>
-                    F.Pwr.:<span id="span-mab-arena-player-${index}-card-total-power">${card.mab_CardFullPower}</span>
-                  </div>
-                </div>                                  
-                                            
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <div>
-                    Points:<span>${card.mab_DuelPoints}</span>                                                  
-                  </div>  
-
-                  <div class="d-flex flex-row justify-content-between align-items-center">  
-                    <div>  
-                      Xp:<span>${card.mab_EarnedXp}</span>   
-                    </div> 
-                    (
-                    <div>
-                      +<span>${card.mab_BonusXp}</span>  
-                    </div> 
-                    )
-                  </div>
-                </div>                 
-              </div>
-            `;
-
-            self.Blocks.PlayerCards.append(used_cardHtml);
-          }
-        });
-
-        let npcName = battle.mab_NpcName;
-        let npcLevel = battle.mab_NpcLevel;
-
-        self.NpcCards = battle.mab_NpcPlayedCards;
-
-        self.NpcCardFullPowerSequence = [];
-        self.NpcCards.forEach((card) => {
-          self.NpcCardFullPowerSequence.push(card.mab_CardFullPower);
-        });
-
-        self.NpcWinningStreak = [];
-        self.PlayerCards.forEach((card, index) => {
-          let hasNpcWon = null;
-
-          if (card.mab_DuelPoints) {
-            hasNpcWon = card.mab_DuelPoints <= 0;
-          }
-
-          self.NpcWinningStreak.push(hasNpcWon);
-        });
-
-        self.battle_ListNpcCards();
-
-        self.DeckSize = battle.mab_DeckSize;
-        self.DuelsCount = battle.mab_DuelsCount;
-        self.Battle_Points = battle.mab_BattlePoints;
-        self.Battle_EarnedXp = battle.mab_BattleEarnedXp;
-        self.Battle_BonusXp = battle.mab_BattleBonusXp;
-
-        self.IsPlayerTurn = battle.mab_IsPlayerAttacking;
-
-        self.Duel_EarnedPoints = battle.mab_DuelPoints;
-        self.Duel_EarnedXp = battle.mab_DuelEarnedXp;
-        self.Duel_BonusXp = battle.mab_DuelBonusXp;
-
-        self.Fields.BattlePoints.html(self.Battle_Points);
-        self.Fields.BattleStackedEarnedXp.html(self.Battle_EarnedXp);
-        self.Fields.BattleStackedBonusXp.html(self.Duel_BonusXp);
-
-        self.Fields.NpcName.html(npcName);
-        self.Fields.NpcLevel.html(npcLevel);
-
-        self.Fields.PlayerNickName.html(playerName);
-        self.Fields.PlayerLevel.html(playerLevel);
-
-        self.battle_HideContainer();
-        self.arena_ShowContainer();
-
-        self.Duel_CheckStatus();
-
-        self.sweetAlertSuccess("Continuing Battle...");
-      },
-      error: (err) => {
-        self.sweetAlertError(err);
-      },
-      complete: () => {},
-    });
-  };
   self.Battle_Finish = () => {
     $.ajax({
       type: "POST",
