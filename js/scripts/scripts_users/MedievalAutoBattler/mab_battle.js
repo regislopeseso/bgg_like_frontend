@@ -16,6 +16,7 @@ function mab_battle() {
 
   self.HasPlayerRetreated = false;
 
+  self.BattleId = null;
   self.Battle_Points = 0;
   self.Battle_EarnedXp = 0;
   self.Battle_BonusXp = 0;
@@ -302,13 +303,13 @@ function mab_battle() {
 
         self.reset_Arena();
 
+        self.BattleId = resp.content.mab_BattleId;
+
         self.Fields.NpcName.html(resp.content.mab_NpcName);
         self.Fields.NpcLevel.html(resp.content.mab_NpcLevel);
 
         self.Fields.PlayerNickName.html(resp.content.mab_PlayerNickName);
         self.Fields.PlayerLevel.html(resp.content.mab_PlayerLevel);
-
-        self.Fields.PlayerState.html(resp.content.mab_PlayerState);
 
         self.Battle_DoesPlayerGoFirst = resp.content.mab_DoesPlayerGoesFirst;
         if (self.Battle_DoesPlayerGoFirst === true) {
@@ -326,10 +327,12 @@ function mab_battle() {
         self.battle_HideContainer();
         self.arena_ShowContainer();
 
+        self.Duel_Start();
+
         self.Battle_ListPlayerDuellingCards();
         self.battle_ListNpcCards();
 
-        self.Duel_Start();
+        self.duel_RenderPlayerState();
 
         self.sweetAlertSuccess("Battle started!");
       },
@@ -355,6 +358,8 @@ function mab_battle() {
 
         let content = resp.content;
 
+        let battleId = content.mab_BattleId;
+
         let battleDoesPlayerGoFirst = content.mab_DoesPlayerGoesFirst;
 
         let playerNickname = content.mab_PlayerNickname;
@@ -365,6 +370,8 @@ function mab_battle() {
         let npcName = content.mab_NpcName;
         let npcLevel = content.mab_NpcLevel;
         let npcCards = content.mab_NpcCards;
+
+        self.BattleId = battleId;
 
         if (battleDoesPlayerGoFirst === true) {
           self.Fields.PlayerFirstToGoImg.html(
@@ -378,14 +385,15 @@ function mab_battle() {
 
         self.Fields.PlayerNickName.html(playerNickname);
         self.Fields.PlayerLevel.html(playerLevel);
-        self.Fields.PlayerState.html(playerFinalState);
+
+        self.PlayerState = playerFinalState;
+        self.duel_RenderPlayerState();
 
         self.Fields.NpcName.html(npcName);
         self.Fields.NpcLevel.html(npcLevel);
 
         playerCards.forEach((card, index) => {
           self.NpcWinningStreak.push(card.mab_DuelPoints <= 0);
-          console.log("self.NpcWinningStreak: ", self.NpcWinningStreak);
 
           let usedCardClass =
             card.mab_DuelPoints > 0
@@ -498,6 +506,7 @@ function mab_battle() {
     self.clear_PlayerDuellingCard();
 
     self.clear_PlayerDuellingCard();
+
     self.clear_NpcDuellingCard();
 
     $.ajax({
@@ -602,9 +611,8 @@ function mab_battle() {
 
         self.PlayerState = resp.content.mab_PlayerState;
 
-        self.Fields.PlayerState.empty();
-
-        self.Fields.PlayerState.html(self.PlayerState);
+        console.log("self.PlayerState: ", self.PlayerState);
+        self.duel_RenderPlayerState();
 
         self.Fields.BattlePoints.html(self.Battle_Points);
 
@@ -632,7 +640,7 @@ function mab_battle() {
 
     $.ajax({
       type: "GET",
-      url: "https://localhost:7081/users/mablistplayerduellingcards",
+      url: `https://localhost:7081/users/mablistplayerduellingcards?Mab_BattleId=${self.BattleId}`,
       xhrFields: { withCredentials: true },
       success: function (resp) {
         if (!resp.content) {
@@ -642,35 +650,62 @@ function mab_battle() {
 
         self.PlayerCards = resp.content;
 
+        let img_neutral_path = ` /images/icons/mab_card_types/cardtype_neutral.svg`;
+        let img_ranged_path = `/images/icons/mab_card_types/cardtype_ranged.svg`;
+        let img_cavalry_path = `/images/icons/mab_card_types/cardtype_cavalry.svg`;
+        let img_infantry_path = `/images/icons/mab_card_types/cardtype_infantry.svg`;
+
         self.PlayerCards.forEach((card, index) => {
+          let imgPath = ``;
+
+          switch (card.mab_CardType) {
+            case "Neutral":
+              imgPath = img_neutral_path;
+              break;
+            case "Ranged":
+              imgPath = img_ranged_path;
+              break;
+            case "Cavalry":
+              imgPath = img_cavalry_path;
+              break;
+            case "Infantry":
+              imgPath = img_infantry_path;
+              break;
+            default:
+              self.sweetAlertError("Failed to fetch mab card type");
+              break;
+          }
+
           if (!card.mab_DuelId) {
             let available_cardHtml = `
               <button
-                class="btn d-flex flex-column mab-card-front mab-available-card button-mab-arena-assigned-player-cards frozen-card"
+                class="btn mab-card mab-card-front mab-available-card button-mab-arena-assigned-player-cards frozen-card"
                 type="button"
                 data-card-copy-id="${card.mab_PlayerCardId}"
                 >
 
                 <div class="d-flex flex-row justify-content-between align-items-center w-100">
                   <span>${card.mab_CardName}</span>
-                  <span>${card.mab_CardLevel}</span>
+
+                  <div>
+                    <span>${card.mab_CardPower}</span>
+
+                    <span>|</span>
+
+                    <span>${card.mab_CardUpperHand}</span>
+                  </div>
                 </div>
 
-                <div class="d-flex flex-row justify-content-center align-items-center">
-                  <span>${card.mab_CardType}</span>
+                <div class="d-flex flex-row justify-content-center align-items-center">                  
+
+                  <img src="${imgPath}" class="cardtype"/>
 
                 </div>
 
                 <div class="d-flex flex-row justify-content-between align-items-center w-100">
                   <div>
-                    <span>${card.mab_CardPower}</span>
-
-                    |
-
-                    <span>${card.mab_CardUpperHand}</span>
-                  </div>
-
-                  <span id="span-mab-arena-player-${index}-card-total-power">?</span>
+                    <span class="cardCode">${card.mab_CardCode}</span>
+                  </div>                  
                 </div>
               </button>
             `;
@@ -683,52 +718,66 @@ function mab_battle() {
                 : "mab-used-card-lost";
 
             let used_cardHtml = `
-              <div class="d-flex flex-column mab-card-front ${usedCardClass}" data-card-copy-id="${card.mab_PlayerCardId}">                    
-                <div class="d-flex flex-row justify-content-start align-items-center w-100">
-                  Card:<span>${card.mab_CardName}</span>
-                </div>
+              <div class="d-flex flex-column">
+                <div
+                  class="mab-card mab-card-front ${usedCardClass} mab-available-card frozen-card"               
+                  data-card-copy-id="${card.mab_PlayerCardId}"
+                  >
 
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <div>
-                    Type:<span>${card.mab_CardType}</span>
-                  </div>  
+                  <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                    <span>${card.mab_CardName}</span>
 
-                  <div>
-                    Lvl:<span>${card.mab_CardLevel}</span>
-                  </div>
-                </div>
-
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <div>
-                    Pwr.:<span>${card.mab_CardPower}</span>
-                  </div>
-
-                  <div>
-                    UpH.:<span>${card.mab_CardUpperHand}</span>
-                  </div>
-
-                  <div>
-                    F.Pwr.:<span id="span-mab-arena-player-${index}-card-total-power">${card.mab_CardFullPower}</span>
-                  </div>
-                </div>                                  
-                                            
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <div>
-                    Points:<span>${card.mab_DuelPoints}</span>                                                  
-                  </div>  
-
-                  <div class="d-flex flex-row justify-content-between align-items-center">  
-                    <div>  
-                      Xp:<span>${card.mab_EarnedXp}</span>   
-                    </div> 
-                    (
                     <div>
-                      +<span>${card.mab_BonusXp}</span>  
-                    </div> 
-                    )
+                      <span>${card.mab_CardPower}</span>
+
+                      <span>|</span>
+
+                      <span>${card.mab_CardUpperHand}</span>
+                    </div>
                   </div>
+
+                  <div class="d-flex flex-row justify-content-center align-items-center">                  
+
+                    <img src="${imgPath}" class="cardtype"/>
+
+                  </div>
+
+                  <div class="d-flex flex-row justify-content-center align-items-center w-100">
+                    <div>
+                      <span class="cardCode">${card.mab_CardCode}</span>
+                    </div>                    
+                  </div>
+                </div>                                                               
+                                              
+                <div class="d-flex flex-column justify-content-center align-items-start w-100 pt-3">
+                  <div>
+                      Results Duel #${
+                        index + 1
+                      }:                                              
+                  </div>  
+
+                  <div>
+                      Card Full Power:<span>${
+                        card.mab_CardFullPower
+                      }</span>                                              
+                  </div>  
+
+                  <div>
+                    Points:<span>${
+                      card.mab_DuelPoints
+                    }</span>                                                  
+                  </div>  
+
+                  <div>  
+                    Xp:<span>${card.mab_DuelEarnedXp}</span>   
+                  </div> 
+                  
+                  <div>
+                    Bonus Xp:<span>${card.mab_DuelBonusXp}</span>  
+                  </div> 
+                   
                 </div>                 
-              </div>
+              </div> 
             `;
 
             self.Blocks.PlayerCards.append(used_cardHtml);
@@ -807,6 +856,68 @@ function mab_battle() {
       },
       complete: () => {},
     });
+  };
+  self.duel_RenderPlayerState = () => {
+    self.Fields.PlayerState.empty();
+
+    let img_state_one_normal = `/images/icons/mab_player_states/state_one_normal.svg`;
+    let img_state_two_flawless = `/images/icons/mab_player_states/state_two_flawless.svg`;
+    let img_state_three_matchless = `/images/icons/mab_player_states/state_three_matchless.svg`;
+    let img_state_four_impredictable = `/images/icons/mab_player_states/state_four_impredictable.svg`;
+    let img_state_five_unstopable = `/images/icons/mab_player_states/state_five_unstopable.svg`;
+    let img_state_six_triumphant = `/images/icons/mab_player_states/state_six_triumphant.svg`;
+    let img_state_seven_glorious = `/images/icons/mab_player_states/state_seven_glorious.svg`;
+    let img_state_eight_panicking = `/images/icons/mab_player_states/state_eight_panicking.svg`;
+
+    let imgPath = ``;
+
+    switch (self.PlayerState) {
+      case "Normal":
+        imgPath = img_state_one_normal;
+        break;
+      case "Flawless":
+        imgPath = img_state_two_flawless;
+        break;
+      case "Matchless":
+        imgPath = img_state_three_matchless;
+        break;
+      case "Impredictable":
+        imgPath = img_state_four_impredictable;
+        break;
+      case "Unstopable":
+        imgPath = img_state_five_unstopable;
+        break;
+      case "Triumphant":
+        imgPath = img_state_six_triumphant;
+        break;
+      case "Glorious":
+        imgPath = img_state_seven_glorious;
+        break;
+      case "Panicking":
+        imgPath = img_state_eight_panicking;
+        break;
+      default:
+        imgPath = img_state_one_normal;
+        break;
+    }
+
+    self.Fields.PlayerState.html(`<img src="${imgPath}" class="playerState"/>`);
+    const tooltipEl = document.getElementById("mab-player-state-tooltip");
+
+    // check if tooltip already exists
+    let tooltip = bootstrap.Tooltip.getInstance(tooltipEl);
+
+    if (tooltip) {
+      // update tooltip text dynamically
+      tooltip.setContent({
+        ".tooltip-inner": `Player State: ${self.PlayerState}`,
+      });
+    } else {
+      // initialize tooltip if not yet created
+      tooltip = new bootstrap.Tooltip(tooltipEl, {
+        title: `Player State: ${self.PlayerState}`,
+      });
+    }
   };
 
   self.Duel_NpcAttacks = () => {
@@ -895,37 +1006,68 @@ function mab_battle() {
         cardFullPower = self.NpcCardFullPowerSequence[index];
       }
 
+      let img_neutral_path = ` /images/icons/mab_card_types/cardtype_neutral.svg`;
+      let img_ranged_path = `/images/icons/mab_card_types/cardtype_ranged.svg`;
+      let img_cavalry_path = `/images/icons/mab_card_types/cardtype_cavalry.svg`;
+      let img_infantry_path = `/images/icons/mab_card_types/cardtype_infantry.svg`;
+
+      let imgPath = ``;
+
+      switch (card.mab_CardType) {
+        case "Neutral":
+          imgPath = img_neutral_path;
+          break;
+        case "Ranged":
+          imgPath = img_ranged_path;
+          break;
+        case "Cavalry":
+          imgPath = img_cavalry_path;
+          break;
+        case "Infantry":
+          imgPath = img_infantry_path;
+          break;
+        default:
+          self.sweetAlertError("Failed to fetch mab card type");
+          break;
+      }
+
       let usedNpcCard_Html = `
-              <div class="d-flex flex-column mab-card-front ${usedCardClass}">                    
-                <div class="d-flex flex-row justify-content-start align-items-center w-100">
-                  Card:<span>${card.mab_CardName}</span>
-                </div>
+        <div class="d-flex flex-column">
+          <div
+            class="mab-card mab-card-front ${usedCardClass} mab-available-card frozen-card"               
+            data-card-copy-id="${card.mab_PlayerCardId}"
+            >
 
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <div>
-                    Type:<span>${card.mab_CardType}</span>
-                  </div>  
+            <div class="d-flex flex-row justify-content-between align-items-center w-100">
+              <span>${card.mab_CardName}</span>
 
-                  <div>
-                    Lvl:<span>${card.mab_CardLevel}</span>
-                  </div>
-                </div>
+              <div>
+                <span>${card.mab_CardPower}</span>
 
-                <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                  <div>
-                    Pwr.:<span>${card.mab_CardPower}</span>
-                  </div>
+                <span>|</span>
 
-                  <div>
-                    UpH.:<span>${card.mab_CardUpperHand}</span>
-                  </div>
-
-                  <div class="mab-npc-card-full-power">
-                    F.Pwr.:<span>${cardFullPower}</span>
-                  </div>
-                </div>                                                          
+                <span>${card.mab_CardUpperHand}</span>
               </div>
-            `;
+            </div>
+
+            <div class="d-flex flex-row justify-content-center align-items-center">                  
+
+              <img src="${imgPath}" class="cardtype"/>
+
+            </div>
+
+            <div class="d-flex flex-row justify-content-center align-items-center w-100">                  
+              <div>
+                <span class="cardCode">${card.mab_CardCode}</span>
+              </div>                      
+            </div>
+          </div> 
+
+          <div class="d-flex flex-column justify-content-center align-items-start w-100 pt-3">
+            <div>Card Full Power:<span>${cardFullPower}</span></div>                                           
+          </div>  
+        </div>  
+      `;
 
       self.Blocks.NpcCards.append(usedNpcCard_Html);
     });
@@ -933,7 +1075,8 @@ function mab_battle() {
     if (self.NpcCards.length < self.DeckSize) {
       for (let i = 0; i < self.DeckSize - self.NpcCards.length; i++) {
         let available_cardHtml = `
-            <div class="d-flex flex-column mab-card-front">
+            <div class="mab-card mab-card-back">
+              <img src="/images/icons/mab_card_types/visored-helm.svg" class="cardtype" />
             </div>             
             `;
 
@@ -1064,6 +1207,7 @@ function mab_battle() {
 
     self.HasPlayerRetreated = false;
 
+    self.BattleId = null;
     self.Battle_Points = 0;
     self.Battle_EarnedXp = 0;
     self.Battle_BonusXp = 0;

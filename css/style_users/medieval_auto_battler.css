@@ -120,43 +120,37 @@ main {
   font-size: larger !important;
   font-weight: bolder !important;
 }
-
-.mab-card-back {
-  justify-content: center;
+.mab-card {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 25px;
-  border: 1px solid var(--text-color);
-  border-radius: 12px;
-  background-color: var(--second-bg-color);
   width: 200px;
   height: 250px;
   padding: 5px;
-  margin: 10px;
+  border: 1px solid var(--main-color);
+  border-radius: 12px;
+}
+.mab-card-back {
+  justify-content: center !important;
+  background-color: var(--second-bg-color);
 }
 .mab-card-front {
-  align-items: center;
-  border-radius: 12px;
+  justify-content: space-between !important;
   background-color: var(--second-bg-color);
-  width: 200px;
-  height: 250px;
-  padding: 5px;
 }
 .mab-available-card {
-  border: none;
   justify-content: center;
   gap: 25px;
 }
 .mab-used-card-won {
-  justify-content: space-between;
   pointer-events: none;
   border: 1px solid var(--greenish);
-  box-shadow: 0 0 0px 1px var(--greenish) !important;
+  box-shadow: 0 0 5px 2px var(--greenish) !important;
 }
 .mab-used-card-lost {
-  justify-content: space-between;
   pointer-events: none;
   border: 1px solid var(--reddish);
-  box-shadow: 0 0 0px 1px var(--reddish) !important;
+  box-shadow: 0 0 5px 2px var(--reddish) !important;
 }
 
 .frozen-card {
@@ -179,6 +173,20 @@ main {
   border: 2px solid var(--main-color) !important;
   box-shadow: 0 0 5px 5px var(--main-color) !important;
   transition: opacity 0.3s ease-in-out !important;
+}
+
+.playerState {
+  margin: 0px 0px;
+  width: 50px;
+  height: 50px;
+}
+.cardtype {
+  margin: 0px 0px;
+  width: 100px;
+  height: 100px;
+}
+.cardCode {
+  font-size: smaller !important;
 }
 
 #div-mab-arena-announcements-block {
