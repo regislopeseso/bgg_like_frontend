@@ -244,25 +244,42 @@
           <!-- Arena header -->
           <div
             id="header-mab-arena"
-            class="d-flex flex-row justify-content-between align-items-start w-100 pb-5 gap-3"
+            class="d-flex flex-row justify-content-between align-items-start w-100 pb-3 gap-3"
           >
             <div
               class="p-0 m-0 d-flex flex-column align-items-start justify-content-center"
             >
               <h3 class="p-0 m-0"><span>A</span>rena</h3>
+              <div class="d-flex flex-column">
+                <div>
+                  <span>P</span>layer&nbsp;<span>L</span>evel:&nbsp;
+                  <span class="span-mab-arena-player-level"> </span>
+                </div>
+                <div>
+                  <span>N</span>pc&nbsp;<span>L</span>evel:&nbsp;
+                  <span class="span-mab-arena-npc-level"> </span>
+                </div>
+              </div>
               <div
                 class="d-flex flex-row gap-2 justify-content-start align-items-center"
               >
                 <div>
-                  Battle Points:
-                  <span id="span-mab-battle-points">?</span>,&nbsp;
+                  <span>B</span>attle&nbsp;<span>P</span>oints:&nbsp;<span
+                    id="span-mab-battle-points"
+                    >?</span
+                  >,&nbsp;
                 </div>
                 <div>
-                  Earned Xp:
-                  <span id="span-mab-battle-earned-xp">?</span>,&nbsp;
+                  <span>E</span>arned&nbsp;<span>X</span>p:&nbsp;<span
+                    id="span-mab-battle-earned-xp"
+                    >?</span
+                  >,&nbsp;
                 </div>
                 <div>
-                  Bonus Xp: <span id="span-mab-battle-bonus-xp">?</span>
+                  <span>B</span>onus<span>X</span>p:&nbsp;<span
+                    id="span-mab-battle-bonus-xp"
+                    >?</span
+                  >
                 </div>
               </div>
             </div>
@@ -290,14 +307,13 @@
 
           <!-- NPC's Field -->
           <div
-            class="d-flex flex-column align-items-center justify-content-center gap-3"
+            class="d-flex flex-column align-items-center justify-content-center gap-3 pb-3"
           >
             <div
               class="d-flex flex-row align-items-center justify-content-center gap-3"
             >
               <span id="span-mab-arena-npc-first-to-go-img"></span>
-              <span id="span-mab-arena-npc-name"></span>
-              <div>(Level: <span id="span-mab-arena-npc-level"></span>)</div>
+              <span class="span-mab-arena-npc-name"></span>
             </div>
             <div
               id="block-mab-arena-npc-cards"
@@ -322,7 +338,7 @@
 
               <div
                 id="div-mab-arena-announcements-block"
-                class="d-flex flex-column justify-content-center align-items-center border-round"
+                class="d-flex flex-column justify-content-center align-items-center border-round p-3"
               >
                 <h4>
                   <span id="span-mab-arena-round-counter">1#</span>
@@ -330,15 +346,6 @@
                 </h4>
 
                 <div id="div-mab-arena-announcements" class="p-0 m-0"></div>
-
-                <div class="d-flex flex-row gap-2">
-                  <button
-                    id="button-mab-arena-confirm-card-choice"
-                    class="btn btn-outline-info btn-lg mab-arena-button-hidden"
-                  >
-                    Duel !
-                  </button>
-                </div>
               </div>
               <img
                 src="/images/icons/io_arrow_right.svg"
@@ -359,9 +366,7 @@
             >
               <span id="span-mab-arena-player-first-to-go-img"></span>
 
-              <span id="span-mab-arena-player-nickname"></span>
-
-              <div>(Level:<span id="span-mab-arena-player-level"></span>)</div>
+              <span class="span-mab-arena-player-nickname"></span>
 
               <div
                 id="mab-player-state-tooltip"
@@ -377,6 +382,24 @@
             <div
               id="block-mab-arena-player-cards"
               class="d-flex flex-row gap-3"
+            ></div>
+          </div>
+          <hr />
+          <div
+            class="d-flex justify-content-center align-items-center w-100 pt-3 pb-3"
+          >
+            <button
+              id="button-mab-arena-show-duel-results"
+              class="btn btn-outline-info"
+            >
+              Show Results
+            </button>
+          </div>
+
+          <div id="wrapper-mab-arena-player-duel-results">
+            <div
+              id="block-mab-arena-player-duel-results"
+              class="d-flex flex-row justify-content-center align-items-center gap-3 w-100"
             ></div>
           </div>
           <hr />

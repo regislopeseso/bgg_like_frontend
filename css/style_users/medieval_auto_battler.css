@@ -1,3 +1,8 @@
+:root {
+  --mab-card-width: 200px;
+  --mab-card-height: 250px;
+}
+
 main {
   margin-top: 150px;
   display: flex;
@@ -103,6 +108,12 @@ main {
   min-width: 5rem !important;
 }
 
+.span-mab-arena-npc-name,
+.span-mab-arena-player-nickname {
+  font-size: larger;
+  font-weight: bolder;
+}
+
 #div-mab-arena-npc-duelling-card,
 #div-mab-arena-player-duelling-card {
   content: none;
@@ -115,20 +126,34 @@ main {
   transition: all 1s ease-in-out;
 }
 
-#span-player-card-full-power,
-#span-npc-card-full-power {
-  font-size: larger !important;
-  font-weight: bolder !important;
+.mab-full-card-power {
+  font-size: larger;
+  font-weight: bolder;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--main-color);
+  box-shadow: 0 0 5px 2px var(--main-color) !important;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
+
 .mab-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 200px;
-  height: 250px;
+  width: var(--mab-card-width);
+  height: var(--mab-card-height);
   padding: 5px;
-  border: 1px solid var(--main-color);
+  border: 1px solid var(--main-color) !important;
   border-radius: 12px;
+  gap: 25px;
+}
+.mab-card:disabled {
+  cursor: default;
+  opacity: 0.6;
+  transition: none;
 }
 .mab-card-back {
   justify-content: center !important;
@@ -138,19 +163,12 @@ main {
   justify-content: space-between !important;
   background-color: var(--second-bg-color);
 }
-.mab-available-card {
-  justify-content: center;
-  gap: 25px;
-}
+
 .mab-used-card-won {
-  pointer-events: none;
-  border: 1px solid var(--greenish);
-  box-shadow: 0 0 5px 2px var(--greenish) !important;
+  box-shadow: 0 0 5px 5px var(--greenish) !important;
 }
 .mab-used-card-lost {
-  pointer-events: none;
-  border: 1px solid var(--reddish);
-  box-shadow: 0 0 5px 2px var(--reddish) !important;
+  box-shadow: 0 0 5px 5px var(--reddish) !important;
 }
 
 .frozen-card {
@@ -186,24 +204,31 @@ main {
   height: 100px;
 }
 .cardCode {
-  font-size: smaller !important;
+  font-size: 50% !important;
 }
 
 #div-mab-arena-announcements-block {
+  width: 500px;
   border: 1px solid var(--main-color);
   border-radius: 12px;
   padding: 10px;
 }
 
-.mab-arena-button-hidden {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease-in-out;
+#wrapper-mab-arena-player-duel-results {
+  display: none;
 }
-.mab-arena-button-display {
-  opacity: 1;
-  pointer-events: all;
-  transition: opacity 0.2s ease-in-out;
+
+.mab-duel-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: var(--mab-card-width);
+  height: 150px;
+  padding: 5px;
+  border: 1px solid var(--main-color) !important;
+  border-radius: 12px;
+  gap: 10px;
 }
 
 @media screen and (max-width: 1440px) {
