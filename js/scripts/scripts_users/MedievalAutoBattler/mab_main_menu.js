@@ -1,4 +1,4 @@
-function mab_campaign_statistics() {
+function mab_main_menu() {
   let self = this;
   self.IsBuilt = false;
   self.CurrentPlayerNickName = "";
@@ -169,14 +169,15 @@ function mab_campaign_statistics() {
       ? div.removeClass("show-div").addClass("hide-div")
       : div.removeClass("hide-div").addClass("show-div");
   };
-
   self.campaignStatistics_ShowContainer = () => {
-    self.toggleContainerVisibility(self.Containers.CampaignStatistics);
-
-    self.LoadCampaignStatistics();
+    self.Containers.CampaignStatistics.removeClass("hide-div").addClass(
+      "show-div"
+    );
   };
   self.campaignStatistics_HideContainer = () => {
-    self.toggleContainerVisibility(self.Containers.CampaignStatistics);
+    self.Containers.CampaignStatistics.removeClass("show-div").addClass(
+      "hide-div"
+    );
   };
 
   self.LoadCampaignStatistics = () => {
@@ -230,6 +231,10 @@ function mab_campaign_statistics() {
             "src",
             "/images/icons/trophy_allnpcsdefeated_achieved.svg"
           );
+        }
+
+        if (mabCampaignDB.mab_StartNewCampaign === false) {
+          self.campaignStatistics_ShowContainer();
         }
       },
       error: function (xhr, status, error) {
@@ -324,11 +329,12 @@ function mab_campaign_statistics() {
   self.build = () => {
     self.loadReferences();
     self.loadEvents();
+    self.LoadCampaignStatistics();
   };
 
   self.build();
 }
 
 $(function () {
-  new mab_campaign_statistics();
+  new mab_main_menu();
 });

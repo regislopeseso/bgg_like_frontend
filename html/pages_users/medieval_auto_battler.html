@@ -22,55 +22,244 @@
       <section id="mab-containers-content">
         <!-- 1.CONTAINER: MAB MAIN MENU -->
         <div id="container-mab-main-menu" class="show-div">
-          <div class="d-flex flex-column w-100 gap-0">
+          <div
+            class="d-flex flex-column justify-content-center align-items-center w-100 gap-0"
+          >
             <h3 class="p-0 m-0"><span>M</span>ain <span>M</span>enu</h3>
             <hr />
           </div>
 
-          <!-- Start Mab Campaign -->
-          <button
-            id="button-mab-new-campaign-show-container"
-            class="btn btn-outline-info"
-            type="button"
+          <div
+            class="d-flex flex-column justify-content-center align-items-center w-100"
           >
-            Start New Campaign
-          </button>
+            <div>
+              <h4><span>C</span>ampaign</h4>
+            </div>
+            <div
+              class="d-flex flex-row justify-content-center align-items-center gap-3 w-100"
+            >
+              <!-- Start Mab Campaign -->
+              <button
+                id="button-mab-new-campaign-show-container"
+                class="btn btn-outline-info"
+                type="button"
+              >
+                Start
+              </button>
 
-          <!-- Continue Mab Campaign -->
-          <button
-            id="button-mab-continue-campaign-show-container"
-            class="btn btn-outline-info"
-            type="button"
-          >
-            Continue Campaign
-          </button>
+              <!-- Continue Mab Campaign -->
+              <button
+                id="button-mab-continue-campaign-show-container"
+                class="btn btn-outline-info"
+                type="button"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
 
-          <!-- Open Manage Mab Player Decks -->
-          <button
-            id="button-mab-active-deck-show-container"
-            class="btn btn-outline-info"
-            type="button"
-          >
-            Manage Decks
-          </button>
+          <hr />
 
-          <!-- Open Open MAB STORE -->
-          <button
-            id="button-mab-market-show-container"
-            class="btn btn-outline-info"
-            type="button"
+          <div
+            class="d-flex flex-column justify-content-center align-items-center w-100"
           >
-            Market
-          </button>
+            <div>
+              <h4><span>I</span>nventory</h4>
+            </div>
 
-          <!-- Open Open Mab Campaign Statistics-->
-          <button
-            id="button-mab-campaign-statistics-show-container"
-            class="btn btn-outline-info"
-            type="button"
-          >
-            Show Campaign Statistics
-          </button>
+            <div
+              class="d-flex flex-row justify-content-center align-items-center gap-3 w-100"
+            >
+              <!-- Open Manage Mab Player Decks -->
+              <button
+                id="button-mab-active-deck-show-container"
+                class="btn btn-outline-info"
+                type="button"
+              >
+                Manage Decks
+              </button>
+
+              <button
+                id="button-mab-buy-deck-booster"
+                class="btn btn-outline-info"
+                type="button"
+              >
+                Buy Deck Booster
+              </button>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Campaign Statistics-->
+
+          <div id="container-mab-campaign-statistics" class="hide-div">
+            <div
+              class="d-flex flex-column justify-content-center align-items-start w-100"
+            >
+              <!-- Fields -->
+
+              <div
+                class="d-flex flex-column justify-content-start align-items-start gap-3"
+              >
+                <form
+                  id="form-mab-campaign-statistics"
+                  class="mb-3 d-flex flex-column justify-content-between"
+                >
+                  <label for="input-mab-campaign-statistics-new-player-nickname"
+                    ><span>P</span>layer <span>N</span>ame</label
+                  >
+                  <div class="d-flex flex-row gap-3">
+                    <input
+                      name="MabPlayerNewNickName"
+                      id="input-mab-campaign-statistics-new-player-nickname"
+                      class="current-data form-control text-center"
+                      type="text"
+                      readonly
+                    />
+                    <div class="d-flex flex-row gap-1">
+                      <button
+                        id="button-mab-campaign-statistics-edit-player-nickname"
+                        class="btn btn-outline-warning btn-sm"
+                        type="button"
+                      >
+                        edit
+                      </button>
+                      <button
+                        id="button-mab-campaign-statistics-confirm-new-player-nickname"
+                        class="btn btn-outline-success btn-sm"
+                        type="button"
+                        disabled
+                      >
+                        confirm
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+                <div
+                  class="d-flex flex-row align-items-center justify-content-center gap-2"
+                >
+                  <div class="d-flex flex-row gap-1 m-0 p-0">
+                    <div><span>C</span>urrent <span>L</span>evel:</div>
+                    <span id="field-mab-campaign-statistics-player-level"
+                      >?</span
+                    >
+                  </div>
+                  |
+                  <div class="d-flex flex-row gap-1 m-0 p-0">
+                    <div><span>X</span>p:</div>
+                    <span id="field-mab-campaign-statistics-player-xp">0</span>
+                    /
+                    <span id="field-mab-campaign-statistics-player-xp-threshold"
+                      >?</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex flex-row align-items-center justify-content-center gap-2"
+                >
+                  <div class="d-flex flex-row gap-1 m-0 p-0">
+                    <div class="d-flex flex-nowrap">
+                      <span>G</span>old&nbsp;<span>S</span>tash:
+                    </div>
+                    <span id="field-mab-campaign-statistics-gold-stash">?</span>
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex flex-row align-items-center justify-content-center gap-2"
+                >
+                  <div class="d-flex flex-row gap-1">
+                    <div class="d-flex flex-nowrap">
+                      <span>D</span>ecks&nbsp;<span>O</span>wned:
+                    </div>
+                    <span id="field-mab-campaign-statistics-decks-owned"
+                      >?</span
+                    >
+                  </div>
+                  |
+                  <div class="d-flex flex-row gap-1">
+                    <div class="d-flex flex-nowrap">
+                      <span>B</span>oosters&nbsp;<span>O</span>pened:
+                    </div>
+                    <span id="field-mab-campaign-statistics-boosters-opened">
+                      ?
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex flex-row align-items-center justify-content-center gap-2"
+                >
+                  <div class="d-flex flex-row gap-1 m-0 p-0">
+                    <div class="d-flex flex-nowrap">
+                      <span>B</span>attles&nbsp;<span>C</span>ount:
+                    </div>
+                    <span id="field-mab-campaign-statistics-battles-count"
+                      >?</span
+                    >
+                  </div>
+                  |
+                  <div class="d-flex flex-row gap-1 m-0 p-0">
+                    <div class="d-flex flex-nowrap">
+                      <span>V</span>ictories:
+                    </div>
+                    <span id="field-mab-campaign-statistics-battles-won"
+                      >?</span
+                    >
+                  </div>
+                  |
+                  <div class="d-flex flex-row gap-1 m-0 p-0">
+                    <div class="d-flex flex-nowrap"><span>D</span>efeats:</div>
+                    <span id="field-mab-campaign-statistics-battles-lost"
+                      >?</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex flex-row gap-3 align-items-center justify-content-start"
+                >
+                  <div
+                    class="mb-3 d-flex flex-column w-50 justify-content-between"
+                  >
+                    <div><span>T</span>rophies:</div>
+
+                    <div class="d-flex flex-row gap-3">
+                      <div
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        data-bs-custom-class="trophies-tooltip"
+                        data-bs-title="All Cards Collected!"
+                      >
+                        <img
+                          id="img-mab-campaign-statistics-all-cards-collected-trophy"
+                          class="trophy-icon"
+                          src="/images/icons/trophy_allcardscollected.svg"
+                        />
+                      </div>
+
+                      <div
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        data-bs-custom-class="trophies-tooltip"
+                        data-bs-title="All Npcs Defeated!"
+                      >
+                        <img
+                          id="img-mab-campaign-statistics-all-npcs-defeated-trophy"
+                          class="trophy-icon"
+                          src="/images/icons/trophy_allnpcsdefeated.svg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr />
+            </div>
+          </div>
         </div>
 
         <!-- 2.CONTAINER: NEW MAB CAMPAIGN -->
@@ -188,7 +377,7 @@
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
             <div class="p-0 m-0">
-              <h3 class="p-0 m-0"><span>C</span>ampaign</h3>
+              <h3 class="p-0 m-0"><span>Q</span>uests</h3>
             </div>
 
             <button
@@ -244,42 +433,69 @@
           <!-- Arena header -->
           <div
             id="header-mab-arena"
-            class="d-flex flex-row justify-content-between align-items-start w-100 pb-3 gap-3"
+            class="d-flex flex-row justify-content-between align-items-start w-100 pb-3"
           >
             <div
-              class="p-0 m-0 d-flex flex-column align-items-start justify-content-center"
+              class="p-0 m-0 d-flex flex-column align-items-start justify-content-center gap-3"
             >
               <h3 class="p-0 m-0"><span>A</span>rena</h3>
-              <div class="d-flex flex-column">
-                <div>
-                  <span>P</span>layer&nbsp;<span>L</span>evel:&nbsp;
-                  <span class="span-mab-arena-player-level"> </span>
-                </div>
-                <div>
-                  <span>N</span>pc&nbsp;<span>L</span>evel:&nbsp;
-                  <span class="span-mab-arena-npc-level"> </span>
-                </div>
-              </div>
+
               <div
-                class="d-flex flex-row gap-2 justify-content-start align-items-center"
+                class="d-flex flex-column justify-content-center align-items-start gap-3"
               >
-                <div>
-                  <span>B</span>attle&nbsp;<span>P</span>oints:&nbsp;<span
-                    id="span-mab-battle-points"
-                    >?</span
-                  >,&nbsp;
-                </div>
-                <div>
-                  <span>E</span>arned&nbsp;<span>X</span>p:&nbsp;<span
-                    id="span-mab-battle-earned-xp"
-                    >?</span
-                  >,&nbsp;
-                </div>
-                <div>
-                  <span>B</span>onus<span>X</span>p:&nbsp;<span
-                    id="span-mab-battle-bonus-xp"
-                    >?</span
+                <div class="d-flex flex-row gap-3">
+                  <div
+                    class="d-flex flex-row justify-content-start align-items-center"
                   >
+                    <span id="span-mab-arena-player-first-to-go-img"></span>
+                    <div>
+                      <span class="span-mab-arena-player-nickname"></span
+                      >&nbsp;(<span>L</span>evel:&nbsp;<span
+                        class="span-mab-arena-player-level"
+                      >
+                      </span
+                      >)
+                    </div>
+                  </div>
+                  <div>
+                    <img
+                      src="/images/icons/mab/versus_crossed_swords.svg"
+                      id="mab-versus-img"
+                    />
+                  </div>
+                  <div
+                    class="d-flex flex-row justify-content-start align-items-center"
+                  >
+                    <span id="span-mab-arena-npc-first-to-go-img"></span>
+                    <div>
+                      <span class="span-mab-arena-npc-name"></span
+                      >&nbsp;(<span>L</span>evel:&nbsp;
+                      <span class="span-mab-arena-npc-level"> </span>)
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex flex-row gap-2 justify-content-start align-items-center"
+                >
+                  <div>
+                    <span>B</span>attle&nbsp;<span>P</span>oints:&nbsp;<span
+                      id="span-mab-battle-points"
+                      >?</span
+                    >,&nbsp;
+                  </div>
+                  <div>
+                    <span>E</span>arned&nbsp;<span>X</span>p:&nbsp;<span
+                      id="span-mab-battle-earned-xp"
+                      >?</span
+                    >,&nbsp;
+                  </div>
+                  <div>
+                    <span>B</span>onus<span>X</span>p:&nbsp;<span
+                      id="span-mab-battle-bonus-xp"
+                      >?</span
+                    >
+                  </div>
                 </div>
               </div>
             </div>
@@ -312,12 +528,13 @@
             <div
               class="d-flex flex-row align-items-center justify-content-center gap-3"
             >
-              <span id="span-mab-arena-npc-first-to-go-img"></span>
-              <span class="span-mab-arena-npc-name"></span>
+              <h4>
+                <span class="span-mab-arena-npc-name"></span> <span>C</span>ards
+              </h4>
             </div>
             <div
               id="block-mab-arena-npc-cards"
-              class="d-flex flex-row gap-3"
+              class="d-flex flex-row gap-4"
             ></div>
           </div>
 
@@ -326,48 +543,17 @@
           <!-- DUELLING Field -->
           <div
             id="block-mab-arena-duelling-zone"
-            class="d-flex flex-column w-100 align-items-center justify-content-center pt-3 pb-3 gap-3"
+            class="d-flex flex-row w-100 align-items-center justify-content-center pt-2 pb-2 gap-2"
           >
+            <img
+              src="/images/icons/io_arrow_right.svg"
+              class="bi bi-arrow white-icon p-0 m-0"
+            />
+
             <div
-              class="d-flex flex-row align-items-center justify-content-center"
+              id="div-mab-arena-announcements-block"
+              class="d-flex flex-row justify-content-center align-items-center border-round gap-3"
             >
-              <img
-                src="/images/icons/io_arrow_right.svg"
-                class="bi bi-arrow white-icon p-0 m-0"
-              />
-
-              <div
-                id="div-mab-arena-announcements-block"
-                class="d-flex flex-column justify-content-center align-items-center border-round p-3"
-              >
-                <h4>
-                  <span id="span-mab-arena-round-counter">1#</span>
-                  <span> Duel</span>
-                </h4>
-
-                <div id="div-mab-arena-announcements" class="p-0 m-0"></div>
-              </div>
-              <img
-                src="/images/icons/io_arrow_right.svg"
-                class="bi bi-arrow white-icon p-0 m-0"
-                style="rotate: 180deg"
-              />
-            </div>
-          </div>
-
-          <hr />
-
-          <!-- PLAYERS's Field -->
-          <div
-            class="d-flex flex-column align-items-center justify-content-center gap-3"
-          >
-            <div
-              class="d-flex flex-row align-items-center justify-content-center gap-3"
-            >
-              <span id="span-mab-arena-player-first-to-go-img"></span>
-
-              <span class="span-mab-arena-player-nickname"></span>
-
               <div
                 id="mab-player-state-tooltip"
                 data-bs-toggle="tooltip"
@@ -377,11 +563,43 @@
               >
                 <span id="span-mab-arena-player-state"> </span>
               </div>
+              <div class="d-flex flex-column">
+                <h4 class="p-0 m-0">
+                  <span id="span-mab-arena-round-counter">1#</span>
+                  <span> Duel:&nbsp;</span>
+                </h4>
+
+                <div id="div-mab-arena-announcements" class="p-0 m-0"></div>
+              </div>
+            </div>
+
+            <img
+              src="/images/icons/io_arrow_right.svg"
+              class="bi bi-arrow white-icon p-0 m-0"
+              style="rotate: 180deg"
+            />
+          </div>
+
+          <hr />
+
+          <!-- PLAYERS's Field -->
+          <div
+            class="d-flex flex-column align-items-center justify-content-center gap-3"
+          >
+            <div
+              class="d-flex flex-column align-items-center justify-content-center"
+            >
+              <div>
+                <h4 class="p-0 m-0">
+                  <span class="span-mab-arena-player-nickname"></span>
+                  <span>C</span>ards
+                </h4>
+              </div>
             </div>
 
             <div
               id="block-mab-arena-player-cards"
-              class="d-flex flex-row gap-3"
+              class="d-flex flex-row gap-4"
             ></div>
           </div>
           <hr />
@@ -392,17 +610,16 @@
               id="button-mab-arena-show-duel-results"
               class="btn btn-outline-info"
             >
-              Show Results
+              Show Duels Results
             </button>
           </div>
 
           <div id="wrapper-mab-arena-player-duel-results">
             <div
               id="block-mab-arena-player-duel-results"
-              class="d-flex flex-row justify-content-center align-items-center gap-3 w-100"
+              class="d-flex flex-row justify-content-center align-items-center gap-4 w-100"
             ></div>
           </div>
-          <hr />
         </div>
 
         <!-- 5.CONTAINER: ACTIVE MAB DECK -->
@@ -718,284 +935,6 @@
             </div>
           </form>
         </div>
-
-        <!-- 7.CONTAINER: OPEN MAB MARKET -->
-        <div id="container-mab-market" class="hide-div">
-          <div
-            id="header-mab-market"
-            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
-          >
-            <div id="form-title-mab-market" class="p-0 m-0">
-              <h3 class="p-0 m-0"><span>M</span>arket <span>P</span>lace</h3>
-            </div>
-            <button
-              id="button-mab-market-hide-container"
-              class="btn btn-outline-danger btn-sm"
-              type="button"
-            >
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-          </div>
-
-          <hr />
-
-          <div
-            id="block-mab-market-data"
-            class="d-flex flex-column align-items-start justify-content-start gap-4"
-          >
-            <div
-              class="d-flex flex-row gap-3 align-items-center justify-content-start"
-            >
-              <div class="d-flex flex-row gap-1 m-0 p-0">
-                <div>
-                  <span>C</span
-                  >urrent&nbsp;<span>G</span>old&nbsp;<span>V</span>alue:
-                </div>
-                <span id="span-field-mab-market-current-gold-value">?</span>
-              </div>
-              |
-              <div class="d-flex flex-row gap-1 m-0 p-0">
-                <div class="d-flex flex-nowrap">
-                  <span>G</span>old&nbsp;<span>S</span>tash:
-                </div>
-                <span id="span-field-mab-market-gold-stash">?</span>
-              </div>
-            </div>
-
-            <div
-              class="d-flex flex-column gap-0 align-items-start justify-content-center"
-            >
-              <div class="d-flex flex-nowrap">
-                <span>E</span
-                >xpendable&nbsp;<span>C</span>ard&nbsp;<span>C</span>opies:
-              </div>
-
-              <div
-                class="d-flex flex-row gap-3 align-items-start justify-content-start"
-              >
-                <div class="d-flex flex-row gap-1 m-0 p-0">
-                  <div class="d-flex flex-nowrap"><span>C</span>ount:</div>
-                  <span id="span-field-mab-market-expendable-card-copies-count">
-                    ?
-                  </span>
-                </div>
-                |
-                <div class="d-flex flex-row gap-1 m-0 p-0">
-                  <div class="d-flex flex-nowrap"><span>V</span>alue:</div>
-                  <span id="span-field-mab-market-expendable-card-copies-value">
-                    ?
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            id="block-mab-market-actions"
-            class="d-flex flex-column gap-3 pt-4 w-100 align-items-start justify-content-start"
-          >
-            <div>
-              <button class="btn btn-outline-success btn-sm">Buy a card</button>
-            </div>
-
-            <div>
-              <button class="btn btn-outline-success btn-sm">
-                Trade a card
-              </button>
-            </div>
-
-            <div>
-              <button class="btn btn-outline-info btn-sm">
-                Buy deck boosters
-              </button>
-            </div>
-
-            <div>
-              <button class="btn btn-outline-danger btn-sm">
-                Sell a card copy
-              </button>
-            </div>
-
-            <div>
-              <button class="btn btn-outline-danger btn-sm">
-                Sell all expendable card copies
-              </button>
-            </div>
-          </div>
-
-          <hr />
-        </div>
-
-        <!-- 8.CONTAINER: MAB CAMPAIGN STATS -->
-        <div id="container-mab-campaign-statistics" class="hide-div">
-          <div
-            class="d-flex flex-column justify-content-center align-items-start w-100"
-          >
-            <!-- Title -->
-            <div
-              id="header-mab-campaign-stats"
-              class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
-            >
-              <div id="title-mab-campaign-stats" class="p-0 m-0">
-                <h3 class="p-0 m-0">
-                  <span>C</span>ampaign <span>S</span>tatistics
-                </h3>
-              </div>
-
-              <button
-                id="button-mab-campaign-statistics-hide-container"
-                class="btn btn-outline-danger btn-sm"
-                type="button"
-              >
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-
-            <hr />
-
-            <!-- Fields -->
-            <div
-              class="d-flex flex-column justify-content-start align-items-start mt-3 gap-3"
-            >
-              <form
-                id="form-mab-campaign-statistics"
-                class="mb-3 d-flex flex-column justify-content-between"
-              >
-                <label for="input-mab-campaign-statistics-new-player-nickname"
-                  ><span>P</span>layer <span>N</span>ame</label
-                >
-                <div class="d-flex flex-row gap-3">
-                  <input
-                    name="MabPlayerNewNickName"
-                    id="input-mab-campaign-statistics-new-player-nickname"
-                    class="current-data form-control text-center"
-                    type="text"
-                    readonly
-                  />
-                  <div class="d-flex flex-row gap-1">
-                    <button
-                      id="button-mab-campaign-statistics-edit-player-nickname"
-                      class="btn btn-outline-warning btn-sm"
-                      type="button"
-                    >
-                      edit
-                    </button>
-                    <button
-                      id="button-mab-campaign-statistics-confirm-new-player-nickname"
-                      class="btn btn-outline-success btn-sm"
-                      type="button"
-                      disabled
-                    >
-                      confirm
-                    </button>
-                  </div>
-                </div>
-              </form>
-
-              <div
-                class="d-flex flex-row gap-3 align-items-center justify-content-center"
-              >
-                <div class="d-flex flex-row gap-1 m-0 p-0">
-                  <div><span>L</span>evel:</div>
-                  <span id="field-mab-campaign-statistics-player-level">?</span>
-                </div>
-                |
-                <div class="d-flex flex-row gap-1 m-0 p-0">
-                  <div class="d-flex flex-nowrap">
-                    <span>G</span>old&nbsp;<span>S</span>tash:
-                  </div>
-                  <span id="field-mab-campaign-statistics-gold-stash">?</span>
-                </div>
-                |
-                <div class="d-flex flex-row gap-1 m-0 p-0">
-                  <div class="d-flex flex-nowrap">
-                    <span>B</span>oosters&nbsp;<span>O</span>pened:
-                  </div>
-                  <span id="field-mab-campaign-statistics-boosters-opened">
-                    ?
-                  </span>
-                </div>
-              </div>
-
-              <div
-                class="d-flex flex-row align-items-center justify-content-center gap-3"
-              >
-                <div class="d-flex flex-row gap-1 m-0 p-0">
-                  <div class="d-flex flex-nowrap">
-                    <span>B</span>attles&nbsp;<span>C</span>ount:
-                  </div>
-                  <span id="field-mab-campaign-statistics-battles-count"
-                    >?</span
-                  >
-                </div>
-                |
-                <div class="d-flex flex-row gap-1 m-0 p-0">
-                  <div class="d-flex flex-nowrap">
-                    <span>B</span>attles&nbsp;<span>W</span>on:
-                  </div>
-                  <span id="field-mab-campaign-statistics-battles-won">?</span>
-                </div>
-                |
-                <div class="d-flex flex-row gap-1 m-0 p-0">
-                  <div class="d-flex flex-nowrap">
-                    <span>B</span>attles&nbsp;<span>L</span>ost:
-                  </div>
-                  <span id="field-mab-campaign-statistics-battles-lost">?</span>
-                </div>
-              </div>
-
-              <div
-                class="d-flex flex-row gap-3 align-items-center justify-content-center"
-              >
-                <div class="d-flex flex-row gap-1">
-                  <div class="d-flex flex-nowrap">
-                    <span>D</span>ecks&nbsp;<span>O</span>wned:
-                  </div>
-                  <span id="field-mab-campaign-statistics-decks-owned">?</span>
-                </div>
-              </div>
-
-              <div
-                class="d-flex flex-row gap-3 align-items-center justify-content-start"
-              >
-                <div
-                  class="mb-3 d-flex flex-column w-50 justify-content-between"
-                >
-                  <div><span>T</span>rophies:</div>
-
-                  <div class="d-flex flex-row gap-3">
-                    <div
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="bottom"
-                      data-bs-custom-class="trophies-tooltip"
-                      data-bs-title="All Cards Collected!"
-                    >
-                      <img
-                        id="img-mab-campaign-statistics-all-cards-collected-trophy"
-                        class="trophy-icon"
-                        src="/images/icons/trophy_allcardscollected.svg"
-                      />
-                    </div>
-
-                    <div
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="bottom"
-                      data-bs-custom-class="trophies-tooltip"
-                      data-bs-title="All Npcs Defeated!"
-                    >
-                      <img
-                        id="img-mab-campaign-statistics-all-npcs-defeated-trophy"
-                        class="trophy-icon"
-                        src="/images/icons/trophy_allnpcsdefeated.svg"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr />
-          </div>
-        </div>
       </section>
     </main>
 
@@ -1009,13 +948,12 @@
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
     <script src="/js/components/header.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_main_menu.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_new_campaign.js"></script>
-    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_campaign_statistics.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_manage_decks.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_continue_campaign.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_battle.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_market.js"></script>
-    <!-- <script src="/js/scripts/scripts_users/medieval_auto_battler.js"></script> -->
 
     <script>
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {

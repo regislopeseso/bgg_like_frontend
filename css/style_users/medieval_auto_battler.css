@@ -1,6 +1,6 @@
 :root {
-  --mab-card-width: 200px;
-  --mab-card-height: 250px;
+  --mab-card-width: 180px;
+  --mab-card-height: 220px;
 }
 
 main {
@@ -50,8 +50,7 @@ main {
 #container-mab-battle,
 #container-mab-active-deck,
 #container-mab-create-deck,
-#container-mab-market,
-#container-mab-campaign-statistics {
+#container-mab-market {
   position: absolute;
   width: fit-content;
   left: 50vw;
@@ -108,12 +107,6 @@ main {
   min-width: 5rem !important;
 }
 
-.span-mab-arena-npc-name,
-.span-mab-arena-player-nickname {
-  font-size: larger;
-  font-weight: bolder;
-}
-
 #div-mab-arena-npc-duelling-card,
 #div-mab-arena-player-duelling-card {
   content: none;
@@ -132,10 +125,10 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid var(--main-color);
+  border: 1px solid var(--main-color);
   box-shadow: 0 0 5px 2px var(--main-color) !important;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 }
 
@@ -177,7 +170,7 @@ main {
 .active-card {
   pointer-events: all !important;
   border: 2px solid var(--main-color);
-  box-shadow: 0 0 10px var(--main-color);
+  box-shadow: 0 0 5px 5px var(--main-color);
 }
 .chosen-card {
   opacity: 1 !important;
@@ -193,7 +186,7 @@ main {
   transition: opacity 0.3s ease-in-out !important;
 }
 
-.playerState {
+.playerState-img {
   margin: 0px 0px;
   width: 50px;
   height: 50px;
@@ -214,6 +207,17 @@ main {
   padding: 10px;
 }
 
+#mab-player-state-tooltip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--main-color);
+  box-shadow: 0 0 5px 2px var(--main-color) !important;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
 #wrapper-mab-arena-player-duel-results {
   display: none;
 }
@@ -229,6 +233,11 @@ main {
   border: 1px solid var(--main-color) !important;
   border-radius: 12px;
   gap: 10px;
+}
+
+#mab-versus-img {
+  width: 35px;
+  height: 35px;
 }
 
 @media screen and (max-width: 1440px) {
