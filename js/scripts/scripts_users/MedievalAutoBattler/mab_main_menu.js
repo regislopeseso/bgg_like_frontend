@@ -11,6 +11,9 @@ function mab_main_menu() {
     self.Containers = [];
     self.Containers[self.Containers.length] = self.Containers.MainMenu =
       self.DOM.find("#container-mab-main-menu");
+    self.Containers.Inventory = self.Containers.MainMenu.find(
+      "#container-mab-inventory"
+    );
     self.Containers.CampaignStatistics = self.Containers.MainMenu.find(
       "#container-mab-campaign-statistics"
     );
@@ -26,6 +29,9 @@ function mab_main_menu() {
       self.Containers.CampaignStatistics.find(
         "#button-mab-campaign-statistics-hide-container"
       );
+    self.Buttons.ShowContinueCampaignContainer = self.Containers.MainMenu.find(
+      "#button-mab-continue-campaign-show-container"
+    );
     self.Buttons[self.Buttons.length] = self.Buttons.EditPlayerNickname =
       self.Containers.CampaignStatistics.find(
         "#button-mab-campaign-statistics-edit-player-nickname"
@@ -207,6 +213,12 @@ function mab_main_menu() {
     );
   };
 
+  self.render_NewCampaignMode = () => {
+    self.Buttons.ShowContinueCampaignContainer.prop("disabled", true);
+    self.Containers.CampaignStatistics.addClass("d-none");
+    self.Containers.Inventory.addClass("d-none");
+  };
+
   self.LoadCampaignStatistics = () => {
     $.ajax({
       type: "GET",
@@ -214,11 +226,16 @@ function mab_main_menu() {
       xhrFields: { withCredentials: true },
       success: function (response) {
         if (!response.content) {
-          self.sweetAlertError(response.message_text);
           return;
         }
 
         let mabCampaignDB = response.content;
+
+        if (mabCampaignDB.mab_StartNewCampaign) {
+          self.render_NewCampaignMode();
+          return;
+        }
+
         self.CurrentPlayerNickName = mabCampaignDB.mab_PlayerNickName;
 
         self.Inputs.NewPlayerNickname.val(self.CurrentPlayerNickName);

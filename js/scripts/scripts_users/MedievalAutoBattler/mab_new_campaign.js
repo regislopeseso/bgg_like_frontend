@@ -94,9 +94,9 @@ function mab_new_campaign() {
     self.Buttons.NewCampaign_Start.on("click", (e) => {
       e.preventDefault();
 
-      self.checkFormFilling();
+      self.Campaign_CheckForExistingCampaigns();
 
-      self.StartCampaign();
+      self.checkFormFilling();
     });
   };
 
@@ -110,6 +110,23 @@ function mab_new_campaign() {
       text: message_text || "",
       showConfirmButton: false,
       timer: 1500,
+    });
+  };
+  self.sweetAlertWarning_CampaignToBeDeleted = () => {
+    return Swal.fire({
+      position: "center",
+      confirmButtonText: "Confirm Delete",
+      icon: "warning",
+      toast: "true",
+      theme: "bulma",
+      title: "Warning!",
+      text: "By confirming the current campaign will be deleted!",
+      showConfirmButton: true,
+      showCancelButton: true, // optional, if you want an extra button
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+    }).then((result) => {
+      return result.isConfirmed === true;
     });
   };
   self.sweetAlertError = (title_text, message_text) => {
@@ -149,14 +166,60 @@ function mab_new_campaign() {
   self.newCampaign_ShowContainer = () => {
     self.toggleContainerVisibility(self.Containers.NewCampaign);
 
-    self.Inputs.NewCampaign_PlayerNickName.trigger("focus");
+    self.Inputs.NewCampaign_PlayerNickName.trigger("focus").trigger("select");
   };
   self.newCampaign_HideContainer = () => {
-    self.Inputs.NewCampaign_PlayerNickName.val("");
-
     self.toggleContainerVisibility(self.Containers.NewCampaign);
   };
 
+  self.Campaign_CheckForExistingCampaigns = () => {
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/mabcheckforexistingcampaign`,
+      xhrFields: { withCredentials: true },
+      success: function (resp) {
+        if (!resp.content) {
+          self.sweetAlertError(resp.message_text);
+          return;
+        }
+
+        let anyExistingCampaign = resp.content.mab_AnyExistingCampaign;
+
+        if (anyExistingCampaign) {
+          self.sweetAlertWarning_CampaignToBeDeleted().then((isConfirmed) => {
+            if (isConfirmed === true) {
+              self.Campaign_Delete();
+            }
+          });
+
+          return;
+        }
+
+        self.StartCampaign();
+      },
+      error: function (xhr, status, error) {
+        self.sweetAlertError("Failed to fetch campaign statistics");
+      },
+    });
+  };
+  self.Campaign_Delete = () => {
+    $.ajax({
+      type: "DELETE",
+      url: `https://localhost:7081/users/mabdeletecampaign`,
+      xhrFields: { withCredentials: true },
+      success: function (resp) {
+        if (!resp.content) {
+          sweetAlertSuccess(resp.message);
+          return;
+        }
+
+        self.StartCampaign();
+      },
+      error: function (err) {
+        sweetAlertError(err);
+      },
+    });
+  };
   self.StartCampaign = () => {
     self.Buttons.forEach((button) => {
       button.attr("disabled", true);
@@ -177,7 +240,10 @@ function mab_new_campaign() {
 
         self.sweetAlertSuccess("New Mab Campaign Started!");
 
-        self.Battle_TriggerStart();
+        setTimeout(() => {
+          self.newCampaign_HideContainer();
+          self.mainMenu_ShowContainerr();
+        }, 600);
       },
       error: (err) => {
         self.sweetAlertError(err);

@@ -15,8 +15,12 @@ function mab_deck_booster() {
       self.MabContainersContent.find("#container-mab-deck-booster");
 
     self.Buttons = [];
-    self.Buttons[self.Buttons.length] = self.Buttons.ShowContainer_DeckBooster =
-      self.Containers.MainMenu.find("#button-mab-deck-booster-show-container");
+    self.Buttons[self.Buttons.length] =
+      self.Buttons[self.Buttons.length] =
+      self.Buttons.ShowContainer_DeckBooster =
+        self.Containers.MainMenu.find(
+          "#button-mab-deck-booster-show-container"
+        );
     self.Buttons[self.Buttons.length] = self.Buttons.HideContainer_DeckBooster =
       self.Containers.DeckBooster.find(
         "#button-mab-deck-booster-hide-container"
