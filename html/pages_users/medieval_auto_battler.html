@@ -80,11 +80,19 @@
               </button>
 
               <button
-                id="button-mab-buy-deck-booster"
+                id="button-mab-deck-booster-show-container"
                 class="btn btn-outline-info"
                 type="button"
               >
                 Buy Deck Booster
+              </button>
+
+              <button
+                id="button-mab-forgery-show-container"
+                class="btn btn-outline-info"
+                type="button"
+              >
+                Forgery
               </button>
             </div>
           </div>
@@ -93,7 +101,7 @@
 
           <!-- Campaign Statistics-->
 
-          <div id="container-mab-campaign-statistics" class="hide-div">
+          <div id="container-mab-campaign-statistics" class="w-100">
             <div
               class="d-flex flex-column justify-content-center align-items-start w-100"
             >
@@ -935,6 +943,34 @@
             </div>
           </form>
         </div>
+
+        <!-- 7.CONTAINER: BUY DECK BOOSTER -->
+        <div id="container-mab-deck-booster" class="hide-div">
+          <div
+            id="header-mab-deck-booster"
+            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
+          >
+            <div id="form-title-mab-create-deck" class="p-0 m-0">
+              <h3 class="p-0 m-0">
+                <span>N</span>ewly <span>A</span>cquired <span>C</span>ards
+              </h3>
+            </div>
+            <button
+              id="button-mab-deck-booster-hide-container"
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <hr />
+
+          <div
+            id="block-mab-deck-booster-new-player-cards"
+            class="d-flex flex-row pt-5 gap-4"
+          ></div>
+        </div>
       </section>
     </main>
 
@@ -950,10 +986,10 @@
     <script src="/js/components/header.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_main_menu.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_new_campaign.js"></script>
-    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_manage_decks.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_continue_campaign.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_battle.js"></script>
-    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_market.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_manage_decks.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_deck_booster.js"></script>
 
     <script>
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {

@@ -50,7 +50,7 @@ main {
 #container-mab-battle,
 #container-mab-active-deck,
 #container-mab-create-deck,
-#container-mab-market {
+#container-mab-deck-booster {
   position: absolute;
   width: fit-content;
   left: 50vw;
@@ -309,8 +309,7 @@ main {
   #container-mab-battle,
   #container-mab-active-deck,
   #container-mab-create-deck,
-  #container-mab-market,
-  #container-mab-campaign-statistics {
+  #container-mab-deck-booster {
     width: 90vw;
   }
 

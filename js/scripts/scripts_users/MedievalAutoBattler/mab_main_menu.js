@@ -6,12 +6,16 @@ function mab_main_menu() {
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
+    self.MabContainersContent = self.DOM.find("#mab-containers-content");
+
     self.Containers = [];
     self.Containers[self.Containers.length] = self.Containers.MainMenu =
       self.DOM.find("#container-mab-main-menu");
-    self.Containers.CampaignStatistics = self.DOM.find(
+    self.Containers.CampaignStatistics = self.Containers.MainMenu.find(
       "#container-mab-campaign-statistics"
     );
+    self.Containers[self.Containers.length] = self.Containers.DeckBooster =
+      self.MabContainersContent.find("#container-mab-deck-booster");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.ShowContainer =
@@ -30,6 +34,10 @@ function mab_main_menu() {
       self.Containers.CampaignStatistics.find(
         "#button-mab-campaign-statistics-confirm-new-player-nickname"
       );
+    self.Buttons[self.Buttons.length] = self.Buttons.HideContainer_DeckBooster =
+      self.Containers.DeckBooster.find(
+        "#button-mab-deck-booster-hide-container"
+      );
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.NewPlayerNickname =
@@ -42,6 +50,15 @@ function mab_main_menu() {
       self.Containers.CampaignStatistics.find(
         "#field-mab-campaign-statistics-player-level"
       );
+    self.Fields[self.Fields.length] = self.Fields.CurrentPlayerXp =
+      self.Containers.CampaignStatistics.find(
+        "#field-mab-campaign-statistics-player-xp"
+      );
+    self.Fields[self.Fields.length] = self.Fields.NextPlayerLevelTreshold =
+      self.Containers.CampaignStatistics.find(
+        "#field-mab-campaign-statistics-player-xp-threshold"
+      );
+
     self.Fields[self.Fields.length] = self.Fields.GoldStash =
       self.Containers.CampaignStatistics.find(
         "#field-mab-campaign-statistics-gold-stash"
@@ -90,8 +107,6 @@ function mab_main_menu() {
     self.Buttons.HideContainer.on("click", (e) => {
       e.preventDefault();
 
-      self.campaignStatistics_HideContainer();
-
       self.mainMenu_ShowContainer();
 
       setTimeout(() => {
@@ -121,6 +136,12 @@ function mab_main_menu() {
       e.preventDefault();
 
       self.EditPlayerNickname();
+    });
+
+    self.Buttons.HideContainer_DeckBooster.on("click", (e) => {
+      self.campaignStatistics_ShowContainer();
+
+      self.LoadCampaignStatistics();
     });
   };
 
@@ -169,6 +190,12 @@ function mab_main_menu() {
       ? div.removeClass("show-div").addClass("hide-div")
       : div.removeClass("hide-div").addClass("show-div");
   };
+  self.mainMenu_ShowContainer = () => {
+    self.toggleContainerVisibility(self.Containers.MainMenu);
+  };
+  self.mainMenu_HideContainer = () => {
+    self.toggleContainerVisibility(self.Containers.MainMenu);
+  };
   self.campaignStatistics_ShowContainer = () => {
     self.Containers.CampaignStatistics.removeClass("hide-div").addClass(
       "show-div"
@@ -199,8 +226,17 @@ function mab_main_menu() {
         self.Fields.PlayerLevel.html(
           `<strong>${mabCampaignDB.mab_PlayerLevel}</strong>`
         );
+
+        self.Fields.CurrentPlayerXp.html(
+          `<strong>${mabCampaignDB.mab_CurrentPlayerXp}</strong>`
+        );
+
+        self.Fields.NextPlayerLevelTreshold.html(
+          `<strong>${mabCampaignDB.mab_NextPlayerLevelThreshold}</strong>`
+        );
+
         self.Fields.GoldStash.html(
-          `<strong>${mabCampaignDB.mab_Goldstash}</strong>`
+          `<strong>${mabCampaignDB.mab_NextPlayerLevelThreshold}</strong>`
         );
         self.Fields.BoostersOpened.html(
           `<strong>${mabCampaignDB.mab_OpenedBoostersCount}</strong>`
@@ -317,13 +353,6 @@ function mab_main_menu() {
     self.Buttons.EditPlayerNickname.prop("disabled", false);
 
     self.Buttons.ConfirmNewPlayerNickName.prop("disabled", true);
-  };
-
-  self.mainMenu_ShowContainer = () => {
-    self.toggleContainerVisibility(self.Containers.MainMenu);
-  };
-  self.mainMenu_HideContainer = () => {
-    self.toggleContainerVisibility(self.Containers.MainMenu);
   };
 
   self.build = () => {
