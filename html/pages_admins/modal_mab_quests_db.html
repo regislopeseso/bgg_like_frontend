@@ -1,0 +1,80 @@
+<!--? Modal Medieval Auto Battle QUESTS DATA TABLE-->
+<div
+  class="modal fade"
+  id="dom-modal-mab-quests-db"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen"
+  >
+    <div class="data-base-content modal-content">
+      <div class="modal-header">
+        <div class="d-flex flex-row gap-2">
+          <h1 class="modal-title fs-5" id="title-modal-mab-quests-db">
+            <span>M</span>edieval <span>A</span>uto <span>B</span>attler
+            <span>Q</span>uests
+          </h1>
+
+          <button
+            id="button-modal-mab-quests-add"
+            class="btn btn-outline-info d-flex align-items-center justify-content-center"
+            style="
+              width: 2rem;
+              height: 2rem;
+              margin: 0 !important;
+              padding: 0 !important;
+              border: 3px solid var(--main-color);
+              border-radius: 50%;
+              overflow: hidden;
+            "
+          >
+            <i class="bi bi-plus" style="font-size: 50px"></i>
+          </button>
+        </div>
+
+        <button
+          type="button"
+          id="button-x-mab-quests-db-close"
+          class="custom-close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-scroll-hint ps-3 pe-3">
+          <table id="table-modal-mab-quests-db" class="display nowrap">
+            <thead class="text-center">
+              <tr>
+                <th></th>
+                <th class="text-start">Title</th>
+                <th class="text-center">Description</th>
+                <th class="text-center">Level</th>
+                <th class="text-center">Gold Bounty</th>
+                <th class="text-center">Xp Reward</th>
+                <th class="text-center">Npcs</th>
+                <th class="text-center">Is Deleted</th>
+                <th class="text-center">*</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider text-center"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          id="button-modal-mab-quests-db-close"
+          class="btn btn-outline-danger"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/scripts/scripts_admins/modal_mab_quests_db.js"></script>
