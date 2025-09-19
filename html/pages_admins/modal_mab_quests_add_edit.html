@@ -6,7 +6,7 @@
   data-bs-keyboard="false"
   tabindex="-1"
 >
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen">
     <div class="add-edit-content modal-content">
       <div class="modal-header">
         <div class="d-flex flex-row gap-4 align-items-center">
@@ -14,23 +14,6 @@
             class="modal-title p-0 m-0"
             id="title-modal-mab-quests-add-edit"
           ></h3>
-
-          <div id="div-modal-mab-quests-add-edit">
-            <div
-              class="d-flex flex-row gap-1 align-items-center justify-content-start"
-            >
-              <h3
-                id="title-modal-mab-quests-add-edit"
-                class="modal-title p-0 m-0"
-              >
-                <span>A</span>dd: or <span>E</span>dit:
-              </h3>
-
-              <h3 class="modal-title p-0 m-0">
-                <span id="input-modal-mab-quests-add-edit">?</span>
-              </h3>
-            </div>
-          </div>
         </div>
 
         <button type="button" class="custom-close" data-bs-dismiss="modal">
@@ -38,9 +21,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="form-modal-mab-quests-add-edit">
+        <form
+          id="form-modal-mab-quests-add-edit"
+          class="d-flex flex-column justify-content-center align-items-center"
+        >
           <!-- Input 1: Mab Quest Title -->
-          <div class="mb-3">
+          <div class="mb-3 w-50">
             <label class="form-label"><span>T</span>itle</label>
             <input
               name="Mab_QuestTitle"
@@ -52,7 +38,7 @@
           </div>
 
           <!-- Input 2: Mab Quest Description -->
-          <div class="mb-3">
+          <div class="mb-3 w-50">
             <label class="form-label"><span>D</span>escription</label>
             <textarea
               name="Mab_QuestDescription"
@@ -63,44 +49,50 @@
           </div>
 
           <!-- Input 3: Mab Quest Level -->
-          <div class="mb-3">
+          <div class="mb-3 w-50">
             <label class="form-label"><span>L</span>evel</label>
-            <textarea
+            <input
               name="Mab_QuestLevel"
               id="input-modal-mab-quests-add-edit-questlevel"
               class="new-data form-control required"
+              type="number"
               required
-            ></textarea>
+            />
           </div>
 
           <!-- Input 4: Mab Quest Bounty -->
-          <div class="mb-3">
+          <div class="mb-3 w-50">
             <label class="form-label"
               ><span>G</span>old <span>B</span>ounty</label
             >
-            <textarea
+            <input
               name="Mab_GoldBounty"
               id="input-modal-mab-quests-add-edit-goldbounty"
               class="new-data form-control required"
+              type="number"
               required
-            ></textarea>
+            />
           </div>
 
           <!-- Input 5: Mab Quest Xp Reward -->
-          <div class="mb-3">
+          <div class="mb-3 w-50">
             <label class="form-label"
               ><span>X</span>p <span>R</span>eward</label
             >
-            <textarea
+            <input
               name="Mab_XpReward"
               id="input-modal-mab-quests-add-edit-xpreward"
               class="new-data form-control required"
+              type="number"
               required
-            ></textarea>
+            />
           </div>
 
           <!-- Input 6: Mab Quest Npcs -->
-          <div class="mb-3" id="div-select-modal-mab-quests-add-edit-npcs">
+          <div
+            id="div-select-modal-mab-quests-add-edit-questnpcs"
+            class="mb-3 w-50"
+          >
             <label class="form-label">
               <span>S</span>elect
               <span style="text-decoration: underline; color: var(--text-color)"
@@ -113,7 +105,7 @@
               <div class="comboBox d-flex flex-row gap-3">
                 <select
                   name="NpcIds"
-                  id="input-select-modal-mab-quests-add-edit-npcs"
+                  id="input-select-modal-mab-quests-add-edit-questnpcs"
                   class="form-control form-select"
                 ></select>
                 <button
@@ -128,9 +120,15 @@
           </div>
 
           <!-- Output 1: Mab Npcs -->
-          <div id="div-cardsList-modal-mab-quests-add-edit-npcs">
+          <div
+            id="div-npcsList-modal-mab-quests-add-edit-questnpcs"
+            class="d-flex flex-column align-items-center justify-content-center"
+          >
             <div class="pb-1"><span>N</span>pcs <span>L</span>ist</div>
-            <ol id="ol-select-modal-mab-quests-add-edit-npcs"></ol>
+            <ol
+              id="ol-select-modal-mab-quests-add-edit-questnpcs"
+              class="mab-npc-lists-area"
+            ></ol>
           </div>
         </form>
       </div>

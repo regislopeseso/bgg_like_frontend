@@ -67,7 +67,12 @@ table.dataTable.dtr-column > tbody > tr.dtr-expanded th.control:before {
   border-top: 10px solid var(--reddish);
 }
 
-#ol-select-modal-mab-npcs-add-edit-npccards {
+#ol-select-modal-mab-npcs-add-edit-npccards,
+#ol-select-modal-mab-quests-add-edit-questnpcs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
   background-color: var(--bg-color);
   padding: 1rem;
   border-radius: 1rem;

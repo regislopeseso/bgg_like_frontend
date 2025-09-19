@@ -60,6 +60,8 @@ function admins_page() {
 
     self.Buttons[self.Buttons.length] = self.Buttons.MabData =
       self.DOM.find("#mab-data-button");
+    self.Buttons[self.Buttons.length] = self.Buttons.LoadMabQuestsData =
+      self.DOM.find("#button-mab-quests-load");
     self.Buttons[self.Buttons.length] = self.Buttons.LoadMabCardsData =
       self.DOM.find("#button-mab-cards-load");
     self.Buttons[self.Buttons.length] = self.Buttons.LoadMabNpcsData =
@@ -76,12 +78,12 @@ function admins_page() {
     self.Modals[self.Modals.length] = self.Modals.BgMechanicData =
       self.DOM.find("#mechanic-modal");
 
+    self.Modals[self.Modals.length] = self.Modals.MabQuestsData =
+      self.DOM.find("#mab-quests-modal");
     self.Modals[self.Modals.length] = self.Modals.MabCardsData =
       self.DOM.find("#mab-cards-modal");
     self.Modals[self.Modals.length] = self.Modals.MabNpcsData =
       self.DOM.find("#mab-npcs-modal");
-    self.Modals[self.Modals.length] = self.Modals.MabBoostersData =
-      self.DOM.find("#mab-boosters-modal");
 
     self.Locations = [];
     self.Locations[self.Locations.length] = self.Locations.Modal_BgDataBase =
@@ -93,6 +95,8 @@ function admins_page() {
       self.Locations.Modal_BgMechanicData =
         "admins_modal_mechanic_data_base.html";
 
+    self.Locations[self.Locations.length] = self.Locations.Modal_MabQuestsData =
+      "modal_mab_quests_db.html";
     self.Locations[self.Locations.length] = self.Locations.Modal_MabCardsData =
       "modal_mab_cards_db.html";
     self.Locations[self.Locations.length] = self.Locations.Modal_MabNpcsData =
@@ -149,6 +153,17 @@ function admins_page() {
     );
 
     // MEDIEVAL AUTO BATTLER (MAB)
+    // Load MAB Quests modal HTML, THEN initialize modal logic
+    self.Modals.MabQuestsData.load(
+      self.Locations.Modal_MabQuestsData,
+      function () {
+        // Hook up the button to open the modal AFTER it's ready
+        self.Buttons.LoadMabQuestsData.on("click", function () {
+          __global.MabQuestsDataBaseModalController.OpenModal();
+        });
+      }
+    );
+
     // Load MAB CARDS modal HTML, THEN initialize modal logic
     self.Modals.MabCardsData.load(
       self.Locations.Modal_MabCardsData,
