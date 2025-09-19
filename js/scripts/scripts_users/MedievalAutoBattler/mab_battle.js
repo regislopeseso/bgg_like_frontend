@@ -125,6 +125,8 @@ function mab_battle() {
 
     self.Imgs = [];
     self.Imgs[self.Imgs.length] =
+      self.Imgs.MabCardTruce = `/images/icons/mab_card_types/neutral/truce.svg`;
+    self.Imgs[self.Imgs.length] =
       self.Imgs.MabCardTypeNeutral = `/images/icons/mab_card_types/cardtype_neutral.svg`;
     self.Imgs[self.Imgs.length] =
       self.Imgs.MabCardTypeRanged = `/images/icons/mab_card_types/cardtype_ranged.svg`;
@@ -434,6 +436,14 @@ function mab_battle() {
             default:
               self.sweetAlertError("Failed to fetch mab card type");
               break;
+          }
+
+          if (
+            card.mab_CardType === "Neutral" &&
+            (card.mab_CardPower === 0) & (card.mab_CardUpperHand === 0)
+          ) {
+            imgPath = "";
+            imgPath = self.Imgs.MabCardTruce;
           }
 
           let usedCardClass = "";
@@ -754,6 +764,14 @@ function mab_battle() {
             default:
               self.sweetAlertError("Failed to fetch mab card type");
               break;
+          }
+
+          if (
+            card.mab_CardType === "Neutral" &&
+            (card.mab_CardPower === 0) & (card.mab_CardUpperHand === 0)
+          ) {
+            imgPath = "";
+            imgPath = self.Imgs.MabCardTruce;
           }
 
           let usedCardClass = "";
@@ -1087,6 +1105,14 @@ function mab_battle() {
         default:
           self.sweetAlertError("Failed to fetch mab card type");
           break;
+      }
+
+      if (
+        card.mab_CardType === "Neutral" &&
+        (card.mab_CardPower === 0) & (card.mab_CardUpperHand === 0)
+      ) {
+        imgPath = "";
+        imgPath = self.Imgs.MabCardTruce;
       }
 
       let cardFullPower = null;
