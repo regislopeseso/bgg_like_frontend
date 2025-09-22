@@ -174,6 +174,10 @@ function modal_Mab_Cards_DB() {
           <td class="text-start align-middle">
             ${item.cardName} 
           </td>
+
+           <td class="text-center align-middle">
+            ${item.cardCode} 
+          </td>
          
           <td class="text-center align-middle">${item.cardPower}</td>
           <td class="text-center align-middle">${item.cardUpperHand}</td>

@@ -24,6 +24,9 @@ function modal_Mab_Cards_Add_Edit() {
     self.Inputs[self.Inputs.length] = self.Inputs.MabCardName = self.DOM.find(
       "#input-modal-mab-cards-add-edit-cardname"
     );
+    self.Inputs[self.Inputs.length] = self.Inputs.CardCode = self.DOM.find(
+      "#span-mab-cards-add-edit-cardcode"
+    );
     self.Inputs[self.Inputs.length] = self.Inputs.MabCardPower = self.DOM.find(
       "#input-modal-mab-cards-add-edit-cardpower"
     );
@@ -269,6 +272,8 @@ function modal_Mab_Cards_Add_Edit() {
 
   // Method to fill the form with CATEGORY data for editing
   self.PopulateFormForEditing = (mabCard) => {
+    self.Inputs.CardCode.empty();
+
     // Set the form to edit mode
     self.isEditMode = true;
     self.Inputs.MabCardId.val(mabCard.cardId);
@@ -281,6 +286,8 @@ function modal_Mab_Cards_Add_Edit() {
 
     // Fill in the form fields
     self.Inputs.MabCardName.val(mabCard.cardName).trigger("select");
+    self.Inputs.CardCode.html(`&nbsp;(${mabCard.cardCode})`);
+
     self.Inputs.MabCardPower.val(mabCard.cardPower);
     self.Inputs.MabCardUpperHand.val(mabCard.cardUpperHand);
 
@@ -298,6 +305,7 @@ function modal_Mab_Cards_Add_Edit() {
     self.ModalTitle.html(
       "<strong><span>C</span>reate</strong> <span>M.</span>A.B. <span>C</span>ard"
     );
+    self.Inputs.CardCode.empty();
     self.Buttons.Submit.text("Confirm");
   };
 
