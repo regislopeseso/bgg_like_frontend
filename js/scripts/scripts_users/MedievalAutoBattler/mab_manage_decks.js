@@ -820,12 +820,15 @@ function mab_manage_decks() {
                 class="bi bi-arrow p-0 m-0"
               />
 
-              <div>
-                <span>L</span>evel: <strong>${cardLvl}</strong>,
-                <span>T</span>ype: <strong>${cardType}</strong>,
-                <span>P</span>ower: <strong>${cardPower}</strong>,
-                <span>U</span>pper <span>H</span>and:
-                <strong>${cardUpperHand}</strong>
+              <div clas="d-flex flex-column gap-1"> 
+                <div>
+                  <span>T</span>ype: <strong>${cardType}</strong>,
+                </div>
+                <div>
+                  <span>P</span>ower: <strong>${cardPower}</strong>,
+                  <span>U</span>pper <span>H</span>and:
+                  <strong>${cardUpperHand}</strong>
+                </div>             
               </div>
             </div>
           </li>
@@ -1388,12 +1391,15 @@ function mab_manage_decks() {
                 class="bi bi-arrow p-0 m-0"
               />
 
-              <div>
-                <span>L</span>evel: <strong>${cardLvl}</strong>,
-                <span>T</span>ype: <strong>${cardType}</strong>,
-                <span>P</span>ower: <strong>${cardPower}</strong>,
-                <span>U</span>pper <span>H</span>and:
-                <strong>${cardUpperHand}</strong>
+              <div clas="d-flex flex-column gap-1">  
+                <div>
+                  <span>T</span>ype: <strong>${cardType}</strong>,
+                </div>
+                <div>
+                  <span>P</span>ower: <strong>${cardPower}</strong>,
+                  <span>U</span>pper <span>H</span>and:
+                  <strong>${cardUpperHand}</strong>
+                </div>
               </div>
             </div>
           </li>

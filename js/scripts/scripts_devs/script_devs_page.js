@@ -201,7 +201,7 @@ function devs_page() {
     });
   };
 
-  self.MedievalBattler_Seed = () => {
+  self.MAB_Seed = () => {
     self.MedievalAutoBattler_ProgressBar.empty();
 
     let pg = `
@@ -237,7 +237,7 @@ function devs_page() {
 
     $.ajax({
       method: "POST",
-      url: "https://localhost:7081/devs/medievalautobattlerseed",
+      url: "https://localhost:7081/devs/mabseed",
       xhrFields: {
         withCredentials: true,
       },
@@ -287,7 +287,7 @@ function devs_page() {
       },
     });
   };
-  self.MedievalBattler_DeleteSeed = () => {
+  self.MAB_DeleteSeed = () => {
     self.MedievalAutoBattler_ProgressBar.empty();
     let pg = `
         <div
@@ -323,12 +323,11 @@ function devs_page() {
 
     $.ajax({
       method: "DELETE",
-      url: "https://localhost:7081/devs/medievalautobattlerdeleteseed",
+      url: "https://localhost:7081/devs/mabdeleteseed",
       xhrFields: {
         withCredentials: true,
       },
-      data: JSON.stringify({}),
-      contentType: "application/json",
+
       success: function (response) {
         clearInterval(interval);
         bar.set(100); // complete the progress
@@ -392,13 +391,13 @@ function devs_page() {
     self.Buttons.MedievalAutoBattler_Seed.on("click", function (e) {
       e.preventDefault();
 
-      self.MedievalBattler_Seed();
+      self.MAB_Seed();
     });
 
     self.Buttons.MedievalAutoBattler_DeleteSeed.on("click", function (e) {
       e.preventDefault();
 
-      self.MedievalBattler_DeleteSeed();
+      self.MAB_DeleteSeed();
     });
   };
 

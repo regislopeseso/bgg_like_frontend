@@ -198,7 +198,7 @@ function modal_Mab_Quests_DB() {
               </td>
             
               
-              <td class="text-center align-middle">
+              <td class="text-start align-middle">
                 ${item.mab_QuestDescription}
               </td>
               
