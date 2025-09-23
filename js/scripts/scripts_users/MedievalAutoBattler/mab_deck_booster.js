@@ -203,38 +203,46 @@ function mab_deck_booster() {
           }
 
           let card_Html = `
-              <div class="d-flex flex-column justify-content-center align-items-center w-100 gap-3">               
-                <div
-                  class="mab-card mab-card-front active-card"                                          
-                  >
+              <div class="flip-card" id="player-card-${index}">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <img src="/images/icons/mab_card_types/visored-helm.svg" class="cardtype" />
+                  </div>
 
-                  <div class="d-flex flex-row justify-content-between align-items-center w-100">
-                    <span>${card.mab_CardName}</span>                                   
+                  <div class="flip-card-back mab-card active-card">
+                    <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                      <span>${card.mab_CardName}</span>                                   
 
-                    <div>
-                      <span>${card.mab_CardPower}</span>
+                      <div>
+                        <span>${card.mab_CardPower}</span>
 
-                      <span>|</span>
+                        <span>|</span>
 
-                      <span>${card.mab_CardUpperHand}</span>
+                        <span>${card.mab_CardUpperHand}</span>
+                      </div>
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-center align-items-center gap-3">                  
+                      <img src="${imgPath}" class="cardtype"/>                  
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-center align-items-center w-100">
+                      <div>
+                        <span class="cardCode">${card.mab_CardCode}</span>
+                      </div>                    
                     </div>
                   </div>
+                </div>
+              </div>
 
-                  <div class="d-flex flex-row justify-content-center align-items-center gap-3">                  
-                    <img src="${imgPath}" class="cardtype"/>                  
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-center align-items-center w-100">
-                    <div>
-                      <span class="cardCode">${card.mab_CardCode}</span>
-                    </div>                    
-                  </div>
-                </div>   
-
-              </div>                                                                                                                
+                                                                                                                             
             `;
 
           self.Blocks.PlayerNewCards.append(card_Html);
+
+          setTimeout(() => {
+            $(`#player-card-${index} .flip-card-inner`).addClass("flipped");
+          }, 1000 * (index + 1)); // stagger effect per card
         });
 
         self.sweetAlertSuccess("Deck Booster Opened!");

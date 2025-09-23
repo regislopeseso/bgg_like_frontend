@@ -240,6 +240,57 @@ main {
   height: 35px;
 }
 
+.flip-card {
+  background-color: transparent;
+  width: var(--mab-card-width);
+  height: var(--mab-card-height);
+  padding: 0px;
+  border: 1px solid var(--main-color) !important;
+  border-radius: 12px;
+  gap: 25px;
+  perspective: 1000px !important; /* Remove this if you don't want the 3D effect */
+}
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  text-align: center !important;
+  transition: transform 0.8s !important;
+  transform-style: preserve-3d !important;
+}
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card-inner.flipped {
+  transform: rotateY(180deg) !important;
+}
+/* Position the front and back side */
+.flip-card-front,
+.flip-card-back {
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 12px;
+  -webkit-backface-visibility: hidden !important; /* Safari */
+  backface-visibility: hidden !important;
+  border: 2px solid var(--main-color);
+  box-shadow: 0 0 5px 5px var(--main-color);
+}
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center !important;
+  background-color: var(--second-bg-color);
+}
+
+/* Style the back side */
+.flip-card-back {
+  background-color: var(--second-bg-color);
+  color: white !important;
+  transform: rotateY(180deg) !important;
+}
+
 @media screen and (max-width: 1440px) {
   #game-logo {
     top: 75px;
