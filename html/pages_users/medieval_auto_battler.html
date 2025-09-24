@@ -179,6 +179,23 @@
                 <div
                   class="d-flex flex-row align-items-center justify-content-center gap-2"
                 >
+                  <div class="d-flex flex-row gap-1 m-0 p-0">
+                    <div class="d-flex flex-nowrap">
+                      <span>Q</span>uests&nbsp;:
+                    </div>
+                    <span id="field-mab-campaign-statistics-quests-fulfilled"
+                      >0</span
+                    >
+                    /
+                    <span id="field-mab-campaign-statistics-quests-count"
+                      >?</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex flex-row align-items-center justify-content-center gap-2"
+                >
                   <div class="d-flex flex-row gap-1">
                     <div class="d-flex flex-nowrap">
                       <span>D</span>ecks&nbsp;<span>O</span>wned:
@@ -385,7 +402,9 @@
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
             <div class="p-0 m-0">
-              <h3 class="p-0 m-0"><span>Q</span>uests</h3>
+              <h3 class="p-0 m-0">
+                <span>C</span>ontinue <span>C</span>ampaign
+              </h3>
             </div>
 
             <button
@@ -398,34 +417,44 @@
           </div>
 
           <hr />
-          <button
-            id="button-mab-battle-show-container-new"
-            class="btn btn-outline-info"
-          >
-            new Battle
-          </button>
 
-          <button
-            id="button-mab-arena-auto-mode"
-            class="btn btn-outline-info btn-sm"
-            type="button"
-          >
-            Auto
-          </button>
+          <div class="mab-skirmish-battle-block">
+            <div>Skirmish Battles:</div>
+
+            <button
+              id="button-mab-new-manual-skirmish-battle"
+              class="btn btn-outline-info"
+            >
+              manual
+            </button>
+
+            <button
+              id="button-mab-new-auto-skirmish-battle"
+              class="btn btn-outline-info"
+              type="button"
+            >
+              auto
+            </button>
+          </div>
+
+          <hr />
+
+          <h3><span>Q</span>uests</h3>
+          <div id="mab-quests-block"></div>
         </div>
 
-        <!-- 4.CONTAINER: MAB BATTLE -->
-        <div id="container-mab-battle" class="hide-div">
+        <!-- 4.CONTAINER: MAB QUEST -->
+        <div id="container-mab-quest" class="hide-div">
           <div
-            id="header-mab-battle"
+            id="header-mab-quest"
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
             <div class="p-0 m-0">
-              <h3 class="p-0 m-0"><span>B</span>attle</h3>
+              <h3 class="p-0 m-0"><span>Q</span>uest</h3>
             </div>
 
             <button
-              id="button-mab-battle-hide-container"
+              id="button-mab-quest-hide-container"
               class="btn btn-outline-danger btn-sm"
               type="button"
             >
@@ -434,6 +463,11 @@
           </div>
 
           <hr />
+
+          <div
+            id="block-mab-quest-details"
+            class="d-flex flex-column justify-content-center align-items-center gap-3"
+          ></div>
         </div>
 
         <!-- 5.CONTAINER: MAB ARENA -->
@@ -987,6 +1021,7 @@
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_main_menu.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_new_campaign.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_continue_campaign.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_quest.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_battle.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_manage_decks.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_deck_booster.js"></script>

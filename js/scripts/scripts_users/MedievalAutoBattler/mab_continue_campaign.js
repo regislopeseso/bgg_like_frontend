@@ -27,7 +27,7 @@ function mab_continue_campaign() {
     self.Containers[self.Containers.length] = self.Containers.ContinueCampaign =
       self.MabContainersContent.find("#container-mab-continue-campaign");
     self.Containers[self.Containers.length] = self.Containers.Battle =
-      self.MabContainersContent.find("#container-mab-battle");
+      self.MabContainersContent.find("#container-mab-quest");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] =
@@ -42,6 +42,10 @@ function mab_continue_campaign() {
         );
     self.Buttons[self.Buttons.length] = self.Buttons.HideBattleContainer =
       self.Containers.Battle.find("#button-mab-battle--hide-container");
+
+    self.Blocks = [];
+    self.Blocks[self.Blocks.length] = self.Blocks.QuestsList =
+      self.Containers.ContinueCampaign.find("#mab-quests-block");
   };
 
   self.loadEvents = () => {
@@ -51,6 +55,8 @@ function mab_continue_campaign() {
       self.mainMenu_HideContainer();
 
       self.continueCampaign_ShowContainer();
+
+      self.ContinueCampaign_ListQuests();
     });
     self.Buttons.HideContinueCampaignContainer.on("click", (e) => {
       e.preventDefault();
@@ -128,6 +134,51 @@ function mab_continue_campaign() {
   };
   self.battle_HideContainer = () => {
     self.toggleContainerVisibility(self.Containers.Battle);
+  };
+
+  self.ContinueCampaign_ListQuests = () => {
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/mablistquests`,
+      xhrFields: { withCredentials: true },
+      success: function (resp) {
+        if (!resp.content) {
+          sweetAlertError("Error", resp.message);
+          return;
+        }
+
+        let quests = resp.content;
+
+        quests.forEach((quest, index) => {
+          let defeatedNpcsCount = quest.mab_DefeatedNpcsCount;
+          let npcsCount = quest.mab_NpcsCount;
+          let isQuestFulfilled = `${defeatedNpcsCount} / ${npcsCount}`;
+
+          if (npcsCount === defeatedNpcsCount) {
+            isQuestFulfilled = "Fulfilled!";
+          }
+
+          let questDiv = `            
+            <button class="btn button-mab-quest-content" data-mab-quest-id="${quest.mab_QuestId}">
+              <div class="mab-quest-title"><h3 class="p-0 m-0">${quest.mab_QuestTitle}</h3></div>
+
+              <div class="mab-quest-description">"${quest.mab_QuestDescription}"</div>
+
+              <div class="mab-quest-gold-bounty">Gold Bounty: ${quest.mab_GoldBounty}</div>
+              <div class="mab-quest-xp-reward">Xp Reward: ${quest.mab_XpReward}</div>                                        
+              <div class="mab-quest-is-fulfilled">Defeated Opponents: ${isQuestFulfilled}</div>
+            </button>           
+            `;
+
+          self.Blocks.QuestsList.append(questDiv);
+        });
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError(
+          "Failed to fetch user available and assigned cards. Try again later."
+        );
+      },
+    });
   };
 
   self.build = () => {

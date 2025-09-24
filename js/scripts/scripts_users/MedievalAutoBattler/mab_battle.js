@@ -16,6 +16,8 @@ function mab_battle() {
 
   self.HasPlayerRetreated = false;
 
+  self.QuestId = null;
+
   self.BattleId = null;
   self.Battle_Points = 0;
   self.Battle_EarnedXp = 0;
@@ -29,6 +31,7 @@ function mab_battle() {
 
   self.Duel_AnimationsTime = 1600;
 
+  self.NpcId = null;
   self.PlayerCards = [];
   self.PlayerDuellingCard_PlayerCardId = null;
   self.PlayerDuellingCard_CardName = null;
@@ -59,27 +62,28 @@ function mab_battle() {
 
     self.Containers[self.Containers.length] = self.Containers.ContinueCampaign =
       self.MabContainersContent.find("#container-mab-continue-campaign");
-    self.Containers[self.Containers.length] = self.Containers.Battle =
-      self.MabContainersContent.find("#container-mab-battle");
+    self.Containers[self.Containers.length] = self.Containers.Quest =
+      self.MabContainersContent.find("#container-mab-quest");
     self.Containers[self.Containers.length] = self.Containers.Arena =
       self.MabContainersContent.find("#container-mab-arena");
 
     self.Buttons = [];
-    self.Buttons[self.Buttons.length] =
-      self.Buttons.ShowBattleContainer_NewBattle =
-        self.Containers.ContinueCampaign.find(
-          "#button-mab-battle-show-container-new"
-        );
-    self.Buttons[self.Buttons.length] = self.Buttons.TurnOnAutoMode =
-      self.Containers.ContinueCampaign.find("#button-mab-arena-auto-mode");
+    self.Buttons[self.Buttons.length] = self.Buttons.NewSkirmishBattle_Manual =
+      self.Containers.ContinueCampaign.find(
+        "#button-mab-new-manual-skirmish-battle"
+      );
+    self.Buttons[self.Buttons.length] = self.Buttons.NewSkirmishBattle_Auto =
+      self.Containers.ContinueCampaign.find(
+        "#button-mab-new-auto-skirmish-battle"
+      );
 
-    self.Buttons[self.Buttons.length] = self.Buttons.HideBattleContainer =
-      self.Containers.Battle.find("#button-mab-battle-hide-container");
-    self.Buttons[self.Buttons.length] = self.Buttons.HideArenaContainer =
+    self.Buttons[self.Buttons.length] = self.Buttons.Quest_HideContainer =
+      self.Containers.Quest.find("#button-mab-quest-hide-container");
+    self.Buttons[self.Buttons.length] = self.Buttons.Arena_HideContainer =
       self.Containers.Arena.find("#button-mab-arena-hide-container");
-    self.Buttons[self.Buttons.length] = self.Buttons.RetreatFromBattle =
+    self.Buttons[self.Buttons.length] = self.Buttons.Arena_Retreat =
       self.Containers.Arena.find("#button-mab-arena-retreat");
-    self.Buttons[self.Buttons.length] = self.Buttons.ShowDuelResults =
+    self.Buttons[self.Buttons.length] = self.Buttons.Arena_ShowDuelsResults =
       self.Containers.Arena.find("#button-mab-arena-show-duel-results");
 
     self.Fields = [];
@@ -137,40 +141,31 @@ function mab_battle() {
   };
 
   self.loadEvents = () => {
-    self.Buttons.ShowBattleContainer_NewBattle.on("click", (e) => {
+    self.Buttons.NewSkirmishBattle_Manual.on("click", (e) => {
       e.preventDefault();
 
-      self.battle_HideContainer();
+      self.quest_HideContainer();
+
       self.continueCampaign_HideContainer();
 
       self.Battle_Start();
     });
 
-    self.Buttons.TurnOnAutoMode.on("click", (e) => {
-      e.preventDefault();
-
-      self.battle_HideContainer();
-      self.continueCampaign_HideContainer();
-
-      self.Battle_Auto();
-    });
-
-    self.Buttons.HideBattleContainer.on("click", (e) => {
-      e.preventDefault();
-
-      self.continueCampaign_HideContainer();
-
-      self.battle_HideContainer();
-
-      self.mainMenu_ShowContainer();
-    });
-
-    self.Buttons.HideArenaContainer.on("click", (e) => {
+    self.Buttons.Arena_HideContainer.on("click", (e) => {
       e.preventDefault();
 
       self.arena_HideContainer();
 
       self.continueCampaign_ShowContainer();
+    });
+
+    self.Buttons.NewSkirmishBattle_Auto.on("click", (e) => {
+      e.preventDefault();
+
+      self.quest_HideContainer();
+      self.continueCampaign_HideContainer();
+
+      self.Battle_Auto();
     });
 
     // Binding the event after inserting into DOM
@@ -213,7 +208,7 @@ function mab_battle() {
       }
     );
 
-    self.Buttons.RetreatFromBattle.on("click", (e) => {
+    self.Buttons.Arena_Retreat.on("click", (e) => {
       self.Duel_PlayerRetreats();
     });
 
@@ -226,10 +221,19 @@ function mab_battle() {
       self.Duel_PlayerAttacks();
     });
 
-    self.Buttons.ShowDuelResults.on("click", (e) => {
+    self.Buttons.Arena_ShowDuelsResults.on("click", (e) => {
       e.preventDefault();
 
       self.Blocks.WrapperPlayerDuelResults.slideToggle();
+    });
+
+    // Binding the event after inserting into DOM
+    $(document).on("click", `.mab-opponent`, function () {
+      self.QuestId = $(this).data("mab-quest-id");
+
+      self.NpcId = $(this).data("mab-npc-id");
+
+      self.Battle_Start();
     });
   };
 
@@ -289,11 +293,11 @@ function mab_battle() {
       ? div.removeClass("show-div").addClass("hide-div")
       : div.removeClass("hide-div").addClass("show-div");
   };
-  self.battle_ShowContainer = () => {
-    self.toggleContainerVisibility(self.Containers.Battle);
+  self.quest_ShowContainer = () => {
+    self.toggleContainerVisibility(self.Containers.Quest);
   };
-  self.battle_HideContainer = () => {
-    self.toggleContainerVisibility(self.Containers.Battle);
+  self.quest_HideContainer = () => {
+    self.toggleContainerVisibility(self.Containers.Quest);
   };
 
   self.continueCampaign_ShowContainer = () => {
@@ -312,7 +316,14 @@ function mab_battle() {
 
   self.Battle_Start = () => {
     const formData = new FormData();
-    formData.append("Mab_QuestId", 1);
+
+    if (self.QuestId) {
+      formData.append("Mab_QuestId", self.QuestId);
+    }
+
+    if (self.NpcId) {
+      formData.append("Mab_NpcId", self.NpcId);
+    }
 
     $.ajax({
       type: "POST",
@@ -353,7 +364,7 @@ function mab_battle() {
 
         self.DeckSize = resp.content.mab_DeckSize;
 
-        self.battle_HideContainer();
+        self.quest_HideContainer();
         self.arena_ShowContainer();
 
         self.Duel_Start();
@@ -416,7 +427,7 @@ function mab_battle() {
         }
 
         self.PlayerCards.forEach((card, index) => {
-          self.NpcWinningStreak.push(card.mab_DuelPoints <= 0);
+          self.NpcWinningStreak.push(card.mab_DuelPoints < 0);
 
           let imgPath = ``;
 
@@ -553,7 +564,7 @@ function mab_battle() {
           self.NpcCardFullPowerSequence.push(card.mab_CardFullPower);
         });
 
-        self.battle_HideContainer();
+        self.quest_HideContainer();
         self.arena_ShowContainer();
 
         self.Duel_CheckStatus();
@@ -714,7 +725,7 @@ function mab_battle() {
 
         self.Fields.BattleBonusXp.html(self.Battle_BonusXp);
 
-        self.NpcWinningStreak[self.DuelsCount - 1] = !self.Duel_HasPlayerWon;
+        self.NpcWinningStreak[self.DuelsCount - 1] = self.Duel_EarnedPoints < 0;
 
         self.NpcCardFullPowerSequence.push(self.NpcDuellingCard_CardFullPower);
 
@@ -1276,7 +1287,7 @@ function mab_battle() {
       self.battle_ListNpcCards();
       self.Battle_ListPlayerDuellingCards();
 
-      self.Buttons.RetreatFromBattle.prop("disabled", true);
+      self.Buttons.Arena_Retreat.prop("disabled", true);
 
       let msg = self.Battle_Points > 0 ? "Victory!" : "Defeat!";
 
@@ -1357,7 +1368,7 @@ function mab_battle() {
 
     self.Blocks.PlayerCards.empty();
 
-    self.Buttons.RetreatFromBattle.prop("disabled", false);
+    self.Buttons.Arena_Retreat.prop("disabled", false);
   };
 
   self.clear_PlayerDuellingCard = () => {
