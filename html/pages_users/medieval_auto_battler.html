@@ -170,7 +170,7 @@
                 >
                   <div class="d-flex flex-row gap-1 m-0 p-0">
                     <div class="d-flex flex-nowrap">
-                      <span>G</span>old&nbsp;<span>S</span>tash:
+                      <span>C</span>oins&nbsp;<span>S</span>tash:
                     </div>
                     <span id="field-mab-campaign-statistics-gold-stash">?</span>
                   </div>
@@ -240,6 +240,19 @@
                     <div class="d-flex flex-nowrap"><span>D</span>efeats:</div>
                     <span id="field-mab-campaign-statistics-battles-lost"
                       >?</span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex flex-row align-items-center justify-content-center gap-2"
+                >
+                  <div class="d-flex flex-row gap-1 m-0 p-0">
+                    <div class="d-flex flex-nowrap">
+                      <span>M</span>ode&nbsp;:
+                    </div>
+                    <span id="field-mab-campaign-statistics-difficulty-level"
+                      >0</span
                     >
                   </div>
                 </div>
@@ -387,11 +400,17 @@
 
             <button
               id="button-mab-new-campaign-start"
-              class="btn btn-outline-info w-100 mt-3"
+              class="btn btn-outline-info w-100 mt-3 mb-3"
               type="button"
             >
               Start
             </button>
+
+            <hr />
+
+            <div id="test-df-lvl">
+              <div id="mab-new-campaign-difficulty-lvl-info"></div>
+            </div>
           </form>
         </div>
 
@@ -402,9 +421,7 @@
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
             <div class="p-0 m-0">
-              <h3 class="p-0 m-0">
-                <span>C</span>ontinue <span>C</span>ampaign
-              </h3>
+              <h2 class="p-0 m-0"><span>C</span>AMPAIGN</h2>
             </div>
 
             <button
@@ -418,9 +435,13 @@
 
           <hr />
 
-          <div class="mab-skirmish-battle-block">
-            <div>Skirmish Battles:</div>
+          <div
+            class="d-flex flex-column justify-content-center align-items-center w-100 gap-0 m-3"
+          >
+            <h3 class="p-0 m-0"><span>S</span>kirmish <span>B</span>attles</h3>
+          </div>
 
+          <div class="mab-skirmish-battle-block">
             <button
               id="button-mab-new-manual-skirmish-battle"
               class="btn btn-outline-info"
@@ -439,7 +460,12 @@
 
           <hr />
 
-          <h3><span>Q</span>uests</h3>
+          <div
+            class="d-flex flex-column justify-content-center align-items-center w-100 gap-0"
+          >
+            <h3><span>Q</span>uests</h3>
+          </div>
+
           <div id="mab-quests-block"></div>
         </div>
 
@@ -984,7 +1010,7 @@
             id="header-mab-deck-booster"
             class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
-            <div id="form-title-mab-create-deck" class="p-0 m-0">
+            <div id="form-title-mab-deck-booster" class="p-0 m-0">
               <h3 class="p-0 m-0">
                 <span>N</span>ewly <span>A</span>cquired <span>C</span>ards
               </h3>
@@ -1004,6 +1030,243 @@
             id="block-mab-deck-booster-new-player-cards"
             class="d-flex flex-row pt-5 gap-4"
           ></div>
+        </div>
+
+        <!-- 8.CONTAINER: FORGERY -->
+        <div id="container-mab-forgery" class="hide-div">
+          <div
+            id="header-mab-forgery"
+            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
+          >
+            <div id="form-title-mab-forgery" class="p-0 m-0">
+              <h3 class="p-0 m-0"><span>F</span>orgery</h3>
+            </div>
+            <button
+              id="button-mab-forgery-hide-container"
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <hr />
+
+          <div
+            id="block-mab-forgery-resources"
+            class="d-flex flex-column gap-3"
+          >
+            <div class="d-flex flex-row gap-3">
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-brass-tooltip"
+                data-bs-title="Brass"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_brass.svg"
+                />
+                <span id="mab-owned-brass">10</span>
+              </div>
+
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-copper-tooltip"
+                data-bs-title="Copper"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_copper.svg"
+                />
+                <span id="mab-owned-copper">33</span>
+              </div>
+
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-iron-tooltip"
+                data-bs-title="Iron"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_iron.svg"
+                />
+                <span id="mab-owned-iron">123</span>
+              </div>
+            </div>
+
+            <div class="d-flex flex-row gap-3">
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-steel-tooltip"
+                data-bs-title="Steel"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_steel.svg"
+                />
+                <span id="mab-owned-steel">8</span>
+              </div>
+
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-titanium-tooltip"
+                data-bs-title="Titanium"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_titanium.svg"
+                />
+                <span id="mab-owned-titanium">1</span>
+              </div>
+
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-silver-tooltip"
+                data-bs-title="Silver"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_silver.svg"
+                />
+                <span id="mab-owned-silver">5</span>
+              </div>
+            </div>
+
+            <div class="d-flex flex-row gap-3">
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-gold-tooltip"
+                data-bs-title="Gold"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_gold.svg"
+                />
+                <span id="mab-owned-gold">5</span>
+              </div>
+
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-diamond-tooltip"
+                data-bs-title="Diamond"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_diamond.svg"
+                />
+                <span id="mab-owned-diamond">2</span>
+              </div>
+
+              <div
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-adamantium-tooltip"
+                data-bs-title="Adamantium"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_adamantium.svg"
+                />
+                <span id="mab-owned-adamantium">0</span>
+              </div>
+            </div>
+
+            <hr />
+
+            <div
+              class="d-flex flex-column justify-content-center align-items-center"
+            >
+              <!-- Card selection -->
+              <select
+                name="Mab_PlayerCardId"
+                id="select-mab-forery-player-cards"
+                class="form-control form-select required"
+              ></select>
+
+              <hr />
+
+              <!-- Forging Field -->
+              <div
+                class="d-flex flex-row justify-content-center align-items-center"
+              >
+                <!-- Card to be forged -->
+                <div class="mab-card mab-card-front active-card">
+                  <div
+                    class="d-flex flex-row justify-content-between align-items-center w-100"
+                  >
+                    <span id="mab-forgery-card-name">Card Name</span>
+
+                    <div>
+                      <span id="mab-forgery-card-power">?</span>
+
+                      <span>|</span>
+
+                      <span id="mab-forgery-card-upper-hand">?</span>
+                    </div>
+                  </div>
+
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center gap-3"
+                  >
+                    <img
+                      src="/images/icons/mab_card_types/neutral/truce.svg"
+                      id="mab-forgery-card-type"
+                      class="cardtype"
+                    />
+                  </div>
+
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center w-100"
+                  >
+                    <div>
+                      <span id="mab-forgery-card-code" class="cardCode">?</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center"
+                >
+                  <button class="btn btn-outline-info">Increase power</button>
+
+                  <button class="btn btn-outline-info">
+                    Increase upper hand
+                  </button>
+
+                  <div
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-custom-class="mab-forge-tooltip"
+                    data-bs-title="Forge"
+                  >
+                    <button class="btn">
+                      <img
+                        class="mab-resources w-100"
+                        src="/images/icons/mab/mab_forge.svg"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -1025,6 +1288,7 @@
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_battle.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_manage_decks.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_deck_booster.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_forgery.js"></script>
 
     <script>
       document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {

@@ -90,6 +90,11 @@ function mab_main_menu() {
         "#field-mab-campaign-statistics-battles-lost"
       );
 
+    self.Fields[self.Fields.length] = self.Fields.DifficultyLvl =
+      self.Containers.CampaignStatistics.find(
+        "#field-mab-campaign-statistics-difficulty-level"
+      );
+
     self.Images = [];
     self.Images[self.Images.length] = self.Images.Trophy_AllCardsCollected =
       self.Containers.CampaignStatistics.find(
@@ -270,6 +275,22 @@ function mab_main_menu() {
 
         self.Fields.DecksOwned.html(
           `<strong>${mabCampaignDB.mab_CreatedDecksCount}</strong>`
+        );
+
+        let difficultyClass = "";
+        switch (mabCampaignDB.mab_CampaignDifficulty) {
+          case "Easy":
+            difficultyClass = "paint-green";
+            break;
+          case "Medium":
+            difficultyClass = "paint-yellow";
+            break;
+          case "Hard":
+            difficultyClass = "paint-red";
+            break;
+        }
+        self.Fields[self.Fields.length] = self.Fields.DifficultyLvl.html(
+          `<strong class="${difficultyClass}">${mabCampaignDB.mab_CampaignDifficulty}</strong>`
         );
 
         if (mabCampaignDB.mab_AllCardsCollectedTrophy == true) {

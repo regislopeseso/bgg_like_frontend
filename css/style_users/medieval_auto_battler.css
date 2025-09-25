@@ -50,7 +50,8 @@ main {
 #container-mab-quest,
 #container-mab-active-deck,
 #container-mab-create-deck,
-#container-mab-deck-booster {
+#container-mab-deck-booster,
+#container-mab-forgery {
   position: absolute;
   width: fit-content;
   left: 50vw;
@@ -140,7 +141,7 @@ main {
 }
 .paint-green {
   font-weight: 100;
-  color: var(--greenish);
+  color: var(--greenish) !important;
 }
 .paint-yellow {
   font-weight: 500;
@@ -148,7 +149,20 @@ main {
 }
 .paint-red {
   font-weight: 900;
-  color: var(--reddish);
+  color: var(--reddish) !important;
+}
+
+#test-df-lvl {
+  display: none;
+}
+
+#mab-new-campaign-difficulty-lvl-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  width: 100%;
+  gap: 5px;
 }
 
 .mab-cards-list {
@@ -232,6 +246,8 @@ main {
 
 .frozen-card {
   pointer-events: none !important;
+  opacity: 0.6 !important;
+  background-color: transparent !important  ;
 }
 .active-card {
   pointer-events: all !important;
@@ -289,12 +305,13 @@ main {
 }
 
 .mab-duel-results {
+  font-size: medium !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: var(--mab-card-width);
-  height: 150px;
+  height: 180px;
   padding: 5px;
   border: 1px solid var(--main-color) !important;
   border-radius: 12px;
@@ -355,6 +372,21 @@ main {
   background-color: var(--second-bg-color);
   color: white !important;
   transform: rotateY(180deg) !important;
+}
+
+.mab-resources {
+  width: 80px !important;
+  height: 80px !important;
+}
+.mab-resourse-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  background-color: var(--second-bg-color);
+  border: 1px solid var(--main-color);
+  border-radius: 5px;
 }
 
 @media screen and (max-width: 1440px) {
@@ -426,7 +458,8 @@ main {
   #container-mab-quest,
   #container-mab-active-deck,
   #container-mab-create-deck,
-  #container-mab-deck-booster {
+  #container-mab-deck-booster,
+  #container-mab-forgery {
     width: 90vw;
   }
 

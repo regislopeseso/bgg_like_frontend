@@ -809,9 +809,7 @@ function mab_battle() {
           }
 
           let card_Html = `
-              <div class="d-flex flex-column justify-content-center align-items-center w-100 gap-3">
-                
-
+              <div class="d-flex flex-column justify-content-center align-items-center w-100 gap-3">             
                 <button
                   class="btn button-mab-arena-assigned-player-cards mab-card mab-card-front ${usedCardClass}" 
                   ${disabledAttr}
@@ -854,31 +852,62 @@ function mab_battle() {
                
             `;
 
-          let duelPoints = card.mab_DuelPoints ? card.mab_DuelPoints : "-";
-          let duelEarnedXp = card.mab_DuelEarnedXp
-            ? card.mab_DuelEarnedXp
-            : "-";
-          let duelBonusXp = card.mab_DuelBonusXp ? card.mab_DuelBonusXp : "-";
+          let duelPoints = "-";
+          let pointsResultClass = "";
+          let result = "";
+          if (card.mab_DuelPoints || card.mab_DuelPoints === 0) {
+            duelPoints = card.mab_DuelPoints;
+
+            if (duelPoints > 0) {
+              pointsResultClass = "paint-green";
+              result = "VICTORY!";
+            } else {
+              pointsResultClass = "paint-red";
+              result = "DEFEAT!";
+            }
+          }
+
+          let duelEarnedXp = "-";
+          let xpResultClass = "";
+          if (card.mab_DuelEarnedXp || card.mab_DuelEarnedXp === 0) {
+            duelEarnedXp = card.mab_DuelEarnedXp;
+            xpResultClass =
+              card.mab_DuelEarnedXp > 0 ? "paint-green" : "paint-red";
+          }
+
+          let duelBonusXp = "-";
+          let bonusXpResultClass = "";
+          if (card.mab_DuelBonusXp || card.mab_DuelBonusXp === 0) {
+            duelBonusXp = card.mab_DuelBonusXp;
+            bonusXpResultClass =
+              card.mab_DuelEarnedXp > 0 ? "paint-green" : "paint-red";
+          }
 
           let duel_resultsHtml = `
               <div class="mab-duel-results">
-                  <div class="d-flex text-start w-100 ps-3">
-                      Results Duel #${
+                  <div class="d-flex flex-row text-start w-100 ps-3">
+                      <span>R</span>esults&nbsp; 
+                      <span>D</span>uel&nbsp; 
+                      <span>#${
                         index + 1
-                      }:                                              
+                      }</span>:                                                       
                   </div>  
 
                   <div class="d-flex text-start w-100 ps-3">
-                    Points:<span>${duelPoints}</span>                                                  
+                    Points:&nbsp;<span class="${pointsResultClass}">${duelPoints}</span>                                                  
                   </div>  
 
                   <div class="d-flex text-start w-100 ps-3">  
-                    Xp:<span>${duelEarnedXp}</span>   
+                    Xp:&nbsp;<span class="${xpResultClass}">${duelEarnedXp}</span>   
                   </div> 
                   
                   <div class="d-flex text-start w-100 ps-3">
-                    Bonus Xp:<span>${duelBonusXp}</span>  
+                    Bonus Xp:&nbsp;<span class="${bonusXpResultClass}">${duelBonusXp}</span>  
                   </div> 
+
+                  <div class="d-flex justify-content-center align-items-center w-100 ${pointsResultClass}">
+                    ${result}
+                  </div>
                    
                 </div>                 
               </div> 

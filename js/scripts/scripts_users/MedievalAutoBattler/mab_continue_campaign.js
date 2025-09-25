@@ -24,19 +24,21 @@ function mab_continue_campaign() {
     self.Containers = [];
     self.Containers[self.Containers.length] = self.Containers.MainMenu =
       self.MabContainersContent.find("#container-mab-main-menu");
+
     self.Containers[self.Containers.length] = self.Containers.ContinueCampaign =
       self.MabContainersContent.find("#container-mab-continue-campaign");
     self.Containers[self.Containers.length] = self.Containers.Battle =
       self.MabContainersContent.find("#container-mab-quest");
 
     self.Buttons = [];
+
     self.Buttons[self.Buttons.length] =
-      self.Buttons.ShowContinueCampaignContainer =
+      self.Buttons.ContinueCampaign_ShowContainer =
         self.Containers.MainMenu.find(
           "#button-mab-continue-campaign-show-container"
         );
     self.Buttons[self.Buttons.length] =
-      self.Buttons.HideContinueCampaignContainer =
+      self.Buttons.ContinueCampaign_HideContainer =
         self.Containers.ContinueCampaign.find(
           "#button-mab-continue-campaign-hide-container"
         );
@@ -49,7 +51,7 @@ function mab_continue_campaign() {
   };
 
   self.loadEvents = () => {
-    self.Buttons.ShowContinueCampaignContainer.on("click", (e) => {
+    self.Buttons.ContinueCampaign_ShowContainer.on("click", (e) => {
       e.preventDefault();
 
       self.mainMenu_HideContainer();
@@ -58,7 +60,7 @@ function mab_continue_campaign() {
 
       self.ContinueCampaign_ListQuests();
     });
-    self.Buttons.HideContinueCampaignContainer.on("click", (e) => {
+    self.Buttons.ContinueCampaign_HideContainer.on("click", (e) => {
       e.preventDefault();
 
       self.continueCampaign_HideContainer();

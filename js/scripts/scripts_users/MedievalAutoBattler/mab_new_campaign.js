@@ -56,11 +56,17 @@ function mab_new_campaign() {
       self.DifficultyLabels.NewCampaign_Hard = self.Containers.NewCampaign.find(
         "#label-mab-new-campaign-difficulty-hard"
       );
+
+    self.NewCampaign_Difficulty_Lvl_Info = self.Containers.NewCampaign.find(
+      "#mab-new-campaign-difficulty-lvl-info"
+    );
   };
 
   self.loadEvents = () => {
     self.Buttons.NewCampaign_ShowContainer.on("click", (e) => {
       e.preventDefault();
+
+      self.NewCampaign_GetDifficultyInfo("easy");
 
       self.mainMenu_HideContainer();
 
@@ -81,14 +87,17 @@ function mab_new_campaign() {
 
     self.Inputs.NewCampaign_Difficulty_Easy.on("click", (e) => {
       self.paintDifficultyLabel("easy");
+      self.NewCampaign_GetDifficultyInfo("easy");
     });
 
     self.Inputs.NewCampaign_Difficulty_Medium.on("click", (e) => {
       self.paintDifficultyLabel("medium");
+      self.NewCampaign_GetDifficultyInfo("medium");
     });
 
     self.Inputs.NewCampaign_Difficulty_Hard.on("click", (e) => {
       self.paintDifficultyLabel("hard");
+      self.NewCampaign_GetDifficultyInfo("hard");
     });
 
     self.Buttons.NewCampaign_Start.on("click", (e) => {
@@ -217,6 +226,46 @@ function mab_new_campaign() {
       },
       error: function (err) {
         sweetAlertError(err);
+      },
+    });
+  };
+  self.NewCampaign_GetDifficultyInfo = (difficulty) => {
+    $.ajax({
+      type: "GET",
+      url: `https://localhost:7081/users/mabgetcampaigndificultyinfo?Mab_CampaignDifficulty=${difficulty}`,
+      xhrFields: { withCredentials: true },
+      success: function (resp) {
+        if (!resp.content) {
+          sweetAlertError("Error", response.message);
+          return;
+        }
+
+        let difficultyLevel = difficulty.toUpperCase();
+        let startingGoldStash = resp.content.mab_StartingGoldStash;
+        let startingCardsMaxLevel = resp.content.mab_StartingCardsMaxLevel;
+        let startingCardsCount = resp.content.mab_StartingCardsCount;
+        let questsBaseGoldBounty = resp.content.mab_QuestsBaseGoldBounty;
+        let questsBaseXpReward = resp.content.mab_QuestsBaseXpReward;
+
+        self.NewCampaign_Difficulty_Lvl_Info.empty();
+
+        self.NewCampaign_Difficulty_Lvl_Info.append(`
+          <div><span>${difficultyLevel}</span> <span>M</span>ode:</div>
+          <div>Starting Gold Stash: <span>${startingGoldStash}</span></div>
+          <div>Starting Cards Max Level: <span>${startingCardsMaxLevel}</span></div>
+          <div>Starting Cards Count: <span>${startingCardsCount}</span></div>
+          <div>Quests Base Gold Bounty: <span>${questsBaseGoldBounty}</span></div>
+          <div>Quests Base Xp Reward: <span>${questsBaseXpReward}</span></div>
+          `);
+
+        $("#test-df-lvl").css("display", "none");
+
+        $("#test-df-lvl").slideToggle();
+      },
+      error: function () {
+        sweetAlertError(
+          "Failed to fetch user available and assigned card copies. Try again later."
+        );
       },
     });
   };
