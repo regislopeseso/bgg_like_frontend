@@ -3,6 +3,8 @@ function mab_forgery() {
 
   self.IsBuilt = false;
 
+  self.PlayerCardId = null;
+
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
@@ -19,6 +21,90 @@ function mab_forgery() {
       self.Containers.MainMenu.find("#button-mab-forgery-show-container");
     self.Buttons[self.Buttons.length] = self.Buttons.Forgery_HideContainer =
       self.Containers.Forgery.find("#button-mab-forgery-hide-container");
+
+    self.Forgery_ListPlayerCards_Select2 = self.Containers.Forgery.find(
+      "#select-mab-forgery-player-cards"
+    );
+
+    self.Blocks = [];
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_CoinsBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-coins");
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_XpBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-xp");
+
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_BrassBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-brass");
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_CopperBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-copper");
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_Iron =
+      self.Containers.Forgery.find("#block-mab-forgery-iron");
+
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_SteelBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-steel");
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_TitaniumBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-titanium");
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_SilverBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-silver");
+
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_GoldBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-gold");
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_DiamondBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-diamond");
+    self.Blocks[self.Blocks.length] = self.Blocks.Forgery_AdamantiumBlock =
+      self.Containers.Forgery.find("#block-mab-forgery-adamantium");
+
+    self.Fields = [];
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Coins =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-coins");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Xp =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-xp");
+
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Brass =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-brass");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Copper =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-copper");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Iron =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-iron");
+
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Steel =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-steel");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Titanium =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-titanium");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Silver =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-silver");
+
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Gold =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-gold");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Diamond =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-diamond");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_Adamantium =
+      self.Containers.Forgery.find("#span-mab-forgery-owned-adamantium");
+
+    self.Fields[self.Fields.length] = self.Fields.Forgery_CardName =
+      self.Containers.Forgery.find("#span-mab-forgery-card-name");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_CardPower =
+      self.Containers.Forgery.find("#span-mab-forgery-card-power");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_CardUpperHand =
+      self.Containers.Forgery.find("#span-mab-forgery-card-upper-hand");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_CardType =
+      self.Containers.Forgery.find("#img-mab-forgery-card-type");
+    self.Fields[self.Fields.length] = self.Fields.Forgery_CardCode =
+      self.Containers.Forgery.find("#span-mab-forgery-card-code");
+
+    self.Forgery_Card = self.Containers.Forgery.find("#mab-forgery-card");
+    self.Forgery_Tools = self.Containers.Forgery.find("#mab-forgery-tools");
+
+    self.Imgs = [];
+    self.Imgs[self.Imgs.length] =
+      self.Imgs.MabCardTruce = `/images/icons/mab_card_types/neutral/truce.svg`;
+    self.Imgs[self.Imgs.length] =
+      self.Imgs.MabCardTypeNeutral = `/images/icons/mab_card_types/cardtype_neutral.svg`;
+    self.Imgs[self.Imgs.length] =
+      self.Imgs.MabCardTypeRanged = `/images/icons/mab_card_types/cardtype_ranged.svg`;
+    self.Imgs[self.Imgs.length] =
+      self.Imgs.MabCardTypeCavalry = `/images/icons/mab_card_types/cardtype_cavalry.svg`;
+    self.Imgs[self.Imgs.length] =
+      self.Imgs.MabCardTypeInfantry = `/images/icons/mab_card_types/cardtype_infantry.svg`;
   };
 
   self.loadEvents = () => {
@@ -28,6 +114,8 @@ function mab_forgery() {
       self.mainMenu_HideContainer();
 
       self.forgery_ShowContainer();
+
+      self.Forgery_ListResources();
     });
 
     self.Buttons.Forgery_HideContainer.on("click", (e) => {
@@ -36,6 +124,14 @@ function mab_forgery() {
       self.forgery_HideContainer();
 
       self.mainMenu_ShowContainer();
+    });
+
+    self.Forgery_ListPlayerCards_Select2.on("select2:select", (e) => {
+      const selectedData = e.params.data;
+
+      self.PlayerCardId = selectedData.id;
+
+      self.Forgery_RenderPlayerCard();
     });
   };
 
@@ -103,9 +199,253 @@ function mab_forgery() {
   };
   self.forgery_ShowContainer = () => {
     self.toggleContainerVisibility(self.Containers.Forgery);
+    self.forgery_ClearData();
   };
   self.forgery_HideContainer = () => {
     self.toggleContainerVisibility(self.Containers.Forgery);
+  };
+
+  self.Forgery_ListResources = () => {
+    $.ajax({
+      method: "GET",
+      url: "https://localhost:7081/users/mablistforgeryresources",
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: function (resp) {
+        if (!resp.content) {
+          sweetAlertError(resp.message);
+
+          return;
+        }
+
+        let resources = resp.content;
+
+        self.Fields.Forgery_Coins.empty();
+        self.Fields.Forgery_Xp.empty();
+
+        self.Fields.Forgery_Brass.empty();
+        self.Fields.Forgery_Copper.empty();
+        self.Fields.Forgery_Iron.empty();
+
+        self.Fields.Forgery_Steel.empty();
+        self.Fields.Forgery_Titanium.empty();
+        self.Fields.Forgery_Silver.empty();
+
+        self.Fields.Forgery_Gold.empty();
+        self.Fields.Forgery_Diamond.empty();
+        self.Fields.Forgery_Adamantium.empty();
+
+        if (resources.mab_Coins < 1) {
+          self.Blocks.Forgery_CoinsBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_CoinsBlock.removeClass("d-none");
+          self.Fields.Forgery_Coins.html(resources.mab_Coins);
+        }
+
+        if (resources.mab_Xp < 1) {
+          self.Blocks.Forgery_XpBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_XpBlock.removeClass("d-none");
+          self.Fields.Forgery_Xp.html(resources.mab_Xp);
+        }
+
+        if (resources.mab_Brass < 1) {
+          self.Blocks.Forgery_BrassBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_BrassBlock.removeClass("d-none");
+          self.Fields.Forgery_Brass.html(resources.mab_Brass);
+        }
+
+        if (resources.mab_Copper < 1) {
+          self.Blocks.Forgery_CopperBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_CopperBlock.removeClass("d-none");
+          self.Fields.Forgery_Copper.html(resources.mab_Copper);
+        }
+
+        if (resources.mab_Iron < 1) {
+          self.Blocks.Forgery_Iron.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_Iron.removeClass("d-none");
+          self.Fields.Forgery_Iron.html(resources.mab_Iron);
+        }
+
+        if (resources.mab_Steel < 1) {
+          self.Blocks.Forgery_SteelBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_SteelBlock.removeClass("d-none");
+          self.Fields.Forgery_Steel.html(resources.mab_Steel);
+        }
+
+        if (resources.mab_Titanium < 1) {
+          self.Blocks.Forgery_TitaniumBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_TitaniumBlock.removeClass("d-none");
+          self.Fields.Forgery_Titanium.html(resources.mab_Titanium);
+        }
+
+        if (resources.mab_Silver < 1) {
+          self.Blocks.Forgery_SilverBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_SilverBlock.removeClass("d-none");
+          self.Fields.Forgery_Silver.html(resources.mab_Silver);
+        }
+
+        if (resources.mab_Gold < 1) {
+          self.Blocks.Forgery_GoldBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_GoldBlock.removeClass("d-none");
+          self.Fields.Forgery_Gold.html(resources.mab_Gold);
+        }
+
+        if (resources.mab_Diamond < 1) {
+          self.Blocks.Forgery_DiamondBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_DiamondBlock.removeClass("d-none");
+          self.Fields.Forgery_Diamond.html(resources.mab_Diamond);
+        }
+
+        if (resources.mab_Adamantium < 1) {
+          self.Blocks.Forgery_AdamantiumBlock.addClass("d-none");
+        } else {
+          self.Blocks.Forgery_AdamantiumBlock.removeClass("d-none");
+          self.Fields.Forgery_Adamantium.html(resources.mab_Adamantium);
+        }
+
+        self.Forgery_LoadPlayerCards();
+      },
+      error: function (xhr, status, error) {
+        sweetAlertError("Request failed:", error);
+      },
+    });
+  };
+
+  self.Forgery_LoadPlayerCards = () => {
+    if (
+      self.Forgery_ListPlayerCards_Select2.hasClass("select2-hidden-accessible")
+    ) {
+      self.Forgery_ListPlayerCards_Select2.select2("destroy");
+    }
+
+    fetch(`https://localhost:7081/users/mablistunassignedplayercards`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.content) {
+          self.sweetAlertError(
+            "Failed to load mab player cards:",
+            data.message
+          );
+          return;
+        }
+
+        const mabPlayerCards = data.content.map((item) => ({
+          id: item.mab_PlayerCardId,
+          text: item.mab_CardDescription,
+        }));
+
+        // Clear previous options and add empty one
+        self.Forgery_ListPlayerCards_Select2.empty().append(
+          `<option></option>`
+        );
+
+        // Builds select2
+        self.Forgery_ListPlayerCards_Select2.select2({
+          data: mabPlayerCards,
+          dropdownParent: self.DOM,
+          placeholder: "Select a card...",
+          allowClear: true,
+          theme: "classic",
+          width: "100%",
+          templateSelection: (data) => {
+            if (!data.id) return data.text;
+            return $("<strong>").text(data.text);
+          },
+        });
+
+        // Opens select2
+        self.Forgery_ListPlayerCards_Select2.trigger("change").select2("open");
+      })
+      .catch((err) => {
+        self.sweetAlertError("Error fetching mab player cards:", err);
+      });
+  };
+
+  self.Forgery_RenderPlayerCard = () => {
+    $.ajax({
+      method: "GET",
+      url: `https://localhost:7081/users/mabshowplayercarddetails?Mab_PlayerCardId=${self.PlayerCardId}`,
+      xhrFields: {
+        withCredentials: true,
+      },
+      success: function (resp) {
+        if (!resp.content) {
+          sweetAlertError(resp.message);
+          return;
+        }
+
+        self.forgery_ClearData();
+
+        let playerCard = resp.content;
+
+        let imgPath = "";
+
+        self.Fields.Forgery_CardName.html(playerCard.mab_CardName);
+        self.Fields.Forgery_CardPower.html(playerCard.mab_CardPower);
+        self.Fields.Forgery_CardUpperHand.html(playerCard.mab_CardUpperHand);
+        self.Fields.Forgery_CardCode.html(playerCard.mab_CardCode);
+
+        switch (playerCard.mab_CardType) {
+          case "Neutral":
+            imgPath = self.Imgs.MabCardTypeNeutral;
+            break;
+          case "Ranged":
+            imgPath = self.Imgs.MabCardTypeRanged;
+            break;
+          case "Cavalry":
+            imgPath = self.Imgs.MabCardTypeCavalry;
+            break;
+          case "Infantry":
+            imgPath = self.Imgs.MabCardTypeInfantry;
+            break;
+          default:
+            self.sweetAlertError("Failed to fetch mab card type");
+            break;
+        }
+
+        if (
+          playerCard.mab_CardType === "Neutral" &&
+          playerCard.mab_CardPower === 0 &&
+          playerCard.mab_CardUpperHand === 0
+        ) {
+          imgPath = "";
+          imgPath = self.Imgs.MabCardTruce;
+        }
+
+        self.Fields.Forgery_CardType.attr("src", imgPath);
+
+        self.Forgery_Card.removeClass("hide-div").addClass("show-div");
+        self.Forgery_Tools.removeClass("hide-div").addClass("show-div");
+      },
+      error: function (error) {
+        sweetAlertError(error);
+      },
+    });
+  };
+
+  self.forgery_ClearData = () => {
+    self.Fields.Forgery_CardName.empty();
+    self.Fields.Forgery_CardPower.empty();
+    self.Fields.Forgery_CardUpperHand.empty();
+    self.Fields.Forgery_CardType.empty();
+    self.Fields.Forgery_CardCode.empty();
+
+    self.Fields.Forgery_CardType.attr("src", "");
+    self.Forgery_Card.removeClass("show-div").addClass("hide-div");
+    self.Forgery_Tools.removeClass("show-div").addClass("hide-div");
   };
 
   self.build = () => {
@@ -113,6 +453,7 @@ function mab_forgery() {
       self.IsBuilt = true;
     }
     self.loadReferences();
+
     self.loadEvents();
   };
 

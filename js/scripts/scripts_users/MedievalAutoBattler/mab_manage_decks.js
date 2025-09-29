@@ -188,6 +188,7 @@ function mab_manage_decks() {
         self.ActiveDeck_UnassignPlayerCard(index, assignedCardId);
       }
     );
+
     self.Selects.ActiveDeck_UnassignedPlayerCards.on("select2:select", (e) => {
       const selectedData = e.params.data;
 
@@ -205,8 +206,6 @@ function mab_manage_decks() {
       const selectedData = e.params.data;
 
       self.ActiveDeckId = selectedData.id;
-
-      //self.ActiveDeckName = selectedData.text;
 
       self.ActiveDeck_ActivateDeck();
     });
@@ -242,6 +241,7 @@ function mab_manage_decks() {
 
       self.CreateDeck_EditDeckName();
     });
+
     // Binding the event after inserting into DOM
     $(document).on(
       "click",
@@ -255,6 +255,7 @@ function mab_manage_decks() {
         self.CreateDeck_UnassignPlayerCard(index, assignedMabCardCopyId);
       }
     );
+
     self.Selects.CreateDeck_UnassignedPlayerCards.on(
       "select2:select",
       function (e) {

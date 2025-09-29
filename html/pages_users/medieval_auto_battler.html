@@ -1036,7 +1036,7 @@
         <div id="container-mab-forgery" class="hide-div">
           <div
             id="header-mab-forgery"
-            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
+            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3 pb-3"
           >
             <div id="form-title-mab-forgery" class="p-0 m-0">
               <h3 class="p-0 m-0"><span>F</span>orgery</h3>
@@ -1054,10 +1054,45 @@
 
           <div
             id="block-mab-forgery-resources"
-            class="d-flex flex-column gap-3"
+            class="d-flex flex-column w-100 justify-content-center align-items-center gap-3"
           >
+            <div
+              class="d-flex flex-row w-100 justify-content-center align-items-center gap-3"
+            >
+              <div
+                id="block-mab-forgery-coins"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-coins-tooltip"
+                data-bs-title="Coins"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_crown_coin.svg"
+                />
+                <span id="span-mab-forgery-owned-coins"></span>
+              </div>
+
+              <div
+                id="block-mab-forgery-xp"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-custom-class="mab-xp-tooltip"
+                data-bs-title="XP"
+                class="mab-resourse-wrapper"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_growth.svg"
+                />
+                <span id="span-mab-forgery-owned-xp"></span>
+              </div>
+            </div>
+
             <div class="d-flex flex-row gap-3">
               <div
+                id="block-mab-forgery-brass"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 data-bs-custom-class="mab-brass-tooltip"
@@ -1068,10 +1103,11 @@
                   class="mab-resources w-100"
                   src="/images/icons/mab/mab_minerals/mab_brass.svg"
                 />
-                <span id="mab-owned-brass">10</span>
+                <span id="span-mab-forgery-owned-brass"></span>
               </div>
 
               <div
+                id="block-mab-forgery-copper"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 data-bs-custom-class="mab-copper-tooltip"
@@ -1082,10 +1118,11 @@
                   class="mab-resources w-100"
                   src="/images/icons/mab/mab_minerals/mab_copper.svg"
                 />
-                <span id="mab-owned-copper">33</span>
+                <span id="span-mab-forgery-owned-copper"></span>
               </div>
 
               <div
+                id="block-mab-forgery-iron"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 data-bs-custom-class="mab-iron-tooltip"
@@ -1096,12 +1133,13 @@
                   class="mab-resources w-100"
                   src="/images/icons/mab/mab_minerals/mab_iron.svg"
                 />
-                <span id="mab-owned-iron">123</span>
+                <span id="span-mab-forgery-owned-iron"></span>
               </div>
             </div>
 
             <div class="d-flex flex-row gap-3">
               <div
+                id="block-mab-forgery-steel"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 data-bs-custom-class="mab-steel-tooltip"
@@ -1112,10 +1150,11 @@
                   class="mab-resources w-100"
                   src="/images/icons/mab/mab_minerals/mab_steel.svg"
                 />
-                <span id="mab-owned-steel">8</span>
+                <span id="span-mab-forgery-owned-steel"></span>
               </div>
 
               <div
+                id="block-mab-forgery-titanium"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 data-bs-custom-class="mab-titanium-tooltip"
@@ -1126,10 +1165,11 @@
                   class="mab-resources w-100"
                   src="/images/icons/mab/mab_minerals/mab_titanium.svg"
                 />
-                <span id="mab-owned-titanium">1</span>
+                <span id="span-mab-forgery-owned-titanium"></span>
               </div>
 
               <div
+                id="block-mab-forgery-silver"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 data-bs-custom-class="mab-silver-tooltip"
@@ -1140,12 +1180,13 @@
                   class="mab-resources w-100"
                   src="/images/icons/mab/mab_minerals/mab_silver.svg"
                 />
-                <span id="mab-owned-silver">5</span>
+                <span id="span-mab-forgery-owned-silver"></span>
               </div>
             </div>
 
             <div class="d-flex flex-row gap-3">
               <div
+                id="block-mab-forgery-gold"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 data-bs-custom-class="mab-gold-tooltip"
@@ -1156,10 +1197,11 @@
                   class="mab-resources w-100"
                   src="/images/icons/mab/mab_minerals/mab_gold.svg"
                 />
-                <span id="mab-owned-gold">5</span>
+                <span id="span-mab-forgery-owned-gold"></span>
               </div>
 
               <div
+                id="block-mab-forgery-diamond"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 data-bs-custom-class="mab-diamond-tooltip"
@@ -1170,10 +1212,11 @@
                   class="mab-resources w-100"
                   src="/images/icons/mab/mab_minerals/mab_diamond.svg"
                 />
-                <span id="mab-owned-diamond">2</span>
+                <span id="span-mab-forgery-owned-diamond"></span>
               </div>
 
               <div
+                id="block-mab-forgery-adamantium"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 data-bs-custom-class="mab-adamantium-tooltip"
@@ -1184,85 +1227,96 @@
                   class="mab-resources w-100"
                   src="/images/icons/mab/mab_minerals/mab_adamantium.svg"
                 />
-                <span id="mab-owned-adamantium">0</span>
+                <span id="span-mab-forgery-owned-adamantium"></span>
               </div>
             </div>
+          </div>
+
+          <hr />
+
+          <div
+            class="d-flex flex-column justify-content-center align-items-center"
+          >
+            <!-- Card selection -->
+            <select
+              name="Mab_PlayerCardId"
+              id="select-mab-forgery-player-cards"
+              class="form-control form-select required mt-2 mb-2"
+            ></select>
 
             <hr />
 
+            <!-- Forging Field -->
             <div
-              class="d-flex flex-column justify-content-center align-items-center"
+              class="d-flex flex-row justify-content-center align-items-center gap-4 pt-3"
             >
-              <!-- Card selection -->
-              <select
-                name="Mab_PlayerCardId"
-                id="select-mab-forery-player-cards"
-                class="form-control form-select required"
-              ></select>
-
-              <hr />
-
-              <!-- Forging Field -->
+              <!-- Card to be forged -->
               <div
-                class="d-flex flex-row justify-content-center align-items-center"
+                id="mab-forgery-card"
+                class="mab-card mab-card-front active-card hide-div"
               >
-                <!-- Card to be forged -->
-                <div class="mab-card mab-card-front active-card">
-                  <div
-                    class="d-flex flex-row justify-content-between align-items-center w-100"
-                  >
-                    <span id="mab-forgery-card-name">Card Name</span>
+                <div
+                  class="d-flex flex-row justify-content-between align-items-center w-100"
+                >
+                  <span id="span-mab-forgery-card-name"></span>
 
-                    <div>
-                      <span id="mab-forgery-card-power">?</span>
+                  <div>
+                    <span id="span-mab-forgery-card-power"></span>
 
-                      <span>|</span>
+                    <span>|</span>
 
-                      <span id="mab-forgery-card-upper-hand">?</span>
-                    </div>
-                  </div>
-
-                  <div
-                    class="d-flex flex-row justify-content-center align-items-center gap-3"
-                  >
-                    <img
-                      src="/images/icons/mab_card_types/neutral/truce.svg"
-                      id="mab-forgery-card-type"
-                      class="cardtype"
-                    />
-                  </div>
-
-                  <div
-                    class="d-flex flex-row justify-content-center align-items-center w-100"
-                  >
-                    <div>
-                      <span id="mab-forgery-card-code" class="cardCode">?</span>
-                    </div>
+                    <span id="span-mab-forgery-card-upper-hand"></span>
                   </div>
                 </div>
 
                 <div
-                  class="d-flex flex-column justify-content-center align-items-center"
+                  class="d-flex flex-row justify-content-center align-items-center gap-3"
                 >
-                  <button class="btn btn-outline-info">Increase power</button>
+                  <img src="" id="img-mab-forgery-card-type" class="cardtype" />
+                </div>
 
-                  <button class="btn btn-outline-info">
-                    Increase upper hand
-                  </button>
-
-                  <div
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-custom-class="mab-forge-tooltip"
-                    data-bs-title="Forge"
-                  >
-                    <button class="btn">
-                      <img
-                        class="mab-resources w-100"
-                        src="/images/icons/mab/mab_forge.svg"
-                      />
-                    </button>
+                <div
+                  class="d-flex flex-row justify-content-center align-items-center w-100"
+                >
+                  <div>
+                    <span
+                      id="span-mab-forgery-card-code"
+                      class="cardCode"
+                    ></span>
                   </div>
+                </div>
+              </div>
+
+              <div
+                id="mab-forgery-tools"
+                class="d-flex flex-row justify-content-center align-items-center hide-div"
+              >
+                <div
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-custom-class="mab-forge-tooltip"
+                  data-bs-title="Forge: + 1 POWER"
+                >
+                  <button class="btn forgery-tools">
+                    <img
+                      class="mab-resources w-100"
+                      src="/images/icons/mab/mab_forge.svg"
+                    />
+                  </button>
+                </div>
+
+                <div
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-custom-class="mab-forge-tooltip"
+                  data-bs-title="Sharpen: + 1 UPPER HAND"
+                >
+                  <button class="btn">
+                    <img
+                      class="mab-resources w-100"
+                      src="/images/icons/mab/mab_sharpen.svg"
+                    />
+                  </button>
                 </div>
               </div>
             </div>

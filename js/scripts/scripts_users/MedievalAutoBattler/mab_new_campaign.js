@@ -251,7 +251,7 @@ function mab_new_campaign() {
 
         self.NewCampaign_Difficulty_Lvl_Info.append(`
           <div><span>${difficultyLevel}</span> <span>M</span>ode:</div>
-          <div>Starting Gold Stash: <span>${startingGoldStash}</span></div>
+          <div>Starting Coins Stash: <span>${startingGoldStash}</span></div>
           <div>Starting Cards Max Level: <span>${startingCardsMaxLevel}</span></div>
           <div>Starting Cards Count: <span>${startingCardsCount}</span></div>
           <div>Quests Base Gold Bounty: <span>${questsBaseGoldBounty}</span></div>
