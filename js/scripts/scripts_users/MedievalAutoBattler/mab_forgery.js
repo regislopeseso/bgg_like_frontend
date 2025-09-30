@@ -224,7 +224,7 @@ function mab_forgery() {
   };
   self.forgery_ShowContainer = () => {
     self.toggleContainerVisibility(self.Containers.Forgery);
-    self.forgery_ClearData();
+    self.forgery_clearData();
   };
   self.forgery_HideContainer = () => {
     self.toggleContainerVisibility(self.Containers.Forgery);
@@ -233,7 +233,7 @@ function mab_forgery() {
   self.Forgery_ListResources = () => {
     $.ajax({
       method: "GET",
-      url: "https://localhost:7081/users/mablistforgeryresources",
+      url: "https://localhost:7081/users/mablistresources",
       xhrFields: {
         withCredentials: true,
       },
@@ -261,82 +261,27 @@ function mab_forgery() {
         self.Fields.Forgery_Diamond.empty();
         self.Fields.Forgery_Adamantium.empty();
 
-        if (resources.mab_Coins < 1) {
-          self.Blocks.Forgery_CoinsBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_CoinsBlock.removeClass("d-none");
-          self.Fields.Forgery_Coins.html(resources.mab_Coins);
-        }
+        self.Fields.Forgery_Coins.html(resources.mab_Coins);
 
-        if (resources.mab_Xp < 1) {
-          self.Blocks.Forgery_XpBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_XpBlock.removeClass("d-none");
-          self.Fields.Forgery_Xp.html(resources.mab_Xp);
-        }
+        self.Fields.Forgery_Xp.html(resources.mab_Xp);
 
-        if (resources.mab_Brass < 1) {
-          self.Blocks.Forgery_BrassBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_BrassBlock.removeClass("d-none");
-          self.Fields.Forgery_Brass.html(resources.mab_Brass);
-        }
+        self.Fields.Forgery_Brass.html(resources.mab_Brass);
 
-        if (resources.mab_Copper < 1) {
-          self.Blocks.Forgery_CopperBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_CopperBlock.removeClass("d-none");
-          self.Fields.Forgery_Copper.html(resources.mab_Copper);
-        }
+        self.Fields.Forgery_Copper.html(resources.mab_Copper);
 
-        if (resources.mab_Iron < 1) {
-          self.Blocks.Forgery_Iron.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_Iron.removeClass("d-none");
-          self.Fields.Forgery_Iron.html(resources.mab_Iron);
-        }
+        self.Fields.Forgery_Iron.html(resources.mab_Iron);
 
-        if (resources.mab_Steel < 1) {
-          self.Blocks.Forgery_SteelBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_SteelBlock.removeClass("d-none");
-          self.Fields.Forgery_Steel.html(resources.mab_Steel);
-        }
+        self.Fields.Forgery_Steel.html(resources.mab_Steel);
 
-        if (resources.mab_Titanium < 1) {
-          self.Blocks.Forgery_TitaniumBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_TitaniumBlock.removeClass("d-none");
-          self.Fields.Forgery_Titanium.html(resources.mab_Titanium);
-        }
+        self.Fields.Forgery_Titanium.html(resources.mab_Titanium);
 
-        if (resources.mab_Silver < 1) {
-          self.Blocks.Forgery_SilverBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_SilverBlock.removeClass("d-none");
-          self.Fields.Forgery_Silver.html(resources.mab_Silver);
-        }
+        self.Fields.Forgery_Silver.html(resources.mab_Silver);
 
-        if (resources.mab_Gold < 1) {
-          self.Blocks.Forgery_GoldBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_GoldBlock.removeClass("d-none");
-          self.Fields.Forgery_Gold.html(resources.mab_Gold);
-        }
+        self.Fields.Forgery_Gold.html(resources.mab_Gold);
 
-        if (resources.mab_Diamond < 1) {
-          self.Blocks.Forgery_DiamondBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_DiamondBlock.removeClass("d-none");
-          self.Fields.Forgery_Diamond.html(resources.mab_Diamond);
-        }
+        self.Fields.Forgery_Diamond.html(resources.mab_Diamond);
 
-        if (resources.mab_Adamantium < 1) {
-          self.Blocks.Forgery_AdamantiumBlock.addClass("d-none");
-        } else {
-          self.Blocks.Forgery_AdamantiumBlock.removeClass("d-none");
-          self.Fields.Forgery_Adamantium.html(resources.mab_Adamantium);
-        }
+        self.Fields.Forgery_Adamantium.html(resources.mab_Adamantium);
 
         self.Forgery_LoadPlayerCards();
       },
@@ -418,7 +363,7 @@ function mab_forgery() {
           return;
         }
 
-        self.forgery_ClearData();
+        self.forgery_clearData();
 
         let playerCard = resp.content;
 
@@ -486,7 +431,7 @@ function mab_forgery() {
           return;
         }
 
-        self.forgery_ClearData();
+        self.forgery_clearData();
 
         self.PlayerCardId = resp.content.mab_PlayerCardId;
 
@@ -503,7 +448,6 @@ function mab_forgery() {
       },
     });
   };
-
   self.Forgery_SharpenCard = () => {
     const formData = new FormData();
     formData.append("Mab_PlayerCardId", self.PlayerCardId);
@@ -525,7 +469,7 @@ function mab_forgery() {
           return;
         }
 
-        self.forgery_ClearData();
+        self.forgery_clearData();
 
         self.PlayerCardId = resp.content.mab_PlayerCardId;
 
@@ -542,7 +486,6 @@ function mab_forgery() {
       },
     });
   };
-
   self.Forgery_MeltCard = () => {
     const formData = new FormData();
     formData.append("Mab_PlayerCardId", self.PlayerCardId);
@@ -571,7 +514,7 @@ function mab_forgery() {
 
         self.sweetAlertSuccess("Melting results:", results);
 
-        self.forgery_ClearData();
+        self.forgery_clearData();
 
         self.Forgery_ListResources();
       },
@@ -581,7 +524,7 @@ function mab_forgery() {
     });
   };
 
-  self.forgery_ClearData = () => {
+  self.forgery_clearData = () => {
     self.Fields.Forgery_CardType.attr("src", self.Imgs.QuestionMark);
     self.Forgery_Card.removeClass("show-div").addClass("hide-div");
     self.Forgery_Tools.removeClass("show-div").addClass("hide-div");

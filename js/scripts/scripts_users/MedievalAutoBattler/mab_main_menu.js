@@ -107,6 +107,14 @@ function mab_main_menu() {
       self.Containers.CampaignStatistics.find(
         "#img-mab-campaign-statistics-all-npcs-defeated-trophy"
       );
+    self.Images[self.Images.length] = self.Images.Trophy_Blacksmith =
+      self.Containers.CampaignStatistics.find(
+        "#img-mab-campaign-statistics-all-blacksmith-trophy"
+      );
+    self.Images[self.Images.length] = self.Images.Trophy_Bourgeois =
+      self.Containers.CampaignStatistics.find(
+        "#img-mab-campaign-statistics-all-bourgeois-trophy"
+      );
   };
 
   self.loadEvents = () => {
@@ -301,14 +309,28 @@ function mab_main_menu() {
         if (mabCampaignDB.mab_AllCardsCollectedTrophy == true) {
           self.Imgs.Trophy_AllCardsCollected.attr(
             "src",
-            "/images/icons/trophy_allcardscollected_achieved.svg"
+            "/images/icons/mab/trophies/trophy_allcardscollected_achieved.svg"
           );
         }
 
         if (mabCampaignDB.mab_AllNpcsDefeatedTrophy == true) {
           self.Imgs.Trophy_AllNpcsDefeated.attr(
             "src",
-            "/images/icons/trophy_allnpcsdefeated_achieved.svg"
+            "/images/icons/mab/trophies/trophy_allnpcsdefeated_achieved.svg"
+          );
+        }
+
+        if (mabCampaignDB.mab_BlacksmithTrophy == true) {
+          self.Imgs.Trophy_Blacksmith.attr(
+            "src",
+            "/images/icons/mab/trophies/trophy_blacksmith_achieved.svg"
+          );
+        }
+
+        if (mabCampaignDB.Trophy_Bourgeois == true) {
+          self.Imgs.Trophy_Bourgeois.attr(
+            "src",
+            "/images/icons/mab/trophies/trophy_bourgeois_achieved.svg"
           );
         }
 

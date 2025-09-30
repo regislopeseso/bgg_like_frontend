@@ -87,6 +87,38 @@
               >
                 Buy Deck Booster
               </button>
+            </div>
+          </div>
+
+          <hr />
+
+          <div
+            id="container-mab-places"
+            class="d-flex flex-column justify-content-center align-items-center w-100 show-div"
+          >
+            <div>
+              <h4><span>P</span>laces</h4>
+            </div>
+
+            <div
+              class="d-flex flex-row justify-content-center align-items-center gap-3 w-100"
+            >
+              <!-- Open Manage Mab Player Decks -->
+              <button
+                id="button-mab-market-show-container"
+                class="btn btn-outline-info"
+                type="button"
+              >
+                Market Square
+              </button>
+
+              <button
+                id="button-mab-mine-show-container"
+                class="btn btn-outline-info"
+                type="button"
+              >
+                Mine
+              </button>
 
               <button
                 id="button-mab-forgery-show-container"
@@ -96,12 +128,16 @@
                 Forgery
               </button>
             </div>
-            <hr />
           </div>
 
-          <!-- Campaign Statistics-->
+          <hr />
 
+          <!-- Campaign Statistics-->
           <div id="container-mab-campaign-statistics" class="w-100">
+            <div class="d-flex justify-content-center align-items-center w-100">
+              <h4><span>S</span>tatistics</h4>
+            </div>
+
             <div
               class="d-flex flex-column justify-content-center align-items-start w-100"
             >
@@ -275,7 +311,7 @@
                         <img
                           id="img-mab-campaign-statistics-all-cards-collected-trophy"
                           class="trophy-icon"
-                          src="/images/icons/trophy_allcardscollected.svg"
+                          src="/images/icons/mab/trophies/all_cards_collected_trophy.svg"
                         />
                       </div>
 
@@ -288,7 +324,33 @@
                         <img
                           id="img-mab-campaign-statistics-all-npcs-defeated-trophy"
                           class="trophy-icon"
-                          src="/images/icons/trophy_allnpcsdefeated.svg"
+                          src="/images/icons/mab/trophies/all_npcs_defeated_trophy.svg"
+                        />
+                      </div>
+
+                      <div
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        data-bs-custom-class="trophies-tooltip"
+                        data-bs-title="Blacksmith (50F. 50S. 50M.)"
+                      >
+                        <img
+                          id="img-mab-campaign-statistics-all-blacksmith-trophy"
+                          class="trophy-icon"
+                          src="/images/icons/mab/trophies/blacksmith_trophy.svg"
+                        />
+                      </div>
+
+                      <div
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        data-bs-custom-class="trophies-tooltip"
+                        data-bs-title="Bourgeois (owns 1000 coins)"
+                      >
+                        <img
+                          id="img-mab-campaign-statistics-all-bourgeois-trophy"
+                          class="trophy-icon"
+                          src="/images/icons/mab/trophies/bourgeois_trophy.svg"
                         />
                       </div>
                     </div>
@@ -1032,7 +1094,431 @@
           ></div>
         </div>
 
-        <!-- 8.CONTAINER: FORGERY -->
+        <!-- 8.CONTAINER: MARKET SQUARE -->
+        <div id="container-mab-market" class="hide-div">
+          <div
+            id="header-mab-market"
+            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3 pb-3"
+          >
+            <div id="form-title-mab-market" class="p-0 m-0">
+              <h3 class="p-0 m-0"><span>M</span>arket</h3>
+            </div>
+            <button
+              id="button-mab-market-hide-container"
+              class="btn btn-outline-danger btn-sm"
+              type="button"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <hr />
+
+          <div
+            id="block-mab-market-resources"
+            class="d-flex flex-column w-100 justify-content-center align-items-center gap-3 pb-3"
+          >
+            <div
+              class="d-flex flex-column w-100 justify-content-center align-items-center gap-3"
+            >
+              <img
+                class="mab-resources w-100"
+                src="/images/icons/mab/mab_crown_coin.svg"
+              />
+              <div>
+                <span>C</span>oins <span>S</span>tash:
+
+                <span id="span-mab-market-owned-coins"></span>
+              </div>
+            </div>
+
+            <hr />
+
+            <div
+              class="d-flex flex-row justify-content-center align-items-center w-100 gap-3"
+            >
+              <div
+                id="block-mab-market-brass"
+                class="d-flex flex-column justify-content-center align-items-center w-100 mab-resourse-wrapper-market ps-2 pe-2"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_brass.svg"
+                />
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center w-100 gap-2"
+                >
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center flex-nowrap pt-2"
+                  >
+                    <span>B</span>rass&nbsp;<span>o</span>wned:&nbsp;
+                    <span id="span-mab-market-owned-brass"></span>
+                  </div>
+
+                  <div
+                    class="d-flex flex-column justify-content-start align-items-center w-100 pb-2 gap-2"
+                  >
+                    <button
+                      id="button-mab-market-sell-brass"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Sell for
+                      <strong class="mab-market-selling-price">?</strong> coins
+                    </button>
+                    <button
+                      id="button-mab-market-buy-brass"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Buy for
+                      <strong class="strong-mab-market-buying-price">?</strong>
+                      coins
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="block-mab-market-copper"
+                class="d-flex flex-column justify-content-center align-items-center w-100 mab-resourse-wrapper-market ps-2 pe-2"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_copper.svg"
+                />
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center w-100 gap-2"
+                >
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center flex-nowrap pt-2"
+                  >
+                    <span>C</span>opper&nbsp;<span>o</span>wned:&nbsp;
+                    <span id="span-mab-market-owned-copper"></span>
+                  </div>
+
+                  <div
+                    class="d-flex flex-column justify-content-start align-items-center w-100 pb-2 gap-2"
+                  >
+                    <button
+                      id="button-mab-market-sell-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Sell for
+                      <strong class="mab-market-selling-price">?</strong> coins
+                    </button>
+                    <button
+                      id="button-mab-market-buy-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Buy for
+                      <strong class="strong-mab-market-buying-price">?</strong>
+                      coins
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="block-mab-market-iron"
+                class="d-flex flex-column justify-content-center align-items-center w-100 mab-resourse-wrapper-market ps-2 pe-2"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_iron.svg"
+                />
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center w-100 gap-2"
+                >
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center flex-nowrap pt-2"
+                  >
+                    <span>I</span>ron&nbsp;<span>o</span>wned:&nbsp;
+                    <span id="span-mab-market-owned-iron"></span>
+                  </div>
+
+                  <div
+                    class="d-flex flex-column justify-content-start align-items-center w-100 pb-2 gap-2"
+                  >
+                    <button
+                      id="button-mab-market-sell-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Sell for
+                      <strong class="mab-market-selling-price">?</strong> coins
+                    </button>
+                    <button
+                      id="button-mab-market-buy-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Buy for
+                      <strong class="strong-mab-market-buying-price">?</strong>
+                      coins
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="d-flex flex-row justify-content-center align-items-center w-100 gap-3"
+            >
+              <div
+                id="block-mab-market-steel"
+                class="d-flex flex-column justify-content-center align-items-center w-100 mab-resourse-wrapper-market ps-2 pe-2"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_steel.svg"
+                />
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center w-100 gap-2"
+                >
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center flex-nowrap pt-2"
+                  >
+                    <span>S</span>teel&nbsp;<span>o</span>wned:&nbsp;
+                    <span id="span-mab-market-owned-steel"></span>
+                  </div>
+
+                  <div
+                    class="d-flex flex-column justify-content-start align-items-center w-100 pb-2 gap-2"
+                  >
+                    <button
+                      id="button-mab-market-sell-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Sell for
+                      <strong class="mab-market-selling-price">?</strong> coins
+                    </button>
+                    <button
+                      id="button-mab-market-buy-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Buy for
+                      <strong class="strong-mab-market-buying-price">?</strong>
+                      coins
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="block-mab-market-titanium"
+                class="d-flex flex-column justify-content-center align-items-center w-100 mab-resourse-wrapper-market ps-2 pe-2"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_titanium.svg"
+                />
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center w-100 gap-2"
+                >
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center flex-nowrap pt-2"
+                  >
+                    <span>T</span>itanium&nbsp;<span>o</span>wned:&nbsp;
+                    <span id="span-mab-market-owned-titanium"></span>
+                  </div>
+
+                  <div
+                    class="d-flex flex-column justify-content-start align-items-center w-100 pb-2 gap-2"
+                  >
+                    <button
+                      id="button-mab-market-sell-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Sell for
+                      <strong class="mab-market-selling-price">?</strong> coins
+                    </button>
+                    <button
+                      id="button-mab-market-buy-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Buy for
+                      <strong class="strong-mab-market-buying-price">?</strong>
+                      coins
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="block-mab-market-silver"
+                class="d-flex flex-column justify-content-center align-items-center w-100 mab-resourse-wrapper-market ps-2 pe-2"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_silver.svg"
+                />
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center w-100 gap-2"
+                >
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center flex-nowrap pt-2"
+                  >
+                    <span>S</span>ilver&nbsp;<span>o</span>wned:&nbsp;
+                    <span id="span-mab-market-owned-silver"></span>
+                  </div>
+
+                  <div
+                    class="d-flex flex-column justify-content-start align-items-center w-100 pb-2 gap-2"
+                  >
+                    <button
+                      id="button-mab-market-sell-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Sell for
+                      <strong class="mab-market-selling-price">?</strong> coins
+                    </button>
+                    <button
+                      id="button-mab-market-buy-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Buy for
+                      <strong class="strong-mab-market-buying-price">?</strong>
+                      coins
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="d-flex flex-row justify-content-center align-items-center w-100 gap-3"
+            >
+              <div
+                id="block-mab-market-gold"
+                class="d-flex flex-column justify-content-center align-items-center w-100 mab-resourse-wrapper-market ps-2 pe-2"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_gold.svg"
+                />
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center w-100 gap-2"
+                >
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center flex-nowrap pt-2"
+                  >
+                    <span>G</span>old&nbsp;<span>o</span>wned:&nbsp;
+                    <span id="span-mab-market-owned-gold"></span>
+                  </div>
+
+                  <div
+                    class="d-flex flex-column justify-content-start align-items-center w-100 pb-2 gap-2"
+                  >
+                    <button
+                      id="button-mab-market-sell-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Sell for
+                      <strong class="mab-market-selling-price">?</strong> coins
+                    </button>
+                    <button
+                      id="button-mab-market-buy-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Buy for
+                      <strong class="strong-mab-market-buying-price">?</strong>
+                      coins
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="block-mab-market-diamond"
+                class="d-flex flex-column justify-content-center align-items-center w-100 mab-resourse-wrapper-market ps-2 pe-2"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_diamond.svg"
+                />
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center w-100 gap-2"
+                >
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center flex-nowrap pt-2"
+                  >
+                    <span>D</span>iamonds&nbsp;<span>o</span>wned:&nbsp;
+                    <span id="span-mab-market-owned-diamond"></span>
+                  </div>
+
+                  <div
+                    class="d-flex flex-column justify-content-start align-items-center w-100 pb-2 gap-2"
+                  >
+                    <button
+                      id="button-mab-market-sell-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Sell for
+                      <strong class="mab-market-selling-price">?</strong> coins
+                    </button>
+                    <button
+                      id="button-mab-market-buy-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Buy for
+                      <strong class="strong-mab-market-buying-price">?</strong>
+                      coins
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                id="block-mab-market-adamantium"
+                class="d-flex flex-column justify-content-center align-items-center w-100 mab-resourse-wrapper-market ps-2 pe-2"
+              >
+                <img
+                  class="mab-resources w-100"
+                  src="/images/icons/mab/mab_minerals/mab_adamantium.svg"
+                />
+
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center w-100 gap-2"
+                >
+                  <div
+                    class="d-flex flex-row justify-content-center align-items-center flex-nowrap pt-2"
+                  >
+                    <span>A</span>damantium&nbsp;<span>o</span>wned:&nbsp;
+                    <span id="span-mab-market-owned-adamantium"></span>
+                  </div>
+
+                  <div
+                    class="d-flex flex-column justify-content-start align-items-center w-100 pb-2 gap-2"
+                  >
+                    <button
+                      id="button-mab-market-sell-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Sell for
+                      <strong class="mab-market-selling-price">?</strong> coins
+                    </button>
+                    <button
+                      id="button-mab-market-buy-copper"
+                      class="btn btn-outline-info btn-sm"
+                    >
+                      Buy for
+                      <strong class="strong-mab-market-buying-price">?</strong>
+                      coins
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+
+        <!-- 9.CONTAINER: FORGERY -->
         <div id="container-mab-forgery" class="hide-div">
           <div
             id="header-mab-forgery"
@@ -1053,43 +1539,41 @@
           <hr />
 
           <div
-            id="block-mab-forgery-resources"
-            class="d-flex flex-column w-100 justify-content-center align-items-center gap-3"
+            class="d-flex flex-row w-100 justify-content-center align-items-center gap-3"
           >
             <div
-              class="d-flex flex-row w-100 justify-content-center align-items-center gap-3"
+              class="d-flex flex-column w-100 justify-content-center align-items-center gap-3"
             >
-              <div
-                id="block-mab-forgery-coins"
-                data-bs-toggle="tooltip"
-                data-bs-placement="bottom"
-                data-bs-custom-class="mab-coins-tooltip"
-                data-bs-title="Coins"
-                class="mab-resourse-wrapper"
-              >
-                <img
-                  class="mab-resources w-100"
-                  src="/images/icons/mab/mab_crown_coin.svg"
-                />
-                <span id="span-mab-forgery-owned-coins"></span>
-              </div>
+              <img
+                class="mab-resources w-100"
+                src="/images/icons/mab/mab_crown_coin.svg"
+              />
+              <div>
+                <span>C</span>oins <span>S</span>tash:
 
-              <div
-                id="block-mab-forgery-xp"
-                data-bs-toggle="tooltip"
-                data-bs-placement="bottom"
-                data-bs-custom-class="mab-xp-tooltip"
-                data-bs-title="XP"
-                class="mab-resourse-wrapper"
-              >
-                <img
-                  class="mab-resources w-100"
-                  src="/images/icons/mab/mab_growth.svg"
-                />
-                <span id="span-mab-forgery-owned-xp"></span>
+                <span id="span-mab-forgery-owned-coins"></span>
               </div>
             </div>
 
+            <div
+              class="d-flex flex-column w-100 justify-content-center align-items-center gap-3"
+            >
+              <img
+                class="mab-resources w-100"
+                src="/images/icons/mab/mab_growth.svg"
+              />
+              <div>
+                <span>X</span>p:
+
+                <span id="span-mab-forgery-owned-xp"></span>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div
+            id="block-mab-forgery-resources"
+            class="d-flex flex-column w-100 justify-content-center align-items-center gap-3"
+          >
             <div class="d-flex flex-row gap-3">
               <div
                 id="block-mab-forgery-brass"
@@ -1367,6 +1851,7 @@
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_battle.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_manage_decks.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_deck_booster.js"></script>
+    <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_market.js"></script>
     <script src="/js/scripts/scripts_users/MedievalAutoBattler/mab_forgery.js"></script>
 
     <script>

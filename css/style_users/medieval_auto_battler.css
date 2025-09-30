@@ -51,6 +51,7 @@ main {
 #container-mab-active-deck,
 #container-mab-create-deck,
 #container-mab-deck-booster,
+#container-mab-market,
 #container-mab-forgery {
   position: absolute;
   width: fit-content;
@@ -378,7 +379,8 @@ main {
   width: 80px !important;
   height: 80px !important;
 }
-.mab-resourse-wrapper {
+.mab-resourse-wrapper,
+.mab-resourse-wrapper-market {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -387,6 +389,10 @@ main {
   background-color: var(--second-bg-color);
   border: 1px solid var(--main-color);
   border-radius: 5px;
+}
+.mab-resourse-wrapper-market {
+  width: 180px !important;
+  height: 220px !important;
 }
 
 @media screen and (max-width: 1440px) {
@@ -459,6 +465,7 @@ main {
   #container-mab-active-deck,
   #container-mab-create-deck,
   #container-mab-deck-booster,
+  #container-mab-market,
   #container-mab-forgery {
     width: 90vw;
   }
