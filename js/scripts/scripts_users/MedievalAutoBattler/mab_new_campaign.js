@@ -241,7 +241,7 @@ function mab_new_campaign() {
         }
 
         let difficultyLevel = difficulty.toUpperCase();
-        let startingGoldStash = resp.content.mab_StartingGoldStash;
+        let startingGoldStash = resp.content.mab_StartingCoinsStash;
         let startingCardsMaxLevel = resp.content.mab_StartingCardsMaxLevel;
         let startingCardsCount = resp.content.mab_StartingCardsCount;
         let questsBaseGoldBounty = resp.content.mab_QuestsBaseGoldBounty;

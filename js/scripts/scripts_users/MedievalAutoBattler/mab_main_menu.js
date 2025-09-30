@@ -32,6 +32,9 @@ function mab_main_menu() {
     self.Buttons.ShowContinueCampaignContainer = self.Containers.MainMenu.find(
       "#button-mab-continue-campaign-show-container"
     );
+    self.Buttons[self.Buttons.length] = self.Buttons.NewCampaign =
+      self.MabContainersContent.find("#button-mab-new-campaign-show-container");
+
     self.Buttons[self.Buttons.length] = self.Buttons.EditPlayerNickname =
       self.Containers.CampaignStatistics.find(
         "#button-mab-campaign-statistics-edit-player-nickname"
@@ -219,6 +222,7 @@ function mab_main_menu() {
   };
 
   self.render_NewCampaignMode = () => {
+    self.Buttons.NewCampaign.text("Start");
     self.Buttons.ShowContinueCampaignContainer.prop("disabled", true);
     self.Containers.CampaignStatistics.addClass("d-none");
     self.Containers.Inventory.addClass("d-none");
@@ -236,10 +240,11 @@ function mab_main_menu() {
 
         let mabCampaignDB = response.content;
 
-        if (mabCampaignDB.mab_StartNewCampaign) {
+        if (mabCampaignDB.mab_StartNewCampaign === true) {
           self.render_NewCampaignMode();
           return;
         }
+        self.Buttons.NewCampaign.html("Start Anew");
 
         self.CurrentPlayerNickName = mabCampaignDB.mab_PlayerNickName;
 
@@ -258,7 +263,7 @@ function mab_main_menu() {
         );
 
         self.Fields.GoldStash.html(
-          `<strong>${mabCampaignDB.mab_NextPlayerLevelThreshold}</strong>`
+          `<strong>${mabCampaignDB.mab_CoinsStash}</strong>`
         );
         self.Fields.BoostersOpened.html(
           `<strong>${mabCampaignDB.mab_OpenedBoostersCount}</strong>`

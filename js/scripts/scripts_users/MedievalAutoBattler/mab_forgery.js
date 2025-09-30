@@ -21,6 +21,12 @@ function mab_forgery() {
       self.Containers.MainMenu.find("#button-mab-forgery-show-container");
     self.Buttons[self.Buttons.length] = self.Buttons.Forgery_HideContainer =
       self.Containers.Forgery.find("#button-mab-forgery-hide-container");
+    self.Buttons[self.Buttons.length] = self.Buttons.Forgery_Forge =
+      self.Containers.Forgery.find("#button-mab-forgery-forge");
+    self.Buttons[self.Buttons.length] = self.Buttons.Forgery_Sharpen =
+      self.Containers.Forgery.find("#button-mab-forgery-sharpen");
+    self.Buttons[self.Buttons.length] = self.Buttons.Forgery_Melt =
+      self.Containers.Forgery.find("#button-mab-forgery-melt");
 
     self.Forgery_ListPlayerCards_Select2 = self.Containers.Forgery.find(
       "#select-mab-forgery-player-cards"
@@ -105,6 +111,8 @@ function mab_forgery() {
       self.Imgs.MabCardTypeCavalry = `/images/icons/mab_card_types/cardtype_cavalry.svg`;
     self.Imgs[self.Imgs.length] =
       self.Imgs.MabCardTypeInfantry = `/images/icons/mab_card_types/cardtype_infantry.svg`;
+    self.Imgs[self.Imgs.length] =
+      self.Imgs.QuestionMark = `/images/icons/mab/question_mark_default_img.svg`;
   };
 
   self.loadEvents = () => {
@@ -115,6 +123,8 @@ function mab_forgery() {
 
       self.forgery_ShowContainer();
 
+      self.IsBuilt = false;
+
       self.Forgery_ListResources();
     });
 
@@ -122,6 +132,8 @@ function mab_forgery() {
       e.preventDefault();
 
       self.forgery_HideContainer();
+
+      self.IsBuilt = false;
 
       self.mainMenu_ShowContainer();
     });
@@ -132,6 +144,30 @@ function mab_forgery() {
       self.PlayerCardId = selectedData.id;
 
       self.Forgery_RenderPlayerCard();
+    });
+
+    self.Buttons.Forgery_Forge.on("click", (e) => {
+      e.preventDefault();
+
+      self.Buttons.Forgery_Forge.blur();
+
+      self.Forgery_ForgeCard();
+    });
+
+    self.Buttons.Forgery_Sharpen.on("click", (e) => {
+      e.preventDefault();
+
+      self.Buttons.Forgery_Sharpen.blur();
+
+      self.Forgery_SharpenCard();
+    });
+
+    self.Buttons.Forgery_Melt.on("click", (e) => {
+      e.preventDefault();
+
+      self.Buttons.Forgery_Melt.blur();
+
+      self.Forgery_MeltCard();
     });
   };
 
@@ -145,17 +181,6 @@ function mab_forgery() {
       text: message_text || "",
       showConfirmButton: false,
       timer: 1000,
-    });
-  };
-  self.sweetAlertNewRound = () => {
-    Swal.fire({
-      position: "center",
-      width: "15rem",
-      icon: "info",
-      theme: "bulma",
-      title: `#${self.DuelsCount + 1} Duel`,
-      showConfirmButton: false,
-      timer: 1600,
     });
   };
   self.sweetAlertError = (title_text, message_text) => {
@@ -366,8 +391,14 @@ function mab_forgery() {
           },
         });
 
-        // Opens select2
-        self.Forgery_ListPlayerCards_Select2.trigger("change").select2("open");
+        if (self.IsBuilt === false) {
+          // Opens select2
+          self.Forgery_ListPlayerCards_Select2.trigger("change").select2(
+            "open"
+          );
+
+          self.IsBuilt = true;
+        }
       })
       .catch((err) => {
         self.sweetAlertError("Error fetching mab player cards:", err);
@@ -383,7 +414,7 @@ function mab_forgery() {
       },
       success: function (resp) {
         if (!resp.content) {
-          sweetAlertError(resp.message);
+          self.sweetAlertError(resp.message);
           return;
         }
 
@@ -412,7 +443,7 @@ function mab_forgery() {
             imgPath = self.Imgs.MabCardTypeInfantry;
             break;
           default:
-            self.sweetAlertError("Failed to fetch mab card type");
+            imgPath = self.Imgs.QuestionMark;
             break;
         }
 
@@ -436,22 +467,133 @@ function mab_forgery() {
     });
   };
 
-  self.forgery_ClearData = () => {
-    self.Fields.Forgery_CardName.empty();
-    self.Fields.Forgery_CardPower.empty();
-    self.Fields.Forgery_CardUpperHand.empty();
-    self.Fields.Forgery_CardType.empty();
-    self.Fields.Forgery_CardCode.empty();
+  self.Forgery_ForgeCard = () => {
+    const formData = new FormData();
+    formData.append("Mab_PlayerCardId", self.PlayerCardId);
 
-    self.Fields.Forgery_CardType.attr("src", "");
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/mabforgecard",
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          self.sweetAlertError(resp.message);
+          return;
+        }
+
+        self.forgery_ClearData();
+
+        self.PlayerCardId = resp.content.mab_PlayerCardId;
+
+        self.Forgery_ListResources();
+
+        setTimeout(() => {
+          self.Forgery_RenderPlayerCard();
+        }, 200);
+
+        self.Forgery_ListPlayerCards_Select2.select2("close");
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+    });
+  };
+
+  self.Forgery_SharpenCard = () => {
+    const formData = new FormData();
+    formData.append("Mab_PlayerCardId", self.PlayerCardId);
+
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/mabsharpencard",
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          debugger;
+          self.sweetAlertError(resp.message);
+
+          return;
+        }
+
+        self.forgery_ClearData();
+
+        self.PlayerCardId = resp.content.mab_PlayerCardId;
+
+        self.Forgery_ListResources();
+
+        setTimeout(() => {
+          self.Forgery_RenderPlayerCard();
+        }, 200);
+
+        self.Forgery_ListPlayerCards_Select2.select2("close");
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+    });
+  };
+
+  self.Forgery_MeltCard = () => {
+    const formData = new FormData();
+    formData.append("Mab_PlayerCardId", self.PlayerCardId);
+
+    $.ajax({
+      type: "POST",
+      url: "https://localhost:7081/users/mabmeltcard",
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhrFields: {
+        withCredentials: true, // Only if you're using cookies; otherwise can be removed
+      },
+      success: (resp) => {
+        if (!resp.content) {
+          sweetAlertError(resp.message);
+
+          return;
+        }
+
+        let material = resp.content.mab_RawMaterialType;
+        let extractedRawMaterial = resp.content.mab_ExtractedRawMaterial;
+        let gainedXp = resp.content.mab_GainedXp;
+
+        let results = `Extracted ${material}: ${extractedRawMaterial}, gained Xp: ${gainedXp}`;
+
+        self.sweetAlertSuccess("Melting results:", results);
+
+        self.forgery_ClearData();
+
+        self.Forgery_ListResources();
+      },
+      error: (err) => {
+        sweetAlertError(err);
+      },
+    });
+  };
+
+  self.forgery_ClearData = () => {
+    self.Fields.Forgery_CardType.attr("src", self.Imgs.QuestionMark);
     self.Forgery_Card.removeClass("show-div").addClass("hide-div");
     self.Forgery_Tools.removeClass("show-div").addClass("hide-div");
+
+    self.Fields.Forgery_CardName.empty();
+    self.Fields.Forgery_CardPower.empty();
+
+    self.Fields.Forgery_CardUpperHand.empty();
+    self.Fields.Forgery_CardCode.empty();
   };
 
   self.build = () => {
-    if (self.IsBuilt === false) {
-      self.IsBuilt = true;
-    }
     self.loadReferences();
 
     self.loadEvents();

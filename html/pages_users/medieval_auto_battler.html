@@ -53,7 +53,7 @@
                 class="btn btn-outline-info"
                 type="button"
               >
-                Start Anew
+                Start
               </button>
             </div>
           </div>
@@ -1272,7 +1272,11 @@
                 <div
                   class="d-flex flex-row justify-content-center align-items-center gap-3"
                 >
-                  <img src="" id="img-mab-forgery-card-type" class="cardtype" />
+                  <img
+                    src="/images/icons/mab/question_mark_default_img.svg"
+                    id="img-mab-forgery-card-type"
+                    class="cardtype"
+                  />
                 </div>
 
                 <div
@@ -1289,32 +1293,53 @@
 
               <div
                 id="mab-forgery-tools"
-                class="d-flex flex-row justify-content-center align-items-center hide-div"
+                class="d-flex flex-column justify-content-center align-items-center hide-div ps-3"
               >
                 <div
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="bottom"
-                  data-bs-custom-class="mab-forge-tooltip"
-                  data-bs-title="Forge: + 1 POWER"
+                  class="d-flex flex-row justify-content-center align-items-center"
                 >
-                  <button class="btn forgery-tools">
-                    <img
-                      class="mab-resources w-100"
-                      src="/images/icons/mab/mab_forge.svg"
-                    />
-                  </button>
+                  <div
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-custom-class="mab-forge-tooltip"
+                    data-bs-title="Forge: + 1 POWER"
+                  >
+                    <button
+                      id="button-mab-forgery-forge"
+                      class="btn forgery-tools"
+                    >
+                      <img
+                        class="mab-resources w-100"
+                        src="/images/icons/mab/mab_forge.svg"
+                      />
+                    </button>
+                  </div>
+
+                  <div
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-custom-class="mab-sharpen-tooltip"
+                    data-bs-title="Sharpen: + 1 UPPER HAND"
+                  >
+                    <button id="button-mab-forgery-sharpen" class="btn">
+                      <img
+                        class="mab-resources w-100"
+                        src="/images/icons/mab/mab_sharpen.svg"
+                      />
+                    </button>
+                  </div>
                 </div>
 
                 <div
                   data-bs-toggle="tooltip"
                   data-bs-placement="bottom"
-                  data-bs-custom-class="mab-forge-tooltip"
-                  data-bs-title="Sharpen: + 1 UPPER HAND"
+                  data-bs-custom-class="mab-melt-tooltip"
+                  data-bs-title="Melt: +? raw material and +? Xp"
                 >
-                  <button class="btn">
+                  <button id="button-mab-forgery-melt" class="btn">
                     <img
                       class="mab-resources w-100"
-                      src="/images/icons/mab/mab_sharpen.svg"
+                      src="/images/icons/mab/mab_melt_card.svg"
                     />
                   </button>
                 </div>
