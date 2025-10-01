@@ -2,6 +2,9 @@
 @import "/node_modules/bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
+  --mab-card-width: 180px;
+  --mab-card-height: 220px;
+
   --bg-color: rgb(31, 36, 46);
   --second-bg-color: rgb(51, 58, 72);
   --text-color: rgb(255, 255, 255);

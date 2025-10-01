@@ -1,0 +1,72 @@
+.mab-card-details-content {
+  color: var(--text-color);
+  background-color: var(--second-bg-color);
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.2) !important;
+}
+.modal-header {
+  justify-content: space-between;
+}
+
+.mab-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--mab-card-width);
+  height: var(--mab-card-height);
+  padding: 5px;
+  border: 1px solid var(--main-color) !important;
+  border-radius: 12px;
+  gap: 25px;
+}
+.mab-card:disabled {
+  cursor: default;
+  opacity: 0.6;
+  transition: none;
+}
+.mab-card-back {
+  justify-content: center !important;
+  background-color: var(--second-bg-color);
+}
+.mab-card-front {
+  justify-content: space-between !important;
+  background-color: var(--second-bg-color);
+}
+
+.mab-used-card-won {
+  box-shadow: 0 0 5px 5px var(--greenish) !important;
+}
+.mab-used-card-lost {
+  box-shadow: 0 0 5px 5px var(--reddish) !important;
+}
+
+.frozen-card {
+  pointer-events: none !important;
+  opacity: 0.6 !important;
+  background-color: transparent !important  ;
+}
+.active-card {
+  pointer-events: all !important;
+  border: 2px solid var(--main-color);
+  box-shadow: 0 0 5px 5px var(--main-color);
+}
+.chosen-card {
+  opacity: 1 !important;
+  pointer-events: none !important;
+  border: 2px solid var(--yellowish);
+  box-shadow: 0 0 5px 5px var(--yellowish) !important;
+  z-index: 1;
+}
+.duelling-card {
+  opacity: 1 !important;
+  border: 2px solid var(--main-color) !important;
+  box-shadow: 0 0 5px 5px var(--main-color) !important;
+  transition: opacity 0.3s ease-in-out !important;
+}
+.cardtype {
+  margin: 0px 0px;
+  width: 100px;
+  height: 100px;
+}
+.cardCode {
+  font-size: 50% !important;
+}

@@ -138,6 +138,8 @@ function mab_battle() {
       self.Imgs.MabCardTypeCavalry = `/images/icons/mab_card_types/cardtype_cavalry.svg`;
     self.Imgs[self.Imgs.length] =
       self.Imgs.MabCardTypeInfantry = `/images/icons/mab_card_types/cardtype_infantry.svg`;
+    self.Imgs[self.Imgs.length] =
+      self.Imgs.MabCardPickeAxe = `/images/icons/mab/card_types/pickeaxe_infantry.svg`;
   };
 
   self.loadEvents = () => {
@@ -442,7 +444,10 @@ function mab_battle() {
               imgPath = self.Imgs.MabCardTypeCavalry;
               break;
             case "Infantry":
-              imgPath = self.Imgs.MabCardTypeInfantry;
+              imgPath =
+                playerCard.mab_CardPower === playerCard.mab_CardUpperHand
+                  ? self.Imgs.MabCardPickeAxe
+                  : self.Imgs.MabCardTypeInfantry;
               break;
             default:
               self.sweetAlertError("Failed to fetch mab card type");
@@ -770,7 +775,10 @@ function mab_battle() {
               imgPath = self.Imgs.MabCardTypeCavalry;
               break;
             case "Infantry":
-              imgPath = self.Imgs.MabCardTypeInfantry;
+              imgPath =
+                playerCard.mab_CardPower === playerCard.mab_CardUpperHand
+                  ? self.Imgs.MabCardPickeAxe
+                  : self.Imgs.MabCardTypeInfantry;
               break;
             default:
               self.sweetAlertError("Failed to fetch mab card type");
@@ -1140,7 +1148,10 @@ function mab_battle() {
           imgPath = self.Imgs.MabCardTypeCavalry;
           break;
         case "Infantry":
-          imgPath = self.Imgs.MabCardTypeInfantry;
+          imgPath =
+            playerCard.mab_CardPower === playerCard.mab_CardUpperHand
+              ? self.Imgs.MabCardPickeAxe
+              : self.Imgs.MabCardTypeInfantry;
           break;
         default:
           self.sweetAlertError("Failed to fetch mab card type");

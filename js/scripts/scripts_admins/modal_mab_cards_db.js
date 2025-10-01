@@ -21,11 +21,16 @@ function modal_Mab_Cards_DB() {
 
   self.LoadEvents = () => {
     $.when(
+      $.get("modal_mab_card_details.html"),
       $.get("modal_mab_cards_add_edit.html"),
       $.get("modal_mab_cards_delete_restore.html")
-    ).done(function (addEditHtml, deleteRestoreHtml) {
+    ).done(function (cardDetailsHtml, addEditHtml, deleteRestoreHtml) {
+      self.DOMadmPage.append(cardDetailsHtml[0]);
       self.DOMadmPage.append(addEditHtml[0]);
       self.DOMadmPage.append(deleteRestoreHtml[0]);
+
+      // Initialize the CARD DETAILS Modal Controller after loading HTML
+      __global.MabCardDetailsController = new modal_Mab_Card_Details();
 
       // Initialize the ADD/EDIT Modal Controller after loading HTML
       __global.MabCardsAddEditModalController = new modal_Mab_Cards_Add_Edit();
@@ -36,9 +41,19 @@ function modal_Mab_Cards_DB() {
 
       // Hook up the buttons to open the modals AFTER they are ready
       // Opens ADD MAB CARDS MODAL
-      // Opens EDIT MAB CARDS MODAL
       self.Buttons.MabCardAdd.on("click", function () {
         __global.MabCardsAddEditModalController.OpenAddModal(
+          self.LoadAllMabCards
+        );
+      });
+
+      // Opens CARD DETAILS MAB CARDS MODAL
+      self.DOM.on("click", ".button-modal-mab-card-details", function () {
+        console.log("oi teste teste");
+        const mabCardId = $(this).attr("mab-card-id");
+
+        __global.MabCardDetailsController.OpenCardDetails(
+          mabCardId,
           self.LoadAllMabCards
         );
       });
@@ -164,43 +179,43 @@ function modal_Mab_Cards_DB() {
 
         $.each(response.content, function (index, item) {
           let tr = $(`
-        <tr class="align-middle">
-          <td class="text-center align-middle">
-            <button class="btn btn-outline-info btn-sm">
-              view card
-            </button>
-          </td>
-          
-          <td class="text-start align-middle">
-            ${item.cardName} 
-          </td>
-
-           <td class="text-center align-middle">
-            ${item.cardCode} 
-          </td>
-         
-          <td class="text-center align-middle">${item.cardPower}</td>
-          <td class="text-center align-middle">${item.cardUpperHand}</td>
-          <td class="text-center align-middle">${item.cardLevel}</td>
-          <td class="text-center align-middle">${item.cardType}</td>
-          <td class="text-center align-middle">${item.isDeleted}</td>
-         
-          <td class="align-middle">
-            <div class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2">
-              <button id="button-modal-mab-cards-edit-${index}" class="button-modal-mab-cards-edit btn btn-sm btn-outline-warning w-60" mab-card-id="${item.cardId}">
-                Edit
-              </button>
-
-              <button id="button-modal-mab-cards-delete-${index}" class="button-modal-mab-cards-delete btn btn-sm btn-outline-danger w-60" mab-card-id="${item.cardId}">
-                Delete
-              </button>   
+            <tr class="align-middle">
+              <td class="text-center align-middle">
+                <button id="button-modal-mab-card-details-${index}" class="btn btn-outline-info btn-sm button-modal-mab-card-details" mab-card-id="${item.cardId}">
+                  view card
+                </button>
+              </td>
               
-              <button id="button-modal-mab-cards-restore-${index}" class="button-modal-mab-cards-restore btn btn-sm btn-outline-info w-60" mab-card-id="${item.cardId}">
-                Restore
-              </button>
-            </div>
-          </td>
-        </tr>
+              <td class="text-start align-middle">
+                ${item.cardName} 
+              </td>
+
+              <td class="text-center align-middle">
+                ${item.cardCode} 
+              </td>
+            
+              <td class="text-center align-middle">${item.cardPower}</td>
+              <td class="text-center align-middle">${item.cardUpperHand}</td>
+              <td class="text-center align-middle">${item.cardLevel}</td>
+              <td class="text-center align-middle">${item.cardType}</td>
+              <td class="text-center align-middle">${item.isDeleted}</td>
+            
+              <td class="align-middle">
+                <div class="d-flex flex-row align-self-center align-items-center justify-content-center w-90 gap-2">
+                  <button id="button-modal-mab-cards-edit-${index}" class="button-modal-mab-cards-edit btn btn-sm btn-outline-warning w-60" mab-card-id="${item.cardId}">
+                    Edit
+                  </button>
+
+                  <button id="button-modal-mab-cards-delete-${index}" class="button-modal-mab-cards-delete btn btn-sm btn-outline-danger w-60" mab-card-id="${item.cardId}">
+                    Delete
+                  </button>   
+                  
+                  <button id="button-modal-mab-cards-restore-${index}" class="button-modal-mab-cards-restore btn btn-sm btn-outline-info w-60" mab-card-id="${item.cardId}">
+                    Restore
+                  </button>
+                </div>
+              </td>
+            </tr>
       `);
           self.TableResult.append(tr);
 

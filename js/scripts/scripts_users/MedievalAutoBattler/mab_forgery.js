@@ -112,6 +112,8 @@ function mab_forgery() {
     self.Imgs[self.Imgs.length] =
       self.Imgs.MabCardTypeInfantry = `/images/icons/mab_card_types/cardtype_infantry.svg`;
     self.Imgs[self.Imgs.length] =
+      self.Imgs.MabCardPickeAxe = `/images/icons/mab/card_types/pickeaxe_infantry.svg`;
+    self.Imgs[self.Imgs.length] =
       self.Imgs.QuestionMark = `/images/icons/mab/question_mark_default_img.svg`;
   };
 
@@ -239,7 +241,7 @@ function mab_forgery() {
       },
       success: function (resp) {
         if (!resp.content) {
-          sweetAlertError(resp.message);
+          self.sweetAlertError(resp.message);
 
           return;
         }
@@ -286,7 +288,7 @@ function mab_forgery() {
         self.Forgery_LoadPlayerCards();
       },
       error: function (xhr, status, error) {
-        sweetAlertError("Request failed:", error);
+        self.sweetAlertError("Request failed:", error);
       },
     });
   };
@@ -385,7 +387,10 @@ function mab_forgery() {
             imgPath = self.Imgs.MabCardTypeCavalry;
             break;
           case "Infantry":
-            imgPath = self.Imgs.MabCardTypeInfantry;
+            imgPath =
+              playerCard.mab_CardPower === playerCard.mab_CardUpperHand
+                ? self.Imgs.MabCardPickeAxe
+                : self.Imgs.MabCardTypeInfantry;
             break;
           default:
             imgPath = self.Imgs.QuestionMark;
@@ -407,7 +412,7 @@ function mab_forgery() {
         self.Forgery_Tools.removeClass("hide-div").addClass("show-div");
       },
       error: function (error) {
-        sweetAlertError(error);
+        self.sweetAlertError(error);
       },
     });
   };
@@ -463,7 +468,6 @@ function mab_forgery() {
       },
       success: (resp) => {
         if (!resp.content) {
-          debugger;
           self.sweetAlertError(resp.message);
 
           return;
@@ -482,7 +486,7 @@ function mab_forgery() {
         self.Forgery_ListPlayerCards_Select2.select2("close");
       },
       error: (err) => {
-        sweetAlertError(err);
+        self.sweetAlertError(err);
       },
     });
   };
@@ -501,7 +505,7 @@ function mab_forgery() {
       },
       success: (resp) => {
         if (!resp.content) {
-          sweetAlertError(resp.message);
+          self.sweetAlertError(resp.message);
 
           return;
         }
@@ -519,7 +523,7 @@ function mab_forgery() {
         self.Forgery_ListResources();
       },
       error: (err) => {
-        sweetAlertError(err);
+        self.sweetAlertError(err);
       },
     });
   };
