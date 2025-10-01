@@ -299,22 +299,10 @@
                   <div
                     class="mb-3 d-flex flex-column w-50 justify-content-between"
                   >
-                    <div><span>T</span>rophies:</div>
+                    <div class="pb-3"><span>T</span>rophies:</div>
 
                     <div class="d-flex flex-row gap-3">
-                      <div
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="bottom"
-                        data-bs-custom-class="trophies-tooltip"
-                        data-bs-title="All Cards Collected!"
-                      >
-                        <img
-                          id="img-mab-campaign-statistics-all-cards-collected-trophy"
-                          class="trophy-icon"
-                          src="/images/icons/mab/trophies/all_cards_collected_trophy.svg"
-                        />
-                      </div>
-
+                      <!-- All NPCs Defeated Trophy -->
                       <div
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
@@ -328,29 +316,59 @@
                         />
                       </div>
 
+                      <!-- All Cards Colected Trophy -->
                       <div
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
                         data-bs-custom-class="trophies-tooltip"
-                        data-bs-title="Blacksmith (50F. 50S. 50M.)"
+                        data-bs-title="All Cards Collected!"
                       >
                         <img
-                          id="img-mab-campaign-statistics-all-blacksmith-trophy"
+                          id="img-mab-campaign-statistics-all-cards-collected-trophy"
                           class="trophy-icon"
-                          src="/images/icons/mab/trophies/blacksmith_trophy.svg"
+                          src="/images/icons/mab/trophies/all_cards_collected_trophy.svg"
                         />
                       </div>
 
+                      <!-- Bourgeois Trophy -->
                       <div
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
                         data-bs-custom-class="trophies-tooltip"
-                        data-bs-title="Bourgeois (owns 1000 coins)"
+                        data-bs-title="Bourgeois (owns 1000 coins)!"
                       >
                         <img
                           id="img-mab-campaign-statistics-all-bourgeois-trophy"
                           class="trophy-icon"
                           src="/images/icons/mab/trophies/bourgeois_trophy.svg"
+                        />
+                      </div>
+
+                      <!-- Miner Trophy -->
+                      <div
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        data-bs-custom-class="trophies-tooltip"
+                        data-bs-title="Miner (extract adamantium)!"
+                      >
+                        <img
+                          id="img-mab-campaign-statistics-miner-trophy"
+                          class="trophy-icon"
+                          src="/images/icons/mab/trophies/miner_trophy.svg"
+                        />
+                      </div>
+
+                      <!-- Blacksmith Trophy -->
+                      <div
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        data-bs-custom-class="trophies-tooltip"
+                        data-bs-title="Blacksmith (50F. 50S. 50M.)!"
+                      >
+                        <img
+                          id="img-mab-campaign-statistics-blacksmith-trophy"
+                          class="trophy-icon"
+                          src="/images/icons/mab/trophies/blacksmith_trophy.svg"
                         />
                       </div>
                     </div>
@@ -1928,10 +1946,18 @@
         <div id="container-mab-mine" class="hide-div">
           <div
             id="header-mab-mine"
-            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3 pb-3"
+            class="d-flex flex-row justify-content-between align-items-center w-100 gap-3"
           >
             <div id="form-title-mab-forgery" class="p-0 m-0">
               <h3 class="p-0 m-0"><span>M</span>ine</h3>
+              <div
+                class="d-flex flex-row justify-content-center align-items-center pt-2"
+              >
+                <span>P</span>rice:&nbsp;<span
+                  id="span-mab-mine-mining-price"
+                ></span
+                >&nbsp;coins
+              </div>
             </div>
             <button
               id="button-mab-mine-hide-container"
@@ -1958,20 +1984,6 @@
                 <span>C</span>oins <span>S</span>tash:
 
                 <span id="span-mab-mine-owned-coins"></span>
-              </div>
-            </div>
-
-            <div
-              class="d-flex flex-column w-100 justify-content-center align-items-center gap-3"
-            >
-              <img
-                class="mab-resources w-100"
-                src="/images/icons/mab/mab_growth.svg"
-              />
-              <div>
-                <span>X</span>p:
-
-                <span id="span-mab-forgery-owned-xp"></span>
               </div>
             </div>
           </div>
@@ -2127,23 +2139,13 @@
           <div
             class="d-flex flex-column justify-content-center align-items-center"
           >
-            <!-- Card selection -->
-            <select
-              name="Mab_PlayerCardId"
-              id="select-mab-mine-player-cards"
-              class="form-control form-select required mt-2 mb-2"
-            ></select>
-
-            <hr />
-
-            <!-- Forging Field -->
+            <!-- Mining Field -->
             <div
               class="d-flex flex-row justify-content-center align-items-center gap-4 pt-3"
             >
-              <!-- Card to be forged -->
               <div
                 id="mab-mine-card"
-                class="mab-card mab-card-front active-card hide-div"
+                class="mab-card mab-card-front active-card"
               >
                 <div
                   class="d-flex flex-row justify-content-between align-items-center w-100"
@@ -2160,10 +2162,10 @@
                 </div>
 
                 <div
-                  class="d-flex flex-row justify-content-center align-items-center gap-3"
+                  class="d-flex flex-column justify-content-center align-items-center gap-3"
                 >
                   <img
-                    src="/images/icons/mab/question_mark_default_img.svg"
+                    src="/images/icons/mab/card_types/pickeaxe_infantry.svg"
                     id="img-mab-mine-card-type"
                     class="cardtype"
                   />
@@ -2180,56 +2182,23 @@
 
               <div
                 id="mab-mine-tools"
-                class="d-flex flex-column justify-content-center align-items-center hide-div ps-3"
+                class="d-flex flex-column justify-content-center align-items-center ps-3"
               >
-                <div
-                  class="d-flex flex-row justify-content-center align-items-center"
-                >
+                <button id="button-mab-mine-forge" class="btn forgery-tools">
                   <div
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-custom-class="mab-forge-tooltip"
-                    data-bs-title="Forge: + 1 POWER"
+                    class="d-flex flex-row justify-content-center align-items-center gap-3"
                   >
-                    <button
-                      id="button-mab-mine-forge"
-                      class="btn forgery-tools"
-                    >
-                      <img
-                        class="mab-resources w-100"
-                        src="/images/icons/mab/mab_forge.svg"
-                      />
-                    </button>
-                  </div>
-
-                  <div
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    data-bs-custom-class="mab-sharpen-tooltip"
-                    data-bs-title="Sharpen: + 1 UPPER HAND"
-                  >
-                    <button id="button-mab-mine-sharpen" class="btn">
-                      <img
-                        class="mab-resources w-100"
-                        src="/images/icons/mab/mab_sharpen.svg"
-                      />
-                    </button>
-                  </div>
-                </div>
-
-                <div
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="bottom"
-                  data-bs-custom-class="mab-melt-tooltip"
-                  data-bs-title="Melt: +? raw material and +? Xp"
-                >
-                  <button id="button-mab-mine-melt" class="btn">
                     <img
                       class="mab-resources w-100"
-                      src="/images/icons/mab/mab_melt_card.svg"
+                      src="/images/icons/mab/mining.svg"
                     />
-                  </button>
-                </div>
+                    <div id="button-text-mab-mining" class="d-flex flex-column">
+                      <div><span>E</span>xtract</div>
+                      <div><span>R</span>aw</div>
+                      <div><span>M</span>aterial</div>
+                    </div>
+                  </div>
+                </button>
               </div>
             </div>
           </div>

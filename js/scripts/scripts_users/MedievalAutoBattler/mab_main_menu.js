@@ -22,6 +22,10 @@ function mab_main_menu() {
 
     self.Containers[self.Containers.length] = self.Containers.Market =
       self.DOM.find("#container-mab-market");
+    self.Containers[self.Containers.length] = self.Containers.Mine =
+      self.DOM.find("#container-mab-mine");
+    self.Containers[self.Containers.length] = self.Containers.Forgery =
+      self.DOM.find("#container-mab-forgery");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.ShowContainer =
@@ -35,9 +39,18 @@ function mab_main_menu() {
     self.Buttons.ShowContinueCampaignContainer = self.Containers.MainMenu.find(
       "#button-mab-continue-campaign-show-container"
     );
+    self.Buttons[self.Buttons.length] = self.Buttons.HideContainer_DeckBooster =
+      self.Containers.DeckBooster.find(
+        "#button-mab-deck-booster-hide-container"
+      );
+    self.Buttons[self.Buttons.length] = self.Buttons.Market_HideContainer =
+      self.Containers.Market.find("#button-mab-market-hide-container");
+    self.Buttons[self.Buttons.length] = self.Buttons.Mine_HideContainer =
+      self.Containers.Mine.find("#button-mab-mine-hide-container");
+    self.Buttons[self.Buttons.length] = self.Buttons.Forgery_HideContainer =
+      self.Containers.Forgery.find("#button-mab-forgery-hide-container");
     self.Buttons[self.Buttons.length] = self.Buttons.NewCampaign =
       self.MabContainersContent.find("#button-mab-new-campaign-show-container");
-
     self.Buttons[self.Buttons.length] = self.Buttons.EditPlayerNickname =
       self.Containers.CampaignStatistics.find(
         "#button-mab-campaign-statistics-edit-player-nickname"
@@ -46,12 +59,6 @@ function mab_main_menu() {
       self.Containers.CampaignStatistics.find(
         "#button-mab-campaign-statistics-confirm-new-player-nickname"
       );
-    self.Buttons[self.Buttons.length] = self.Buttons.HideContainer_DeckBooster =
-      self.Containers.DeckBooster.find(
-        "#button-mab-deck-booster-hide-container"
-      );
-    self.Buttons[self.Buttons.length] = self.Buttons.Market_HideContainer =
-      self.Containers.Market.find("#button-mab-market-hide-container");
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.NewPlayerNickname =
@@ -112,13 +119,17 @@ function mab_main_menu() {
       self.Containers.CampaignStatistics.find(
         "#img-mab-campaign-statistics-all-npcs-defeated-trophy"
       );
-    self.Images[self.Images.length] = self.Images.Trophy_Blacksmith =
-      self.Containers.CampaignStatistics.find(
-        "#img-mab-campaign-statistics-all-blacksmith-trophy"
-      );
     self.Images[self.Images.length] = self.Images.Trophy_Bourgeois =
       self.Containers.CampaignStatistics.find(
-        "#img-mab-campaign-statistics-all-bourgeois-trophy"
+        "#img-mab-campaign-statistics-bourgeois-trophy"
+      );
+    self.Images[self.Images.length] = self.Images.Trophy_Miner =
+      self.Containers.CampaignStatistics.find(
+        "#img-mab-campaign-statistics-miner-trophy"
+      );
+    self.Images[self.Images.length] = self.Images.Trophy_Blacksmith =
+      self.Containers.CampaignStatistics.find(
+        "#img-mab-campaign-statistics-blacksmith-trophy"
       );
   };
 
@@ -130,7 +141,6 @@ function mab_main_menu() {
 
       self.campaignStatistics_ShowContainer();
     });
-
     self.Buttons.HideContainer.on("click", (e) => {
       e.preventDefault();
 
@@ -139,6 +149,16 @@ function mab_main_menu() {
       setTimeout(() => {
         self.reset_EditPlayerNickname_ButtonAndInput();
       }, 150);
+    });
+
+    self.Buttons.Market_HideContainer.on("click", (e) => {
+      self.LoadCampaignStatistics();
+    });
+    self.Buttons.Mine_HideContainer.on("click", (e) => {
+      self.LoadCampaignStatistics();
+    });
+    self.Buttons.Forgery_HideContainer.on("click", (e) => {
+      self.LoadCampaignStatistics();
     });
 
     self.Buttons.EditPlayerNickname.on("click", (e) => {
@@ -168,10 +188,6 @@ function mab_main_menu() {
     self.Buttons.HideContainer_DeckBooster.on("click", (e) => {
       self.campaignStatistics_ShowContainer();
 
-      self.LoadCampaignStatistics();
-    });
-
-    self.Buttons.Market_HideContainer.on("click", (e) => {
       self.LoadCampaignStatistics();
     });
   };
@@ -329,17 +345,24 @@ function mab_main_menu() {
           );
         }
 
-        if (mabCampaignDB.mab_BlacksmithTrophy == true) {
-          self.Imgs.Trophy_Blacksmith.attr(
-            "src",
-            "/images/icons/mab/trophies/trophy_blacksmith_achieved.svg"
-          );
-        }
-
         if (mabCampaignDB.Trophy_Bourgeois == true) {
           self.Imgs.Trophy_Bourgeois.attr(
             "src",
             "/images/icons/mab/trophies/trophy_bourgeois_achieved.svg"
+          );
+        }
+
+        if (mabCampaignDB.Trophy_Miner == true) {
+          self.Imgs.Trophy_Miner.attr(
+            "src",
+            "/images/icons/mab/trophies/trophy_miner_achieved.svg"
+          );
+        }
+
+        if (mabCampaignDB.mab_BlacksmithTrophy == true) {
+          self.Imgs.Trophy_Blacksmith.attr(
+            "src",
+            "/images/icons/mab/trophies/trophy_blacksmith_achieved.svg"
           );
         }
 

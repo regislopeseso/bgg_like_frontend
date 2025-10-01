@@ -21,7 +21,7 @@ function mab_mine() {
       self.Containers.MainMenu.find("#button-mab-mine-show-container");
     self.Buttons[self.Buttons.length] = self.Buttons.Mine_HideContainer =
       self.Containers.Mine.find("#button-mab-mine-hide-container");
-    self.Buttons[self.Buttons.length] = self.Buttons.Mine_Forge =
+    self.Buttons[self.Buttons.length] = self.Buttons.Mine_ExtractRawMaterial =
       self.Containers.Mine.find("#button-mab-mine-forge");
     self.Buttons[self.Buttons.length] = self.Buttons.Mine_Sharpen =
       self.Containers.Mine.find("#button-mab-mine-sharpen");
@@ -35,8 +35,6 @@ function mab_mine() {
     self.Blocks = [];
     self.Blocks[self.Blocks.length] = self.Blocks.Mine_CoinsBlock =
       self.Containers.Mine.find("#block-mab-mine-coins");
-    self.Blocks[self.Blocks.length] = self.Blocks.Mine_XpBlock =
-      self.Containers.Mine.find("#block-mab-mine-xp");
 
     self.Blocks[self.Blocks.length] = self.Blocks.Mine_BrassBlock =
       self.Containers.Mine.find("#block-mab-mine-brass");
@@ -62,8 +60,8 @@ function mab_mine() {
     self.Fields = [];
     self.Fields[self.Fields.length] = self.Fields.Mine_Coins =
       self.Containers.Mine.find("#span-mab-mine-owned-coins");
-    self.Fields[self.Fields.length] = self.Fields.Mine_Xp =
-      self.Containers.Mine.find("#span-mab-mine-owned-xp");
+    self.Fields[self.Fields.length] = self.Fields.Mine_MiningPrice =
+      self.Containers.Mine.find("#span-mab-mine-mining-price");
 
     self.Fields[self.Fields.length] = self.Fields.Mine_Brass =
       self.Containers.Mine.find("#span-mab-mine-owned-brass");
@@ -99,20 +97,6 @@ function mab_mine() {
 
     self.Mine_Card = self.Containers.Mine.find("#mab-mine-card");
     self.Mine_Tools = self.Containers.Mine.find("#mab-mine-tools");
-
-    self.Imgs = [];
-    self.Imgs[self.Imgs.length] =
-      self.Imgs.MabCardTruce = `/images/icons/mab_card_types/neutral/truce.svg`;
-    self.Imgs[self.Imgs.length] =
-      self.Imgs.MabCardTypeNeutral = `/images/icons/mab_card_types/cardtype_neutral.svg`;
-    self.Imgs[self.Imgs.length] =
-      self.Imgs.MabCardTypeRanged = `/images/icons/mab_card_types/cardtype_ranged.svg`;
-    self.Imgs[self.Imgs.length] =
-      self.Imgs.MabCardTypeCavalry = `/images/icons/mab_card_types/cardtype_cavalry.svg`;
-    self.Imgs[self.Imgs.length] =
-      self.Imgs.MabCardTypeInfantry = `/images/icons/mab_card_types/cardtype_infantry.svg`;
-    self.Imgs[self.Imgs.length] =
-      self.Imgs.QuestionMark = `/images/icons/mab/question_mark_default_img.svg`;
   };
 
   self.loadEvents = () => {
@@ -121,53 +105,26 @@ function mab_mine() {
 
       self.mainMenu_HideContainer();
 
-      self.forgery_ShowContainer();
+      self.mine_ShowContainer();
 
       self.IsBuilt = false;
 
       self.Mine_ListResources();
     });
-
     self.Buttons.Mine_HideContainer.on("click", (e) => {
       e.preventDefault();
 
-      self.forgery_HideContainer();
+      self.mine_HideContainer();
 
       self.IsBuilt = false;
 
       self.mainMenu_ShowContainer();
     });
 
-    self.Mine_ListPlayerCards_Select2.on("select2:select", (e) => {
-      const selectedData = e.params.data;
-
-      self.PlayerCardId = selectedData.id;
-
-      self.Mine_RenderPlayerCard();
-    });
-
-    self.Buttons.Mine_Forge.on("click", (e) => {
+    self.Buttons.Mine_ExtractRawMaterial.on("click", (e) => {
       e.preventDefault();
 
-      self.Buttons.Mine_Forge.blur();
-
-      self.Mine_ForgeCard();
-    });
-
-    self.Buttons.Mine_Sharpen.on("click", (e) => {
-      e.preventDefault();
-
-      self.Buttons.Mine_Sharpen.blur();
-
-      self.Mine_SharpenCard();
-    });
-
-    self.Buttons.Mine_Melt.on("click", (e) => {
-      e.preventDefault();
-
-      self.Buttons.Mine_Melt.blur();
-
-      self.Mine_MeltCard();
+      self.Mine_ExtractRawMaterial();
     });
   };
 
@@ -222,11 +179,11 @@ function mab_mine() {
   self.mainMenu_HideContainer = () => {
     self.toggleContainerVisibility(self.Containers.MainMenu);
   };
-  self.forgery_ShowContainer = () => {
+  self.mine_ShowContainer = () => {
     self.toggleContainerVisibility(self.Containers.Mine);
-    self.forgery_clearData();
+    self.mine_clearData();
   };
-  self.forgery_HideContainer = () => {
+  self.mine_HideContainer = () => {
     self.toggleContainerVisibility(self.Containers.Mine);
   };
 
@@ -247,7 +204,6 @@ function mab_mine() {
         let resources = resp.content;
 
         self.Fields.Mine_Coins.empty();
-        self.Fields.Mine_Xp.empty();
 
         self.Fields.Mine_Brass.empty();
         self.Fields.Mine_Copper.empty();
@@ -262,8 +218,6 @@ function mab_mine() {
         self.Fields.Mine_Adamantium.empty();
 
         self.Fields.Mine_Coins.html(resources.mab_Coins);
-
-        self.Fields.Mine_Xp.html(resources.mab_Xp);
 
         self.Fields.Mine_Brass.html(resources.mab_Brass);
 
@@ -283,7 +237,7 @@ function mab_mine() {
 
         self.Fields.Mine_Adamantium.html(resources.mab_Adamantium);
 
-        self.Mine_LoadPlayerCards();
+        self.Mine_ShowMiningDetails();
       },
       error: function (xhr, status, error) {
         sweetAlertError("Request failed:", error);
@@ -291,65 +245,10 @@ function mab_mine() {
     });
   };
 
-  self.Mine_LoadPlayerCards = () => {
-    if (
-      self.Mine_ListPlayerCards_Select2.hasClass("select2-hidden-accessible")
-    ) {
-      self.Mine_ListPlayerCards_Select2.select2("destroy");
-    }
-
-    fetch(`https://localhost:7081/users/mablistunassignedplayercards`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.content) {
-          self.sweetAlertError(
-            "Failed to load mab player cards:",
-            data.message
-          );
-          return;
-        }
-
-        const mabPlayerCards = data.content.map((item) => ({
-          id: item.mab_PlayerCardId,
-          text: item.mab_CardDescription,
-        }));
-
-        // Clear previous options and add empty one
-        self.Mine_ListPlayerCards_Select2.empty().append(`<option></option>`);
-
-        // Builds select2
-        self.Mine_ListPlayerCards_Select2.select2({
-          data: mabPlayerCards,
-          dropdownParent: self.DOM,
-          placeholder: "Select a card...",
-          allowClear: true,
-          theme: "classic",
-          width: "100%",
-          templateSelection: (data) => {
-            if (!data.id) return data.text;
-            return $("<strong>").text(data.text);
-          },
-        });
-
-        if (self.IsBuilt === false) {
-          // Opens select2
-          self.Mine_ListPlayerCards_Select2.trigger("change").select2("open");
-
-          self.IsBuilt = true;
-        }
-      })
-      .catch((err) => {
-        self.sweetAlertError("Error fetching mab player cards:", err);
-      });
-  };
-
-  self.Mine_RenderPlayerCard = () => {
+  self.Mine_ShowMiningDetails = () => {
     $.ajax({
       method: "GET",
-      url: `https://localhost:7081/users/mabshowplayercarddetails?Mab_PlayerCardId=${self.PlayerCardId}`,
+      url: `https://localhost:7081/users/mabshowminingdetails`,
       xhrFields: {
         withCredentials: true,
       },
@@ -359,48 +258,16 @@ function mab_mine() {
           return;
         }
 
-        self.forgery_clearData();
+        self.mine_clearData();
 
-        let playerCard = resp.content;
+        let miningDetails = resp.content;
 
-        let imgPath = "";
+        self.Fields.Mine_MiningPrice.html(miningDetails.mab_MiningPrice);
 
-        self.Fields.Mine_CardName.html(playerCard.mab_CardName);
-        self.Fields.Mine_CardPower.html(playerCard.mab_CardPower);
-        self.Fields.Mine_CardUpperHand.html(playerCard.mab_CardUpperHand);
-        self.Fields.Mine_CardCode.html(playerCard.mab_CardCode);
-
-        switch (playerCard.mab_CardType) {
-          case "Neutral":
-            imgPath = self.Imgs.MabCardTypeNeutral;
-            break;
-          case "Ranged":
-            imgPath = self.Imgs.MabCardTypeRanged;
-            break;
-          case "Cavalry":
-            imgPath = self.Imgs.MabCardTypeCavalry;
-            break;
-          case "Infantry":
-            imgPath = self.Imgs.MabCardTypeInfantry;
-            break;
-          default:
-            imgPath = self.Imgs.QuestionMark;
-            break;
-        }
-
-        if (
-          playerCard.mab_CardType === "Neutral" &&
-          playerCard.mab_CardPower === 0 &&
-          playerCard.mab_CardUpperHand === 0
-        ) {
-          imgPath = "";
-          imgPath = self.Imgs.MabCardTruce;
-        }
-
-        self.Fields.Mine_CardType.attr("src", imgPath);
-
-        self.Mine_Card.removeClass("hide-div").addClass("show-div");
-        self.Mine_Tools.removeClass("hide-div").addClass("show-div");
+        self.Fields.Mine_CardName.html(miningDetails.mab_CardName);
+        self.Fields.Mine_CardPower.html(miningDetails.mab_CardPower);
+        self.Fields.Mine_CardUpperHand.html(miningDetails.mab_CardUpperHand);
+        self.Fields.Mine_CardCode.html(miningDetails.mab_CardCode);
       },
       error: function (error) {
         sweetAlertError(error);
@@ -408,16 +275,10 @@ function mab_mine() {
     });
   };
 
-  self.Mine_ForgeCard = () => {
-    const formData = new FormData();
-    formData.append("Mab_PlayerCardId", self.PlayerCardId);
-
+  self.Mine_ExtractRawMaterial = () => {
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/users/mabforgecard",
-      data: formData,
-      processData: false,
-      contentType: false,
+      url: "https://localhost:7081/users/mabextractrawmaterial",
       xhrFields: {
         withCredentials: true, // Only if you're using cookies; otherwise can be removed
       },
@@ -427,107 +288,23 @@ function mab_mine() {
           return;
         }
 
-        self.forgery_clearData();
-
-        self.PlayerCardId = resp.content.mab_PlayerCardId;
-
-        self.Mine_ListResources();
+        self.mine_clearData();
 
         setTimeout(() => {
-          self.Mine_RenderPlayerCard();
+          self.Mine_ListResources();
         }, 200);
-
-        self.Mine_ListPlayerCards_Select2.select2("close");
       },
       error: (err) => {
-        sweetAlertError(err);
-      },
-    });
-  };
-  self.Mine_SharpenCard = () => {
-    const formData = new FormData();
-    formData.append("Mab_PlayerCardId", self.PlayerCardId);
-
-    $.ajax({
-      type: "POST",
-      url: "https://localhost:7081/users/mabsharpencard",
-      data: formData,
-      processData: false,
-      contentType: false,
-      xhrFields: {
-        withCredentials: true, // Only if you're using cookies; otherwise can be removed
-      },
-      success: (resp) => {
-        if (!resp.content) {
-          debugger;
-          self.sweetAlertError(resp.message);
-
-          return;
-        }
-
-        self.forgery_clearData();
-
-        self.PlayerCardId = resp.content.mab_PlayerCardId;
-
-        self.Mine_ListResources();
-
-        setTimeout(() => {
-          self.Mine_RenderPlayerCard();
-        }, 200);
-
-        self.Mine_ListPlayerCards_Select2.select2("close");
-      },
-      error: (err) => {
-        sweetAlertError(err);
-      },
-    });
-  };
-  self.Mine_MeltCard = () => {
-    const formData = new FormData();
-    formData.append("Mab_PlayerCardId", self.PlayerCardId);
-
-    $.ajax({
-      type: "POST",
-      url: "https://localhost:7081/users/mabmeltcard",
-      data: formData,
-      processData: false,
-      contentType: false,
-      xhrFields: {
-        withCredentials: true, // Only if you're using cookies; otherwise can be removed
-      },
-      success: (resp) => {
-        if (!resp.content) {
-          sweetAlertError(resp.message);
-
-          return;
-        }
-
-        let material = resp.content.mab_RawMaterialType;
-        let extractedRawMaterial = resp.content.mab_ExtractedRawMaterial;
-        let gainedXp = resp.content.mab_GainedXp;
-
-        let results = `Extracted ${material}: ${extractedRawMaterial}, gained Xp: ${gainedXp}`;
-
-        self.sweetAlertSuccess("Melting results:", results);
-
-        self.forgery_clearData();
-
-        self.Mine_ListResources();
-      },
-      error: (err) => {
-        sweetAlertError(err);
+        self.sweetAlertError(err);
       },
     });
   };
 
-  self.forgery_clearData = () => {
-    self.Fields.Mine_CardType.attr("src", self.Imgs.QuestionMark);
-    self.Mine_Card.removeClass("show-div").addClass("hide-div");
-    self.Mine_Tools.removeClass("show-div").addClass("hide-div");
+  self.mine_clearData = () => {
+    self.PlayerCardId = null;
 
     self.Fields.Mine_CardName.empty();
     self.Fields.Mine_CardPower.empty();
-
     self.Fields.Mine_CardUpperHand.empty();
     self.Fields.Mine_CardCode.empty();
   };

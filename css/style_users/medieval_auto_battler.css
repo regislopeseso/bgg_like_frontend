@@ -325,6 +325,10 @@ main {
   height: 35px;
 }
 
+#button-text-mab-mining {
+  color: var(--text-color) !important;
+}
+
 .flip-card {
   background-color: transparent;
   width: var(--mab-card-width);
