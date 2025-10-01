@@ -25,47 +25,47 @@ function mab_market() {
     self.Buttons[self.Buttons.length] = self.Buttons.Market_SellBrass =
       self.Containers.Market.find("#button-mab-market-sell-brass");
     self.Buttons[self.Buttons.length] = self.Buttons.Market_BuyBrass =
-      self.Containers.Market.find("#button-mab-market-sell-brass");
+      self.Containers.Market.find("#button-mab-market-buy-brass");
 
     self.Buttons[self.Buttons.length] = self.Buttons.Market_SellCopper =
       self.Containers.Market.find("#button-mab-market-sell-copper");
     self.Buttons[self.Buttons.length] = self.Buttons.Market_BuyCopper =
-      self.Containers.Market.find("#button-mab-market-sell-copper");
+      self.Containers.Market.find("#button-mab-market-buy-copper");
 
     self.Buttons[self.Buttons.length] = self.Buttons.Market_SellIron =
       self.Containers.Market.find("#button-mab-market-sell-iron");
     self.Buttons[self.Buttons.length] = self.Buttons.Market_BuyIron =
-      self.Containers.Market.find("#button-mab-market-sell-iron");
+      self.Containers.Market.find("#button-mab-market-buy-iron");
 
     self.Buttons[self.Buttons.length] = self.Buttons.Market_SellSteel =
       self.Containers.Market.find("#button-mab-market-sell-steel");
     self.Buttons[self.Buttons.length] = self.Buttons.Market_BuySteel =
-      self.Containers.Market.find("#button-mab-market-sell-steel");
+      self.Containers.Market.find("#button-mab-market-buy-steel");
 
     self.Buttons[self.Buttons.length] = self.Buttons.Market_SellTitanium =
       self.Containers.Market.find("#button-mab-market-sell-titanium");
     self.Buttons[self.Buttons.length] = self.Buttons.Market_BuyTitanium =
-      self.Containers.Market.find("#button-mab-market-sell-titanium");
+      self.Containers.Market.find("#button-mab-market-buy-titanium");
 
     self.Buttons[self.Buttons.length] = self.Buttons.Market_SellSilver =
       self.Containers.Market.find("#button-mab-market-sell-silver");
     self.Buttons[self.Buttons.length] = self.Buttons.Market_BuySilver =
-      self.Containers.Market.find("#button-mab-market-sell-silver");
+      self.Containers.Market.find("#button-mab-market-buy-silver");
 
     self.Buttons[self.Buttons.length] = self.Buttons.Market_SellGold =
       self.Containers.Market.find("#button-mab-market-sell-gold");
     self.Buttons[self.Buttons.length] = self.Buttons.Market_BuyGold =
-      self.Containers.Market.find("#button-mab-market-sell-gold");
+      self.Containers.Market.find("#button-mab-market-buy-gold");
 
     self.Buttons[self.Buttons.length] = self.Buttons.Market_SellDiamond =
       self.Containers.Market.find("#button-mab-market-sell-diamond");
     self.Buttons[self.Buttons.length] = self.Buttons.Market_BuyDiamond =
-      self.Containers.Market.find("#button-mab-market-sell-diamond");
+      self.Containers.Market.find("#button-mab-market-buy-diamond");
 
     self.Buttons[self.Buttons.length] = self.Buttons.Market_SellAdamantium =
       self.Containers.Market.find("#button-mab-market-sell-adamantium");
     self.Buttons[self.Buttons.length] = self.Buttons.Market_BuyAdamantium =
-      self.Containers.Market.find("#button-mab-market-sell-adamantium");
+      self.Containers.Market.find("#button-mab-market-buy-adamantium");
 
     self.Blocks = [];
     self.Blocks[self.Blocks.length] = self.Blocks.Market_CoinsBlock =
@@ -95,73 +95,51 @@ function mab_market() {
     self.Fields = [];
     self.Fields[self.Fields.length] = self.Fields.Market_Coins =
       self.Containers.Market.find("#span-mab-market-owned-coins");
-    self.Fields[self.Fields.length] = self.Fields.Market_Xp =
-      self.Containers.Market.find("#span-mab-market-owned-xp");
 
     self.Fields[self.Fields.length] = self.Fields.Market_Brass =
       self.Containers.Market.find("#span-mab-market-owned-brass");
-    self.Fields[self.Fields.length] = self.Fields.Market_BrassSellingPrice =
-      self.Containers.Market.find("#strong-mab-market-brass-selling-price");
-    self.Fields[self.Fields.length] = self.Fields.Market_BrassBuyingPrice =
-      self.Containers.Market.find("#strong-mab-market-brass-buying-price");
+    self.Fields[self.Fields.length] = self.Fields.Market_BrassPrice =
+      self.Containers.Market.find("#strong-mab-market-brass-price");
 
     self.Fields[self.Fields.length] = self.Fields.Market_Copper =
       self.Containers.Market.find("#span-mab-market-owned-copper");
-    self.Fields[self.Fields.length] = self.Fields.Market_CopperSellingPrice =
-      self.Containers.Market.find("#strong-mab-market-copper-selling-price");
-    self.Fields[self.Fields.length] = self.Fields.Market_CopperBuyingPrice =
-      self.Containers.Market.find("#strong-mab-market-copper-buying-price");
+    self.Fields[self.Fields.length] = self.Fields.Market_CopperPrice =
+      self.Containers.Market.find("#strong-mab-market-copper-price");
 
     self.Fields[self.Fields.length] = self.Fields.Market_Iron =
       self.Containers.Market.find("#span-mab-market-owned-iron");
-    self.Fields[self.Fields.length] = self.Fields.Market_IronSellingPrice =
-      self.Containers.Market.find("#strong-mab-market-iron-selling-price");
-    self.Fields[self.Fields.length] = self.Fields.Market_IronBuyingPrice =
-      self.Containers.Market.find("#strong-mab-market-iron-buying-price");
+    self.Fields[self.Fields.length] = self.Fields.Market_IronPrice =
+      self.Containers.Market.find("#strong-mab-market-iron-price");
 
     self.Fields[self.Fields.length] = self.Fields.Market_Steel =
       self.Containers.Market.find("#span-mab-market-owned-steel");
-    self.Fields[self.Fields.length] = self.Fields.Market_SteelSellingPrice =
-      self.Containers.Market.find("#strong-mab-market-steel-selling-price");
-    self.Fields[self.Fields.length] = self.Fields.Market_SteelBuyingPrice =
-      self.Containers.Market.find("#strong-mab-market-steel-buying-price");
+    self.Fields[self.Fields.length] = self.Fields.Market_SteelPrice =
+      self.Containers.Market.find("#strong-mab-market-steel-price");
 
     self.Fields[self.Fields.length] = self.Fields.Market_Titanium =
       self.Containers.Market.find("#span-mab-market-owned-titanium");
-    self.Fields[self.Fields.length] = self.Fields.Market_TitaniumSellingPrice =
-      self.Containers.Market.find("#strong-mab-market-titanium-selling-price");
-    self.Fields[self.Fields.length] = self.Fields.Market_TitaniumBuyingPrice =
-      self.Containers.Market.find("#strong-mab-market-titanium-buying-price");
+    self.Fields[self.Fields.length] = self.Fields.Market_TitaniumPrice =
+      self.Containers.Market.find("#strong-mab-market-titanium-price");
 
     self.Fields[self.Fields.length] = self.Fields.Market_Silver =
       self.Containers.Market.find("#span-mab-market-owned-silver");
-    self.Fields[self.Fields.length] = self.Fields.Market_SilverSellingPrice =
-      self.Containers.Market.find("#strong-mab-market-silver-selling-price");
-    self.Fields[self.Fields.length] = self.Fields.Market_SilverBuyingPrice =
-      self.Containers.Market.find("#strong-mab-market-silver-buying-price");
+    self.Fields[self.Fields.length] = self.Fields.Market_SilverPrice =
+      self.Containers.Market.find("#strong-mab-market-silver-price");
 
     self.Fields[self.Fields.length] = self.Fields.Market_Gold =
       self.Containers.Market.find("#span-mab-market-owned-gold");
-    self.Fields[self.Fields.length] = self.Fields.Market_GoldSellingPrice =
-      self.Containers.Market.find("#strong-mab-market-gold-selling-price");
-    self.Fields[self.Fields.length] = self.Fields.Market_GoldBuyingPrice =
-      self.Containers.Market.find("#strong-mab-market-gold-buying-price");
+    self.Fields[self.Fields.length] = self.Fields.Market_GoldPrice =
+      self.Containers.Market.find("#strong-mab-market-gold--price");
 
     self.Fields[self.Fields.length] = self.Fields.Market_Diamond =
       self.Containers.Market.find("#span-mab-market-owned-diamond");
-    self.Fields[self.Fields.length] = self.Fields.Market_DiamondSellingPrice =
-      self.Containers.Market.find("#strong-mab-market-diamond-selling-price");
-    self.Fields[self.Fields.length] = self.Fields.Market_DiamondBuyingPrice =
-      self.Containers.Market.find("#strong-mab-market-diamond-buying-price");
+    self.Fields[self.Fields.length] = self.Fields.Market_DiamondPrice =
+      self.Containers.Market.find("#strong-mab-market-diamond-price");
 
     self.Fields[self.Fields.length] = self.Fields.Market_Adamantium =
       self.Containers.Market.find("#span-mab-market-owned-adamantium");
-    self.Fields[self.Fields.length] =
-      self.Fields.Market_AdamantiumSellingPrice = self.Containers.Market.find(
-        "#strong-mab-market-adamantium-selling-price"
-      );
-    self.Fields[self.Fields.length] = self.Fields.Market_AdamantiumBuyingPrice =
-      self.Containers.Market.find("#strong-mab-market-adamantium-buying-price");
+    self.Fields[self.Fields.length] = self.Fields.Market_AdamantiumPrice =
+      self.Containers.Market.find("#strong-mab-market-adamantium-price");
 
     self.Fields[self.Fields.length] = self.Fields.Market_CardName =
       self.Containers.Market.find("#span-mab-market-card-name");
@@ -187,13 +165,12 @@ function mab_market() {
 
       self.Market_ListResources();
     });
-
     self.Buttons.Market_HideContainer.on("click", (e) => {
       e.preventDefault();
 
-      self.market_HideContainer();
-
       self.IsBuilt = false;
+
+      self.market_HideContainer();
 
       self.mainMenu_ShowContainer();
     });
@@ -408,52 +385,20 @@ function mab_market() {
 
           return;
         }
-        self.market_clearData();
 
         let prices = resp.content;
 
-        self.Fields.Market_BrassSellingPrice.html(prices.mab_SellingPriceBrass);
-        self.Fields.Market_BrassBuyingPrice.html(prices.mab_BuyingPriceBrass);
+        self.Fields.Market_BrassPrice.html(prices.mab_BrassPrice);
+        self.Fields.Market_CopperPrice.html(prices.mab_CopperPrice);
+        self.Fields.Market_IronPrice.html(prices.mab_IronPrice);
 
-        self.Fields.Market_CopperSellingPrice.html(
-          prices.mab_SellingPriceCopper
-        );
-        self.Fields.Market_CopperBuyingPrice.html(prices.mab_BuyingPriceCopper);
+        self.Fields.Market_SteelPrice.html(prices.mab_SteelPrice);
+        self.Fields.Market_TitaniumPrice.html(prices.mab_TitaniumPrice);
+        self.Fields.Market_SilverPrice.html(prices.mab_SilverPrice);
 
-        self.Fields.Market_IronSellingPrice.html(prices.mab_SellingPriceIron);
-        self.Fields.Market_IronBuyingPrice.html(prices.mab_BuyingPriceIron);
-
-        self.Fields.Market_SteelSellingPrice.html(prices.mab_SellingPriceSteel);
-        self.Fields.Market_SteelBuyingPrice.html(prices.mab_BuyingPriceSteel);
-
-        self.Fields.Market_TitaniumSellingPrice.html(
-          prices.mab_SellingPriceTitanium
-        );
-        self.Fields.Market_TitaniumBuyingPrice.html(
-          prices.mab_BuyingPriceTitanium
-        );
-
-        self.Fields.Market_SilverSellingPrice.html(
-          prices.mab_SellingPriceSilver
-        );
-        self.Fields.Market_SilverBuyingPrice.html(prices.mab_BuyingPriceSilver);
-
-        self.Fields.Market_GoldSellingPrice.html(prices.mab_SellingPriceGold);
-        self.Fields.Market_GoldBuyingPrice.html(prices.mab_BuyingPriceGold);
-
-        self.Fields.Market_DiamondSellingPrice.html(
-          prices.mab_SellingPriceDiamond
-        );
-        self.Fields.Market_DiamondBuyingPrice.html(
-          prices.mab_BuyingPriceDiamond
-        );
-
-        self.Fields.Market_AdamantiumSellingPrice.html(
-          prices.mab_SellingPriceAdamantium
-        );
-        self.Fields.Market_AdamantiumBuyingPrice.html(
-          prices.mab_BuyingPriceAdamantium
-        );
+        self.Fields.Market_GoldPrice.html(prices.mab_GoldPrice);
+        self.Fields.Market_DiamondPrice.html(prices.mab_DiamondPrice);
+        self.Fields.Market_AdamantiumPrice.html(prices.mab_AdamantiumPrice);
 
         let resources = resp.content;
 
@@ -514,7 +459,7 @@ function mab_market() {
 
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/users/mabbuyrawmaterial",
+      url: "https://localhost:7081/users/mabsellrawmaterial",
       data: formData,
       processData: false,
       contentType: false,
@@ -574,7 +519,7 @@ function mab_market() {
 
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/users/mabsellrawmaterial",
+      url: "https://localhost:7081/users/mabbuyrawmaterial",
       data: formData,
       processData: false,
       contentType: false,
@@ -583,9 +528,7 @@ function mab_market() {
       },
       success: (resp) => {
         if (!resp.content) {
-          debugger;
           self.sweetAlertError(resp.message);
-
           return;
         }
 
@@ -614,32 +557,17 @@ function mab_market() {
     self.Fields.Market_Diamond.empty();
     self.Fields.Market_Adamantium.empty();
 
-    self.Fields.Market_BrassSellingPrice.empty();
-    self.Fields.Market_BrassBuyingPrice.empty();
+    self.Fields.Market_BrassPrice.empty();
+    self.Fields.Market_CopperPrice.empty();
+    self.Fields.Market_IronPrice.empty();
 
-    self.Fields.Market_CopperSellingPrice.empty();
-    self.Fields.Market_CopperBuyingPrice.empty();
+    self.Fields.Market_SteelPrice.empty();
+    self.Fields.Market_TitaniumPrice.empty();
+    self.Fields.Market_SilverPrice.empty();
 
-    self.Fields.Market_IronSellingPrice.empty();
-    self.Fields.Market_IronBuyingPrice.empty();
-
-    self.Fields.Market_SteelSellingPrice.v();
-    self.Fields.Market_SteelBuyingPrice.empty();
-
-    self.Fields.Market_TitaniumSellingPrice.empty();
-    self.Fields.Market_TitaniumBuyingPrice.empty();
-
-    self.Fields.Market_SilverSellingPrice.empty();
-    self.Fields.Market_SilverBuyingPrice.empty();
-
-    self.Fields.Market_GoldSellingPrice.empty();
-    self.Fields.Market_GoldBuyingPrice.empty();
-
-    self.Fields.Market_DiamondSellingPrice.empty();
-    self.Fields.Market_DiamondBuyingPrice.empty();
-
-    self.Fields.Market_AdamantiumSellingPrice.empty();
-    self.Fields.Market_AdamantiumBuyingPrice.empty();
+    self.Fields.Market_GoldPrice.empty();
+    self.Fields.Market_DiamondPrice.empty();
+    self.Fields.Market_AdamantiumPrice.empty();
   };
 
   self.build = () => {

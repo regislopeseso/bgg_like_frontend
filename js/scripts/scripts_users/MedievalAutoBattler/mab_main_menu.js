@@ -11,14 +11,17 @@ function mab_main_menu() {
     self.Containers = [];
     self.Containers[self.Containers.length] = self.Containers.MainMenu =
       self.DOM.find("#container-mab-main-menu");
-    self.Containers.Inventory = self.Containers.MainMenu.find(
-      "#container-mab-inventory"
-    );
-    self.Containers.CampaignStatistics = self.Containers.MainMenu.find(
-      "#container-mab-campaign-statistics"
-    );
+    self.Containers[self.Containers.length] = self.Containers.Inventory =
+      self.Containers.MainMenu.find("#container-mab-inventory");
+    self.Containers[self.Containers.length] =
+      self.Containers.CampaignStatistics = self.Containers.MainMenu.find(
+        "#container-mab-campaign-statistics"
+      );
     self.Containers[self.Containers.length] = self.Containers.DeckBooster =
       self.MabContainersContent.find("#container-mab-deck-booster");
+
+    self.Containers[self.Containers.length] = self.Containers.Market =
+      self.DOM.find("#container-mab-market");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.ShowContainer =
@@ -47,6 +50,8 @@ function mab_main_menu() {
       self.Containers.DeckBooster.find(
         "#button-mab-deck-booster-hide-container"
       );
+    self.Buttons[self.Buttons.length] = self.Buttons.Market_HideContainer =
+      self.Containers.Market.find("#button-mab-market-hide-container");
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.NewPlayerNickname =
@@ -163,6 +168,10 @@ function mab_main_menu() {
     self.Buttons.HideContainer_DeckBooster.on("click", (e) => {
       self.campaignStatistics_ShowContainer();
 
+      self.LoadCampaignStatistics();
+    });
+
+    self.Buttons.Market_HideContainer.on("click", (e) => {
       self.LoadCampaignStatistics();
     });
   };

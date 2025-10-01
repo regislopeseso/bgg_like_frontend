@@ -52,6 +52,7 @@ main {
 #container-mab-create-deck,
 #container-mab-deck-booster,
 #container-mab-market,
+#container-mab-mine,
 #container-mab-forgery {
   position: absolute;
   width: fit-content;
@@ -466,6 +467,7 @@ main {
   #container-mab-create-deck,
   #container-mab-deck-booster,
   #container-mab-market,
+  #container-mab-mine,
   #container-mab-forgery {
     width: 90vw;
   }
