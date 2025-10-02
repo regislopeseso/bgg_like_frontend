@@ -292,85 +292,103 @@
                 </div>
 
                 <div
-                  class="d-flex flex-row gap-3 align-items-center justify-content-start"
+                  class="d-flex flex-column justify-content-center align-items-center"
                 >
+                  <!-- Trophies -->
                   <div
-                    class="mb-3 d-flex flex-column w-50 justify-content-between"
+                    class="d-flex flex-row gap-3 align-items-center justify-content-start"
                   >
-                    <div class="pb-3"><span>T</span>rophies:</div>
+                    <div
+                      class="mb-3 d-flex flex-column w-50 justify-content-between"
+                    >
+                      <div class="pb-3"><span>T</span>rophies:</div>
 
-                    <div class="d-flex flex-row gap-3">
-                      <!-- All NPCs Defeated Trophy -->
-                      <div
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="bottom"
-                        data-bs-custom-class="trophies-tooltip"
-                        data-bs-title="All Npcs Defeated!"
-                      >
-                        <img
-                          id="img-mab-campaign-statistics-all-npcs-defeated-trophy"
-                          class="trophy-icon"
-                          src="/images/icons/mab/trophies/all_npcs_defeated_trophy.svg"
-                        />
-                      </div>
+                      <div class="d-flex flex-row gap-3">
+                        <!-- The Brave Trophy -->
+                        <button class="btn" id="button-trophy-the-brave">
+                          <div
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-bs-custom-class="trophies-tooltip"
+                            data-bs-title="The Brave"
+                          >
+                            <img
+                              id="img-mab-campaign-statistics-the-brave-trophy"
+                              class="trophy-icon"
+                              src="/images/icons/mab/trophies/brave_trophy.svg"
+                            />
+                          </div>
+                        </button>
 
-                      <!-- All Cards Colected Trophy -->
-                      <div
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="bottom"
-                        data-bs-custom-class="trophies-tooltip"
-                        data-bs-title="All Cards Collected!"
-                      >
-                        <img
-                          id="img-mab-campaign-statistics-all-cards-collected-trophy"
-                          class="trophy-icon"
-                          src="/images/icons/mab/trophies/all_cards_collected_trophy.svg"
-                        />
-                      </div>
+                        <!-- The Collector Trophy -->
+                        <button class="btn" id="button-trophy-the-collector">
+                          <div
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-bs-custom-class="trophies-tooltip"
+                            data-bs-title="The Collector"
+                          >
+                            <img
+                              id="img-mab-campaign-statistics-the-collector-trophy"
+                              class="trophy-icon"
+                              src="/images/icons/mab/trophies/collector_trophy.svg"
+                            />
+                          </div>
+                        </button>
 
-                      <!-- Bourgeois Trophy -->
-                      <div
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="bottom"
-                        data-bs-custom-class="trophies-tooltip"
-                        data-bs-title="Bourgeois (owns 1000 coins)!"
-                      >
-                        <img
-                          id="img-mab-campaign-statistics-all-bourgeois-trophy"
-                          class="trophy-icon"
-                          src="/images/icons/mab/trophies/bourgeois_trophy.svg"
-                        />
-                      </div>
+                        <!-- The Bourgeois Trophy -->
+                        <button class="btn" id="button-trophy-the-bourgeois">
+                          <div
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-bs-custom-class="trophies-tooltip"
+                            data-bs-title="The Bourgeois"
+                          >
+                            <img
+                              id="img-mab-campaign-statistics-the-bourgeois-trophy"
+                              class="trophy-icon"
+                              src="/images/icons/mab/trophies/bourgeois_trophy.svg"
+                            />
+                          </div>
+                        </button>
 
-                      <!-- Miner Trophy -->
-                      <div
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="bottom"
-                        data-bs-custom-class="trophies-tooltip"
-                        data-bs-title="Miner (extract adamantium)!"
-                      >
-                        <img
-                          id="img-mab-campaign-statistics-miner-trophy"
-                          class="trophy-icon"
-                          src="/images/icons/mab/trophies/miner_trophy.svg"
-                        />
-                      </div>
+                        <!-- The Miner Trophy -->
+                        <button class="btn" id="button-trophy-the-miner">
+                          <div
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-bs-custom-class="trophies-tooltip"
+                            data-bs-title="The Miner"
+                          >
+                            <img
+                              id="img-mab-campaign-statistics-the-miner-trophy"
+                              class="trophy-icon"
+                              src="/images/icons/mab/trophies/miner_trophy.svg"
+                            />
+                          </div>
+                        </button>
 
-                      <!-- Blacksmith Trophy -->
-                      <div
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="bottom"
-                        data-bs-custom-class="trophies-tooltip"
-                        data-bs-title="Blacksmith (50F. 50S. 50M.)!"
-                      >
-                        <img
-                          id="img-mab-campaign-statistics-blacksmith-trophy"
-                          class="trophy-icon"
-                          src="/images/icons/mab/trophies/blacksmith_trophy.svg"
-                        />
+                        <!-- The Blacksmith Trophy -->
+                        <button class="btn" id="button-trophy-the-blacksmith">
+                          <div
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-bs-custom-class="trophies-tooltip"
+                            data-bs-title="The Blacksmith"
+                          >
+                            <img
+                              id="img-mab-campaign-statistics-the-blacksmith-trophy"
+                              class="trophy-icon"
+                              src="/images/icons/mab/trophies/blacksmith_trophy.svg"
+                            />
+                          </div>
+                        </button>
                       </div>
                     </div>
                   </div>
+
+                  <!-- Trophies Info -->
+                  <div id="wrapper-mab-trophy-info"></div>
                 </div>
               </div>
               <hr />

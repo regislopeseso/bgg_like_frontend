@@ -395,6 +395,10 @@ main {
   height: 250px !important;
 }
 
+#wrapper-mab-trophy-info {
+  display: none;
+}
+
 @media screen and (max-width: 1440px) {
   #game-logo {
     top: 75px;

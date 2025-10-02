@@ -45,6 +45,16 @@ function mab_main_menu() {
       self.Containers.CampaignStatistics.find(
         "#button-mab-campaign-statistics-confirm-new-player-nickname"
       );
+    self.Buttons[self.Buttons.length] = self.Buttons.Trophy_TheBrave =
+      self.Containers.CampaignStatistics.find("#button-trophy-the-brave");
+    self.Buttons[self.Buttons.length] = self.Buttons.Trophy_TheCollector =
+      self.Containers.CampaignStatistics.find("#button-trophy-the-collector");
+    self.Buttons[self.Buttons.length] = self.Buttons.Trophy_TheBourgeois =
+      self.Containers.CampaignStatistics.find("#button-trophy-the-bourgeois");
+    self.Buttons[self.Buttons.length] = self.Buttons.Trophy_TheMiner =
+      self.Containers.CampaignStatistics.find("#button-trophy-the-miner");
+    self.Buttons[self.Buttons.length] = self.Buttons.Trophy_TheBlacksmith =
+      self.Containers.CampaignStatistics.find("#button-trophy-the-blacksmith");
 
     self.Inputs = [];
     self.Inputs[self.Inputs.length] = self.Inputs.NewPlayerNickname =
@@ -96,26 +106,30 @@ function mab_main_menu() {
         "#field-mab-campaign-statistics-difficulty-level"
       );
 
+    self.Wrappers = [];
+    self.Wrappers[self.Wrappers.length] = self.Wrappers.Trophy_Info =
+      self.Containers.CampaignStatistics.find("#wrapper-mab-trophy-info");
+
     self.Images = [];
     self.Images[self.Images.length] = self.Images.Trophy_AllCardsCollected =
       self.Containers.CampaignStatistics.find(
-        "#img-mab-campaign-statistics-all-cards-collected-trophy"
+        "#img-mab-campaign-statistics-the-collector-trophy"
       );
     self.Images[self.Images.length] = self.Images.Trophy_AllNpcsDefeated =
       self.Containers.CampaignStatistics.find(
-        "#img-mab-campaign-statistics-all-npcs-defeated-trophy"
+        "#img-mab-campaign-statistics-the-brave-trophy"
       );
     self.Images[self.Images.length] = self.Images.Trophy_Bourgeois =
       self.Containers.CampaignStatistics.find(
-        "#img-mab-campaign-statistics-bourgeois-trophy"
+        "#img-mab-campaign-statistics-the-bourgeois-trophy"
       );
     self.Images[self.Images.length] = self.Images.Trophy_Miner =
       self.Containers.CampaignStatistics.find(
-        "#img-mab-campaign-statistics-miner-trophy"
+        "#img-mab-campaign-statistics-the-miner-trophy"
       );
     self.Images[self.Images.length] = self.Images.Trophy_Blacksmith =
       self.Containers.CampaignStatistics.find(
-        "#img-mab-campaign-statistics-blacksmith-trophy"
+        "#img-mab-campaign-statistics-the-blacksmith-trophy"
       );
   };
 
@@ -159,6 +173,42 @@ function mab_main_menu() {
       e.preventDefault();
 
       self.EditPlayerNickname();
+    });
+
+    self.Buttons.Trophy_TheBrave.on("click", (e) => {
+      e.preventDefault();
+
+      self.render_TrophiesInfo("Brave");
+    });
+    self.Buttons.Trophy_TheCollector.on("click", (e) => {
+      e.preventDefault();
+
+      if (!self.Wrappers.Trophy_Info.is(":visible")) {
+        self.Wrappers.Trophy_Info.hide(); // shorthand for css("display", "none")
+        return;
+      }
+
+      self.render_TrophiesInfo("Collector");
+    });
+    self.Buttons.Trophy_TheBrave.on("click", (e) => {
+      e.preventDefault();
+
+      self.render_TrophiesInfo("Brave");
+    });
+    self.Buttons.Trophy_TheBourgeois.on("click", (e) => {
+      e.preventDefault();
+
+      self.render_TrophiesInfo("Bourgeois");
+    });
+    self.Buttons.Trophy_TheMiner.on("click", (e) => {
+      e.preventDefault();
+
+      self.render_TrophiesInfo("Miner");
+    });
+    self.Buttons.Trophy_TheBlacksmith.on("click", (e) => {
+      e.preventDefault();
+
+      self.render_TrophiesInfo("Blacksmith");
     });
   };
 
@@ -352,6 +402,99 @@ function mab_main_menu() {
         self.sweetAlertError("Failed to fetch campaign statistics");
       },
     });
+  };
+
+  self.render_TrophiesInfo = (trophy) => {
+    self.Wrappers.Trophy_Info.empty();
+
+    let trophyInfo = "";
+
+    if (trophy === "Brave") {
+      trophyInfo = `
+      <div class="d-flex flex-column w-50">
+        <div><span>T</span>he <span>B</span>rave:</div>
+        <div>
+          <span>R</span>equirement:&nbsp;  
+          Player must face all npcs in the game (winning is not mandatory);
+        </div>
+        <div>
+          <span>R</span>ewards:&nbsp;  
+          NPCs will show their cards face up in all battles;
+        </div>
+      </div>
+      `;
+    } else if (trophy === "Collector") {
+      trophyInfo = `
+      <div class="d-flex flex-column justify-content-center align-items-center w-100">
+        <div><span>T</span>he <span>C</span>ollector:</div>
+        <div class="d-flex flex-column w-50">
+          <div>
+            <span>R</span>equirement:  
+          </div>
+          <div class="w-50">
+            Player must own all cards of one at least one type (either neutral or ranged or infantry or cavalry);
+          </div>
+        </div>
+        <div class="d-flex flex-column w-50">
+          <div>
+            <span>R</span>ewards:&nbsp;  
+          </div>
+          <div class="w-50">
+            Player gains 4 cards of power 5 and upper hand 5, 1 card of each type and 1 random card of power 9 and upper hand 0;
+          </div>
+        </div>
+      </div>
+      `;
+    } else if (trophy === "Bourgeois") {
+      trophyInfo = `
+      <div>
+        <div><span>T</span>he <span>B</span>ourgeois:</div>
+        <div>
+          <span>R</span>equirement:&nbsp;  
+          Player must accomplish 500 transactions in the market;
+        </div>
+        <div>
+          <span>R</span>ewards:&nbsp;  
+          All inflations increase and decrease only 1 unit per purchase and sale action;
+        </div>
+      </div>
+      `;
+    } else if (trophy === "Miner") {
+      trophyInfo = `
+      <div>
+        <div><span>T</span>he <span>M</span>iner:</div>
+        <div>
+          <span>R</span>equirement:&nbsp;  
+          Player must extract 1 raw material of each type (brass, copper, iron, steel, titanium, silver, gold, diamond, adamantium);
+        </div>
+        <div>
+          <span>R</span>ewards:&nbsp;  
+          Player may use use multiple pickaxes at the same time in the mine;
+        </div>
+      </div>
+      `;
+    } else if (trophy === "Blacksmith") {
+      trophyInfo = `
+      <div class="d-flex flex-column w-100">
+        <div><span>T</span>he <span>B</span>lacksmith:</div>
+        <div>
+          <span>R</span>equirement:&nbsp;  
+          Player must consume one of each raw material at the forge;
+        </div>
+        <div>
+          <span>R</span>ewards:&nbsp;  
+          Player may upgrade any card from any power to any power level paying the necessary raw material costs of the desired power level;
+        </div>
+      </div>
+      `;
+    } else {
+      trophyInfo = "";
+    }
+
+    self.Wrappers.Trophy_Info.append(`<hr />`);
+    self.Wrappers.Trophy_Info.append(trophyInfo);
+    self.Wrappers.Trophy_Info.hide();
+    self.Wrappers.Trophy_Info.slideToggle();
   };
 
   self.EditPlayerNickname = () => {
