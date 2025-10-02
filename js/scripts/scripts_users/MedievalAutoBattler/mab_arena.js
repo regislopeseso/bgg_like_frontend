@@ -1,4 +1,4 @@
-function mab_battle() {
+function mab_arena() {
   let self = this;
 
   self.IsBuilt = false;
@@ -19,6 +19,7 @@ function mab_battle() {
   self.QuestId = null;
 
   self.BattleId = null;
+  self.Battle_CoinsResult = null;
   self.Battle_Points = 0;
   self.Battle_EarnedXp = 0;
   self.Battle_BonusXp = 0;
@@ -59,13 +60,31 @@ function mab_battle() {
     self.MabContainersContent = self.DOM.find("#mab-containers-content");
 
     self.Containers = [];
+    self.Containers[self.Containers.length] = self.Containers.Arena =
+      self.MabContainersContent.find("#container-mab-arena");
 
+    self.Containers[self.Containers.length] = self.Containers.MainMenu =
+      self.DOM.find("#container-mab-main-menu");
+    self.Containers[self.Containers.length] = self.Containers.NewCampaign =
+      self.DOM.find("#container-mab-new-campaign");
     self.Containers[self.Containers.length] = self.Containers.ContinueCampaign =
       self.MabContainersContent.find("#container-mab-continue-campaign");
     self.Containers[self.Containers.length] = self.Containers.Quest =
       self.MabContainersContent.find("#container-mab-quest");
-    self.Containers[self.Containers.length] = self.Containers.Arena =
-      self.MabContainersContent.find("#container-mab-arena");
+
+    self.Containers[self.Containers.length] = self.Containers.ActiveDeck =
+      self.DOM.find("#container-mab-active-deck");
+    self.Containers[self.Containers.length] = self.Containers.CreateDeck =
+      self.DOM.find("#container-mab-create-deck");
+    self.Containers[self.Containers.length] = self.Containers.DeckBooster =
+      self.MabContainersContent.find("#container-mab-deck-booster");
+
+    self.Containers[self.Containers.length] = self.Containers.Market =
+      self.DOM.find("#container-mab-market");
+    self.Containers[self.Containers.length] = self.Containers.Mine =
+      self.DOM.find("#container-mab-mine");
+    self.Containers[self.Containers.length] = self.Containers.Forgery =
+      self.DOM.find("#container-mab-forgery");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.NewSkirmishBattle_Manual =
@@ -155,6 +174,8 @@ function mab_battle() {
 
     self.Buttons.Arena_HideContainer.on("click", (e) => {
       e.preventDefault();
+
+      self.showAllContainers();
 
       self.arena_HideContainer();
 
@@ -301,6 +322,18 @@ function mab_battle() {
   self.quest_HideContainer = () => {
     self.toggleContainerVisibility(self.Containers.Quest);
   };
+  self.hideAllContainers = () => {
+    self.Containers.forEach((container, index) => {
+      if (index !== 0) {
+        container.fadeOut();
+      }
+    });
+  };
+  self.showAllContainers = () => {
+    self.Containers.forEach((container) => {
+      container.fadeIn();
+    });
+  };
 
   self.continueCampaign_ShowContainer = () => {
     self.toggleContainerVisibility(self.Containers.ContinueCampaign);
@@ -377,6 +410,8 @@ function mab_battle() {
         self.duel_RenderPlayerState();
 
         self.sweetAlertSuccess("Battle started!");
+
+        self.hideAllContainers();
       },
       error: (err) => {
         self.sweetAlertError("Failed to start mab battle!");
@@ -577,11 +612,12 @@ function mab_battle() {
         self.Duel_CheckStatus();
 
         self.sweetAlertSuccess("Battle Auto Battle!");
+
+        self.hideAllContainers();
       },
       error: (err) => {
         self.sweetAlertError("Failed to start mab auto battle!");
       },
-      complete: () => {},
     });
   };
   self.Battle_Finish = () => {
@@ -601,6 +637,16 @@ function mab_battle() {
         self.Fields.BattleEarnedXp.html(resp.content.mab_BattleEarnedXp);
         self.Fields.BattleBonusXp.html(resp.content.mab_BattleBonusXp);
 
+        self.Battle_CoinsResult = resp.content.mab_BattleCoinsResult;
+
+        let coinsResult = self.battle_renderResult();
+
+        self.Fields.ArenaMessages.append(coinsResult);
+
+        self.Buttons.Arena_HideContainer.removeClass("hide-div").addClass(
+          "show-div"
+        );
+
         self.sweetAlertSuccess(resp.message);
       },
       error: (err) => {
@@ -608,6 +654,37 @@ function mab_battle() {
       },
       complete: () => {},
     });
+  };
+  self.battle_renderResult = () => {
+    let text = "";
+    let absVal = Math.abs(self.Battle_CoinsResult);
+    let plurality = absVal === 1 ? "" : "s";
+
+    if (self.Battle_CoinsResult < 0) {
+      text = `
+          <h3 class="d-flex flex-row justify-content-center align-items-center">
+            <strong class="paint-red">Y</strong>ou&nbsp;
+            <strong class="paint-red">L</strong>ost&nbsp;
+            <strong class="paint-red">${absVal}</strong>&nbsp;
+            <strong class="paint-red">c</strong>oin${plurality}&nbsp;
+            <strong class="paint-red">!</strong>
+          </h3>
+          `;
+
+      return text;
+    }
+
+    text = `
+          <h3 class="d-flex flex-row justify-content-center align-items-center">
+            <strong class="paint-green">Y</strong>ou&nbsp;
+            <strong class="paint-green">G</strong>ained&nbsp;
+            <strong class="paint-green">${absVal}</strong>&nbsp;
+            <strong class="paint-green">c</strong>oin${plurality}&nbsp;
+            <strong class="paint-green">!</strong>
+          </h3>
+          `;
+
+    return text;
   };
 
   self.Duel_Start = () => {
@@ -993,6 +1070,41 @@ function mab_battle() {
 
         self.HasPlayerRetreated = true;
 
+        self.PlayerState = resp.content.mab_PlayerState;
+
+        self.Fields.BattlePoints.html(resp.content.mab_BattlePoints);
+
+        self.Fields.BattleEarnedXp.html(resp.content.mab_EarnedXp);
+
+        self.Fields.BattleBonusXp.html(resp.content.mab_BonusXp);
+
+        self.Blocks.NpcCards.empty();
+        for (let i = 0; i < self.DeckSize; i++) {
+          let available_cardHtml = `
+            <div class="mab-card mab-card-back">
+              <img src="/images/icons/mab_card_types/visored-helm.svg" class="cardtype" />
+            </div>             
+            `;
+
+          self.Blocks.NpcCards.append(available_cardHtml);
+        }
+
+        self.Blocks.PlayerCards.empty();
+        for (let i = 0; i < self.DeckSize; i++) {
+          let available_cardHtml = `
+            <div class="mab-card mab-card-back">
+              <img src="/images/icons/mab_card_types/visored-helm.svg" class="cardtype" />
+            </div>             
+            `;
+
+          self.Blocks.PlayerCards.append(available_cardHtml);
+        }
+
+        self.Buttons.Arena_Retreat.prop("disabled", true);
+        self.Buttons.Arena_ShowDuelsResults.hide();
+
+        self.Battle_CoinsResult = resp.content.mab_EarnedGold;
+
         self.Duel_ManageTurn();
       },
       error: (err) => {
@@ -1280,6 +1392,18 @@ function mab_battle() {
     if (self.HasPlayerRetreated === true) {
       self.Fields.ArenaMessages.html(`Player is retreating...`);
 
+      setTimeout(() => {
+        self.duel_RenderPlayerState();
+        self.Fields.ArenaMessages.html(`You panicked!`);
+        self.Fields.ArenaMessages.append(
+          `<div>BATTLE FINISHED: <strong class="paint-red">Defeat!</strong></div>`
+        );
+
+        let coinsForfeited = self.battle_renderResult();
+
+        self.Fields.ArenaMessages.append(coinsForfeited);
+      }, self.Duel_AnimationsTime);
+
       return;
     }
 
@@ -1411,6 +1535,11 @@ function mab_battle() {
     self.Blocks.PlayerCards.empty();
 
     self.Buttons.Arena_Retreat.prop("disabled", false);
+    self.Buttons.Arena_HideContainer.removeClass("show-div").addClass(
+      "hide-div"
+    );
+
+    self.Buttons.Arena_ShowDuelsResults.show();
   };
 
   self.clear_PlayerDuellingCard = () => {
@@ -1451,5 +1580,5 @@ function mab_battle() {
 }
 
 $(function () {
-  new mab_battle();
+  new mab_arena();
 });
