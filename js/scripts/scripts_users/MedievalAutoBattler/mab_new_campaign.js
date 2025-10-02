@@ -289,10 +289,10 @@ function mab_new_campaign() {
 
         self.sweetAlertSuccess("New Mab Campaign Started!");
 
-        setTimeout(() => {
-          self.newCampaign_HideContainer();
-          self.mainMenu_ShowContainerr();
-        }, 600);
+        self.newCampaign_HideContainer();
+        self.mainMenu_ShowContainerr();
+
+        __global.MabMainMenuController.LoadCampaignStatistics();
       },
       error: (err) => {
         self.sweetAlertError(err);
@@ -337,7 +337,6 @@ function mab_new_campaign() {
   self.mainMenu_HideContainer = () => {
     self.toggleContainerVisibility(self.Containers.MainMenu);
   };
-  self.Battle_TriggerStart = () => {};
 
   self.build = () => {
     self.loadReferences();

@@ -138,6 +138,8 @@ function mab_forgery() {
       self.IsBuilt = false;
 
       self.mainMenu_ShowContainer();
+
+      __global.MabMainMenuController.LoadCampaignStatistics();
     });
 
     self.Forgery_ListPlayerCards_Select2.on("select2:select", (e) => {

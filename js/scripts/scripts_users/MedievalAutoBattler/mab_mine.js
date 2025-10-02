@@ -119,6 +119,8 @@ function mab_mine() {
       self.IsBuilt = false;
 
       self.mainMenu_ShowContainer();
+
+      __global.MabMainMenuController.LoadCampaignStatistics();
     });
 
     self.Buttons.Mine_ExtractRawMaterial.on("click", (e) => {

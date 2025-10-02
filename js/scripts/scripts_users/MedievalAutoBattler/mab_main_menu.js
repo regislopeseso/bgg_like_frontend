@@ -11,21 +11,16 @@ function mab_main_menu() {
     self.Containers = [];
     self.Containers[self.Containers.length] = self.Containers.MainMenu =
       self.DOM.find("#container-mab-main-menu");
+    self.Containers[self.Containers.length] = self.Containers.NewCampaign =
+      self.DOM.find("#container-mab-new-campaign");
     self.Containers[self.Containers.length] = self.Containers.Inventory =
       self.Containers.MainMenu.find("#container-mab-inventory");
     self.Containers[self.Containers.length] =
       self.Containers.CampaignStatistics = self.Containers.MainMenu.find(
         "#container-mab-campaign-statistics"
       );
-    self.Containers[self.Containers.length] = self.Containers.DeckBooster =
-      self.MabContainersContent.find("#container-mab-deck-booster");
-
-    self.Containers[self.Containers.length] = self.Containers.Market =
-      self.DOM.find("#container-mab-market");
-    self.Containers[self.Containers.length] = self.Containers.Mine =
-      self.DOM.find("#container-mab-mine");
-    self.Containers[self.Containers.length] = self.Containers.Forgery =
-      self.DOM.find("#container-mab-forgery");
+    self.Containers[self.Containers.length] = self.Containers.Places =
+      self.DOM.find("#container-mab-places");
 
     self.Buttons = [];
     self.Buttons[self.Buttons.length] = self.Buttons.ShowContainer =
@@ -39,16 +34,7 @@ function mab_main_menu() {
     self.Buttons.ShowContinueCampaignContainer = self.Containers.MainMenu.find(
       "#button-mab-continue-campaign-show-container"
     );
-    self.Buttons[self.Buttons.length] = self.Buttons.HideContainer_DeckBooster =
-      self.Containers.DeckBooster.find(
-        "#button-mab-deck-booster-hide-container"
-      );
-    self.Buttons[self.Buttons.length] = self.Buttons.Market_HideContainer =
-      self.Containers.Market.find("#button-mab-market-hide-container");
-    self.Buttons[self.Buttons.length] = self.Buttons.Mine_HideContainer =
-      self.Containers.Mine.find("#button-mab-mine-hide-container");
-    self.Buttons[self.Buttons.length] = self.Buttons.Forgery_HideContainer =
-      self.Containers.Forgery.find("#button-mab-forgery-hide-container");
+
     self.Buttons[self.Buttons.length] = self.Buttons.NewCampaign =
       self.MabContainersContent.find("#button-mab-new-campaign-show-container");
     self.Buttons[self.Buttons.length] = self.Buttons.EditPlayerNickname =
@@ -151,16 +137,6 @@ function mab_main_menu() {
       }, 150);
     });
 
-    self.Buttons.Market_HideContainer.on("click", (e) => {
-      self.LoadCampaignStatistics();
-    });
-    self.Buttons.Mine_HideContainer.on("click", (e) => {
-      self.LoadCampaignStatistics();
-    });
-    self.Buttons.Forgery_HideContainer.on("click", (e) => {
-      self.LoadCampaignStatistics();
-    });
-
     self.Buttons.EditPlayerNickname.on("click", (e) => {
       e.preventDefault();
 
@@ -183,12 +159,6 @@ function mab_main_menu() {
       e.preventDefault();
 
       self.EditPlayerNickname();
-    });
-
-    self.Buttons.HideContainer_DeckBooster.on("click", (e) => {
-      self.campaignStatistics_ShowContainer();
-
-      self.LoadCampaignStatistics();
     });
   };
 
@@ -259,6 +229,14 @@ function mab_main_menu() {
     self.Buttons.ShowContinueCampaignContainer.prop("disabled", true);
     self.Containers.CampaignStatistics.addClass("d-none");
     self.Containers.Inventory.addClass("d-none");
+    self.Containers.Places.addClass("d-none");
+  };
+  self.render_ContinueCampaignMode = () => {
+    self.Buttons.NewCampaign.text("Start Anew");
+    self.Buttons.ShowContinueCampaignContainer.prop("disabled", false);
+    self.Containers.CampaignStatistics.removeClass("d-none");
+    self.Containers.Inventory.removeClass("d-none");
+    self.Containers.Places.removeClass("d-none");
   };
 
   self.LoadCampaignStatistics = () => {
@@ -277,7 +255,7 @@ function mab_main_menu() {
           self.render_NewCampaignMode();
           return;
         }
-        self.Buttons.NewCampaign.html("Start Anew");
+        self.render_ContinueCampaignMode();
 
         self.CurrentPlayerNickName = mabCampaignDB.mab_PlayerNickName;
 
@@ -462,5 +440,5 @@ function mab_main_menu() {
 }
 
 $(function () {
-  new mab_main_menu();
+  __global.MabMainMenuController = new mab_main_menu();
 });

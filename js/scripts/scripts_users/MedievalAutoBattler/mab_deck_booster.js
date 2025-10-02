@@ -58,6 +58,8 @@ function mab_deck_booster() {
       self.deckBooster_HideContainer();
 
       self.mainMenu_ShowContainer();
+
+      __global.MabMainMenuController.LoadCampaignStatistics();
     });
   };
 

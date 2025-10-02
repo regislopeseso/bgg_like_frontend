@@ -173,6 +173,8 @@ function mab_market() {
       self.market_HideContainer();
 
       self.mainMenu_ShowContainer();
+
+      __global.MabMainMenuController.LoadCampaignStatistics();
     });
 
     self.Buttons.Market_SellBrass.on("click", (e) => {
