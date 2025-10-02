@@ -280,7 +280,7 @@ function mab_arena() {
       theme: "bulma",
       title: `#${self.DuelsCount + 1} Duel`,
       showConfirmButton: false,
-      timer: 1600,
+      timer: 1000,
     });
   };
   self.sweetAlertError = (title_text, message_text) => {
@@ -1435,7 +1435,6 @@ function mab_arena() {
       );
 
       self.Battle_ListPlayerDuellingCards();
-      setTimeout(() => {}, self.Duel_AnimationsTime);
 
       return;
     }
@@ -1443,7 +1442,6 @@ function mab_arena() {
     if (self.IsPlayerTurn === false && self.AreTurnsFinished == false) {
       self.Fields.ArenaMessages.html(`NPC's Turn: a card is being chosen...`);
 
-      setTimeout(() => {}, self.Duel_AnimationsTime);
       self.Duel_NpcAttacks();
 
       return;
