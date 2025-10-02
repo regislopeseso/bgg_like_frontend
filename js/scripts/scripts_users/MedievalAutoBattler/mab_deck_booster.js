@@ -198,7 +198,7 @@ function mab_deck_booster() {
               break;
             case "Infantry":
               imgPath =
-                playerCard.mab_CardPower === playerCard.mab_CardUpperHand
+                card.mab_CardPower === card.mab_CardUpperHand
                   ? self.Imgs.MabCardPickeAxe
                   : self.Imgs.MabCardTypeInfantry;
               break;

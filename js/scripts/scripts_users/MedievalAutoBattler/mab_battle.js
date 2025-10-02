@@ -398,6 +398,8 @@ function mab_battle() {
         }
         self.reset_Arena();
 
+        self.Blocks.PlayerDuelResults.empty();
+
         let content = resp.content;
 
         self.BattleId = content.mab_BattleId;
@@ -659,7 +661,7 @@ function mab_battle() {
       xhrFields: { withCredentials: true },
       success: function (resp) {
         if (!resp.content) {
-          sweetAlertError("Error", response.message);
+          self.sweetAlertError("Error", response.message);
           return;
         }
 
@@ -674,7 +676,7 @@ function mab_battle() {
         self.battle_RenderDuel();
       },
       error: function (xhr, status, error) {
-        sweetAlertError(
+        self.sweetAlertError(
           "Failed to fetch user available and assigned card copies. Try again later."
         );
       },
@@ -694,7 +696,7 @@ function mab_battle() {
       },
       success: (resp) => {
         if (!resp.content) {
-          sweetAlertError(resp.message);
+          self.sweetAlertError(resp.message);
 
           return;
         }
@@ -739,7 +741,7 @@ function mab_battle() {
         self.Duel_CheckStatus();
       },
       error: (err) => {
-        sweetAlertError(err);
+        self.sweetAlertError(err);
       },
       complete: () => {},
     });
@@ -755,7 +757,7 @@ function mab_battle() {
       xhrFields: { withCredentials: true },
       success: function (resp) {
         if (!resp.content) {
-          sweetAlertError("Error", resp.message);
+          self.sweetAlertError("Error", resp.message);
           return;
         }
 
@@ -937,7 +939,7 @@ function mab_battle() {
         }
       },
       error: function (xhr, status, error) {
-        sweetAlertError(
+        self.sweetAlertError(
           "Failed to fetch user available and assigned cards. Try again later."
         );
       },
@@ -970,7 +972,7 @@ function mab_battle() {
         self.Duel_ManageTurn();
       },
       error: (err) => {
-        sweetAlertError(err);
+        self.sweetAlertError(err);
       },
       complete: () => {},
     });
@@ -984,7 +986,7 @@ function mab_battle() {
       },
       success: (resp) => {
         if (!resp.content) {
-          sweetAlertError(resp.message);
+          self.sweetAlertError(resp.message);
 
           return;
         }
@@ -994,7 +996,7 @@ function mab_battle() {
         self.Duel_ManageTurn();
       },
       error: (err) => {
-        sweetAlertError(err);
+        self.sweetAlertError(err);
       },
       complete: () => {},
     });
@@ -1073,7 +1075,7 @@ function mab_battle() {
       },
       success: (resp) => {
         if (!resp.content) {
-          sweetAlertError(resp.message);
+          self.sweetAlertError(resp.message);
         }
 
         self.NpcDuellingCard_CardName = resp.content.mab_CardName;
@@ -1091,7 +1093,7 @@ function mab_battle() {
         }, 300);
       },
       error: (err) => {
-        sweetAlertError(err);
+        self.sweetAlertError(err);
       },
       complete: () => {},
     });
@@ -1103,7 +1105,7 @@ function mab_battle() {
       xhrFields: { withCredentials: true },
       success: function (resp) {
         if (!resp.content) {
-          sweetAlertError("Error", response.message);
+          self.sweetAlertError("Error", resp.message);
           return;
         }
 
@@ -1112,7 +1114,7 @@ function mab_battle() {
         self.battle_ListNpcCards();
       },
       error: function () {
-        sweetAlertError(
+        self.sweetAlertError(
           "Failed to fetch user available and assigned card copies. Try again later."
         );
       },
@@ -1149,7 +1151,7 @@ function mab_battle() {
           break;
         case "Infantry":
           imgPath =
-            playerCard.mab_CardPower === playerCard.mab_CardUpperHand
+            card.mab_CardPower === card.mab_CardUpperHand
               ? self.Imgs.MabCardPickeAxe
               : self.Imgs.MabCardTypeInfantry;
           break;
