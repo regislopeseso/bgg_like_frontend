@@ -397,6 +397,8 @@ main {
 
 #wrapper-mab-trophy-info {
   display: none;
+
+  max-width: 500px;
 }
 
 @media screen and (max-width: 1440px) {

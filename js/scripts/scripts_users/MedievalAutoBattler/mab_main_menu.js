@@ -3,6 +3,9 @@ function mab_main_menu() {
   self.IsBuilt = false;
   self.CurrentPlayerNickName = "";
 
+  self.SelectedTrophies = [];
+  self.IsTrophyDetailsDisplayed = false;
+
   self.loadReferences = () => {
     self.DOM = $("#dom-medieval-auto-battler");
 
@@ -109,6 +112,12 @@ function mab_main_menu() {
     self.Wrappers = [];
     self.Wrappers[self.Wrappers.length] = self.Wrappers.Trophy_Info =
       self.Containers.CampaignStatistics.find("#wrapper-mab-trophy-info");
+    self.Wrappers[self.Wrappers.length] = self.Wrappers.Trophy_Title =
+      self.Containers.CampaignStatistics.find("#strong-mab-trophy-title");
+    self.Wrappers[self.Wrappers.length] = self.Wrappers.Trophy_Requirement =
+      self.Containers.CampaignStatistics.find("#strong-mab-trophy-requirement");
+    self.Wrappers[self.Wrappers.length] = self.Wrappers.Trophy_Reward =
+      self.Containers.CampaignStatistics.find("#strong-mab-trophy-reward");
 
     self.Images = [];
     self.Images[self.Images.length] = self.Images.Trophy_AllCardsCollected =
@@ -183,17 +192,7 @@ function mab_main_menu() {
     self.Buttons.Trophy_TheCollector.on("click", (e) => {
       e.preventDefault();
 
-      if (!self.Wrappers.Trophy_Info.is(":visible")) {
-        self.Wrappers.Trophy_Info.hide(); // shorthand for css("display", "none")
-        return;
-      }
-
       self.render_TrophiesInfo("Collector");
-    });
-    self.Buttons.Trophy_TheBrave.on("click", (e) => {
-      e.preventDefault();
-
-      self.render_TrophiesInfo("Brave");
     });
     self.Buttons.Trophy_TheBourgeois.on("click", (e) => {
       e.preventDefault();
@@ -405,96 +404,65 @@ function mab_main_menu() {
   };
 
   self.render_TrophiesInfo = (trophy) => {
-    self.Wrappers.Trophy_Info.empty();
+    self.SelectedTrophies.push(trophy);
 
-    let trophyInfo = "";
+    let title = `The ${trophy}`;
+    let requirement = "";
+    let reward = "";
 
     if (trophy === "Brave") {
-      trophyInfo = `
-      <div class="d-flex flex-column w-50">
-        <div><span>T</span>he <span>B</span>rave:</div>
-        <div>
-          <span>R</span>equirement:&nbsp;  
-          Player must face all npcs in the game (winning is not mandatory);
-        </div>
-        <div>
-          <span>R</span>ewards:&nbsp;  
-          NPCs will show their cards face up in all battles;
-        </div>
-      </div>
-      `;
+      requirement = `      
+          Player must face all npcs in the game (winning is not mandatory).`;
+
+      reward = `
+          NPCs will show their cards face up in all battles.`;
     } else if (trophy === "Collector") {
-      trophyInfo = `
-      <div class="d-flex flex-column justify-content-center align-items-center w-100">
-        <div><span>T</span>he <span>C</span>ollector:</div>
-        <div class="d-flex flex-column w-50">
-          <div>
-            <span>R</span>equirement:  
-          </div>
-          <div class="w-50">
-            Player must own all cards of one at least one type (either neutral or ranged or infantry or cavalry);
-          </div>
-        </div>
-        <div class="d-flex flex-column w-50">
-          <div>
-            <span>R</span>ewards:&nbsp;  
-          </div>
-          <div class="w-50">
-            Player gains 4 cards of power 5 and upper hand 5, 1 card of each type and 1 random card of power 9 and upper hand 0;
-          </div>
-        </div>
-      </div>
-      `;
+      requirement = `      
+           Player must own all cards of one at least one type (either neutral or ranged or infantry or cavalry).`;
+
+      reward = `
+          Player gains 4 cards of power 5 and upper hand 5, 1 card of each type and 1 random card of power 9 and upper hand 0.`;
     } else if (trophy === "Bourgeois") {
-      trophyInfo = `
-      <div>
-        <div><span>T</span>he <span>B</span>ourgeois:</div>
-        <div>
-          <span>R</span>equirement:&nbsp;  
-          Player must accomplish 500 transactions in the market;
-        </div>
-        <div>
-          <span>R</span>ewards:&nbsp;  
-          All inflations increase and decrease only 1 unit per purchase and sale action;
-        </div>
-      </div>
-      `;
+      requirement = `      
+          Player must accomplish 500 transactions in the market.`;
+
+      reward = `
+          All inflations increase and decrease only 1 unit per purchase and sale action.`;
     } else if (trophy === "Miner") {
-      trophyInfo = `
-      <div>
-        <div><span>T</span>he <span>M</span>iner:</div>
-        <div>
-          <span>R</span>equirement:&nbsp;  
-          Player must extract 1 raw material of each type (brass, copper, iron, steel, titanium, silver, gold, diamond, adamantium);
-        </div>
-        <div>
-          <span>R</span>ewards:&nbsp;  
-          Player may use use multiple pickaxes at the same time in the mine;
-        </div>
-      </div>
-      `;
+      requirement = `      
+          Player must extract 1 raw material of each type (brass, copper, iron, steel, titanium, silver, gold, diamond, adamantium).`;
+
+      reward = `
+          Player may use use multiple pickaxes at the same time in the mine.`;
     } else if (trophy === "Blacksmith") {
-      trophyInfo = `
-      <div class="d-flex flex-column w-100">
-        <div><span>T</span>he <span>B</span>lacksmith:</div>
-        <div>
-          <span>R</span>equirement:&nbsp;  
-          Player must consume one of each raw material at the forge;
-        </div>
-        <div>
-          <span>R</span>ewards:&nbsp;  
-          Player may upgrade any card from any power to any power level paying the necessary raw material costs of the desired power level;
-        </div>
-      </div>
-      `;
+      requirement = `      
+          Player must consume one of each raw material at the forge.`;
+
+      reward = `
+          Player may upgrade any card from any power to any power level paying the necessary raw material costs of the desired power level.`;
     } else {
-      trophyInfo = "";
+      requirement = "";
+      reward = "";
     }
 
-    self.Wrappers.Trophy_Info.append(`<hr />`);
-    self.Wrappers.Trophy_Info.append(trophyInfo);
-    self.Wrappers.Trophy_Info.hide();
-    self.Wrappers.Trophy_Info.slideToggle();
+    self.Wrappers.Trophy_Title.html(title);
+    self.Wrappers.Trophy_Requirement.html(requirement);
+    self.Wrappers.Trophy_Reward.html(reward);
+
+    if (self.SelectedTrophies.length > 1) {
+      if (
+        self.SelectedTrophies[self.SelectedTrophies.length - 1] ===
+        self.SelectedTrophies[self.SelectedTrophies.length - 2]
+      ) {
+        self.SelectedTrophies = [];
+        self.Wrappers.Trophy_Info.fadeOut(300);
+        return;
+      } else {
+        return;
+      }
+    }
+
+    self.Wrappers.Trophy_Info.fadeIn(300);
   };
 
   self.EditPlayerNickname = () => {
