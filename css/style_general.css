@@ -50,16 +50,16 @@ hr {
   opacity: 0.6; /* opcional: semitransparente */
 }
 
+.btn:hover {
+  color: var(--text-color);
+  box-shadow: 0 0 15px 1px var(--text-color);
+}
+
 .btn-outline-info {
   --bs-btn-color: var(--main-color);
   --bs-btn-disabled-color: var(--bg-color);
   --bs-btn-disabled-border-color: var(--bg-color);
   --bs-btn-hover-bg: var(--main-color);
-}
-
-.btn:hover {
-  color: var(--text-color);
-  box-shadow: 0 0 15px 1px var(--text-color);
 }
 
 .btn-outline-success {

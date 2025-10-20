@@ -10,6 +10,26 @@ $(function () {
 
     self.SignUpForm = self.DOM.find("#signUp-form");
     self.SignInForm = self.DOM.find("#signIn-form");
+
+    self.Inputs = [];
+    self.Inputs[self.Inputs.length] = self.Inputs.SignUp_Name =
+      self.SignUpForm.find("#newUserName");
+    self.Inputs[self.Inputs.length] = self.Inputs.SignUp_Email =
+      self.SignUpForm.find("#newUserEmail");
+    self.Inputs[self.Inputs.length] = self.Inputs.SignUp_Birthdate =
+      self.SignUpForm.find("#newUserBirthdate");
+    self.Inputs[self.Inputs.length] = self.Inputs.SignUp_Gender_Male =
+      self.SignUpForm.find("#genderMale");
+    self.Inputs[self.Inputs.length] = self.Inputs.SignUp_Gender_Female =
+      self.SignUpForm.find("#genderFemale");
+    self.Inputs[self.Inputs.length] = self.Inputs.SignUp_Password =
+      self.SignUpForm.find("#newUserPassword");
+    self.Inputs[self.Inputs.length] = self.Inputs.SignUp_PasswordConfirmation =
+      self.SignUpForm.find("#passwordConfirmation");
+    self.Inputs[self.Inputs.length] = self.Inputs.SignIp_Email =
+      self.SignInForm.find("#signInEmail");
+    self.Inputs[self.Inputs.length] = self.Inputs.SignIp_Password =
+      self.SignInForm.find("#signInPassword");
   };
 
   function redirectToUsersPage() {
@@ -324,27 +344,48 @@ $(function () {
       const originalBtnText = submitBtn.text();
       submitBtn.attr("disabled", true).text("Submitting...");
 
-      userEmail = self.SignUpForm.find("#newUserEmail").val();
-      userPassword = self.SignUpForm.find("#newUserPassword").val();
+      userName = self.Inputs.SignUp_Name.val();
+      userEmail = self.Inputs.SignUp_Email.val();
+      userPassword = self.Inputs.SignUp_Password.val();
+      userBirthDate = self.Inputs.SignUp_Birthdate.val();
+      userGender = null;
 
-      $.post(
-        "https://localhost:7081/users/signup",
-        $(this).serialize(),
-        function (response) {}
-      )
-        .done(function (response) {
-          if (response.content === null) {
-            sweetAlertError("Sign Up failed", response.message);
-          } else {
-            signIn(userEmail, userPassword, true);
+      if (self.Inputs.SignUp_Gender_Male.prop("checked")) {
+        userGender = 0;
+      } else {
+        userGender = 1;
+      }
+
+      const request = {
+        Name: userName,
+        UserName: userEmail,
+        Email: userEmail,
+        Password: userPassword,
+        UserBirthDate: userBirthDate,
+        Gender: userGender,
+      };
+
+      $.ajax({
+        type: "POST",
+        url: `https://localhost:7081/users/signup`,
+        data: JSON.stringify(request),
+        processData: false,
+        contentType: "application/json",
+        xhrFields: { withCredentials: true },
+        success: function (response) {
+          if (!response.content) {
+            sweetAlertError(response.message);
           }
-        })
-        .fail(function (response) {
+
+          signIn(userEmail, userPassword, true);
+        },
+        error: () => {
           sweetAlertError("Sign Up failed", response.message);
-        })
-        .always(function (response) {
-          submitBtn.attr("disabled", true).text(originalBtnText);
-        });
+        },
+        complete: () => {
+          submitBtn.attr("disabled", false).text(originalBtnText);
+        },
+      });
 
       // React to typing in any input
       $("#signUp-form").on("input", checkFormFilling);
@@ -356,12 +397,17 @@ $(function () {
     formData.append("Email", userEmail);
     formData.append("Password", userPassword);
 
+    const request = {
+      Email: userEmail,
+      Password: userPassword,
+    };
+
     $.ajax({
       type: "POST",
       url: "https://localhost:7081/users/signin",
-      data: formData,
+      data: JSON.stringify(request),
       processData: false,
-      contentType: false,
+      contentType: "application/json",
       xhrFields: {
         withCredentials: true,
       },

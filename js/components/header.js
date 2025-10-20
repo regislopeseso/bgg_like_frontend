@@ -119,11 +119,7 @@ function loadHeader(userData, roleData) {
           
           <a style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight">
             <i class="bi bi-gear" ></i>
-          </a>
-
-          <div id="role-initial-toggler">
-            
-          </div>
+          </a>          
         </div>
 
         <div class="navHamburger">
@@ -282,10 +278,9 @@ function loadHeader(userData, roleData) {
         localStorage.clear();
 
         // Successfully logged out
-        debugger;
+
         sweetAlertSuccess("Bye Bye!");
       } else {
-        debugger;
         sweetAlertError("Failed to log out.");
       }
     });
@@ -322,7 +317,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.log(userData.message);
     }
   } catch (err) {
-    debugger;
     sweetAlertError("Failed to fetch authentication status or role", err);
   }
 
