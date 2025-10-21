@@ -29,9 +29,9 @@ function sweetAlertError(text) {
   });
 }
 
-function loadHeader(userData, roleData) {
+function loadHeader(userData) {
   const isLoggedIn = userData?.content?.isUserLoggedIn === true;
-  const userRole = roleData?.content?.role || null;
+  const userRole = userData?.content?.role || null;
 
   const header = document.createElement("header");
   header.className = "header";
@@ -266,7 +266,7 @@ function loadHeader(userData, roleData) {
 
       $("header").css("border-bottom", "none");
 
-      const response = await fetch("https://localhost:7081/users/signout", {
+      const response = await fetch("https://localhost:7081/users/signoutuser", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -304,23 +304,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     );
 
     userData = await statusResponse.json();
-
-    if (userData.content.isUserLoggedIn === true) {
-      console.log(userData.message);
-      const roleResponse = await fetch("https://localhost:7081/users/getrole", {
-        method: "GET",
-        credentials: "include",
-      });
-      roleData = await roleResponse.json();
-      console.log(roleData.message);
-    } else {
-      console.log(userData.message);
-    }
   } catch (err) {
     sweetAlertError("Failed to fetch authentication status or role", err);
   }
 
-  loadHeader(userData, roleData);
+  loadHeader(userData);
 
   function SetTheme() {
     let theme = localStorage.getItem("Theme");

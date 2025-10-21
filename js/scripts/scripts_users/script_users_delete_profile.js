@@ -34,7 +34,7 @@ $(function () {
   function forceLogOut(text) {
     $.ajax({
       type: "POST",
-      url: "https://localhost:7081/users/signout",
+      url: "https://localhost:7081/users/signoutuser",
       data: $(this).serialize(),
       xhrFields: {
         withCredentials: true,
