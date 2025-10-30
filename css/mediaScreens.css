@@ -1,84 +1,20 @@
-/* 
-@media screen and (max-width: 1200px) {
-}
-@media screen and (max-width: 991px) {
-}
-@media screen and (max-width: 768px) {
-}
-@media screen and (max-width: 576px) {
-}
-@media screen and (max-width: 350px) {
-} 
-*/
-
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 3500px) {
   html {
-    font-size: 55%;
+    font-size: 120%;
   }
 }
-
-@media screen and (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    gap: 2rem;
-  }
-  .navbar {
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .home {
-    flex-direction: column;
-  }
-  .home-content h3 {
-    font-size: 2.5rem;
-  }
-  .home-content h1 {
-    font-size: 5rem;
-  }
-  .home-img img {
-    width: 70vw;
-    margin-top: 4rem;
-  }
-  .about {
-    flex-direction: column-reverse;
-  }
-  .about img {
-    width: 70vw;
-    margin-top: 2rem;
-  }
-  .portfolio h2 {
-    margin-bottom: 3rem;
-  }
-  .portfolio-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 2560px) {
   html {
-    font-size: 50%;
-  }
-  .portfolio-container {
-    grid-template-columns: 1fr;
-  }
-  .contact form .input-box input {
-    width: 100%;
+    font-size: 100%;
   }
 }
-@media screen and (max-width: 350px) {
-  .header {
-    position: fixed;
-    left: 0;
-    width: 10%;
-    flex-direction: column;
-    align-self: start;
+@media screen and (max-width: 1512px) {
+  html {
+    font-size: 100%;
   }
-  .home-img img {
-    width: 90vw;
-  }
-  .about-img img {
-    width: 90vw;
+}
+@media screen and (max-width: 575px) {
+  html {
+    font-size: 60%;
   }
 }

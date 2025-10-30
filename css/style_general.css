@@ -426,24 +426,3 @@ textarea.new-data {
 .swal2-x-mark-line-right {
   background-color: var(--reddish) !important;
 }
-
-@media screen and (max-width: 3500px) {
-  html {
-    font-size: 120%;
-  }
-}
-@media screen and (max-width: 2560px) {
-  html {
-    font-size: 100%;
-  }
-}
-@media screen and (max-width: 1512px) {
-  html {
-    font-size: 100%;
-  }
-}
-@media screen and (max-width: 575px) {
-  html {
-    font-size: 60%;
-  }
-}

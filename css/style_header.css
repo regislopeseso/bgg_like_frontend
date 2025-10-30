@@ -153,3 +153,26 @@
     box-shadow: none;
   }
 }
+@media screen and (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+@media screen and (max-width: 350px) {
+  .header {
+    position: fixed;
+    left: 0;
+    width: 10%;
+    flex-direction: column;
+    align-self: start;
+  }
+}
