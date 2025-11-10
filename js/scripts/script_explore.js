@@ -206,7 +206,7 @@ $(function () {
     //$("body").loadcontent("charge");
 
     $.get(
-      "https://localhost:7081/explore/categoriesranking",
+      "https://localhost:7081/explore/categoriesrankings",
       data,
       function (response) {
         if (
